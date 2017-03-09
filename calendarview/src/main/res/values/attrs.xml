@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CellView">
+        <attr name="cell_day_text_size" format="dimension" />
+        <attr name="cell_lunar_text_size" format="dimension" />
+        <attr name="cell_scheme_radius" format="dimension" />
+        <attr name="cell_scheme_text_size" format="dimension" />
+        <attr name="cell_circle_padding" format="dimension" />
+        <attr name="cell_circle_color" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="CalendarView">
+        <attr name="week_background" format="color" />
+        <attr name="week_text_color" format="color" />
+        <attr name="scheme_theme_color" format="color" />
+        <attr name="current_day_color" format="color" />
+        <attr name="select_day_color" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="MonthView">
+        <attr name="month_view_text_size" format="dimension" />
+        <attr name="month_view_text_color" format="color" />
+        <attr name="month_view_remark_color" format="color" />
+    </declare-styleable>
+</resources>

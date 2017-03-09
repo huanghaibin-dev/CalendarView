@@ -1,0 +1,130 @@
+/*
+ * Copyright (C) 2016 huanghaibin_dev <huanghaibin_dev@163.com>
+ * WebSite https://github.com/MiracleTimes-Dev
+ * Version 1.0.2
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.github.dcendents.android-maven'
+
+afterEvaluate { project ->
+    install {
+        repositories.mavenInstaller {
+            configurePOM(pom);
+        }
+    }
+
+    task sourcesJar(type: Jar) {
+        classifier = 'sources'
+        from android.sourceSets.main.java.srcDirs
+    }
+
+    task javadoc(type: Javadoc) {
+        failOnError false
+        source = android.sourceSets.main.java.srcDirs
+        options {
+            links "http://docs.oracle.com/javase/7/docs/api/"
+            linksOffline "http://d.android.com/reference", "${android.sdkDirectory}/docs/reference"
+        }
+        classpath += project.android.libraryVariants.toList().first().javaCompile.classpath
+        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        classifier = 'javadoc'
+        from javadoc.destinationDir
+    }
+
+    artifacts {
+        archives javadocJar
+        archives sourcesJar
+    }
+}
+
+private configurePOM(def pom) {
+    pom.project {
+        packaging POM_PACKAGING
+        groupId POM_GROUP_ID
+        artifactId POM_ARTIFACT_ID
+
+        name POM_NAME
+        description POM_DESCRIPTION
+        url POM_URL
+
+        version VERSION_NAME
+        inceptionYear POM_INCEPTION_YEAR
+
+        licenses {
+            license {
+                name POM_LICENCE_NAME
+                url POM_LICENCE_URL
+                distribution POM_LICENCE_DIST
+                comments POM_LICENCE_COMMENTS
+            }
+        }
+
+        developers {
+            developer {
+                id POM_DEVELOPER_ID
+                name POM_DEVELOPER_NAME
+                email POM_DEVELOPER_EMAIL
+                url POM_DEVELOPER_URL
+            }
+        }
+
+        scm {
+            url POM_SCM_URL
+            connection POM_SCM_CONNECTION
+            developerConnection POM_SCM_DEV_CONNECTION
+        }
+
+        issueManagement {
+            system POM_ISSUE_MANAGEMENT_SYSTEM
+            url POM_ISSUE_MANAGEMENT_URL
+        }
+    }
+}
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+
+bintray {
+    user = properties.getProperty("BINTRAY_USER")
+    key = properties.getProperty("BINTRAY_KEY")
+
+    group = POM_GROUP_ID
+    version = VERSION_NAME
+
+    configurations = ['archives']
+
+    pkg {
+        repo = POM_BINTRAY_PRPO
+        name = POM_BINTRAY_NAME
+        desc = POM_DESCRIPTION
+        websiteUrl = POM_URL
+        vcsUrl = POM_GIT_URL
+        licenses = POM_LICENCE_ALL
+        publish = true
+        publicDownloadNumbers = true
+        version {
+            desc = POM_DESCRIPTION
+            gpg {
+                sign = false //Determines whether to GPG sign the files. The default is false
+                passphrase = properties.getProperty("BINTRAY_GPG_PASSWORD")
+                //Optional. The passphrase for GPG signing'
+            }
+        }
+    }
+}

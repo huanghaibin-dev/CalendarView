@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.haibin.calendarview.CellView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cellView"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@drawable/bg_material"
+    android:paddingBottom="12dp"
+    android:paddingTop="12dp"
+    app:cell_circle_color="#111111"
+    app:cell_circle_padding="2dp"
+    app:cell_day_text_size="16sp"
+    app:cell_lunar_text_size="10sp"
+    app:cell_scheme_radius="5dp"
+    app:cell_scheme_text_size="6sp" />
