@@ -13,6 +13,39 @@ compile 'com.haibin.calendarview:1.0.0'
   <type>pom</type>
 </dependency>
 ```
+### 使用方法
+```xml
+ <com.haibin.calendarview.CalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:week_background="#fff"
+        app:week_text_color="#111" />
+```
+
+### attrs
+```xml
+<declare-styleable name="CalendarView">
+        <attr name="week_background" format="color" /> <!--星期栏的背景-->
+        <attr name="week_text_color" format="color" /> <!--星期栏文本颜色-->
+        <attr name="scheme_theme_color" format="color" /> <!--标记的颜色-->
+        <attr name="current_day_color" format="color" /> <!--今天的文本颜色-->
+        <attr name="select_day_color" format="color" /> <!--选中的文本颜色-->
+</declare-styleable>
+```
+### api
+```java
+public int getCurDay(); //今天
+public int getCurMonth(); //当前的月份
+public int getCurYear(); //今年
+public void showSelectLayout(final int year); //快速弹出年份选择月份
+public void closeSelectLayout(final int position); //关闭选择年份并跳转日期
+public void setOnDateChangeListener(OnDateChangeListener listener);//添加事件
+public void setOnDateSelectedListener(OnDateSelectedListener listener);//日期选择事件
+public void setSchemeDate(List<Calendar> mSchemeDate);//标记日期
+public void setStyle(int schemeThemeColor, int selectLayoutBackground, int lineBg);
+public void update();//动态更新
+```
 
 ### 效果预览
 
