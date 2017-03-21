@@ -201,7 +201,7 @@ public class CalendarView extends FrameLayout {
         this.mListener = listener;
     }
 
-    private class CalendarViewPagerAdapter extends PagerAdapter {
+    private  class CalendarViewPagerAdapter extends PagerAdapter {
 
         @Override
         public int getCount() {
