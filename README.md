@@ -1,7 +1,7 @@
 # CalenderView
 Android上一个优雅、高度自定义、性能高效的日历控件，支持标记、自定义颜色、农历等。Canvas绘制，速度快、占用内存低
 
-#Gradle
+### Gradle
 ```
 compile 'com.haibin.calendarview:1.0.0'
 ```
@@ -14,14 +14,11 @@ compile 'com.haibin.calendarview:1.0.0'
 </dependency>
 ```
 
-#效果预览
+### 效果预览
 
-<img src="https://github.com/huanghaibin-dev/GitHubProjectPicture/blob/master/CalendarView/S70321-143452.jpg" height="650"/> 
-<img src="https://github.com/huanghaibin-dev/GitHubProjectPicture/blob/master/CalendarView/S70321-143502.jpg" height="650"/> 
-<img src="https://github.com/huanghaibin-dev/GitHubProjectPicture/blob/master/CalendarView/S70321-143423.jpg" height="650"/>
-<img src="https://github.com/huanghaibin-dev/GitHubProjectPicture/blob/master/CalendarView/S70321-143432.jpg" height="650"/> 
+<img src="https://github.com/huanghaibin-dev/GitHubProjectPicture/blob/master/CalendarView/S70321-143452.jpg" height="650"/> <img src="https://github.com/huanghaibin-dev/GitHubProjectPicture/blob/master/CalendarView/S70321-143502.jpg" height="650"/> <img src="https://github.com/huanghaibin-dev/GitHubProjectPicture/blob/master/CalendarView/S70321-143423.jpg" height="650"/><img src="https://github.com/huanghaibin-dev/GitHubProjectPicture/blob/master/CalendarView/S70321-143432.jpg" height="650"/> 
 
-##Licenses
+## Licenses
 - Copyright (C) 2013 huanghaibin_dev <huanghaibin_dev@163.com>
  
 - Licensed under the Apache License, Version 2.0 (the "License");
