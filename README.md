@@ -30,6 +30,7 @@ compile 'com.haibin.calendarview:1.0.1'
         <attr name="week_text_color" format="color" /> <!--星期栏文本颜色-->
         <attr name="scheme_theme_color" format="color" /> <!--标记的颜色-->
         <attr name="current_day_color" format="color" /> <!--今天的文本颜色-->
+            <attr name="scheme_text" format="string" />  <!--标记文本-->
         <attr name="min_year" format="integer" />  <!--最小年份1900-->
         <attr name="max_year" format="integer" /> <!--最大年份2099-->
 </declare-styleable>

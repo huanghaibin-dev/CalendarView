@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 
 import java.util.ArrayList;
@@ -23,7 +24,8 @@ public class CalendarCardView extends RecyclerView {
     private OnDateSelectedListener mDateSelectedListener;
     private OnDateChangeListener mListener;
     private List<Calendar> mItems;
-    private List<Calendar> mScheme;
+    private List<Calendar> mSchemes;
+    private String mScheme;
 
     public CalendarCardView(Context context) {
         super(context, null);
@@ -48,17 +50,21 @@ public class CalendarCardView extends RecyclerView {
             @Override
             public void onItemClick(int position, long itemId) {
                 Calendar date = mAdapter.getItem(position);
-                if (mListener != null) {
+                if (mListener != null && date != null) {
                     mListener.onDateChange(date.getYear(), date.getMonth(), date.getDay(),
                             date.getLunar(), date.getScheme());
                 }
 
-                if (mDateSelectedListener != null) {
+                if (mDateSelectedListener != null && date != null) {
                     mDateSelectedListener.onDateSelected(date.getYear(), date.getMonth(), date.getDay(),
                             date.getLunar(), date.getScheme());
                 }
             }
         });
+    }
+
+    void setScheme(String scheme) {
+        this.mScheme = TextUtils.isEmpty(scheme) ? scheme : scheme.substring(0, 1);
     }
 
     public void setCurrentDate(int year, int month) {
@@ -138,26 +144,26 @@ public class CalendarCardView extends RecyclerView {
             mItems.add(calendarDate);
         }
         mAdapter.addAll(mItems);
-        if (mScheme != null) {
+        if (mSchemes != null) {
             for (Calendar a : mAdapter.getItems()) {
-                for (Calendar d : mScheme) {
+                for (Calendar d : mSchemes) {
                     if (d.equals(a)) {
-                        a.setScheme("记");
+                        a.setScheme(mScheme);
                     }
                 }
             }
         }
     }
 
-    public void setScheme(List<Calendar> mScheme) {
-        this.mScheme = mScheme;
+    public void setSchemes(List<Calendar> mScheme) {
+        this.mSchemes = mScheme;
         update();
     }
 
     void update() {
-        if (mScheme != null) {
+        if (mSchemes != null) {
             for (Calendar a : mAdapter.getItems()) {
-                for (Calendar d : mScheme) {
+                for (Calendar d : mSchemes) {
                     if (d.equals(a)) {
                         a.setScheme("记");
                     }

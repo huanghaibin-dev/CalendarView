@@ -36,6 +36,7 @@ public class CalendarView extends FrameLayout {
     private int mCurYear, mCurMonth, mCurDay;
     private int mCurDayColor, mSchemeThemeColor, mWeekBackground, mWeekTextColor;
     private int mMinYear, mMaxYear;
+    private String mScheme;
 
     public CalendarView(@NonNull Context context) {
         super(context, null);
@@ -50,6 +51,7 @@ public class CalendarView extends FrameLayout {
         mWeekTextColor = array.getColor(R.styleable.CalendarView_week_text_color, Color.RED);
         mMinYear = array.getInt(R.styleable.CalendarView_min_year, 2010);
         mMaxYear = array.getInt(R.styleable.CalendarView_max_year, 2050);
+        mScheme = array.getString(R.styleable.CalendarView_scheme_text);
         if (mMinYear <= 1900) mMaxYear = 1900;
         if (mMaxYear >= 2099) mMaxYear = 2099;
         array.recycle();
@@ -226,7 +228,8 @@ public class CalendarView extends FrameLayout {
             int year = position / 12 + mMinYear;
             int month = position % 12 + 1;
             CalendarCardView view = new CalendarCardView(getContext(), null);
-            view.setScheme(mSchemeDate);
+            view.setSchemes(mSchemeDate);
+            view.setScheme(mScheme);
             view.setOnDateSelectedListener(mDateSelectedListener);
             view.setCurrentDate(year, month);
             view.setOnDateChangeListener(mListener);
@@ -247,7 +250,7 @@ public class CalendarView extends FrameLayout {
         mSelectLayout.setSchemes(mSchemeDate);
         for (int i = 0; i < mViewPager.getChildCount(); i++) {
             CalendarCardView view = (CalendarCardView) mViewPager.getChildAt(i);
-            view.setScheme(mSchemeDate);
+            view.setSchemes(mSchemeDate);
         }
     }
 
