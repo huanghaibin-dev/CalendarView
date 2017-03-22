@@ -176,6 +176,14 @@ public class CalendarView extends FrameLayout {
                 });
     }
 
+    public void scrollToCurrent() {
+        mViewPager.setCurrentItem(12 * (mCurYear - mMinYear) + mCurMonth - 1);
+    }
+
+    public void scrollToYear(int year) {
+        mViewPager.setCurrentItem(12 * (year - mMinYear) + mCurMonth - 1);
+    }
+
     public void closeSelectLayout(final int position) {
         mSelectLayout.setVisibility(GONE);
         mLinearWeek.setVisibility(VISIBLE);
