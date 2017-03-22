@@ -20,6 +20,7 @@ public class SelectLayout extends ViewPager {
     private int mSchemeColor;
     private MonthRecyclerView.OnMonthSelectedListener mListener;
     private List<Calendar> mSchemes;
+    private int mMinYear, mMaxYear;
 
     public SelectLayout(Context context) {
         this(context, null);
@@ -29,15 +30,20 @@ public class SelectLayout extends ViewPager {
         super(context, attrs);
     }
 
+    void setYearSpan(int minYear, int maxYear) {
+        this.mMinYear = minYear;
+        this.mMaxYear = maxYear;
+    }
+
     void init(int year) {
         if (isInit) {
-            setCurrentItem(year - 2010);
+            setCurrentItem(year - mMinYear);
             return;
         }
         setAdapter(new PagerAdapter() {
             @Override
             public int getCount() {
-                return 40;
+                return mMaxYear-mMinYear;
             }
 
             @Override
@@ -51,7 +57,7 @@ public class SelectLayout extends ViewPager {
                 container.addView(view);
                 view.setOnMonthSelectedListener(mListener);
                 view.setSchemeColor(mSchemeColor);
-                view.init(position + 2010);
+                view.init(position + mMinYear);
                 view.setSchemes(mSchemes);
                 return view;
             }
@@ -63,7 +69,7 @@ public class SelectLayout extends ViewPager {
             }
         });
         isInit = true;
-        setCurrentItem(year - 2010);
+        setCurrentItem(year - mMinYear);
     }
 
     void setSchemes(List<Calendar> mSchemes) {

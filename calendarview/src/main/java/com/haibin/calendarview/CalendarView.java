@@ -35,6 +35,7 @@ public class CalendarView extends FrameLayout {
     private LinearLayout mLinearWeek;
     private int mCurYear, mCurMonth, mCurDay;
     private int mCurDayColor, mSchemeThemeColor, mWeekBackground, mWeekTextColor;
+    private int mMinYear, mMaxYear;
 
     public CalendarView(@NonNull Context context) {
         super(context, null);
@@ -47,6 +48,10 @@ public class CalendarView extends FrameLayout {
         mSchemeThemeColor = array.getColor(R.styleable.CalendarView_scheme_theme_color, Color.RED);
         mWeekBackground = array.getColor(R.styleable.CalendarView_week_background, Color.WHITE);
         mWeekTextColor = array.getColor(R.styleable.CalendarView_week_text_color, Color.RED);
+        mMinYear = array.getInt(R.styleable.CalendarView_min_year, 2010);
+        mMaxYear = array.getInt(R.styleable.CalendarView_max_year, 2050);
+        if (mMinYear <= 1900) mMaxYear = 1900;
+        if (mMaxYear >= 2099) mMaxYear = 2099;
         array.recycle();
         init(context);
     }
@@ -69,7 +74,7 @@ public class CalendarView extends FrameLayout {
             @Override
             public void onPageSelected(int position) {
                 if (mListener != null) {
-                    int year = position / 12 + 2010;
+                    int year = position / 12 + mMinYear;
                     int month = position % 12 + 1;
                     int[] lunar = LunarCalendar.solarToLunar(year, month, 1);
                     mListener.onDateChange(year, month, 1, LunarCalendar.numToChineseDay(lunar[2]), "");
@@ -90,7 +95,7 @@ public class CalendarView extends FrameLayout {
             @Override
             public void onPageSelected(int position) {
                 if (mListener != null) {
-                    mListener.onYearChange(position + 2010);
+                    mListener.onYearChange(position + mMinYear);
                 }
             }
 
@@ -109,9 +114,12 @@ public class CalendarView extends FrameLayout {
         calendar.setDay(Util.getDate("dd", d));
 
         mCurYear = calendar.getYear();
+        if (mMinYear >= mCurYear) mMinYear = mCurYear;
+        if (mMaxYear <= mCurYear) mMaxYear = mCurYear + 2;
+        mSelectLayout.setYearSpan(mMinYear, mMaxYear);
         mCurMonth = calendar.getMonth();
         mCurDay = calendar.getDay();
-        int y = calendar.getYear() - 2010;
+        int y = calendar.getYear() - mMinYear;
         position = 12 * y + calendar.getMonth() - 1;
         CalendarViewPagerAdapter adapter = new CalendarViewPagerAdapter();
         mViewPager.setAdapter(adapter);
@@ -120,7 +128,7 @@ public class CalendarView extends FrameLayout {
         mSelectLayout.setOnMonthSelectedListener(new MonthRecyclerView.OnMonthSelectedListener() {
             @Override
             public void onMonthSelected(int year, int month) {
-                int position = 12 * (year - 2010) + month - 1;
+                int position = 12 * (year - mMinYear) + month - 1;
                 closeSelectLayout(position);
             }
         });
@@ -201,11 +209,11 @@ public class CalendarView extends FrameLayout {
         this.mListener = listener;
     }
 
-    private  class CalendarViewPagerAdapter extends PagerAdapter {
+    private class CalendarViewPagerAdapter extends PagerAdapter {
 
         @Override
         public int getCount() {
-            return 480;
+            return 12 * (mMaxYear - mMinYear);
         }
 
         @Override
@@ -215,7 +223,7 @@ public class CalendarView extends FrameLayout {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            int year = position / 12 + 2010;
+            int year = position / 12 + mMinYear;
             int month = position % 12 + 1;
             CalendarCardView view = new CalendarCardView(getContext(), null);
             view.setScheme(mSchemeDate);

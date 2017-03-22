@@ -14,7 +14,8 @@
         <attr name="week_text_color" format="color" />
         <attr name="scheme_theme_color" format="color" />
         <attr name="current_day_color" format="color" />
-        <attr name="select_day_color" format="color" />
+        <attr name="min_year" format="integer" />
+        <attr name="max_year" format="integer" />
     </declare-styleable>
 
     <declare-styleable name="MonthView">
