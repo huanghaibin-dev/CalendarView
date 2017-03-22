@@ -3,7 +3,7 @@ Android上一个优雅、高度自定义、性能高效的日历控件，支持�
 
 ### Gradle
 ```
-compile 'com.haibin.calendarview:1.0.1'
+compile 'com.haibin:calendarview:1.0.1'
 ```
 ```
 <dependency>
