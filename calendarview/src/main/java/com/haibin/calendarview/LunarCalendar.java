@@ -2,10 +2,6 @@ package com.haibin.calendarview;
 
 import java.util.GregorianCalendar;
 
-/**
- * Created by huanghaibin_dev
- * on 2016/7/28.
- */
 @SuppressWarnings("All")
  class LunarCalendar {
     /**

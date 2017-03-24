@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2016 huanghaibin_dev <huanghaibin_dev@163.com>
+ * WebSite https://github.com/MiracleTimes-Dev
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.haibin.calendarview;
 
 import android.content.Context;
@@ -10,17 +25,12 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 
-
-/**
- * Created by haibin
- * on 2017/3/6.
- */
 @SuppressWarnings("unused")
 public class CellView extends View {
 
     private int mDay = 20;
-    private String mLunar = "初一";
-    private String mScheme = "记";
+    private String mLunar;
+    private String mScheme;
     private Paint mDayPaint = new Paint();
     private Paint mLunarPaint = new Paint();
     private Paint mSchemePaint = new Paint();
@@ -78,6 +88,12 @@ public class CellView extends View {
         }
     }
 
+    /**
+     * 初始化日历
+     * @param day 天
+     * @param lunar 农历
+     * @param scheme 事件标记
+     */
     void init(int day, String lunar, String scheme) {
         this.mDay = day;
         this.mLunar = lunar;

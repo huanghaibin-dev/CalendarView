@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2016 huanghaibin_dev <huanghaibin_dev@163.com>
+ * WebSite https://github.com/MiracleTimes-Dev
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.haibin.calendarview;
 
 import android.content.Context;
@@ -18,11 +33,10 @@ import java.util.List;
  */
 
 public class MonthView extends View {
-    private int mDiff = 5;
-    private int mCount = 31;
-    private int mLastCount;
-    private int mLine;
-    private int mYear, mMonth;
+    private int mDiff;//第一天偏离周日多少天
+    private int mCount;//总数
+    private int mLastCount;//最后一行的天数
+    private int mLine;//多少行
     private Paint mPaint = new Paint();
     private Paint mSchemePaint = new Paint();
     private List<Calendar> mSchemes;
@@ -80,17 +94,25 @@ public class MonthView extends View {
         }
     }
 
+    /**
+     * 计算行数
+     */
     private void measureLine() {
         int offset = mCount - (7 - mDiff);
         mLine = 1 + (offset % 7 == 0 ? 0 : 1) + offset / 7;
         mLastCount = offset % 7;
     }
 
-    public void init(int mDiff, int mCount, int mYear, int mMonth) {
+    /**
+     * 初始化月份卡
+     * @param mDiff 偏离天数
+     * @param mCount 当月总天数
+     * @param mYear 哪一年
+     * @param mMonth 哪一月
+     */
+     void init(int mDiff, int mCount, int mYear, int mMonth) {
         this.mDiff = mDiff;
         this.mCount = mCount;
-        this.mYear = mYear;
-        this.mMonth = mMonth;
         mCalendar = new Calendar();
         mCalendar.setYear(mYear);
         mCalendar.setMonth(mMonth);
