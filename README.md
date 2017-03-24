@@ -66,4 +66,3 @@ public void update();//动态更新
 - WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 - See the License for the specific language governing permissions and
   limitations under the License.
-![输入图片说明](http://git.oschina.net/uploads/images/2017/0324/131724_21ab51df_494015.jpeg "在这里输入图片标题")
