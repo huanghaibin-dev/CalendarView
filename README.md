@@ -19,6 +19,11 @@ compile 'com.haibin:calendarview:1.0.4'
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:min_year="2004"
+        app:scheme_text="假"
+        app:scheme_theme_color="@color/colorPrimary"
+        app:selected_color="#30cfcfcf"
+        app:selected_text_color="#333333"
         app:week_background="#fff"
         app:week_text_color="#111" />
 ```
