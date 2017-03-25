@@ -23,8 +23,8 @@ import android.view.ViewGroup;
 class CalendarAdapter extends BaseRecyclerAdapter<Calendar> {
     private int mThemeColor, mCurColor;
     private int mSelectedPosition = -1;
-    private Calendar mSelectedCalendar;
     private int mSelectedColor = 0x50CFCFCF;
+    private int mSelectedTextColor = 0xff111111;
 
     CalendarAdapter(Context context) {
         super(context);
@@ -35,26 +35,20 @@ class CalendarAdapter extends BaseRecyclerAdapter<Calendar> {
         this.mCurColor = mCurColor;
     }
 
-    void setSelectedColor(int color) {
+    void setSelectedColor(int color, int selectedTextColor) {
         this.mSelectedColor = color;
+        this.mSelectedTextColor = selectedTextColor;
     }
 
     void setSelectedCalendar(Calendar calendar) {
-        mSelectedCalendar = calendar;
         mSelectedPosition = mItems.indexOf(calendar);
     }
 
-    void update(Calendar calendar) {
-        if (!mSelectedCalendar.equals(calendar)) {
-            update(mItems.indexOf(calendar));
-            mSelectedCalendar = calendar;
-        }
-    }
-
-    private void update(int position) {
+    void update(int position) {
         if (position != mSelectedPosition) {
-            updateItem(mSelectedPosition);
+            int p = mSelectedPosition;
             mSelectedPosition = position;
+            updateItem(p);
             updateItem(mSelectedPosition);
         }
     }
@@ -65,7 +59,6 @@ class CalendarAdapter extends BaseRecyclerAdapter<Calendar> {
         }
     }
 
-
     @Override
     RecyclerView.ViewHolder onCreateDefaultViewHolder(ViewGroup parent, int type) {
         return new CalenderViewHolder(mInflater.inflate(R.layout.item_list_calendar_mvp, parent, false));
@@ -75,7 +68,6 @@ class CalendarAdapter extends BaseRecyclerAdapter<Calendar> {
     void onBindViewHolder(RecyclerView.ViewHolder holder, Calendar item, int position) {
         CalenderViewHolder h = (CalenderViewHolder) holder;
         h.itemView.setVisibility(item.isCurrentMonth() ? View.VISIBLE : View.GONE);
-        //h.mCellView.setSelectedDay(item.equals(mSelectedCalendar));
         h.mCellView.setSelectedDay(mSelectedPosition == position);
         h.mCellView.setSelectedColor(mSelectedColor);
         CellView view = h.mCellView;
@@ -83,6 +75,8 @@ class CalendarAdapter extends BaseRecyclerAdapter<Calendar> {
         view.setCircleColor(mThemeColor);
         if (item.isCurrentDay()) {
             view.setTextColor(mCurColor);
+        } else {
+            view.setTextColor(mSelectedPosition == position ? mSelectedTextColor : 0xFF111111);
         }
     }
 

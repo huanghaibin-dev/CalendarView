@@ -16,6 +16,7 @@
         <attr name="current_day_color" format="color" />
         <attr name="scheme_text" format="string" />
         <attr name="selected_color" format="color" />
+        <attr name="selected_text_color" format="color" />
         <attr name="min_year" format="integer" />
         <attr name="max_year" format="integer" />
     </declare-styleable>

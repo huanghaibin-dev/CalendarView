@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:ignore="RtlHardcoded"
-    tools:context="com.haibin.calendarviewproject.MainActivity">
+    tools:context="com.haibin.calendarviewproject.MainActivity"
+    tools:ignore="RtlHardcoded">
 
 
     <RelativeLayout
@@ -84,15 +84,15 @@
         </FrameLayout>
     </RelativeLayout>
 
-
     <com.haibin.calendarview.CalendarView
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:min_year="2004"
         app:scheme_text="假"
-        app:selected_color="#30cfcfcf"
         app:scheme_theme_color="@color/colorPrimary"
+        app:selected_color="#30cfcfcf"
+        app:selected_text_color="#00ff00"
         app:week_background="#fff"
         app:week_text_color="#111" />
 </LinearLayout>

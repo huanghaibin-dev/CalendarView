@@ -82,7 +82,6 @@ public class CellView extends View {
         super.onDraw(canvas);
         int width = getWidth();
         int height = getHeight();
-
         if (isSelectedDay) {
             canvas.drawCircle(width / 2, height / 2, width / 2, mSelectedPaint);
         }

@@ -60,9 +60,9 @@ public class CalendarCardView extends RecyclerView {
         mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position, long itemId) {
+                mAdapter.update(position);
                 Calendar date = mAdapter.getItem(position);
                 if (date == null) return;
-                mAdapter.update(date);
                 mInnerListener.onDateSelected(date);
 
                 if (mListener != null) {
@@ -82,14 +82,14 @@ public class CalendarCardView extends RecyclerView {
         this.mScheme = TextUtils.isEmpty(scheme) ? scheme : scheme.substring(0, 1);
     }
 
-     void setCurrentDate(int year, int month) {
+    void setCurrentDate(int year, int month) {
         mYear = year;
         mMonth = month;
         initCalendar();
     }
 
-    void setSelectedColor(int color) {
-        mAdapter.setSelectedColor(color);
+    void setSelectedColor(int color, int textColor) {
+        mAdapter.setSelectedColor(color, textColor);
     }
 
     void setStyle(int mThemeColor, int mCurColor) {
