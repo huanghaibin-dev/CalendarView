@@ -3,13 +3,13 @@ Android上一个优雅、高度自定义、性能高效的日历控件，支持�
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:1.0.4'
+compile 'com.haibin:calendarview:1.0.2'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>1.0.4</version>
+  <version>1.0.1</version>
   <type>pom</type>
 </dependency>
 ```
@@ -30,8 +30,7 @@ compile 'com.haibin:calendarview:1.0.4'
         <attr name="week_text_color" format="color" /> <!--星期栏文本颜色-->
         <attr name="scheme_theme_color" format="color" /> <!--标记的颜色-->
         <attr name="current_day_color" format="color" /> <!--今天的文本颜色-->
-        <attr name="selected_color" format="color" /> <!--选中日期的标记颜色-->
-        <attr name="scheme_text" format="string" /> <!--标记文本-->
+        <attr name="scheme_text" format="string" />  <!--标记文本-->
         <attr name="min_year" format="integer" />  <!--最小年份1900-->
         <attr name="max_year" format="integer" /> <!--最大年份2099-->
 </declare-styleable>
@@ -51,8 +50,7 @@ public void update();//动态更新
 ```
 
 ### 效果预览
-
-<img src="https://github.com/huanghaibin-dev/GitHubProjectPicture/blob/master/CalendarView/S70321-143452.jpg" height="650"/> <img src="https://github.com/huanghaibin-dev/GitHubProjectPicture/blob/master/CalendarView/S70321-143502.jpg" height="650"/> <img src="https://github.com/huanghaibin-dev/GitHubProjectPicture/blob/master/CalendarView/S70321-143423.jpg" height="650"/><img src="https://github.com/huanghaibin-dev/GitHubProjectPicture/blob/master/CalendarView/S70321-143432.jpg" height="650"/> 
+<img src="http://git.oschina.net/uploads/images/2017/0324/131748_aa249da8_494015.jpeg" height="650"/><img src="http://git.oschina.net/uploads/images/2017/0324/131748_aa249da8_494015.jpeg" height="650"/> <img src="http://git.oschina.net/uploads/images/2017/0324/131818_4bf18f1c_494015.jpeg" height="650"/><img src="http://git.oschina.net/uploads/images/2017/0324/131825_ea1b41d5_494015.jpeg" height="650"/> 
 
 ## Licenses
 - Copyright (C) 2013 huanghaibin_dev <huanghaibin_dev@163.com>
