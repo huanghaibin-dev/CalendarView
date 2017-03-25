@@ -42,12 +42,14 @@ public class CalendarView extends FrameLayout {
     private List<Calendar> mSchemeDate;
     private OnDateChangeListener mListener;
     private OnDateSelectedListener mDateSelectedListener;
+    private OnInnerDateSelectedListener mInnerListener;
     private SelectLayout mSelectLayout;
     private LinearLayout mLinearWeek;
     private int mCurYear, mCurMonth, mCurDay;
-    private int mCurDayColor, mSchemeThemeColor, mWeekBackground, mWeekTextColor;
+    private int mCurDayColor, mSchemeThemeColor, mWeekBackground, mWeekTextColor, mSelectedColor;
     private int mMinYear, mMaxYear;
     private String mScheme;
+    private Calendar mSelectedCalendar;
 
     public CalendarView(@NonNull Context context) {
         super(context, null);
@@ -60,6 +62,7 @@ public class CalendarView extends FrameLayout {
         mSchemeThemeColor = array.getColor(R.styleable.CalendarView_scheme_theme_color, Color.RED);
         mWeekBackground = array.getColor(R.styleable.CalendarView_week_background, Color.WHITE);
         mWeekTextColor = array.getColor(R.styleable.CalendarView_week_text_color, Color.RED);
+        mSelectedColor = array.getColor(R.styleable.CalendarView_selected_color, 0x50CFCFCF);
         mMinYear = array.getInt(R.styleable.CalendarView_min_year, 2010);
         mMaxYear = array.getInt(R.styleable.CalendarView_max_year, 2050);
         mScheme = array.getString(R.styleable.CalendarView_scheme_text);
@@ -117,23 +120,29 @@ public class CalendarView extends FrameLayout {
 
             }
         });
+        mInnerListener = new OnInnerDateSelectedListener() {
+            @Override
+            public void onDateSelected(Calendar calendar) {
+                mSelectedCalendar = calendar;
+            }
+        };
 
         int position;
-        Calendar calendar = new Calendar();
+        mSelectedCalendar = new Calendar();
 
         Date d = new Date();
-        calendar.setYear(Util.getDate("yyyy", d));
-        calendar.setMonth(Util.getDate("MM", d));
-        calendar.setDay(Util.getDate("dd", d));
+        mSelectedCalendar.setYear(Util.getDate("yyyy", d));
+        mSelectedCalendar.setMonth(Util.getDate("MM", d));
+        mSelectedCalendar.setDay(Util.getDate("dd", d));
 
-        mCurYear = calendar.getYear();
+        mCurYear = mSelectedCalendar.getYear();
         if (mMinYear >= mCurYear) mMinYear = mCurYear;
         if (mMaxYear <= mCurYear) mMaxYear = mCurYear + 2;
         mSelectLayout.setYearSpan(mMinYear, mMaxYear);
-        mCurMonth = calendar.getMonth();
-        mCurDay = calendar.getDay();
-        int y = calendar.getYear() - mMinYear;
-        position = 12 * y + calendar.getMonth() - 1;
+        mCurMonth = mSelectedCalendar.getMonth();
+        mCurDay = mSelectedCalendar.getDay();
+        int y = mSelectedCalendar.getYear() - mMinYear;
+        position = 12 * y + mSelectedCalendar.getMonth() - 1;
         CalendarViewPagerAdapter adapter = new CalendarViewPagerAdapter();
         mViewPager.setAdapter(adapter);
         mViewPager.setCurrentItem(position);
@@ -247,10 +256,13 @@ public class CalendarView extends FrameLayout {
             int year = position / 12 + mMinYear;
             int month = position % 12 + 1;
             CalendarCardView view = new CalendarCardView(getContext(), null);
+            view.setSelectedColor(mSelectedColor);
+            view.setInnerListener(mInnerListener);
             view.setSchemes(mSchemeDate);
             view.setScheme(mScheme);
             view.setOnDateSelectedListener(mDateSelectedListener);
             view.setCurrentDate(year, month);
+            view.setSelectedCalendar(mSelectedCalendar);
             view.setOnDateChangeListener(mListener);
             view.setStyle(mSchemeThemeColor, mCurDayColor);
             container.addView(view);
@@ -264,6 +276,11 @@ public class CalendarView extends FrameLayout {
 
     }
 
+    /**
+     * 标记哪些日期有事件
+     *
+     * @param mSchemeDate mSchemeDate 通过自己的需求转换即可
+     */
     public void setSchemeDate(List<Calendar> mSchemeDate) {
         this.mSchemeDate = mSchemeDate;
         mSelectLayout.setSchemes(mSchemeDate);
@@ -300,5 +317,9 @@ public class CalendarView extends FrameLayout {
 
     public void setOnDateSelectedListener(OnDateSelectedListener listener) {
         this.mDateSelectedListener = listener;
+    }
+
+    interface OnInnerDateSelectedListener {
+        void onDateSelected(Calendar calendar);
     }
 }

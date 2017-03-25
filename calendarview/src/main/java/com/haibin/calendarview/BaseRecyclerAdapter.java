@@ -27,7 +27,7 @@ import java.util.List;
 abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
 
     LayoutInflater mInflater;
-    private List<T> mItems;
+     List<T> mItems;
     private OnItemClickListener onItemClickListener;
     private OnClickListener onClickListener;
 

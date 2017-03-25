@@ -25,7 +25,6 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 
-@SuppressWarnings("unused")
 public class CellView extends View {
 
     private int mDay = 20;
@@ -35,9 +34,10 @@ public class CellView extends View {
     private Paint mLunarPaint = new Paint();
     private Paint mSchemePaint = new Paint();
     private Paint mCirclePaint = new Paint();
+    private Paint mSelectedPaint = new Paint();
     private int mRadius;
     private int mCirclePadding;
-    private int mCircleColor;
+    private boolean isSelectedDay;
 
     public CellView(Context context) {
         this(context, null);
@@ -60,6 +60,10 @@ public class CellView extends View {
         mSchemePaint.setFakeBoldText(true);
         mSchemePaint.setTextAlign(Paint.Align.CENTER);
 
+        mSelectedPaint.setAntiAlias(true);
+        mSelectedPaint.setColor(0x50CFCFCF);
+        mSelectedPaint.setStyle(Paint.Style.FILL);
+
         mCirclePaint.setAntiAlias(true);
         mCirclePaint.setStyle(Paint.Style.FILL);
 
@@ -78,6 +82,11 @@ public class CellView extends View {
         super.onDraw(canvas);
         int width = getWidth();
         int height = getHeight();
+
+        if (isSelectedDay) {
+            canvas.drawCircle(width / 2, height / 2, width / 2, mSelectedPaint);
+        }
+
         int w = (width - getPaddingLeft() - getPaddingRight());
         int h = (height - getPaddingTop() - getPaddingBottom()) / 4;
         canvas.drawText(String.valueOf(mDay), w / 2, 2 * h + getPaddingTop(), mDayPaint);
@@ -90,8 +99,9 @@ public class CellView extends View {
 
     /**
      * 初始化日历
-     * @param day 天
-     * @param lunar 农历
+     *
+     * @param day    天
+     * @param lunar  农历
      * @param scheme 事件标记
      */
     void init(int day, String lunar, String scheme) {
@@ -103,6 +113,24 @@ public class CellView extends View {
     void setTextColor(int textColor) {
         mDayPaint.setColor(textColor);
         mLunarPaint.setColor(textColor);
+    }
+
+    /**
+     * 设置选中颜色
+     *
+     * @param color color
+     */
+    void setSelectedColor(int color) {
+        mSelectedPaint.setColor(color);
+    }
+
+    /**
+     * 设置是否被选中
+     *
+     * @param selectedDay selectedDay
+     */
+    void setSelectedDay(boolean selectedDay) {
+        isSelectedDay = selectedDay;
     }
 
     void setCircleColor(int circleColor) {

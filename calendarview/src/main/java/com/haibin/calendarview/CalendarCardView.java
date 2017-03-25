@@ -32,6 +32,7 @@ public class CalendarCardView extends RecyclerView {
     private int mYear;
     private int mMonth;
     private OnDateSelectedListener mDateSelectedListener;
+    private CalendarView.OnInnerDateSelectedListener mInnerListener;
     private OnDateChangeListener mListener;
     private List<Calendar> mItems;
     private List<Calendar> mSchemes;
@@ -60,12 +61,16 @@ public class CalendarCardView extends RecyclerView {
             @Override
             public void onItemClick(int position, long itemId) {
                 Calendar date = mAdapter.getItem(position);
-                if (mListener != null && date != null) {
+                if (date == null) return;
+                mAdapter.update(date);
+                mInnerListener.onDateSelected(date);
+
+                if (mListener != null) {
                     mListener.onDateChange(date.getYear(), date.getMonth(), date.getDay(),
                             date.getLunar(), date.getScheme());
                 }
 
-                if (mDateSelectedListener != null && date != null) {
+                if (mDateSelectedListener != null) {
                     mDateSelectedListener.onDateSelected(date.getYear(), date.getMonth(), date.getDay(),
                             date.getLunar(), date.getScheme());
                 }
@@ -77,10 +82,14 @@ public class CalendarCardView extends RecyclerView {
         this.mScheme = TextUtils.isEmpty(scheme) ? scheme : scheme.substring(0, 1);
     }
 
-    public void setCurrentDate(int year, int month) {
+     void setCurrentDate(int year, int month) {
         mYear = year;
         mMonth = month;
         initCalendar();
+    }
+
+    void setSelectedColor(int color) {
+        mAdapter.setSelectedColor(color);
     }
 
     void setStyle(int mThemeColor, int mCurColor) {
@@ -89,6 +98,14 @@ public class CalendarCardView extends RecyclerView {
 
     void setOnDateChangeListener(OnDateChangeListener listener) {
         this.mListener = listener;
+    }
+
+    void setInnerListener(CalendarView.OnInnerDateSelectedListener listener) {
+        this.mInnerListener = listener;
+    }
+
+    void setSelectedCalendar(Calendar calendar) {
+        mAdapter.setSelectedCalendar(calendar);
     }
 
     private void initCalendar() {

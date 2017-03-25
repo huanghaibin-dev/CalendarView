@@ -19,8 +19,8 @@ package com.haibin.calendarview;
 import java.io.Serializable;
 
 
-@SuppressWarnings("unused")
-class Calendar implements Serializable {
+@SuppressWarnings("all")
+public class Calendar implements Serializable {
     private int year;
     private int month;
     private int day;
@@ -30,67 +30,67 @@ class Calendar implements Serializable {
     private String lunar;//农历
     private String scheme;//计划，可以用来标记当天是否有任务
 
-    int getYear() {
+    public int getYear() {
         return year;
     }
 
-    void setYear(int year) {
+    public void setYear(int year) {
         this.year = year;
     }
 
-    int getMonth() {
+    public int getMonth() {
         return month;
     }
 
-    void setMonth(int month) {
+    public void setMonth(int month) {
         this.month = month;
     }
 
-    int getDay() {
+    public int getDay() {
         return day;
     }
 
-    void setDay(int day) {
+    public void setDay(int day) {
         this.day = day;
     }
 
-    boolean isCurrentMonth() {
+    public boolean isCurrentMonth() {
         return currentMonth;
     }
 
-    void setCurrentMonth(boolean currentMonth) {
+    public void setCurrentMonth(boolean currentMonth) {
         this.currentMonth = currentMonth;
     }
 
-    boolean isCurrentDay() {
+    public boolean isCurrentDay() {
         return isCurrentDay;
     }
 
-    void setCurrentDay(boolean currentDay) {
+    public void setCurrentDay(boolean currentDay) {
         isCurrentDay = currentDay;
     }
 
-    boolean isSelected() {
+    public boolean isSelected() {
         return selected;
     }
 
-    void setSelected(boolean selected) {
+    public void setSelected(boolean selected) {
         this.selected = selected;
     }
 
-    String getLunar() {
+    public String getLunar() {
         return lunar;
     }
 
-    void setLunar(String lunar) {
+    public void setLunar(String lunar) {
         this.lunar = lunar;
     }
 
-    String getScheme() {
+    public String getScheme() {
         return scheme;
     }
 
-    void setScheme(String scheme) {
+    public void setScheme(String scheme) {
         this.scheme = scheme;
     }
 

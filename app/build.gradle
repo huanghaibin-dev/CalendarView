@@ -25,7 +25,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:25.2.0'
-    //compile 'com.haibin:calendarview:1.0.1'
+    //compile 'com.haibin:calendarview:1.0.3'
     testCompile 'junit:junit:4.12'
     compile project(':calendarview')
 }
