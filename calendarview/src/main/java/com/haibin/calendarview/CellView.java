@@ -83,7 +83,7 @@ public class CellView extends View {
         int width = getWidth();
         int height = getHeight();
         if (isSelectedDay) {
-            canvas.drawCircle(width / 2, height / 2, width / 2, mSelectedPaint);
+            canvas.drawCircle(width / 2, height / 2, Math.min(height / 2,width/2), mSelectedPaint);
         }
 
         int w = (width - getPaddingLeft() - getPaddingRight());
@@ -109,9 +109,9 @@ public class CellView extends View {
         this.mScheme = scheme;
     }
 
-    void setTextColor(int textColor) {
+    void setTextColor(int textColor,int lunarTextColor) {
         mDayPaint.setColor(textColor);
-        mLunarPaint.setColor(textColor);
+        mLunarPaint.setColor(lunarTextColor);
     }
 
     /**

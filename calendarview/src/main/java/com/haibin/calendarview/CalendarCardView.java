@@ -116,12 +116,12 @@ public class CalendarCardView extends RecyclerView {
         date.set(mYear, mMonth - 1, mDaysCount);
         int lastDayOfWeek = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;//月最后一天为星期几,星期天 == 0
 
-        int nextMonthDaysOffest = 6 - lastDayOfWeek;//下个月的日偏移天数
+        int nextMonthDaysOffset = 6 - lastDayOfWeek;//下个月的日偏移天数
 
         int preYear, preMonth;
         int nextYear, nextMonth;
 
-        int mSize = firstDayOfWeek + mDaysCount + nextMonthDaysOffest;//日历卡要显示的总格数
+        int mSize = firstDayOfWeek + mDaysCount + nextMonthDaysOffset;//日历卡要显示的总格数
 
         int preMonthDaysCount;
         if (mMonth == 1) {//如果是1月
@@ -166,8 +166,8 @@ public class CalendarCardView extends RecyclerView {
             }
             if (calendarDate.equals(mCurrent))
                 calendarDate.setCurrentDay(true);
-            int[] lunar = LunarCalendar.solarToLunar(calendarDate.getYear(), calendarDate.getMonth(), calendarDate.getDay());
-            calendarDate.setLunar(LunarCalendar.numToChineseDay(lunar[2]));
+
+            calendarDate.setLunar(LunarCalendar.getLunarText(mYear,mMonth,calendarDate.getDay()));
             mItems.add(calendarDate);
         }
         mAdapter.addAll(mItems);

@@ -16,6 +16,7 @@
 package com.haibin.calendarview;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ class CalendarAdapter extends BaseRecyclerAdapter<Calendar> {
     private int mSelectedPosition = -1;
     private int mSelectedColor = 0x50CFCFCF;
     private int mSelectedTextColor = 0xff111111;
+    private int mLunarTextColor = Color.GRAY;
 
     CalendarAdapter(Context context) {
         super(context);
@@ -74,9 +76,11 @@ class CalendarAdapter extends BaseRecyclerAdapter<Calendar> {
         view.init(item.getDay(), item.getLunar(), item.getScheme());
         view.setCircleColor(mThemeColor);
         if (item.isCurrentDay()) {
-            view.setTextColor(mCurColor);
+            view.setTextColor(mCurColor, mLunarTextColor);
         } else {
-            view.setTextColor(mSelectedPosition == position ? mSelectedTextColor : 0xFF111111);
+            int c1 = mSelectedPosition == position ? mSelectedTextColor : 0xFF111111;
+            int c2 = mSelectedPosition == position ? mSelectedTextColor : mLunarTextColor;
+            view.setTextColor(c1, c2);
         }
     }
 

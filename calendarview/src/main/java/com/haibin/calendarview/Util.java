@@ -49,7 +49,7 @@ final class Util {
 
         //判断平年与闰年
         if (month == 2) {
-            if (((month % 4 == 0) && (month % 100 != 0)) || (month % 400 == 0)) {
+            if (((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0)) {
                 count = 29;
             } else {
                 count = 28;

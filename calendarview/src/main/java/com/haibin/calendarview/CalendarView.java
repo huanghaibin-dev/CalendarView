@@ -47,7 +47,7 @@ public class CalendarView extends FrameLayout {
     private LinearLayout mLinearWeek;
     private int mCurYear, mCurMonth, mCurDay;
     private int mCurDayColor, mSchemeThemeColor, mWeekBackground, mWeekTextColor, mSelectedColor,
-            mSelectedTextColor;
+            mSelectedTextColor,mLunarColor;
     private int mMinYear, mMaxYear;
     private String mScheme;
     private Calendar mSelectedCalendar;
@@ -65,6 +65,7 @@ public class CalendarView extends FrameLayout {
         mWeekTextColor = array.getColor(R.styleable.CalendarView_week_text_color, Color.RED);
         mSelectedColor = array.getColor(R.styleable.CalendarView_selected_color, 0x50CFCFCF);
         mSelectedTextColor = array.getColor(R.styleable.CalendarView_selected_text_color, 0xFF111111);
+        mLunarColor = array.getColor(R.styleable.CalendarView_lunar_text_color, Color.GRAY);
         mMinYear = array.getInt(R.styleable.CalendarView_min_year, 2010);
         mMaxYear = array.getInt(R.styleable.CalendarView_max_year, 2050);
         mScheme = array.getString(R.styleable.CalendarView_scheme_text);
