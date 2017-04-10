@@ -3,7 +3,7 @@ Android上一个优雅、高度自定义、性能高效的日历控件，支持�
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:1.0.4'
+compile 'com.haibin:calendarview:1.0.6'
 ```
 ```
 <dependency>
@@ -36,6 +36,7 @@ compile 'com.haibin:calendarview:1.0.4'
         <attr name="scheme_theme_color" format="color" /> <!--标记的颜色-->
         <attr name="current_day_color" format="color" /> <!--今天的文本颜色-->
         <attr name="scheme_text" format="string" />  <!--标记文本-->
+        <attr name="lunar_text_color" format="color" /> <!--农历节假日颜色-->
         <attr name="selected_color" format="color" /> <!--选中颜色-->
         <attr name="selected_text_color" format="color" /> <!--选中文本颜色--> 
         <attr name="min_year" format="integer" />  <!--最小年份1900-->
