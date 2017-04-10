@@ -93,6 +93,7 @@
         app:scheme_text="假"
         app:scheme_theme_color="@color/colorPrimary"
         app:selected_text_color="@color/colorPrimary"
+        app:lunar_text_color="#CFCFCF"
         app:week_background="#fff"
         app:week_text_color="#111" />
 </LinearLayout>
