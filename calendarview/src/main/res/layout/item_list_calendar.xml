@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cellView"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="58dp"
     android:background="@drawable/bg_material"
     android:paddingBottom="12dp"
     android:paddingTop="12dp"

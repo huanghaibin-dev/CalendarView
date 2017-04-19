@@ -47,7 +47,7 @@ public class CalendarView extends FrameLayout {
     private LinearLayout mLinearWeek;
     private int mCurYear, mCurMonth, mCurDay;
     private int mCurDayColor, mSchemeThemeColor, mWeekBackground, mWeekTextColor, mSelectedColor,
-            mSelectedTextColor,mLunarColor;
+            mSelectedTextColor, mLunarColor;
     private int mMinYear, mMaxYear;
     private String mScheme;
     private Calendar mSelectedCalendar;
@@ -76,7 +76,7 @@ public class CalendarView extends FrameLayout {
     }
 
     private void init(Context context) {
-        LayoutInflater.from(context).inflate(R.layout.layout_calendar_view_mvp, this, true);
+        LayoutInflater.from(context).inflate(R.layout.layout_calendar_view, this, true);
         this.mViewPager = (ViewPager) findViewById(R.id.vp_calendar);
         this.mLinearWeek = (LinearLayout) findViewById(R.id.ll_week);
         mSelectLayout = (SelectLayout) findViewById(R.id.selectLayout);
@@ -259,10 +259,11 @@ public class CalendarView extends FrameLayout {
             int year = position / 12 + mMinYear;
             int month = position % 12 + 1;
             CalendarCardView view = new CalendarCardView(getContext(), null);
-            view.setSelectedColor(mSelectedColor,mSelectedTextColor);
+            view.setSelectedColor(mSelectedColor, mSelectedTextColor);
             view.setInnerListener(mInnerListener);
             view.setSchemes(mSchemeDate);
             view.setScheme(mScheme);
+            view.setTag(position);
             view.setOnDateSelectedListener(mDateSelectedListener);
             view.setCurrentDate(year, month);
             view.setSelectedCalendar(mSelectedCalendar);

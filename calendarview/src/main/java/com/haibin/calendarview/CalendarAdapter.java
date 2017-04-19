@@ -63,7 +63,7 @@ class CalendarAdapter extends BaseRecyclerAdapter<Calendar> {
 
     @Override
     RecyclerView.ViewHolder onCreateDefaultViewHolder(ViewGroup parent, int type) {
-        return new CalenderViewHolder(mInflater.inflate(R.layout.item_list_calendar_mvp, parent, false));
+        return new CalenderViewHolder(mInflater.inflate(R.layout.item_list_calendar, parent, false));
     }
 
     @Override

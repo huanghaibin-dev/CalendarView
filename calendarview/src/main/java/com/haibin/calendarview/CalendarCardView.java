@@ -21,6 +21,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -167,7 +168,7 @@ public class CalendarCardView extends RecyclerView {
             if (calendarDate.equals(mCurrent))
                 calendarDate.setCurrentDay(true);
 
-            calendarDate.setLunar(LunarCalendar.getLunarText(mYear,mMonth,calendarDate.getDay()));
+            calendarDate.setLunar(LunarCalendar.getLunarText(mYear, mMonth, calendarDate.getDay()));
             mItems.add(calendarDate);
         }
         mAdapter.addAll(mItems);
@@ -190,9 +191,10 @@ public class CalendarCardView extends RecyclerView {
     void update() {
         if (mSchemes != null) {
             for (Calendar a : mAdapter.getItems()) {
+                a.setScheme("");
                 for (Calendar d : mSchemes) {
                     if (d.equals(a)) {
-                        a.setScheme("记");
+                        a.setScheme(mScheme);
                     }
                 }
             }

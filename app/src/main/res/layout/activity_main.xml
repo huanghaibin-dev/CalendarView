@@ -87,7 +87,7 @@
     <com.haibin.calendarview.CalendarView
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="#fff"
         app:min_year="2004"
         app:scheme_text="假"
@@ -96,4 +96,9 @@
         app:lunar_text_color="#CFCFCF"
         app:week_background="#fff"
         app:week_text_color="#111" />
+    <TextView
+        android:background="#fff111"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="60dp" />
 </LinearLayout>
