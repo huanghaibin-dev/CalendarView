@@ -9,7 +9,7 @@ compile 'com.haibin:calendarview:1.0.6'
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>1.0.4</version>
+  <version>1.0.6</version>
   <type>pom</type>
 </dependency>
 ```
