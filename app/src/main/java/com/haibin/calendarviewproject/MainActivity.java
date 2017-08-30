@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements CalendarView.OnDa
         calendar.setYear(year);
         calendar.setMonth(month);
         calendar.setDay(day);
-        //calendar.setSchemeColor(color);
+        calendar.setSchemeColor(color);//如果单独标记颜色、则会使用这个颜色
         return calendar;
     }
 
