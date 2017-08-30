@@ -33,24 +33,37 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+
 import java.util.Date;
 import java.util.List;
 
 @SuppressWarnings("unused")
 public class CalendarView extends FrameLayout {
-    private ViewPager mViewPager;
+    private WrapViewPager mViewPager;
     private List<Calendar> mSchemeDate;
     private OnDateChangeListener mListener;
     private OnDateSelectedListener mDateSelectedListener;
+    @SuppressWarnings("all")
     private OnInnerDateSelectedListener mInnerListener;
-    private SelectLayout mSelectLayout;
+    private MonthSelectLayout mSelectLayout;
     private LinearLayout mLinearWeek;
     private int mCurYear, mCurMonth, mCurDay;
-    private int mCurDayColor, mSchemeThemeColor, mWeekBackground, mWeekTextColor, mSelectedColor,
-            mSelectedTextColor, mLunarColor;
-    private int mMinYear, mMaxYear;
-    private String mScheme;
+    private int mCurDayTextColor;
+    private int mSchemeThemeColor;
+    private int mSchemeTextColor;
+    private int mWeekBackground;
+    private int mWeekTextColor;
+    private int mSelectedColor;
+    private int mCurrentMonthTextColor;
+    private int mOtherMonthTextColor;
+    private int mSelectedTextColor;
+    private int mLunarColor;
+    static int mMinYear, mMaxYear;
     private Calendar mSelectedCalendar;
+    CalendarLayout mParentLayout;
+    private int mSchemeStyle;
+    private int mSelectThemeStyle;
+    private boolean isShowLunar;
 
     public CalendarView(@NonNull Context context) {
         super(context, null);
@@ -59,16 +72,25 @@ public class CalendarView extends FrameLayout {
     public CalendarView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CalendarView);
-        mCurDayColor = array.getColor(R.styleable.CalendarView_current_day_color, Color.RED);
-        mSchemeThemeColor = array.getColor(R.styleable.CalendarView_scheme_theme_color, Color.RED);
+        mCurDayTextColor = array.getColor(R.styleable.CalendarView_current_day_color, Color.RED);
+        mSchemeStyle = array.getInt(R.styleable.CalendarView_scheme_theme_style, CalendarCardView.STYLE_STROKE);
+        mSelectThemeStyle = array.getInt(R.styleable.CalendarView_selected_theme_style, CalendarCardView.STYLE_STROKE);
+        mSchemeTextColor = array.getColor(R.styleable.CalendarView_scheme_text_color, Color.RED);
+        mSchemeThemeColor = array.getColor(R.styleable.CalendarView_scheme_theme_color, 0x50CFCFCF);
+        isShowLunar = array.getBoolean(R.styleable.CalendarView_show_lunar, true);
+
         mWeekBackground = array.getColor(R.styleable.CalendarView_week_background, Color.WHITE);
-        mWeekTextColor = array.getColor(R.styleable.CalendarView_week_text_color, Color.RED);
-        mSelectedColor = array.getColor(R.styleable.CalendarView_selected_color, 0x50CFCFCF);
+        mWeekTextColor = array.getColor(R.styleable.CalendarView_week_text_color, Color.BLACK);
+
+        mSelectedColor = array.getColor(R.styleable.CalendarView_selected_theme_color, 0x50CFCFCF);
         mSelectedTextColor = array.getColor(R.styleable.CalendarView_selected_text_color, 0xFF111111);
+
+        mCurrentMonthTextColor = array.getColor(R.styleable.CalendarView_current_month_text_color, 0xFF111111);
+        mOtherMonthTextColor = array.getColor(R.styleable.CalendarView_other_month_text_color, 0xFFe1e1e1);
+
         mLunarColor = array.getColor(R.styleable.CalendarView_lunar_text_color, Color.GRAY);
         mMinYear = array.getInt(R.styleable.CalendarView_min_year, 2010);
         mMaxYear = array.getInt(R.styleable.CalendarView_max_year, 2050);
-        mScheme = array.getString(R.styleable.CalendarView_scheme_text);
         if (mMinYear <= 1900) mMaxYear = 1900;
         if (mMaxYear >= 2099) mMaxYear = 2099;
         array.recycle();
@@ -76,10 +98,12 @@ public class CalendarView extends FrameLayout {
     }
 
     private void init(Context context) {
+        CalendarCardView.ITEM_HEIGHT = isShowLunar ? 58 : 46;
+        CalendarCardView.mItemHeight = Util.dipToPx(context, CalendarCardView.ITEM_HEIGHT);
         LayoutInflater.from(context).inflate(R.layout.layout_calendar_view, this, true);
-        this.mViewPager = (ViewPager) findViewById(R.id.vp_calendar);
+        this.mViewPager = (WrapViewPager) findViewById(R.id.vp_calendar);
         this.mLinearWeek = (LinearLayout) findViewById(R.id.ll_week);
-        mSelectLayout = (SelectLayout) findViewById(R.id.selectLayout);
+        mSelectLayout = (MonthSelectLayout) findViewById(R.id.selectLayout);
         mLinearWeek.setBackgroundColor(mWeekBackground);
         for (int i = 0; i < mLinearWeek.getChildCount(); i++) {
             ((TextView) mLinearWeek.getChildAt(i)).setTextColor(mWeekTextColor);
@@ -93,10 +117,12 @@ public class CalendarView extends FrameLayout {
             @Override
             public void onPageSelected(int position) {
                 if (mListener != null) {
-                    int year = position / 12 + mMinYear;
-                    int month = position % 12 + 1;
-                    int[] lunar = LunarCalendar.solarToLunar(year, month, 1);
-                    mListener.onDateChange(year, month, 1, LunarCalendar.numToChineseDay(lunar[2]), "");
+                    Calendar calendar = new Calendar();
+                    calendar.setYear(position / 12 + mMinYear);
+                    calendar.setMonth(position % 12 + 1);
+                    calendar.setDay(1);
+                    calendar.setLunar(LunarCalendar.numToChineseDay(LunarCalendar.solarToLunar(calendar.getYear(), calendar.getMonth(), 1)[2]));
+                    mListener.onDateChange(calendar);
                 }
             }
 
@@ -127,6 +153,11 @@ public class CalendarView extends FrameLayout {
             @Override
             public void onDateSelected(Calendar calendar) {
                 mSelectedCalendar = calendar;
+                for (int i = 0; i < mViewPager.getChildCount(); i++) {
+                    CalendarCardView view = (CalendarCardView) mViewPager.getChildAt(i);
+                    view.setSelectedCalendar(mSelectedCalendar);
+                    view.invalidate();
+                }
             }
         };
 
@@ -157,6 +188,7 @@ public class CalendarView extends FrameLayout {
                 closeSelectLayout(position);
             }
         });
+        mSelectLayout.setSchemeColor(mSchemeThemeColor);
     }
 
     public int getCurDay() {
@@ -172,6 +204,9 @@ public class CalendarView extends FrameLayout {
     }
 
     public void showSelectLayout(final int year) {
+        if (mParentLayout != null && mParentLayout.mContentView != null) {
+            mParentLayout.mContentView.setVisibility(GONE);
+        }
         mLinearWeek.animate()
                 .translationY(-mLinearWeek.getHeight())
                 .setInterpolator(new LinearInterpolator())
@@ -211,7 +246,17 @@ public class CalendarView extends FrameLayout {
         mSelectLayout.setVisibility(GONE);
         mLinearWeek.setVisibility(VISIBLE);
         mViewPager.setVisibility(VISIBLE);
-        mViewPager.setCurrentItem(position, true);
+        if (position == mViewPager.getCurrentItem()) {
+            if (mListener != null) {
+                Calendar calendar = new Calendar();
+                calendar.setYear(position / 12 + mMinYear);
+                calendar.setMonth(position % 12 + 1);
+                calendar.setLunar(LunarCalendar.numToChineseDay(LunarCalendar.solarToLunar(calendar.getYear(), calendar.getMonth(), 1)[2]));
+                mListener.onDateChange(calendar);
+            }
+        } else {
+            mViewPager.setCurrentItem(position, true);
+        }
         mLinearWeek.animate()
                 .translationY(0)
                 .setInterpolator(new LinearInterpolator())
@@ -221,6 +266,9 @@ public class CalendarView extends FrameLayout {
                     public void onAnimationEnd(Animator animation) {
                         super.onAnimationEnd(animation);
                         mLinearWeek.setVisibility(VISIBLE);
+                        if (mParentLayout != null && mParentLayout.mContentView != null) {
+                            mParentLayout.mContentView.setVisibility(VISIBLE);
+                        }
                     }
                 });
         mViewPager.animate()
@@ -258,27 +306,42 @@ public class CalendarView extends FrameLayout {
         public Object instantiateItem(ViewGroup container, int position) {
             int year = position / 12 + mMinYear;
             int month = position % 12 + 1;
-            CalendarCardView view = new CalendarCardView(getContext(), null);
-            view.setSelectedColor(mSelectedColor, mSelectedTextColor);
-            view.setInnerListener(mInnerListener);
-            view.setSchemes(mSchemeDate);
-            view.setScheme(mScheme);
-            view.setTag(position);
-            view.setOnDateSelectedListener(mDateSelectedListener);
+            CalendarCardView view = isShowLunar ? new LunarCalendarCardView(getContext(), null) :
+                    new CalendarCardView(getContext(), null);
+            view.setDayTextSize(isShowLunar ? 16 : CalendarCardView.TEXT_SIZE, 10);
+            view.mParentLayout = mParentLayout;
+            view.mSchemes = mSchemeDate;
+            view.isShowLunar = isShowLunar;
+            view.mListener = mListener;
+            view.mDateSelectedListener = mDateSelectedListener;
+            view.mInnerListener = mInnerListener;
             view.setCurrentDate(year, month);
             view.setSelectedCalendar(mSelectedCalendar);
-            view.setOnDateChangeListener(mListener);
-            view.setStyle(mSchemeThemeColor, mCurDayColor);
+            view.setSchemeStyle(mSchemeStyle);
+            view.setSelectStyle(mSelectThemeStyle);
+            view.setTextColor(mCurDayTextColor, mCurrentMonthTextColor, mOtherMonthTextColor, mSelectedTextColor, mSchemeTextColor,mLunarColor);
+            view.setStyleColor(mSchemeThemeColor, mSelectedColor);
             container.addView(view);
             return view;
         }
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((CalendarCardView) object);
+            container.removeView((View) object);
         }
 
     }
+
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (getParent() != null && getParent() instanceof CalendarLayout) {
+            mParentLayout = (CalendarLayout) getParent();
+            mViewPager.mParentLayout = mParentLayout;
+        }
+    }
+
 
     /**
      * 标记哪些日期有事件
@@ -290,7 +353,8 @@ public class CalendarView extends FrameLayout {
         mSelectLayout.setSchemes(mSchemeDate);
         for (int i = 0; i < mViewPager.getChildCount(); i++) {
             CalendarCardView view = (CalendarCardView) mViewPager.getChildAt(i);
-            view.setSchemes(mSchemeDate);
+            view.mSchemes = mSchemeDate;
+            view.update();
         }
     }
 
@@ -302,11 +366,16 @@ public class CalendarView extends FrameLayout {
         mSelectLayout.update();
     }
 
+    public void setTextColor(int curMonthTextColor, int otherMonthTextColor) {
+        this.mCurrentMonthTextColor = curMonthTextColor;
+        this.mOtherMonthTextColor = otherMonthTextColor;
+    }
+
     public void update() {
         for (int i = 0; i < mViewPager.getChildCount(); i++) {
             CalendarCardView view = (CalendarCardView) mViewPager.getChildAt(i);
-            view.setStyle(mSchemeThemeColor, mCurDayColor);
-            view.getAdapter().notifyDataSetChanged();
+            view.setStyleColor(mSchemeThemeColor, mCurDayTextColor);
+            view.update();
         }
     }
 
@@ -319,11 +388,30 @@ public class CalendarView extends FrameLayout {
         }
     }
 
+    /**
+     * 获取选择的日期
+     */
+    public Calendar getSelectedCalendar() {
+        return mSelectedCalendar;
+    }
+
     public void setOnDateSelectedListener(OnDateSelectedListener listener) {
         this.mDateSelectedListener = listener;
     }
 
+
+    public interface OnDateChangeListener {
+        void onDateChange(Calendar calendar);
+
+        void onYearChange(int year);
+    }
+
+
     interface OnInnerDateSelectedListener {
+        void onDateSelected(Calendar calendar);
+    }
+
+    public interface OnDateSelectedListener {
         void onDateSelected(Calendar calendar);
     }
 }

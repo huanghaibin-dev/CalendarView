@@ -5,11 +5,17 @@
     android:layout_height="match_parent"
     tools:ignore="HardcodedText">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:visibility="visible">
+
+        <com.haibin.calendarview.WrapViewPager
+            android:id="@+id/vp_calendar"
+            android:layout_marginTop="41dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:id="@+id/ll_week"
@@ -18,7 +24,8 @@
             android:background="#00FFFFFF"
             android:orientation="horizontal"
             android:paddingBottom="8dp"
-            android:paddingTop="8dp">
+            android:paddingTop="8dp"
+            tools:ignore="UnusedAttribute">
 
             <TextView
                 android:layout_width="0dp"
@@ -81,17 +88,15 @@
             android:id="@+id/line"
             android:layout_width="match_parent"
             android:layout_height="1px"
+            android:layout_marginTop="40dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:background="#cfcfcf" />
 
-        <com.haibin.calendarview.WrapViewPager
-            android:id="@+id/vp_calendar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
 
-    <com.haibin.calendarview.SelectLayout
+    </FrameLayout>
+
+    <com.haibin.calendarview.MonthSelectLayout
         android:id="@+id/selectLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

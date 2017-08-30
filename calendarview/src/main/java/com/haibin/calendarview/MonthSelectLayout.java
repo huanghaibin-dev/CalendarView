@@ -24,18 +24,22 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-public class SelectLayout extends ViewPager {
+/**
+ * 月份选择布局
+ * ViewPager + RecyclerView
+ */
+public class MonthSelectLayout extends ViewPager {
     private boolean isInit;
     private int mSchemeColor;
     private MonthRecyclerView.OnMonthSelectedListener mListener;
     private List<Calendar> mSchemes;
     private int mMinYear, mMaxYear;
 
-    public SelectLayout(Context context) {
+    public MonthSelectLayout(Context context) {
         this(context, null);
     }
 
-    public SelectLayout(Context context, AttributeSet attrs) {
+    public MonthSelectLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 

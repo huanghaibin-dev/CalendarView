@@ -18,17 +18,19 @@ package com.haibin.calendarview;
 
 import java.io.Serializable;
 
-
+/**
+ * 日历对象、
+ */
 @SuppressWarnings("all")
 public class Calendar implements Serializable {
     private int year;
     private int month;
     private int day;
-    private boolean currentMonth;
-    private boolean isCurrentDay;
-    private boolean selected;
+    private boolean isCurrentMonth;//是否是本月
+    private boolean isCurrentDay;//是否是今天
     private String lunar;//农历
     private String scheme;//计划，可以用来标记当天是否有任务
+    private int schemeColor;//各种自定义标记颜色、没有则选择默认颜色
 
     public int getYear() {
         return year;
@@ -55,11 +57,11 @@ public class Calendar implements Serializable {
     }
 
     public boolean isCurrentMonth() {
-        return currentMonth;
+        return isCurrentMonth;
     }
 
     public void setCurrentMonth(boolean currentMonth) {
-        this.currentMonth = currentMonth;
+        this.isCurrentMonth = currentMonth;
     }
 
     public boolean isCurrentDay() {
@@ -70,13 +72,6 @@ public class Calendar implements Serializable {
         isCurrentDay = currentDay;
     }
 
-    public boolean isSelected() {
-        return selected;
-    }
-
-    public void setSelected(boolean selected) {
-        this.selected = selected;
-    }
 
     public String getLunar() {
         return lunar;
@@ -92,6 +87,14 @@ public class Calendar implements Serializable {
 
     public void setScheme(String scheme) {
         this.scheme = scheme;
+    }
+
+    public int getSchemeColor() {
+        return schemeColor;
+    }
+
+    public void setSchemeColor(int schemeColor) {
+        this.schemeColor = schemeColor;
     }
 
     @Override

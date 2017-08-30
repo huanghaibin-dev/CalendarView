@@ -1,5 +1,6 @@
 package com.haibin.calendarviewproject;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -8,13 +9,11 @@ import android.widget.TextView;
 
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
-import com.haibin.calendarview.OnDateChangeListener;
-import com.haibin.calendarview.OnDateSelectedListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements OnDateChangeListener, OnDateSelectedListener {
+public class MainActivity extends AppCompatActivity implements CalendarView.OnDateSelectedListener, CalendarView.OnDateChangeListener {
 
     TextView mTextMonthDay;
 
@@ -29,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements OnDateChangeListe
     RelativeLayout mRelativeTool;
     private int mYear;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,8 +54,9 @@ public class MainActivity extends AppCompatActivity implements OnDateChangeListe
                 mCalendarView.scrollToCurrent();
             }
         });
-        mCalendarView.setOnDateSelectedListener(this);
+
         mCalendarView.setOnDateChangeListener(this);
+        mCalendarView.setOnDateSelectedListener(this);
         mTextYear.setText(String.valueOf(mCalendarView.getCurYear()));
         mYear = mCalendarView.getCurYear();
         mTextMonthDay.setText(mCalendarView.getCurMonth() + "月" + mCalendarView.getCurDay() + "日");
@@ -65,39 +66,47 @@ public class MainActivity extends AppCompatActivity implements OnDateChangeListe
         List<Calendar> schemes = new ArrayList<>();
         int year = mCalendarView.getCurYear();
         int month = mCalendarView.getCurMonth();
-        int day = mCalendarView.getCurDay();
-        for (int i = 0; i < 30; i++) {
-            Calendar calendar = new Calendar();
-            calendar.setYear(year);
-            calendar.setMonth(month);
-            ++day;
-            if (day >= 28) {
-                day = 1;
-                ++month;
-            }
-            calendar.setDay(day);
-            schemes.add(calendar);
-        }
+
+        schemes.add(getSchemeCalendar(year, month, 3, 0xFF40db25));
+        schemes.add(getSchemeCalendar(year, month, 6, 0xFFe69138));
+        schemes.add(getSchemeCalendar(year, month, 9, 0xFFdf1356));
+        schemes.add(getSchemeCalendar(year, month, 13, 0xFFedc56d));
+        schemes.add(getSchemeCalendar(year, month, 15, 0xFFaacc44));
+        schemes.add(getSchemeCalendar(year, month, 18, 0xFFbc13f0));
+        schemes.add(getSchemeCalendar(year, month, 25, 0xFF13acf0));
         mCalendarView.setSchemeDate(schemes);
     }
 
+    private Calendar getSchemeCalendar(int year, int month, int day, int color) {
+        Calendar calendar = new Calendar();
+        calendar.setYear(year);
+        calendar.setMonth(month);
+        calendar.setDay(day);
+        calendar.setSchemeColor(color);
+        return calendar;
+    }
+
+    @SuppressLint("SetTextI18n")
     @Override
-    public void onDateChange(int year, int month, int day, String lunar, String scheme) {
+    public void onDateChange(Calendar calendar) {
         mTextLunar.setVisibility(View.VISIBLE);
         mTextYear.setVisibility(View.VISIBLE);
-        mTextMonthDay.setText(month + "月" + day + "日");
-        mTextYear.setText(String.valueOf(year));
-        mTextLunar.setText(lunar);
-        mYear = year;
+        mTextMonthDay.setText(calendar.getMonth() + "月" + calendar.getDay() + "日");
+        mTextYear.setText(String.valueOf(calendar.getYear()));
+        mTextLunar.setText(calendar.getLunar());
+        mYear = calendar.getYear();
     }
 
     @Override
-    public void onDateSelected(int year, int month, int day, String lunar, String scheme) {
-
+    public void onDateSelected(Calendar calendar) {
+        onDateChange(calendar);
     }
+
 
     @Override
     public void onYearChange(int year) {
         mTextMonthDay.setText(String.valueOf(year));
     }
+
+
 }

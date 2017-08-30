@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
-@SuppressWarnings({"unused", "SynchronizeOnNonFinalField"})
+@SuppressWarnings("all")
 class LunarCalendar {
     /**
      * 支持转换的最小农历年份
@@ -187,8 +187,8 @@ class LunarCalendar {
      */
     static int[] solarToLunar(int year, int month, int monthDay) {
         int[] lunarDate = new int[4];
-        java.util.Date baseDate = new GregorianCalendar(1900, 0, 31).getTime();
-        java.util.Date objDate = new GregorianCalendar(year, month - 1, monthDay).getTime();
+        Date baseDate = new GregorianCalendar(1900, 0, 31).getTime();
+        Date objDate = new GregorianCalendar(year, month - 1, monthDay).getTime();
         int offset = (int) ((objDate.getTime() - baseDate.getTime()) / 86400000L);
 
         // 用offset减去每农历年的天数计算当天是农历第几天
@@ -473,7 +473,7 @@ class LunarCalendar {
     /**
      * 冬至是每年的第几日 21 or 22
      */
-    static int getWinterSolstice(int year) {
+    private static int getWinterSolstice(int year) {
         int dYear = Integer.parseInt(String.valueOf(year).substring(2, 4));
         return (int) (dYear * D + C - (dYear / 4));
     }

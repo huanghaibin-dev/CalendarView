@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.haibin.calendarviewproject.MainActivity"
-    tools:ignore="RtlHardcoded">
+    tools:ignore="RtlHardcoded,HardcodedText,RtlSymmetry,SmallSp">
 
 
     <RelativeLayout
@@ -23,7 +23,8 @@
             android:paddingLeft="16dp"
             android:textColor="#fff"
             android:textSize="26sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="RtlSymmetry" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -33,7 +34,8 @@
             android:paddingBottom="12dp"
             android:paddingLeft="6dp"
             android:paddingRight="6dp"
-            android:paddingTop="12dp">
+            android:paddingTop="12dp"
+            tools:ignore="RelativeOverlap">
 
             <TextView
                 android:id="@+id/tv_year"
@@ -51,7 +53,8 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:textColor="#fff"
-                android:textSize="10sp" />
+                android:textSize="10sp"
+                tools:ignore="SmallSp" />
         </LinearLayout>
 
         <FrameLayout
@@ -61,13 +64,13 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="12dp"
-            android:background="@drawable/bg_material"
-            android:clickable="true">
+            android:background="@drawable/bg_material">
 
             <ImageView
                 android:id="@+id/ib_calendar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:contentDescription="@string/app_name"
                 android:scaleType="centerInside"
                 android:src="@mipmap/menu_action_calendar_mvp" />
 
@@ -84,21 +87,36 @@
         </FrameLayout>
     </RelativeLayout>
 
-    <com.haibin.calendarview.CalendarView
-        android:id="@+id/calendarView"
+    <com.haibin.calendarview.CalendarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#fff"
-        app:min_year="2004"
-        app:scheme_text="假"
-        app:scheme_theme_color="@color/colorPrimary"
-        app:selected_text_color="@color/colorPrimary"
-        app:lunar_text_color="#CFCFCF"
-        app:week_background="#fff"
-        app:week_text_color="#111" />
-    <TextView
-        android:background="#fff111"
-        android:layout_gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="60dp" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:calendar_content_view_id="@+id/recyclerView">
+
+        <com.haibin.calendarview.CalendarView
+            android:id="@+id/calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            app:current_month_text_color="#333333"
+            app:lunar_text_color="#CFCFCF"
+            app:min_year="2004"
+            app:other_month_text_color="#e1e1e1"
+            app:scheme_text="假"
+            app:scheme_text_color="#fff"
+            app:scheme_theme_color="#2eb654"
+            app:scheme_theme_style="fill"
+            app:selected_text_color="#333"
+            app:selected_theme_color="#108cd4"
+            app:selected_theme_style="stroke"
+            app:week_background="#fff"
+            app:week_text_color="#111" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#d4d4d4" />
+    </com.haibin.calendarview.CalendarLayout>
+
 </LinearLayout>
