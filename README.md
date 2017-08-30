@@ -15,32 +15,79 @@ compile 'com.haibin:calendarview:1.0.6'
 ```
 ### 使用方法
 ```xml
- <com.haibin.calendarview.CalendarView
-        android:id="@+id/calendarView"
+ <com.haibin.calendarview.CalendarLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:min_year="2004"
-        app:scheme_text="假"
-        app:scheme_theme_color="@color/colorPrimary"
-        app:selected_color="#30cfcfcf"
-        app:selected_text_color="#333333"
-        app:week_background="#fff"
-        app:week_text_color="#111" />
+        android:orientation="vertical"
+        app:calendar_content_view_id="@+id/recyclerView">
+
+        <com.haibin.calendarview.CalendarView
+            android:id="@+id/calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            app:current_month_text_color="#333333"
+            app:lunar_text_color="#CFCFCF"
+            app:min_year="2004"
+            app:other_month_text_color="#e1e1e1"
+            app:scheme_text="假"
+            app:scheme_text_color="#fff"
+            app:scheme_theme_color="#2eb654"
+            app:scheme_theme_style="fill"
+            app:selected_text_color="#333"
+            app:selected_theme_color="#108cd4"
+            app:show_lunar="true"
+            app:selected_theme_style="stroke"
+            app:week_background="#fff"
+            app:week_text_color="#111" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#d4d4d4" />
+    </com.haibin.calendarview.CalendarLayout>
 ```
 
 ### attrs
 ```xml
 <declare-styleable name="CalendarView">
-        <attr name="week_background" format="color" /> <!--星期栏的背景-->
-        <attr name="week_text_color" format="color" /> <!--星期栏文本颜色-->
-        <attr name="scheme_theme_color" format="color" /> <!--标记的颜色-->
-        <attr name="current_day_color" format="color" /> <!--今天的文本颜色-->
-        <attr name="scheme_text" format="string" />  <!--标记文本-->
-        <attr name="lunar_text_color" format="color" /> <!--农历节假日颜色-->
-        <attr name="selected_color" format="color" /> <!--选中颜色-->
-        <attr name="selected_text_color" format="color" /> <!--选中文本颜色--> 
-        <attr name="min_year" format="integer" />  <!--最小年份1900-->
-        <attr name="max_year" format="integer" /> <!--最大年份2099-->
+
+        <attr name="week_background" format="color" /> <!--星期栏的背景-->
+        <attr name="week_text_color" format="color" /> <!--星期栏文本颜色-->
+
+        <attr name="current_day_color" format="color" /> <!--今天的文本颜色-->
+
+        <attr name="scheme_text" format="string" /> <!--标记文本-->
+
+        <attr name="scheme_text_color" format="color" /> <!--标记文本颜色-->
+
+        <attr name="scheme_theme_color" format="color" /> <!--标记的颜色-->
+
+        <attr name="selected_theme_color" format="color" /> <!--选中颜色-->
+
+        <attr name="selected_text_color" format="color" /> <!--选中文本颜色-->
+
+        <attr name="current_month_text_color" format="color" /> <!-- -->
+        <attr name="other_month_text_color" format="color" /> <!-- -->
+
+        <attr name="lunar_text_color" format="color" /> <!--农历节假日颜色-->
+        <attr name="show_lunar" format="boolean" /> <!--是否显示农历-->
+
+
+        <attr name="min_year" format="integer" />  <!--最小年份1900-->
+        <attr name="max_year" format="integer" /> <!--最大年份2099-->
+
+        <attr name="scheme_theme_style" format="integer"> <!--标记style-->
+            <enum name="fill" value="1" />
+            <enum name="stroke" value="2" />
+        </attr>
+
+        <attr name="selected_theme_style" format="integer"> <!--选择style-->
+            <enum name="fill" value="1" />
+            <enum name="stroke" value="2" />
+        </attr>
+        
 </declare-styleable>
 ```
 ### api

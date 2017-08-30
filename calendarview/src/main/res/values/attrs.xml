@@ -7,10 +7,13 @@
         <attr name="current_day_color" format="color" />
 
         <attr name="scheme_text" format="string" />
+
         <attr name="scheme_text_color" format="color" />
+
         <attr name="scheme_theme_color" format="color" />
 
         <attr name="selected_theme_color" format="color" />
+
         <attr name="selected_text_color" format="color" />
 
         <attr name="current_month_text_color" format="color" />
@@ -21,6 +24,7 @@
 
         <attr name="min_year" format="integer" />
         <attr name="max_year" format="integer" />
+
         <attr name="scheme_theme_style" format="integer">
             <enum name="fill" value="1" />
             <enum name="stroke" value="2" />
@@ -29,7 +33,8 @@
             <enum name="fill" value="1" />
             <enum name="stroke" value="2" />
         </attr>
-        <attr name="show_lunar" format="boolean"/>
+
+        <attr name="show_lunar" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="MonthView">
