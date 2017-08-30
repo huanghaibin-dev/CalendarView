@@ -56,7 +56,7 @@ compile 'com.haibin:calendarview:1.0.6'
         <attr name="week_background" format="color" /> <!--星期栏的背景-->
         <attr name="week_text_color" format="color" /> <!--星期栏文本颜色-->
 
-        <attr name="current_day_color" format="color" /> <!--今天的文本颜色-->
+        <attr name="current_day_text_color" format="color" /> <!--今天的文本颜色-->
 
         <attr name="scheme_text" format="string" /> <!--标记文本-->
 
@@ -68,8 +68,8 @@ compile 'com.haibin:calendarview:1.0.6'
 
         <attr name="selected_text_color" format="color" /> <!--选中文本颜色-->
 
-        <attr name="current_month_text_color" format="color" /> <!-- -->
-        <attr name="other_month_text_color" format="color" /> <!-- -->
+        <attr name="current_month_text_color" format="color" /> <!--当前月份的字体颜色-->
+        <attr name="other_month_text_color" format="color" /> <!--其它月份的字体颜色-->
 
         <attr name="lunar_text_color" format="color" /> <!--农历节假日颜色-->
         <attr name="show_lunar" format="boolean" /> <!--是否显示农历-->

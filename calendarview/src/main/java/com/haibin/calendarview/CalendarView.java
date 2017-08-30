@@ -72,7 +72,7 @@ public class CalendarView extends FrameLayout {
     public CalendarView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CalendarView);
-        mCurDayTextColor = array.getColor(R.styleable.CalendarView_current_day_color, Color.RED);
+        mCurDayTextColor = array.getColor(R.styleable.CalendarView_current_day_text_color, Color.RED);
         mSchemeStyle = array.getInt(R.styleable.CalendarView_scheme_theme_style, CalendarCardView.STYLE_STROKE);
         mSelectThemeStyle = array.getInt(R.styleable.CalendarView_selected_theme_style, CalendarCardView.STYLE_STROKE);
         mSchemeTextColor = array.getColor(R.styleable.CalendarView_scheme_text_color, Color.RED);
@@ -251,6 +251,7 @@ public class CalendarView extends FrameLayout {
                 Calendar calendar = new Calendar();
                 calendar.setYear(position / 12 + mMinYear);
                 calendar.setMonth(position % 12 + 1);
+                calendar.setDay(1);
                 calendar.setLunar(LunarCalendar.numToChineseDay(LunarCalendar.solarToLunar(calendar.getYear(), calendar.getMonth(), 1)[2]));
                 mListener.onDateChange(calendar);
             }
@@ -319,7 +320,7 @@ public class CalendarView extends FrameLayout {
             view.setSelectedCalendar(mSelectedCalendar);
             view.setSchemeStyle(mSchemeStyle);
             view.setSelectStyle(mSelectThemeStyle);
-            view.setTextColor(mCurDayTextColor, mCurrentMonthTextColor, mOtherMonthTextColor, mSelectedTextColor, mSchemeTextColor,mLunarColor);
+            view.setTextColor(mCurDayTextColor, mCurrentMonthTextColor, mOtherMonthTextColor, mSelectedTextColor, mSchemeTextColor, mLunarColor);
             view.setStyleColor(mSchemeThemeColor, mSelectedColor);
             container.addView(view);
             return view;

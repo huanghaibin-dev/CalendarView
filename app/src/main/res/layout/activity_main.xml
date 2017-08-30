@@ -91,6 +91,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:background="#fff"
         app:calendar_content_view_id="@+id/recyclerView">
 
         <com.haibin.calendarview.CalendarView

@@ -3,6 +3,8 @@ package com.haibin.calendarviewproject;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -75,6 +77,11 @@ public class MainActivity extends AppCompatActivity implements CalendarView.OnDa
         schemes.add(getSchemeCalendar(year, month, 18, 0xFFbc13f0));
         schemes.add(getSchemeCalendar(year, month, 25, 0xFF13acf0));
         mCalendarView.setSchemeDate(schemes);
+
+        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        StringAdapter mAdapter = new StringAdapter(this);
+        recyclerView.setAdapter(mAdapter);
     }
 
     private Calendar getSchemeCalendar(int year, int month, int day, int color) {
@@ -82,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements CalendarView.OnDa
         calendar.setYear(year);
         calendar.setMonth(month);
         calendar.setDay(day);
-        calendar.setSchemeColor(color);
+        //calendar.setSchemeColor(color);
         return calendar;
     }
 

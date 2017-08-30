@@ -4,7 +4,7 @@
         <attr name="week_background" format="color" />
         <attr name="week_text_color" format="color" />
 
-        <attr name="current_day_color" format="color" />
+        <attr name="current_day_text_color" format="color" />
 
         <attr name="scheme_text" format="string" />
 
