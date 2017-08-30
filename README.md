@@ -102,6 +102,7 @@ public void setOnDateSelectedListener(OnDateSelectedListener listener);//日期�
 public void setSchemeDate(List<Calendar> mSchemeDate);//标记日期
 public void setStyle(int schemeThemeColor, int selectLayoutBackground, int lineBg);
 public void update();//动态更新
+public Calendar getSelectedCalendar(); //获取选择的日期
 ```
 
 ### 效果预览
