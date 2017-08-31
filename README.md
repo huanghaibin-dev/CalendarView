@@ -105,49 +105,49 @@ public void setSchemeDate(List<Calendar> mSchemeDate);//标记日期
 public void update();//动态更新
 public Calendar getSelectedCalendar(); //获取选择的日期
 
- /**
-     * 设置背景色
-     *
-     * @param monthLayoutBackground 月份卡片的背景色
-     * @param weekBackground        星期栏背景色
-     * @param lineBg                线的颜色
-     */
+/**
+  * 设置背景色
+  *
+  * @param monthLayoutBackground 月份卡片的背景色
+  * @param weekBackground        星期栏背景色
+  * @param lineBg                线的颜色
+ */
 public void setBackground(int monthLayoutBackground, int weekBackground, int lineBg)
 
 /**
-     * 设置文本颜色
-     *
-     * @param curMonthTextColor 当前月份字体颜色
-     * @param otherMonthColor   其它月份字体颜色
-     * @param lunarTextColor    农历字体颜色
-     */
+  * 设置文本颜色
+  *
+  * @param curMonthTextColor 当前月份字体颜色
+  * @param otherMonthColor   其它月份字体颜色
+  * @param lunarTextColor    农历字体颜色
+ */
 public void setTextColor(int curMonthTextColor,int otherMonthColor,int lunarTextColor)
 
- /**
-     * 设置选择的效果
-     *
-     * @param style              选中的style CalendarCardView.STYLE_FILL or CalendarCardView.STYLE_STROKE
-     * @param selectedThemeColor 选中的标记颜色
-     * @param selectedTextColor  选中的字体颜色
-     */
+/**
+  * 设置选择的效果
+  *
+  * @param style              选中的style CalendarCardView.STYLE_FILL or CalendarCardView.STYLE_STROKE
+  * @param selectedThemeColor 选中的标记颜色
+  * @param selectedTextColor  选中的字体颜色
+ */
 public void setSelectedColor(int style, int selectedThemeColor, int selectedTextColor)
 
- /**
-     * 设置标记的色
-     *
-     * @param style           标记的style CalendarCardView.STYLE_FILL or CalendarCardView.STYLE_STROKE
-     * @param schemeColor     标记背景色
-     * @param schemeTextColor 标记字体颜色
-     */
+/**
+  * 设置标记的色
+  *
+  * @param style           标记的style CalendarCardView.STYLE_FILL or CalendarCardView.STYLE_STROKE
+  * @param schemeColor     标记背景色
+  * @param schemeTextColor 标记字体颜色
+ */
 public void setSchemeColor(int style, int schemeColor, int schemeTextColor)
 
 
- /**
-     * 设置星期栏的背景和字体颜色
-     *
-     * @param weekBackground 背景色
-     * @param weekTextColor  字体颜色
-     */
+/**
+  * 设置星期栏的背景和字体颜色
+  *
+  * @param weekBackground 背景色
+  * @param weekTextColor  字体颜色
+ */
 public void setWeeColor(int weekBackground, int weekTextColor)
 ```
 
