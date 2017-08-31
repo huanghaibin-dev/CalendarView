@@ -121,7 +121,7 @@ public void setBackground(int monthLayoutBackground, int weekBackground, int lin
      * @param otherMonthColor   其它月份字体颜色
      * @param lunarTextColor    农历字体颜色
      */
-public void setTextColor(int curMonthTextColor,=int otherMonthColor,=int lunarTextColor)
+public void setTextColor(int curMonthTextColor,int otherMonthColor,int lunarTextColor)
 
  /**
      * 设置选择的效果
