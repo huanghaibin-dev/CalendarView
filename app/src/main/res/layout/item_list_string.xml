@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:height="30dp"
-        android:background="#eae1d7" />
+        android:background="#128c4b" />
 
     <TextView
         android:layout_width="match_parent"
@@ -21,7 +21,7 @@
         android:layout_marginRight="50dp"
         android:layout_marginTop="8dp"
         android:height="20dp"
-        android:background="#eae1d7"
+        android:background="#128c4b"
         tools:ignore="RtlHardcoded" />
 
     <View

@@ -431,57 +431,65 @@ public class CalendarCardView extends View implements View.OnClickListener {
      * 设置文本的颜色
      *
      * @param curDayTextColor     今天的日期文本颜色
-     * @param schemeTextColor     标记的文本的颜色
      * @param curMonthTextColor   当前月份的日期颜色
-     * @param selectColor         选择的文本颜色
      * @param otherMonthTextColor 其它月份的日期颜色
+     * @param lunarTextColor      农历字体颜色
      */
-    void setTextColor(int curDayTextColor, int curMonthTextColor, int otherMonthTextColor, int selectColor, int schemeTextColor, int lunarTextColor) {
-        mTextSchemeColor = schemeTextColor;
+    void setTextColor(int curDayTextColor,
+                      int curMonthTextColor,
+                      int otherMonthTextColor,
+                      int lunarTextColor) {
         mTextCurMonthColor = curMonthTextColor;
         mLunarTextColor = lunarTextColor;
         mCurDayTextPaint.setColor(curDayTextColor);
-        mSchemeTextPaint.setColor(schemeTextColor);
         mCurMonthTextPaint.setColor(curMonthTextColor);
         mOtherMonthTextPaint.setColor(otherMonthTextColor);
-        mSelectedPaint.setColor(selectColor);
-        mTextSelectedColor = selectColor;
         mLunarTextPaint.setColor(lunarTextColor);
     }
 
-    /**
-     * 设置日期背景色
-     *
-     * @param schemeColor 表记的背景色，如果不需要选择透明即可
-     * @param curColor    当前日期颜色
-     */
-    void setStyleColor(int schemeColor, int curColor) {
-        mSchemeColor = schemeColor;
-        mSchemePaint.setColor(schemeColor);
-        mSelectedPaint.setColor(curColor);
-    }
 
     /**
-     * 设置事务标记的style
+     * 设置事务标记
+     *
+     * @param style           标记的style CalendarCardView.STYLE_FILL or CalendarCardView.STYLE_STROKE
+     * @param schemeColor     标记的颜色
+     * @param schemeTextColor 标记的文本颜色
      */
-    void setSchemeStyle(int style) {
+    void setSchemeColor(int style, int schemeColor, int schemeTextColor) {
         if (style == STYLE_STROKE) {
             mSchemePaint.setStyle(Paint.Style.STROKE);
         } else {
             mSchemePaint.setStyle(Paint.Style.FILL);
         }
+        this.mSchemeColor = schemeColor;
+        this.mSchemePaint.setColor(schemeColor);
+        this.mTextSchemeColor = schemeTextColor;
+        this.mSchemeTextPaint.setColor(schemeTextColor);
     }
 
-    void setSelectStyle(int style) {
+    /**
+     * 设置标记的style
+     *
+     * @param style 选中的style CalendarCardView.STYLE_FILL or CalendarCardView.STYLE_STROKE
+     */
+    void setSelectColor(int style, int selectedColor, int selectedTextColor) {
         if (style == STYLE_STROKE) {
             mSelectedPaint.setStyle(Paint.Style.STROKE);
         } else {
             mSelectedPaint.setStyle(Paint.Style.FILL);
         }
+        this.mSelectedPaint.setColor(selectedColor);
+        this.mTextSelectedColor = selectedTextColor;
+        this.mTextSelectedColor = selectedTextColor;
     }
 
+    /**
+     * 设置字体大小
+     *
+     * @param calendarTextSize 日期大小
+     * @param lunarTextSize    农历大小
+     */
     void setDayTextSize(float calendarTextSize, float lunarTextSize) {
-
         mCurMonthTextPaint.setTextSize(Util.dipToPx(getContext(), calendarTextSize));
         mOtherMonthTextPaint.setTextSize(mCurMonthTextPaint.getTextSize());
         mCurDayTextPaint.setTextSize(mCurMonthTextPaint.getTextSize());

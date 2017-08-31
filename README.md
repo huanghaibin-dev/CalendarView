@@ -1,17 +1,17 @@
 # CalenderView
-Android上一个优雅、高度自定义、性能高效的日历控件，支持标记、自定义颜色、农历等。Canvas绘制，速度快、占用内存低，2.0.0版本全新重构、支持收缩展开、性能更加高效
+Android上一个优雅、高度自定义、性能高效的日历控件，支持标记、自定义颜色、农历等。Canvas绘制，速度快、占用内存低，2.0.0版本全新重构、支持收缩展开、性能更加高效，
 简单的说老版本是使用RecyclerView + Canvas 的、这种方式对于自定义控件的复杂度下降了很多，但是相反内存占用却上升了，如果使用一个View替换RecyclerView，则控件数相比会下降130+，每个页面就有43个控件，
-所以2.0.0版本内存和效率优势提升就相当明显了，而且真正做到收缩+展开，适配多种场景，支持同时多种颜色标记日历事务
+所以2.0.0版本内存和效率优势提升就相当明显了，而且真正做到收缩+展开，适配多种场景，支持同时多种颜色标记日历事务，更多参考用法请移步MainActivity
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:2.0.0'
+compile 'com.haibin:calendarview:2.0.1'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>2.0.0</version>
+  <version>2.0.1</version>
   <type>pom</type>
 </dependency>
 ```
@@ -102,9 +102,53 @@ public void closeSelectLayout(final int position); //关闭选择年份并跳转
 public void setOnDateChangeListener(OnDateChangeListener listener);//添加事件
 public void setOnDateSelectedListener(OnDateSelectedListener listener);//日期选择事件
 public void setSchemeDate(List<Calendar> mSchemeDate);//标记日期
-public void setStyle(int schemeThemeColor, int selectLayoutBackground, int lineBg);
 public void update();//动态更新
 public Calendar getSelectedCalendar(); //获取选择的日期
+
+ /**
+     * 设置背景色
+     *
+     * @param monthLayoutBackground 月份卡片的背景色
+     * @param weekBackground        星期栏背景色
+     * @param lineBg                线的颜色
+     */
+public void setBackground(int monthLayoutBackground, int weekBackground, int lineBg)
+
+/**
+     * 设置文本颜色
+     *
+     * @param curMonthTextColor 当前月份字体颜色
+     * @param otherMonthColor   其它月份字体颜色
+     * @param lunarTextColor    农历字体颜色
+     */
+public void setTextColor(int curMonthTextColor,=int otherMonthColor,=int lunarTextColor)
+
+ /**
+     * 设置选择的效果
+     *
+     * @param style              选中的style CalendarCardView.STYLE_FILL or CalendarCardView.STYLE_STROKE
+     * @param selectedThemeColor 选中的标记颜色
+     * @param selectedTextColor  选中的字体颜色
+     */
+public void setSelectedColor(int style, int selectedThemeColor, int selectedTextColor)
+
+ /**
+     * 设置标记的色
+     *
+     * @param style           标记的style CalendarCardView.STYLE_FILL or CalendarCardView.STYLE_STROKE
+     * @param schemeColor     标记背景色
+     * @param schemeTextColor 标记字体颜色
+     */
+public void setSchemeColor(int style, int schemeColor, int schemeTextColor)
+
+
+ /**
+     * 设置星期栏的背景和字体颜色
+     *
+     * @param weekBackground 背景色
+     * @param weekTextColor  字体颜色
+     */
+public void setWeeColor(int weekBackground, int weekTextColor)
 ```
 
 ### 效果预览

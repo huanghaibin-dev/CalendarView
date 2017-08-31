@@ -53,7 +53,7 @@ public class CalendarView extends FrameLayout {
     private int mSchemeTextColor;
     private int mWeekBackground;
     private int mWeekTextColor;
-    private int mSelectedColor;
+    private int mSelectedThemeColor;
     private int mCurrentMonthTextColor;
     private int mOtherMonthTextColor;
     private int mSelectedTextColor;
@@ -82,7 +82,7 @@ public class CalendarView extends FrameLayout {
         mWeekBackground = array.getColor(R.styleable.CalendarView_week_background, Color.WHITE);
         mWeekTextColor = array.getColor(R.styleable.CalendarView_week_text_color, Color.BLACK);
 
-        mSelectedColor = array.getColor(R.styleable.CalendarView_selected_theme_color, 0x50CFCFCF);
+        mSelectedThemeColor = array.getColor(R.styleable.CalendarView_selected_theme_color, 0x50CFCFCF);
         mSelectedTextColor = array.getColor(R.styleable.CalendarView_selected_text_color, 0xFF111111);
 
         mCurrentMonthTextColor = array.getColor(R.styleable.CalendarView_current_month_text_color, 0xFF111111);
@@ -318,10 +318,9 @@ public class CalendarView extends FrameLayout {
             view.mInnerListener = mInnerListener;
             view.setCurrentDate(year, month);
             view.setSelectedCalendar(mSelectedCalendar);
-            view.setSchemeStyle(mSchemeStyle);
-            view.setSelectStyle(mSelectThemeStyle);
-            view.setTextColor(mCurDayTextColor, mCurrentMonthTextColor, mOtherMonthTextColor, mSelectedTextColor, mSchemeTextColor, mLunarColor);
-            view.setStyleColor(mSchemeThemeColor, mSelectedColor);
+            view.setSchemeColor(mSchemeStyle, mSchemeThemeColor, mSchemeTextColor);
+            view.setSelectColor(mSelectThemeStyle, mSelectedThemeColor, mSelectedTextColor);
+            view.setTextColor(mCurDayTextColor, mCurrentMonthTextColor, mOtherMonthTextColor, mLunarColor);
             container.addView(view);
             return view;
         }
@@ -358,34 +357,90 @@ public class CalendarView extends FrameLayout {
             view.update();
         }
     }
-
-    public void setStyle(int schemeThemeColor, int selectLayoutBackground, int lineBg) {
-        this.mSchemeThemeColor = schemeThemeColor;
-        mSelectLayout.setSchemeColor(mSchemeThemeColor);
-        mSelectLayout.setBackgroundColor(selectLayoutBackground);
+    /**
+     * 设置背景色
+     *
+     * @param monthLayoutBackground 月份卡片的背景色
+     * @param weekBackground        星期栏背景色
+     * @param lineBg                线的颜色
+     */
+    public void setBackground(int monthLayoutBackground, int weekBackground, int lineBg) {
+        mLinearWeek.setBackgroundColor(weekBackground);
+        mSelectLayout.setBackgroundColor(monthLayoutBackground);
         findViewById(R.id.line).setBackgroundColor(lineBg);
-        mSelectLayout.update();
     }
 
-    public void setTextColor(int curMonthTextColor, int otherMonthTextColor) {
+
+    /**
+     * 设置文本颜色
+     *
+     * @param curMonthTextColor 当前月份字体颜色
+     * @param otherMonthColor   其它月份字体颜色
+     * @param lunarTextColor    农历字体颜色
+     */
+    public void setTextColor(int curMonthTextColor,
+                             int otherMonthColor,
+                             int lunarTextColor) {
         this.mCurrentMonthTextColor = curMonthTextColor;
-        this.mOtherMonthTextColor = otherMonthTextColor;
+        this.mLunarColor = lunarTextColor;
+        this.mOtherMonthTextColor = otherMonthColor;
     }
 
-    public void update() {
-        for (int i = 0; i < mViewPager.getChildCount(); i++) {
-            CalendarCardView view = (CalendarCardView) mViewPager.getChildAt(i);
-            view.setStyleColor(mSchemeThemeColor, mCurDayTextColor);
-            view.update();
-        }
+    /**
+     * 设置选择的效果
+     *
+     * @param style              选中的style CalendarCardView.STYLE_FILL or CalendarCardView.STYLE_STROKE
+     * @param selectedThemeColor 选中的标记颜色
+     * @param selectedTextColor  选中的字体颜色
+     */
+    public void setSelectedColor(int style, int selectedThemeColor, int selectedTextColor) {
+        this.mSelectThemeStyle = style;
+        this.mSelectedThemeColor = selectedThemeColor;
+        this.mSelectedTextColor = selectedTextColor;
     }
 
-    public void setWeekStyle(int mWeekBackground, int mWeekTextColor) {
-        this.mWeekBackground = mWeekBackground;
-        this.mWeekTextColor = mWeekTextColor;
+    /**
+     * 设置标记的色
+     *
+     * @param style           标记的style CalendarCardView.STYLE_FILL or CalendarCardView.STYLE_STROKE
+     * @param schemeColor     标记背景色
+     * @param schemeTextColor 标记字体颜色
+     */
+    public void setSchemeColor(int style, int schemeColor, int schemeTextColor) {
+        this.mSchemeStyle = style;
+        this.mSchemeThemeColor = schemeColor;
+        this.mSchemeTextColor = schemeTextColor;
+        mSelectLayout.setSchemeColor(mSchemeThemeColor);
+    }
+
+    /**
+     * 设置星期栏的背景和字体颜色
+     *
+     * @param weekBackground 背景色
+     * @param weekTextColor  字体颜色
+     */
+    public void setWeeColor(int weekBackground, int weekTextColor) {
+        this.mWeekBackground = weekBackground;
+        this.mWeekTextColor = weekTextColor;
         mLinearWeek.setBackgroundColor(mWeekBackground);
         for (int i = 0; i < mLinearWeek.getChildCount(); i++) {
             ((TextView) mLinearWeek.getChildAt(i)).setTextColor(mWeekTextColor);
+        }
+    }
+
+
+    /**
+     * 更新界面，
+     * 重新设置颜色等都需要调用该方法
+     */
+    public void update() {
+        mSelectLayout.update();
+        for (int i = 0; i < mViewPager.getChildCount(); i++) {
+            CalendarCardView view = (CalendarCardView) mViewPager.getChildAt(i);
+            view.setSchemeColor(mSchemeStyle, mSchemeThemeColor, mSchemeTextColor);
+            view.setSelectColor(mSelectThemeStyle, mSelectedThemeColor, mSelectedTextColor);
+            view.setTextColor(mCurDayTextColor, mCurrentMonthTextColor, mOtherMonthTextColor, mLunarColor);
+            view.update();
         }
     }
 
