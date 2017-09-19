@@ -40,7 +40,7 @@ import android.widget.LinearLayout;
  */
 public class CalendarLayout extends LinearLayout {
 
-    private WrapViewPager mViewPager;
+    WrapViewPager mViewPager;
     ViewGroup mContentView;
 
     private int mTouchSlop;
@@ -196,18 +196,18 @@ public class CalendarLayout extends LinearLayout {
                         || mContentView.getTranslationY() == mContentViewTranslateY) {
                     break;
                 }
-                if (Math.abs(mYVelocity) >= 1300) {
+                if (Math.abs(mYVelocity) >= 800) {
                     if (mYVelocity < 0) {
-                        scrollToTop();
+                        shrink();
                     } else {
-                        scrollToBottom();
+                        expand();
                     }
                     return super.onTouchEvent(event);
                 }
                 if (event.getY() - downY > 0) {
-                    scrollToBottom();
+                    expand();
                 } else {
-                    scrollToTop();
+                    shrink();
                 }
                 break;
         }
@@ -222,9 +222,9 @@ public class CalendarLayout extends LinearLayout {
 
 
     /**
-     * 下滚
+     * 展开
      */
-    private void scrollToBottom() {
+    public void expand() {
 
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(mContentView,
                 "translationY", mContentView.getTranslationY(), 0f);
@@ -249,9 +249,9 @@ public class CalendarLayout extends LinearLayout {
 
 
     /**
-     * 上滚
+     * 收缩
      */
-    private void scrollToTop() {
+    public void shrink() {
 
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(mContentView,
                 "translationY", mContentView.getTranslationY(), -mContentViewTranslateY);

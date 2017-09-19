@@ -66,6 +66,7 @@ public class CalendarCardView extends View implements View.OnClickListener {
     List<Calendar> mSchemes;
 
     private int mLineCount;
+    @SuppressWarnings("all")
     private int mDiff;//当前月的第一天为星期几，星期天为0，实际就是当前月份的偏移量
     static int mItemHeight; //每一项的高度
     float mTextBaseLine; //Text的基线
@@ -143,7 +144,12 @@ public class CalendarCardView extends View implements View.OnClickListener {
     public void onClick(View v) {
         if (isClick) {
             Calendar calendar = getIndex();
-            if (calendar != null && calendar.isCurrentMonth()) {
+            if (calendar != null) {
+                if (!calendar.isCurrentMonth()) {
+                    int cur = mParentLayout.mViewPager.getCurrentItem();
+                    int position = mCurrentItem < 7 ? cur - 1 : cur + 1;
+                    mParentLayout.mViewPager.setCurrentItem(position);
+                }
                 if (mInnerListener != null) {
                     mInnerListener.onDateSelected(calendar);
                 }
@@ -175,7 +181,6 @@ public class CalendarCardView extends View implements View.OnClickListener {
                 float mDX;
                 float mDY;
                 if (isClick) {
-                    mDX = event.getX() - mX;
                     mDY = event.getY() - mY;
                     isClick = Math.abs(mDY) <= 50;
 
@@ -184,8 +189,6 @@ public class CalendarCardView extends View implements View.OnClickListener {
             case MotionEvent.ACTION_UP:
                 mX = event.getX();
                 mY = event.getY();
-                mDX = 0;
-                mDY = 0;
                 break;
         }
         return super.onTouchEvent(event);
@@ -194,9 +197,12 @@ public class CalendarCardView extends View implements View.OnClickListener {
     private Calendar getIndex() {
         int width = (getWidth() - mPaddingLeft - mPaddingRight) / 7;
         int indexX = (int) mX / width;
+        if (indexX >= 7) {
+            indexX = 6;
+        }
         int indexY = (int) mY / mItemHeight;
         mCurrentItem = indexY * 7 + indexX;// 选择项
-        if (mCurrentItem >= mDiff && mCurrentItem < mItems.size())
+        if (mCurrentItem >= 0 && mCurrentItem < mItems.size())
             return mItems.get(mCurrentItem);
         return null;
     }
@@ -489,6 +495,7 @@ public class CalendarCardView extends View implements View.OnClickListener {
      * @param calendarTextSize 日期大小
      * @param lunarTextSize    农历大小
      */
+    @SuppressWarnings("all")
     void setDayTextSize(float calendarTextSize, float lunarTextSize) {
         mCurMonthTextPaint.setTextSize(Util.dipToPx(getContext(), calendarTextSize));
         mOtherMonthTextPaint.setTextSize(mCurMonthTextPaint.getTextSize());

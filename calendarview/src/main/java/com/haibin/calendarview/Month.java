@@ -19,7 +19,7 @@ import java.io.Serializable;
 
 @SuppressWarnings("unused")
 class Month implements Serializable {
-    private int diff;
+    private int diff;//日期偏移
     private int count;
     private int month;
     private int year;
