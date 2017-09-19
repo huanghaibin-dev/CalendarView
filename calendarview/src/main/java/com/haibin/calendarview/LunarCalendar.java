@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
-@SuppressWarnings("all")
+@SuppressWarnings("unused")
 class LunarCalendar {
     /**
      * 支持转换的最小农历年份
@@ -23,11 +23,58 @@ class LunarCalendar {
     private static final int DAYS_BEFORE_MONTH[] = {0, 31, 59, 90, 120, 151, 181,
             212, 243, 273, 304, 334, 365};
 
-    private static final String[] monthStrs = {"正月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "冬月", "腊月"};
-    private static final String daysStrs[] = {"初一", "初二", "初三", "初四", "初五", "初六",
+    /**
+     * 农历月份第一天转写
+     */
+    private static final String[] monthStr = {"春节", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "冬月", "腊月"};
+
+    /**
+     * 传统农历节日
+     */
+    private static final String[] traditionFestivalStr = {"除夕", "0101春节", "0115元宵", "0505端午", "0707七夕", "0815中秋", "0909重阳"};
+
+    /**
+     * 农历大写
+     */
+    private static final String daysStr[] = {"初一", "初二", "初三", "初四", "初五", "初六",
             "初七", "初八", "初九", "初十", "十一", "十二", "十三", "十四", "十五", "十六", "十七",
             "十八", "十九", "二十", "廿一", "廿二", "廿三", "廿四", "廿五", "廿六", "廿七", "廿八",
             "廿九", "三十"};
+
+    /**
+     * 公历节日
+     */
+    private final static String[] mSolarCalendar = {
+            "0101元旦", "0214情人节", "0315消权日", "0401愚人节", "0501劳动节", "0504青年节",
+            "0601儿童节", "0701建党节", "0801建军节", "0910教师节", "1001国庆节", "1224平安夜",
+            "1225圣诞节"
+    };
+
+    /**
+     * 返回传统农历节日
+     * @param year 农历年
+     * @param month 农历月
+     * @param day 农历日
+     * @return 返回传统农历节日
+     */
+    private static String getTraditionFestivalText(int year,int month,int day){
+        if(month == 12){
+            int count = daysInLunarMonth(year, month);
+            if(day == count){
+                return traditionFestivalStr[0];//除夕
+            }
+        }
+        String text = getString(month, day);
+        String festivalStr = "";
+        for (String festival : traditionFestivalStr) {
+            if (festival.contains(text)) {
+                festivalStr = festival.replace(text, "");
+                break;
+            }
+        }
+        return festivalStr;
+    }
+
 
     /**
      * 数字转换为汉字月份
@@ -35,8 +82,8 @@ class LunarCalendar {
      * @param month 月
      * @return 数字转换为汉字月份
      */
-    static String numToChineseMonth(int month) {
-        return monthStrs[month - 1];
+    private static String numToChineseMonth(int month) {
+        return monthStr[month - 1];
     }
 
     /**
@@ -46,7 +93,21 @@ class LunarCalendar {
      * @return 数字转换为汉字日
      */
     static String numToChineseDay(int day) {
-        return daysStrs[day - 1];
+        return daysStr[day - 1];
+    }
+
+    /**
+     * 数字转换为农历节日或者日期
+     *
+     * @param month 月
+     * @param day   日
+     * @return 数字转换为汉字日
+     */
+    private static String numToChinese(int month, int day) {
+        if (day == 1) {
+            return numToChineseMonth(month);
+        }
+        return daysStr[day - 1];
     }
 
     /**
@@ -243,7 +304,7 @@ class LunarCalendar {
      * @param month 要计算的月
      * @return 传回天数
      */
-    static int daysInMonth(int year, int month) {
+    private static int daysInMonth(int year, int month) {
         return daysInMonth(year, month, false);
     }
 
@@ -255,6 +316,7 @@ class LunarCalendar {
      * @param leap  当月是否是闰月
      * @return 传回天数，如果闰月是错误的，返回0.
      */
+    @SuppressWarnings("all")
     private static int daysInMonth(int year, int month, boolean leap) {
         int leapMonth = leapMonth(year);
         int offset = 0;
@@ -326,15 +388,14 @@ class LunarCalendar {
             353350, 375494, 397447, 419210, 440795, 462224, 483532, 504758
     };
 
-    /**
-     * 公历节日
-     */
-    private final static String[] mSolarCalendar = {
-            "0101元旦", "0214情人节", "0315消权日", "0401愚人节", "0501劳动节", "0504青年节",
-            "0601儿童节", "0701建党节", "0801建军节", "0910教师节", "1001国庆节", "1224平安夜",
-            "1225圣诞节"
-    };
 
+    /**
+     * 获取公历节日
+     *
+     * @param month 公历月份
+     * @param day   公历日期
+     * @return 公历节日
+     */
     private static String getSolarCalendar(int month, int day) {
         String text = getString(month, day);
         String solar = "";
@@ -352,7 +413,7 @@ class LunarCalendar {
     }
 
     /**
-     * 农历节气
+     * 农历24节气
      */
     private final static String[] mSolarTerm = {
             "小寒", "大寒", "立春", "雨水", "惊蛰", "春分",
@@ -410,6 +471,7 @@ class LunarCalendar {
      * @param sec 指定秒数
      * @return 全球标准时间 (UTC) (或 GMT) 的 1970 年 1 月 1 日到所指定日期之间所间隔的毫秒数
      */
+    @SuppressWarnings("all")
     private static synchronized long UTC(int y, int m, int d, int h, int min, int sec) {
         makeUTCCalendar();
         synchronized (utcCal) {
@@ -427,6 +489,7 @@ class LunarCalendar {
      * @param date 指定日期
      * @return UTC 全球标准时间 (UTC) 表示的日期
      */
+    @SuppressWarnings("SynchronizeOnNonFinalField")
     private static synchronized int getUTCDay(Date date) {
         makeUTCCalendar();
         synchronized (utcCal) {
@@ -449,6 +512,7 @@ class LunarCalendar {
      * @param year 今年
      * @return 检查节气偏移量
      */
+    @SuppressWarnings("all")
     static int getTermsOffset(int year) {
         boolean isLeapYear = isLeapYear(year);
         int d = getWinterSolstice(year - 1);//获取去年冬至是21还是22，农历
@@ -478,8 +542,17 @@ class LunarCalendar {
         return (int) (dYear * D + C - (dYear / 4));
     }
 
-    static String getLunarText(int year, int month, int day) {
 
+
+    /**
+     * 获取农历节日
+     *
+     * @param year  年
+     * @param month 月
+     * @param day   日
+     * @return 农历节日
+     */
+    static String getLunarText(int year, int month, int day) {
         String termText = LunarCalendar.getTermString(year, month - 1, day);
         String solar = LunarCalendar.getSolarCalendar(month, day);
         if (!TextUtils.isEmpty(solar))
@@ -487,6 +560,11 @@ class LunarCalendar {
         if (!TextUtils.isEmpty(termText))
             return termText;
         int[] lunar = LunarCalendar.solarToLunar(year, month, day);
-        return LunarCalendar.numToChineseDay(lunar[2]);
+        String festival = getTraditionFestivalText(lunar[0],lunar[1],lunar[2]);
+        if (!TextUtils.isEmpty(festival))
+            return festival;
+        return LunarCalendar.numToChinese(lunar[1], lunar[2]);
     }
+
+
 }
