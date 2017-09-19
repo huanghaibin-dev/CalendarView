@@ -55,33 +55,35 @@ public class CalendarLayout extends LinearLayout {
     private VelocityTracker mVelocityTracker;
     private int mMaximumVelocity;
 
-    void setSelectPosition(int selectPosition) {
-        int line = (selectPosition + 7) / 7;
-        mViewPagerTranslateY = (line - 1) * Util.dipToPx(getContext(), CalendarCardView.ITEM_HEIGHT);
-    }
-
     public CalendarLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         setOrientation(LinearLayout.VERTICAL);
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CalendarLayout);
         mContentViewId = array.getResourceId(R.styleable.CalendarLayout_calendar_content_view_id, 0);
         array.recycle();
-        setSelectPosition(6);
+        //setSelectPosition(6);
         mVelocityTracker = VelocityTracker.obtain();
         final ViewConfiguration configuration = ViewConfiguration.get(context);
         mTouchSlop = configuration.getScaledTouchSlop();
         mMaximumVelocity = configuration.getScaledMaximumFlingVelocity();
     }
 
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-        mViewPager = (WrapViewPager) findViewById(R.id.vp_calendar).findViewById(R.id.vp_calendar);
-        mContentView = (ViewGroup) findViewById(mContentViewId);
-        if (mContentView != null) {
-            mContentView.setOverScrollMode(View.OVER_SCROLL_NEVER);
-        }
+    void initCalendarPosition(Calendar cur) {
+        java.util.Calendar date = java.util.Calendar.getInstance();
+        date.set(cur.getYear(), cur.getMonth() - 1, 1);
+        int diff = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;//月第一天为星期几,星期天 == 0,则偏移几天
+        int size = diff + cur.getDay();
+        setSelectPosition(size);
     }
+
+    /**
+     * 当前第几项被选中
+     */
+    void setSelectPosition(int selectPosition) {
+        int line = (selectPosition + 7) / 7;
+        mViewPagerTranslateY = (line - 1) * Util.dipToPx(getContext(), CalendarCardView.ITEM_HEIGHT);
+    }
+
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -102,6 +104,17 @@ public class CalendarLayout extends LinearLayout {
         super.onSizeChanged(w, h, oldw, oldh);
         mContentViewTranslateY = mViewPager.getMeasuredHeight() - Util.dipToPx(getContext(), CalendarCardView.ITEM_HEIGHT);
     }
+
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        mViewPager = (WrapViewPager) findViewById(R.id.vp_calendar).findViewById(R.id.vp_calendar);
+        mContentView = (ViewGroup) findViewById(mContentViewId);
+        if (mContentView != null) {
+            mContentView.setOverScrollMode(View.OVER_SCROLL_NEVER);
+        }
+    }
+
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
@@ -228,7 +241,7 @@ public class CalendarLayout extends LinearLayout {
 
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(mContentView,
                 "translationY", mContentView.getTranslationY(), 0f);
-        objectAnimator.setDuration(300);
+        objectAnimator.setDuration(240);
         objectAnimator.addUpdateListener(new AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -255,7 +268,7 @@ public class CalendarLayout extends LinearLayout {
 
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(mContentView,
                 "translationY", mContentView.getTranslationY(), -mContentViewTranslateY);
-        objectAnimator.setDuration(300);
+        objectAnimator.setDuration(240);
         objectAnimator.addUpdateListener(new AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {

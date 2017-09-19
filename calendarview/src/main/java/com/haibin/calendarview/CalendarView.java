@@ -116,13 +116,22 @@ public class CalendarView extends FrameLayout {
 
             @Override
             public void onPageSelected(int position) {
+                Calendar calendar = new Calendar();
+                calendar.setYear(position / 12 + mMinYear);
+                calendar.setMonth(position % 12 + 1);
+                calendar.setDay(1);
+                calendar.setLunar(LunarCalendar.numToChineseDay(LunarCalendar.solarToLunar(calendar.getYear(), calendar.getMonth(), 1)[2]));
                 if (mListener != null) {
-                    Calendar calendar = new Calendar();
-                    calendar.setYear(position / 12 + mMinYear);
-                    calendar.setMonth(position % 12 + 1);
-                    calendar.setDay(1);
-                    calendar.setLunar(LunarCalendar.numToChineseDay(LunarCalendar.solarToLunar(calendar.getYear(), calendar.getMonth(), 1)[2]));
                     mListener.onDateChange(calendar);
+                }
+                if (mParentLayout != null) {
+                    View view = mViewPager.findViewWithTag(position);
+                    if (view != null) {
+                        int index = ((CalendarCardView) view).getSelectedIndex(mSelectedCalendar);
+                        if(index >=0){
+                            mParentLayout.setSelectPosition(index);
+                        }
+                    }
                 }
             }
 
@@ -180,7 +189,6 @@ public class CalendarView extends FrameLayout {
         CalendarViewPagerAdapter adapter = new CalendarViewPagerAdapter();
         mViewPager.setAdapter(adapter);
         mViewPager.setCurrentItem(position);
-
         mSelectLayout.setOnMonthSelectedListener(new MonthRecyclerView.OnMonthSelectedListener() {
             @Override
             public void onMonthSelected(int year, int month) {
@@ -316,6 +324,7 @@ public class CalendarView extends FrameLayout {
             view.mListener = mListener;
             view.mDateSelectedListener = mDateSelectedListener;
             view.mInnerListener = mInnerListener;
+            view.setTag(position);
             view.setCurrentDate(year, month);
             view.setSelectedCalendar(mSelectedCalendar);
             view.setSchemeColor(mSchemeStyle, mSchemeThemeColor, mSchemeTextColor);
@@ -339,6 +348,7 @@ public class CalendarView extends FrameLayout {
         if (getParent() != null && getParent() instanceof CalendarLayout) {
             mParentLayout = (CalendarLayout) getParent();
             mViewPager.mParentLayout = mParentLayout;
+            mParentLayout.initCalendarPosition(mSelectedCalendar);
         }
     }
 
@@ -357,6 +367,7 @@ public class CalendarView extends FrameLayout {
             view.update();
         }
     }
+
     /**
      * 设置背景色
      *

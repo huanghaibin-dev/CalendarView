@@ -145,15 +145,16 @@ public class CalendarCardView extends View implements View.OnClickListener {
         if (isClick) {
             Calendar calendar = getIndex();
             if (calendar != null) {
-                if (!calendar.isCurrentMonth()) {
+                if (mInnerListener != null) {
+                    mInnerListener.onDateSelected(calendar);
+                }
+                if (!calendar.isCurrentMonth() && mParentLayout != null){
                     int cur = mParentLayout.mViewPager.getCurrentItem();
                     int position = mCurrentItem < 7 ? cur - 1 : cur + 1;
                     mParentLayout.mViewPager.setCurrentItem(position);
                 }
-                if (mInnerListener != null) {
-                    mInnerListener.onDateSelected(calendar);
-                }
-                if (mParentLayout != null)
+
+                if (mParentLayout != null && calendar.isCurrentMonth())
                     mParentLayout.setSelectPosition(mItems.indexOf(calendar));
                 if (mDateSelectedListener != null) {
                     mDateSelectedListener.onDateSelected(calendar);
@@ -192,6 +193,10 @@ public class CalendarCardView extends View implements View.OnClickListener {
                 break;
         }
         return super.onTouchEvent(event);
+    }
+
+    int getSelectedIndex(Calendar calendar) {
+        return mItems.indexOf(calendar);
     }
 
     private Calendar getIndex() {

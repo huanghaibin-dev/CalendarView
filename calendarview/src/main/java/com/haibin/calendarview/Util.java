@@ -80,9 +80,8 @@ final class Util {
      * @param dpValue dp
      * @return px
      */
-     static int dipToPx(Context context, float dpValue) {
+    static int dipToPx(Context context, float dpValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
-
 }

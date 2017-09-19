@@ -3,7 +3,6 @@ package com.haibin.calendarview;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.ViewGroup;
 
 
@@ -84,7 +83,6 @@ public class WrapViewPager extends ViewPager {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         heightMeasureSpec = MeasureSpec.makeMeasureSpec(Util.getCardHeight(0,0),MeasureSpec.EXACTLY);
-        Log.e("onMeasure","onMeasure");
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
