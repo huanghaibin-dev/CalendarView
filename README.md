@@ -5,7 +5,7 @@ Android上一个优雅、高度自定义、性能高效的日历控件，支持�
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:2.0.1'
+compile 'com.haibin:calendarview:2.0.2'
 ```
 ```
 <dependency>
@@ -92,7 +92,7 @@ compile 'com.haibin:calendarview:2.0.1'
         
 </declare-styleable>
 ```
-### api
+### CalendarView api
 ```java
 public int getCurDay(); //今天
 public int getCurMonth(); //当前的月份
@@ -149,6 +149,12 @@ public void setSchemeColor(int style, int schemeColor, int schemeTextColor)
   * @param weekTextColor  字体颜色
  */
 public void setWeeColor(int weekBackground, int weekTextColor)
+```
+### CalendarLayout api
+```java
+public void expand(); //展开
+
+public void shrink(); //收缩
 ```
 
 ### 效果预览
