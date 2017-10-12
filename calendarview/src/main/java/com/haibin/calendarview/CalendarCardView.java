@@ -249,7 +249,7 @@ public class CalendarCardView extends View implements View.OnClickListener {
                     onDrawText(canvas, calendar,
                             x, y,
                             j * width + width / 2 + mPaddingLeft,
-                            mTextBaseLine + i * mItemHeight, i * mItemHeight, true);
+                            mTextBaseLine + i * mItemHeight, true);
 
                 } else {
                     if (d == mCurrentItem) {//绘制选择效果
@@ -264,7 +264,7 @@ public class CalendarCardView extends View implements View.OnClickListener {
                     onDrawText(canvas, calendar,
                             x, y,
                             j * width + width / 2 + mPaddingLeft,
-                            mTextBaseLine + i * mItemHeight, i * mItemHeight, false);
+                            mTextBaseLine + i * mItemHeight, false);
                 }
                 ++d;
             }
@@ -320,12 +320,11 @@ public class CalendarCardView extends View implements View.OnClickListener {
      * @param y         日历Card y起点坐标
      * @param cx        x中间坐标
      * @param baselineY baselineY坐标 文本baseline
-     * @param h         view的top
      * @param hasScheme 是否是标记的日期
      */
     protected void onDrawText(Canvas canvas, Calendar calendar,
                               int x, int y,
-                              float cx, float baselineY, int h, boolean hasScheme) {
+                              float cx, float baselineY, boolean hasScheme) {
         if (hasScheme) {
             canvas.drawText(String.valueOf(calendar.getDay()),
                     cx,

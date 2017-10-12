@@ -23,20 +23,20 @@ public class LunarCalendarCardView extends CalendarCardView {
      */
     @Override
     protected void onDrawText(Canvas canvas, Calendar calendar,
-                              int x, int y, float cx, float baselineY, int h,
+                              int x, int y, float cx, float baselineY,
                               boolean hasScheme) {
-        int top = h - mItemHeight / 8;
+        int top = y - mItemHeight / 8;
         if (hasScheme) {
             canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
                     calendar.isCurrentDay() ? mCurDayTextPaint :
                             calendar.isCurrentMonth() ? mSchemeTextPaint : mOtherMonthTextPaint);
 
-            canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + h + mItemHeight / 10, mLunarTextPaint);
+            canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + y + mItemHeight / 10, mLunarTextPaint);
         } else {
             canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
                     calendar.isCurrentDay() ? mCurDayTextPaint :
                             calendar.isCurrentMonth() ? mCurMonthTextPaint : mOtherMonthTextPaint);
-            canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + h + mItemHeight / 10, mLunarTextPaint);
+            canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + y + mItemHeight / 10, mLunarTextPaint);
         }
     }
 }
