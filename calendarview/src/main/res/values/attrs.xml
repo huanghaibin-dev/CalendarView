@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="CalendarView">
+
         <attr name="week_background" format="color" />
         <attr name="week_text_color" format="color" />
 
@@ -20,6 +21,8 @@
         <attr name="other_month_text_color" format="color" />
 
         <attr name="lunar_text_color" format="color" />
+
+        <attr name="calendar_card_view" format="string" />
 
 
         <attr name="min_year" format="integer" />

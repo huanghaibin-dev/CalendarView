@@ -30,7 +30,7 @@ import java.util.List;
 abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
 
     LayoutInflater mInflater;
-    List<T> mItems;
+    private List<T> mItems;
     private OnItemClickListener onItemClickListener;
     private OnClickListener onClickListener;
 
@@ -75,6 +75,7 @@ abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
         this.onItemClickListener = onItemClickListener;
     }
 
+    @SuppressWarnings("unused")
     void addAll(List<T> items) {
         if (items != null && items.size() > 0) {
             mItems.addAll(items);
@@ -89,6 +90,7 @@ abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
         }
     }
 
+    @SuppressWarnings("unused")
     final List<T> getItems() {
         return mItems;
     }

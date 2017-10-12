@@ -42,7 +42,7 @@ class MonthAdapter extends BaseRecyclerAdapter<Month> {
 
     @Override
     RecyclerView.ViewHolder onCreateDefaultViewHolder(ViewGroup parent, int type) {
-        return new MonthViewHolder(mInflater.inflate(R.layout.item_list_month, parent, false));
+        return new MonthViewHolder(mInflater.inflate(R.layout.cv_item_list_month, parent, false));
     }
 
     @Override

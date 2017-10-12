@@ -42,17 +42,17 @@ public class CalendarCardView extends View implements View.OnClickListener {
     static final int STYLE_FILL = 1;
     static final int STYLE_STROKE = 2;
 
-    Paint mCurMonthTextPaint = new Paint(); //当前月份日期的笔
-    Paint mOtherMonthTextPaint = new Paint(); //其它月份日期颜色
+    protected Paint mCurMonthTextPaint = new Paint(); //当前月份日期的笔
+    protected Paint mOtherMonthTextPaint = new Paint(); //其它月份日期颜色
 
-    Paint mLunarTextPaint = new Paint(); //农历文本颜色
-    Paint mSchemePaint = new Paint(); // 标记的日期背景颜色
+    protected Paint mLunarTextPaint = new Paint(); //农历文本颜色
+    protected Paint mSchemePaint = new Paint(); // 标记的日期背景颜色
 
-    Paint mSchemeTextPaint = new Paint();//标记的文本颜色
+    protected Paint mSchemeTextPaint = new Paint();//标记的文本颜色
 
-    Paint mCurDayTextPaint = new Paint(); //当前日期背景颜色
+    protected Paint mCurDayTextPaint = new Paint(); //当前日期背景颜色
 
-    Paint mSelectedPaint = new Paint(); //被选择的日期背景色
+    protected Paint mSelectedPaint = new Paint(); //被选择的日期背景色
 
     CalendarView.OnDateSelectedListener mDateSelectedListener;
     CalendarView.OnInnerDateSelectedListener mInnerListener;
@@ -68,9 +68,8 @@ public class CalendarCardView extends View implements View.OnClickListener {
     private int mLineCount;
     @SuppressWarnings("all")
     private int mDiff;//当前月的第一天为星期几，星期天为0，实际就是当前月份的偏移量
-    static int mItemHeight; //每一项的高度
-    float mTextBaseLine; //Text的基线
-    private boolean isShowAll;
+    protected static int mItemHeight; //每一项的高度
+    protected float mTextBaseLine; //Text的基线
 
     private float mX, mY;
     private boolean isClick = true;
@@ -80,11 +79,11 @@ public class CalendarCardView extends View implements View.OnClickListener {
     private int mPaddingLeft, mPaddingRight;
 
     int mCurrentItem = -1;
-    private int mTextSchemeColor;
-    private int mTextCurMonthColor;
-    private int mTextSelectedColor;
-    private int mSchemeColor;
-    private int mLunarTextColor;
+    protected int mTextSchemeColor;
+    protected int mTextCurMonthColor;
+    protected int mTextSelectedColor;
+    protected int mSchemeColor;
+    protected int mLunarTextColor;
 
     public CalendarCardView(Context context) {
         this(context, null);
@@ -148,7 +147,7 @@ public class CalendarCardView extends View implements View.OnClickListener {
                 if (mInnerListener != null) {
                     mInnerListener.onDateSelected(calendar);
                 }
-                if (!calendar.isCurrentMonth() && mParentLayout != null){
+                if (!calendar.isCurrentMonth() && mParentLayout != null) {
                     int cur = mParentLayout.mViewPager.getCurrentItem();
                     int position = mCurrentItem < 7 ? cur - 1 : cur + 1;
                     mParentLayout.mViewPager.setCurrentItem(position);
@@ -224,33 +223,47 @@ public class CalendarCardView extends View implements View.OnClickListener {
                 Math.min(width, mItemHeight) / 5 * 2;
         for (int i = 0; i < mLineCount; i++) {
             for (int j = 0; j < 7; j++) {
+
+                int cx = j * width + width / 2 + mPaddingLeft;
+                int cy = i * mItemHeight + mItemHeight / 2;
+
+                int x = j * width + mPaddingLeft;
+                int y = i * mItemHeight;
+
                 Calendar calendar = mItems.get(d);
                 if (mSchemes != null && mSchemes.contains(calendar)) {
                     //标记的日子
                     Calendar scheme = mSchemes.get(mSchemes.indexOf(calendar));
-                    int x = j * width + width / 2 + mPaddingLeft;
-                    int y = i * mItemHeight + mItemHeight / 2;
 
                     if (d == mCurrentItem) {//绘制选择效果
-                        onDrawSelected(canvas, x, y, radius, true);
+                        mLunarTextPaint.setColor(mTextSelectedColor);
+                        onDrawSelected(canvas, width, x, y, cx, cy, radius, true);
+                        mSchemeTextPaint.setColor(mTextSelectedColor);
                     } else {
-                        onDrawScheme(canvas, scheme, x, y, radius);
+                        mSchemePaint.setColor(calendar.getSchemeColor() != 0 ? calendar.getSchemeColor() : mSchemeColor);
+                        mSchemeTextPaint.setColor(mTextSchemeColor);
+                        mLunarTextPaint.setColor(calendar.isCurrentMonth() ? mLunarTextColor : mOtherMonthTextPaint.getColor());
+                        mLunarTextPaint.setColor(mTextSchemeColor);
+                        onDrawScheme(canvas, scheme, width, x, y, cx, cy, radius);
                     }
-
-                    onDrawText(canvas, calendar, j * width + width / 2 + mPaddingLeft,
+                    onDrawText(canvas, calendar,
+                            x, y,
+                            j * width + width / 2 + mPaddingLeft,
                             mTextBaseLine + i * mItemHeight, i * mItemHeight, true);
 
                 } else {
-                    int x = j * width + width / 2 + mPaddingLeft;
-                    int y = i * mItemHeight + mItemHeight / 2;
                     if (d == mCurrentItem) {//绘制选择效果
-                        onDrawSelected(canvas, x, y, radius, false);
+                        mLunarTextPaint.setColor(mTextSelectedColor);
+                        onDrawSelected(canvas, width, x, y, cx, cy, radius, false);
+                        mSchemeTextPaint.setColor(mTextSelectedColor);
                     } else {
+                        mLunarTextPaint.setColor(mLunarTextColor);
                         mCurMonthTextPaint.setColor(mTextCurMonthColor);
                         mLunarTextPaint.setColor(calendar.isCurrentMonth() ? mLunarTextColor : mOtherMonthTextPaint.getColor());
                     }
-
-                    onDrawText(canvas, calendar, j * width + width / 2 + mPaddingLeft,
+                    onDrawText(canvas, calendar,
+                            x, y,
+                            j * width + width / 2 + mPaddingLeft,
                             mTextBaseLine + i * mItemHeight, i * mItemHeight, false);
                 }
                 ++d;
@@ -262,14 +275,16 @@ public class CalendarCardView extends View implements View.OnClickListener {
      * 绘制选中的日期
      *
      * @param canvas    canvas
-     * @param cx        cx
-     * @param cy        cy
-     * @param radius    radius
+     * @param x         日历Card x起点坐标
+     * @param y         日历Card y起点坐标
+     * @param width     日历Card width
+     * @param cx        cx x圆心
+     * @param cy        cy y圆心
+     * @param radius    radius 半径
      * @param hasScheme hasScheme 非标记的日期
      */
-    void onDrawSelected(Canvas canvas, int cx, int cy, int radius, boolean hasScheme) {
+    protected void onDrawSelected(Canvas canvas, int width, int x, int y, int cx, int cy, int radius, boolean hasScheme) {
         canvas.drawCircle(cx, cy, radius, mSelectedPaint);
-        mLunarTextPaint.setColor(mTextSelectedColor);
         if (hasScheme) {
             mSchemeTextPaint.setColor(mTextSelectedColor);
         } else {
@@ -282,15 +297,18 @@ public class CalendarCardView extends View implements View.OnClickListener {
      *
      * @param canvas   canvas
      * @param calendar calendar
+     * @param width    日历Card width
+     * @param x        日历Card x起点坐标
+     * @param y        日历Card y起点坐标
      * @param cx       cx
      * @param cy       cy
      * @param radius   radius
      */
-    void onDrawScheme(Canvas canvas, Calendar calendar, int cx, int cy, int radius) {
-        mSchemePaint.setColor(calendar.getSchemeColor() != 0 ? calendar.getSchemeColor() : mSchemeColor);
+    protected void onDrawScheme(Canvas canvas, Calendar calendar,
+                                int width, int x, int y,
+                                int cx, int cy, int radius) {
         canvas.drawCircle(cx, cy, radius, mSchemePaint);
-        mSchemeTextPaint.setColor(mTextSchemeColor);
-        mLunarTextPaint.setColor(calendar.isCurrentMonth() ? mLunarTextColor : mOtherMonthTextPaint.getColor());
+
     }
 
     /**
@@ -298,21 +316,25 @@ public class CalendarCardView extends View implements View.OnClickListener {
      *
      * @param canvas    canvas
      * @param calendar  calendar
-     * @param x         x坐标
-     * @param y         y坐标 baseline
+     * @param x         日历Card x起点坐标
+     * @param y         日历Card y起点坐标
+     * @param cx        x中间坐标
+     * @param baselineY baselineY坐标 文本baseline
      * @param h         view的top
      * @param hasScheme 是否是标记的日期
      */
-    void onDrawText(Canvas canvas, Calendar calendar, float x, float y, int h, boolean hasScheme) {
+    protected void onDrawText(Canvas canvas, Calendar calendar,
+                              int x, int y,
+                              float cx, float baselineY, int h, boolean hasScheme) {
         if (hasScheme) {
             canvas.drawText(String.valueOf(calendar.getDay()),
-                    x,
-                    y,
+                    cx,
+                    baselineY,
                     calendar.isCurrentDay() ? mCurDayTextPaint :
                             calendar.isCurrentMonth() ? mSchemeTextPaint : mOtherMonthTextPaint);
 
         } else {
-            canvas.drawText(String.valueOf(calendar.getDay()), x, y,
+            canvas.drawText(String.valueOf(calendar.getDay()), cx, baselineY,
                     calendar.isCurrentDay() ? mCurDayTextPaint :
                             calendar.isCurrentMonth() ? mCurMonthTextPaint : mOtherMonthTextPaint);
         }
@@ -344,6 +366,9 @@ public class CalendarCardView extends View implements View.OnClickListener {
         initCalendar();
     }
 
+    /**
+     * 初始化日历
+     */
     @SuppressLint("WrongConstant")
     private void initCalendar() {
         java.util.Calendar date = java.util.Calendar.getInstance();
