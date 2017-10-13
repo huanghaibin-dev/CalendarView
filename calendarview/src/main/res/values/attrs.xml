@@ -5,24 +5,23 @@
         <attr name="week_background" format="color" />
         <attr name="week_text_color" format="color" />
 
-        <attr name="current_day_text_color" format="color" />
+        <attr name="calendar_card_view" format="string" /><!-- -->
 
         <attr name="scheme_text" format="string" />
-
+        <attr name="scheme_text_size" format="dimension" />
         <attr name="scheme_text_color" format="color" />
-
+        <attr name="scheme_month_text_color" format="color" />
+        <attr name="scheme_lunar_text_color" format="color" />
         <attr name="scheme_theme_color" format="color" />
 
         <attr name="selected_theme_color" format="color" />
-
         <attr name="selected_text_color" format="color" />
 
+        <attr name="current_day_text_color" format="color" />
         <attr name="current_month_text_color" format="color" />
         <attr name="other_month_text_color" format="color" />
-
         <attr name="lunar_text_color" format="color" />
-
-        <attr name="calendar_card_view" format="string" />
+        <attr name="other_month_lunar_text_color" format="color" />
 
 
         <attr name="min_year" format="integer" />
@@ -32,6 +31,7 @@
             <enum name="fill" value="1" />
             <enum name="stroke" value="2" />
         </attr>
+
         <attr name="selected_theme_style" format="integer">
             <enum name="fill" value="1" />
             <enum name="stroke" value="2" />
@@ -50,13 +50,5 @@
         <attr name="calendar_content_view_id" format="integer" />
     </declare-styleable>
 
-    <declare-styleable name="CellView">
-        <attr name="cell_day_text_size" format="dimension" />
-        <attr name="cell_lunar_text_size" format="dimension" />
-        <attr name="cell_scheme_radius" format="dimension" />
-        <attr name="cell_scheme_text_size" format="dimension" />
-        <attr name="cell_circle_padding" format="dimension" />
-        <attr name="cell_circle_color" format="color" />
-    </declare-styleable>
 
 </resources>

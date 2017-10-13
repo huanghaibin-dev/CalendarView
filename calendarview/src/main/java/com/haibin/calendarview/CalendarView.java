@@ -76,7 +76,7 @@ public class CalendarView extends FrameLayout {
     private boolean isShowLunar;
 
     public CalendarView(@NonNull Context context) {
-        super(context, null);
+        this(context, null);
     }
 
     public CalendarView(@NonNull Context context, @Nullable AttributeSet attrs) {
@@ -108,6 +108,11 @@ public class CalendarView extends FrameLayout {
         init(context);
     }
 
+    /**
+     * 初始化
+     *
+     * @param context context
+     */
     private void init(Context context) {
         CalendarCardView.ITEM_HEIGHT = isShowLunar ? 58 : 46;
         CalendarCardView.mItemHeight = Util.dipToPx(context, CalendarCardView.ITEM_HEIGHT);
@@ -210,18 +215,38 @@ public class CalendarView extends FrameLayout {
         mSelectLayout.setSchemeColor(mSchemeThemeColor);
     }
 
+    /**
+     * 获取当天
+     *
+     * @return 返回今天
+     */
     public int getCurDay() {
         return mCurDay;
     }
 
+    /**
+     * 获取本月
+     *
+     * @return 返回本月
+     */
     public int getCurMonth() {
         return mCurMonth;
     }
 
+    /**
+     * 获取本年
+     *
+     * @return 返回本年
+     */
     public int getCurYear() {
         return mCurYear;
     }
 
+    /**
+     * 打开日历月份快速选择
+     *
+     * @param year 年
+     */
     public void showSelectLayout(final int year) {
         if (mParentLayout != null && mParentLayout.mContentView != null) {
             mParentLayout.mContentView.setVisibility(GONE);
@@ -253,14 +278,27 @@ public class CalendarView extends FrameLayout {
                 });
     }
 
+    /**
+     * 滚动到当前
+     */
     public void scrollToCurrent() {
         mViewPager.setCurrentItem(12 * (mCurYear - mMinYear) + mCurMonth - 1);
     }
 
+    /**
+     * 滚动到某一年
+     *
+     * @param year 快速滚动的年份
+     */
     public void scrollToYear(int year) {
         mViewPager.setCurrentItem(12 * (year - mMinYear) + mCurMonth - 1);
     }
 
+    /**
+     * 关闭日历布局，同时会滚动到指定的位置
+     *
+     * @param position 某一年
+     */
     public void closeSelectLayout(final int position) {
         mSelectLayout.setVisibility(GONE);
         mLinearWeek.setVisibility(VISIBLE);
@@ -306,9 +344,24 @@ public class CalendarView extends FrameLayout {
                 });
     }
 
+    /**
+     * 日期改变监听器
+     *
+     * @param listener 监听
+     */
     public void setOnDateChangeListener(OnDateChangeListener listener) {
         this.mListener = listener;
     }
+
+    /**
+     * 设置日期选中事件
+     *
+     * @param listener 日期选中事件
+     */
+    public void setOnDateSelectedListener(OnDateSelectedListener listener) {
+        this.mDateSelectedListener = listener;
+    }
+
 
     private class CalendarViewPagerAdapter extends PagerAdapter {
 
@@ -366,6 +419,9 @@ public class CalendarView extends FrameLayout {
     }
 
 
+    /**
+     * 初始化时初始化日历卡默认选择位置
+     */
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
@@ -486,11 +542,10 @@ public class CalendarView extends FrameLayout {
         return mSelectedCalendar;
     }
 
-    public void setOnDateSelectedListener(OnDateSelectedListener listener) {
-        this.mDateSelectedListener = listener;
-    }
 
-
+    /**
+     * 日期改变、左右切换、快速年份、月份切换
+     */
     public interface OnDateChangeListener {
         void onDateChange(Calendar calendar);
 
@@ -498,10 +553,16 @@ public class CalendarView extends FrameLayout {
     }
 
 
+    /**
+     * 内部日期选择，不暴露外部使用
+     */
     interface OnInnerDateSelectedListener {
         void onDateSelected(Calendar calendar);
     }
 
+    /**
+     * 外部日期选择事件
+     */
     public interface OnDateSelectedListener {
         void onDateSelected(Calendar calendar);
     }

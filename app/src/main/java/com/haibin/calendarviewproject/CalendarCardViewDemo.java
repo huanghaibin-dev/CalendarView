@@ -17,14 +17,16 @@ public class CalendarCardViewDemo extends CalendarCardView {
     }
 
     @Override
-    protected void onDrawText(Canvas canvas, Calendar calendar, int x, int y, float cx, float baselineY,boolean hasScheme) {
-        int top = y - mItemHeight / 6 ;
+    protected void onDrawText(Canvas canvas, Calendar calendar, int x, int y, float cx, float baselineY, boolean hasScheme) {
+        int top = y - mItemHeight / 6;
         if (hasScheme) {
             canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
                     calendar.isCurrentDay() ? mCurDayTextPaint :
                             calendar.isCurrentMonth() ? mSchemeTextPaint : mOtherMonthTextPaint);
 
             canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + y + mItemHeight / 10, mLunarTextPaint);
+
+            canvas.drawText(calendar.getScheme(), cx + mItemWidth/4, mTextBaseLine + top, mSchemeTextPaint);
         } else {
             canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
                     calendar.isCurrentDay() ? mCurDayTextPaint :
@@ -35,7 +37,7 @@ public class CalendarCardViewDemo extends CalendarCardView {
 
     @Override
     protected void onDrawScheme(Canvas canvas, Calendar calendar, int width, int x, int y, int cx, int cy, int radius) {
-        canvas.drawRect(x + 20, y + 20, x + width - 20, y + mItemHeight - 20, mSchemePaint);
+        //canvas.drawRect(x + 20, y + 20, x + width - 20, y + mItemHeight - 20, mSchemePaint);
     }
 
     @Override
