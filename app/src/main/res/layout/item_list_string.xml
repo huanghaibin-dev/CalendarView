@@ -10,19 +10,23 @@
     android:paddingTop="12dp">
 
     <TextView
+        android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:height="30dp"
-        android:background="#128c4b" />
+        android:textSize="18sp"
+        android:text="这是标题"
+        android:textColor="#333333"
+        tools:ignore="HardcodedText" />
 
     <TextView
+        android:id="@+id/tv_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="50dp"
         android:layout_marginTop="8dp"
-        android:height="20dp"
-        android:background="#128c4b"
-        tools:ignore="RtlHardcoded" />
+        android:textSize="14sp"
+        android:text="摘要"
+        tools:ignore="HardcodedText,RtlHardcoded" />
 
     <View
         android:layout_marginTop="12dp"

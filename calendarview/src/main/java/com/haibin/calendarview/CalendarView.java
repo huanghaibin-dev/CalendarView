@@ -114,8 +114,8 @@ public class CalendarView extends FrameLayout {
      * @param context context
      */
     private void init(Context context) {
-        CalendarCardView.ITEM_HEIGHT = isShowLunar ? 58 : 46;
-        CalendarCardView.mItemHeight = Util.dipToPx(context, CalendarCardView.ITEM_HEIGHT);
+        BaseCalendarCardView.ITEM_HEIGHT = Util.dipToPx(context, 50);
+        BaseCalendarCardView.mItemHeight = BaseCalendarCardView.ITEM_HEIGHT;
         LayoutInflater.from(context).inflate(R.layout.cv_layout_calendar_view, this, true);
         this.mViewPager = (WrapViewPager) findViewById(R.id.vp_calendar);
         this.mLinearWeek = (LinearLayout) findViewById(R.id.ll_week);
@@ -143,7 +143,7 @@ public class CalendarView extends FrameLayout {
                 if (mParentLayout != null) {
                     View view = mViewPager.findViewWithTag(position);
                     if (view != null) {
-                        int index = ((CalendarCardView) view).getSelectedIndex(mSelectedCalendar);
+                        int index = ((BaseCalendarCardView) view).getSelectedIndex(mSelectedCalendar);
                         if (index >= 0) {
                             mParentLayout.setSelectPosition(index);
                         }
@@ -179,7 +179,7 @@ public class CalendarView extends FrameLayout {
             public void onDateSelected(Calendar calendar) {
                 mSelectedCalendar = calendar;
                 for (int i = 0; i < mViewPager.getChildCount(); i++) {
-                    CalendarCardView view = (CalendarCardView) mViewPager.getChildAt(i);
+                    BaseCalendarCardView view = (BaseCalendarCardView) mViewPager.getChildAt(i);
                     view.setSelectedCalendar(mSelectedCalendar);
                     view.invalidate();
                 }
@@ -379,22 +379,21 @@ public class CalendarView extends FrameLayout {
         public Object instantiateItem(ViewGroup container, int position) {
             int year = position / 12 + mMinYear;
             int month = position % 12 + 1;
-            CalendarCardView view;
+            BaseCalendarCardView view;
             if (TextUtils.isEmpty(mCalendarCardViewClass)) {
-                view = isShowLunar ? new LunarCalendarCardView(getContext(), null) :
-                        new CalendarCardView(getContext(), null);
+                view = new SimpleCalendarCardView(getContext());
             } else {
                 try {
                     Class cls = Class.forName(mCalendarCardViewClass);
                     @SuppressWarnings("unchecked")
                     Constructor constructor = cls.getConstructor(Context.class);
-                    view = (CalendarCardView) constructor.newInstance(getContext());
+                    view = (BaseCalendarCardView) constructor.newInstance(getContext());
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;
                 }
             }
-            view.setDayTextSize(isShowLunar ? 16 : CalendarCardView.TEXT_SIZE, 10);
+            view.setDayTextSize(isShowLunar ? 16 : BaseCalendarCardView.TEXT_SIZE, 10);
             view.mParentLayout = mParentLayout;
             view.mSchemes = mSchemeDate;
             view.isShowLunar = isShowLunar;
@@ -406,7 +405,7 @@ public class CalendarView extends FrameLayout {
             view.setSelectedCalendar(mSelectedCalendar);
             view.setSchemeColor(mSchemeStyle, mSchemeThemeColor, mSchemeTextColor);
             view.setSelectColor(mSelectThemeStyle, mSelectedThemeColor, mSelectedTextColor);
-            view.setTextColor(mCurDayTextColor, mCurrentMonthTextColor, mOtherMonthTextColor, mLunarTextColor);
+            view.setTextColor(mCurDayTextColor, mCurrentMonthTextColor, mOtherMonthTextColor, mLunarTextColor, mLunarTextColor);
             container.addView(view);
             return view;
         }
@@ -442,7 +441,7 @@ public class CalendarView extends FrameLayout {
         this.mSchemeDate = mSchemeDate;
         mSelectLayout.setSchemes(mSchemeDate);
         for (int i = 0; i < mViewPager.getChildCount(); i++) {
-            CalendarCardView view = (CalendarCardView) mViewPager.getChildAt(i);
+            BaseCalendarCardView view = (BaseCalendarCardView) mViewPager.getChildAt(i);
             view.mSchemes = mSchemeDate;
             view.update();
         }
@@ -527,10 +526,10 @@ public class CalendarView extends FrameLayout {
     public void update() {
         mSelectLayout.update();
         for (int i = 0; i < mViewPager.getChildCount(); i++) {
-            CalendarCardView view = (CalendarCardView) mViewPager.getChildAt(i);
+            BaseCalendarCardView view = (BaseCalendarCardView) mViewPager.getChildAt(i);
             view.setSchemeColor(mSchemeStyle, mSchemeThemeColor, mSchemeTextColor);
             view.setSelectColor(mSelectThemeStyle, mSelectedThemeColor, mSelectedTextColor);
-            view.setTextColor(mCurDayTextColor, mCurrentMonthTextColor, mOtherMonthTextColor, mLunarTextColor);
+            view.setTextColor(mCurDayTextColor, mCurrentMonthTextColor, mOtherMonthTextColor, mLunarTextColor,mLunarTextColor);
             view.update();
         }
     }

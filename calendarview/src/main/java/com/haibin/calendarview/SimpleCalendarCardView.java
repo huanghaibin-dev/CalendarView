@@ -4,25 +4,26 @@ import android.content.Context;
 import android.graphics.Canvas;
 
 /**
- * 带农历的
+ * 简单的不带农历的日历控件
+ * Created by huanghaibin on 2017/11/15.
  */
 
-public class LunarCalendarCardView extends BaseCalendarCardView {
+public class SimpleCalendarCardView extends BaseCalendarCardView {
 
     private int mRadius;
 
-    public LunarCalendarCardView(Context context) {
+    public SimpleCalendarCardView(Context context) {
         super(context);
     }
 
     @Override
     protected void onPreviewHook() {
-
+        mRadius = Math.min(mItemWidth, mItemHeight) / 5 * 2;
     }
 
     @Override
     protected void onLoopStart(int x, int y) {
-        mRadius = Math.min(mItemWidth, mItemHeight) / 5 * 2;
+
     }
 
     @Override
@@ -41,19 +42,19 @@ public class LunarCalendarCardView extends BaseCalendarCardView {
 
     @Override
     protected void onDrawText(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme, boolean isSelected) {
+        float baselineY = mTextBaseLine + y;
         int cx = x + mItemWidth / 2;
-        int top = y - mItemHeight / 8;
         if (hasScheme) {
-            canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
+            canvas.drawText(String.valueOf(calendar.getDay()),
+                    cx,
+                    baselineY,
                     calendar.isCurrentDay() ? mCurDayTextPaint :
                             calendar.isCurrentMonth() ? mSchemeTextPaint : mOtherMonthTextPaint);
 
-            canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + y + mItemHeight / 10, mCurMonthLunarTextPaint);
         } else {
-            canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
+            canvas.drawText(String.valueOf(calendar.getDay()), cx, baselineY,
                     calendar.isCurrentDay() ? mCurDayTextPaint :
                             calendar.isCurrentMonth() ? mCurMonthTextPaint : mOtherMonthTextPaint);
-            canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + y + mItemHeight / 10, mCurMonthLunarTextPaint);
         }
     }
 }

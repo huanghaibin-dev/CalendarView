@@ -40,7 +40,9 @@ import android.widget.LinearLayout;
  */
 public class CalendarLayout extends LinearLayout {
 
+    /**自定义ViewPager*/
     WrapViewPager mViewPager;
+    /**ContentView*/
     ViewGroup mContentView;
 
     private int mTouchSlop;
@@ -50,8 +52,11 @@ public class CalendarLayout extends LinearLayout {
     private float downY;
     private float mLastY;
     private boolean isAnimating = false;
+
+    /**内容布局id*/
     private int mContentViewId;
 
+    /**手速判断*/
     private VelocityTracker mVelocityTracker;
     private int mMaximumVelocity;
 
@@ -68,11 +73,15 @@ public class CalendarLayout extends LinearLayout {
         mMaximumVelocity = configuration.getScaledMaximumFlingVelocity();
     }
 
+    /**
+     * 初始化当前时间的位置
+     * @param cur 当前日期时间
+     */
     void initCalendarPosition(Calendar cur) {
         java.util.Calendar date = java.util.Calendar.getInstance();
         date.set(cur.getYear(), cur.getMonth() - 1, 1);
         int diff = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;//月第一天为星期几,星期天 == 0,则偏移几天
-        int size = diff + cur.getDay();
+        int size = diff + cur.getDay() -1;
         setSelectPosition(size);
     }
 
@@ -81,7 +90,7 @@ public class CalendarLayout extends LinearLayout {
      */
     void setSelectPosition(int selectPosition) {
         int line = (selectPosition + 7) / 7;
-        mViewPagerTranslateY = (line - 1) * Util.dipToPx(getContext(), CalendarCardView.ITEM_HEIGHT);
+        mViewPagerTranslateY = (line - 1) * BaseCalendarCardView.ITEM_HEIGHT;
     }
 
 
@@ -90,8 +99,7 @@ public class CalendarLayout extends LinearLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
         if (mContentView != null && mViewPager != null) {
-            int h = getHeight() -
-                    Util.dipToPx(getContext(), CalendarCardView.ITEM_HEIGHT)
+            int h = getHeight() - BaseCalendarCardView.ITEM_HEIGHT
                     - Util.dipToPx(getContext(), 41);
             int heightSpec = MeasureSpec.makeMeasureSpec(h,
                     MeasureSpec.EXACTLY);
@@ -102,7 +110,7 @@ public class CalendarLayout extends LinearLayout {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        mContentViewTranslateY = mViewPager.getMeasuredHeight() - Util.dipToPx(getContext(), CalendarCardView.ITEM_HEIGHT);
+        mContentViewTranslateY = mViewPager.getMeasuredHeight() - BaseCalendarCardView.ITEM_HEIGHT;
     }
 
     @Override

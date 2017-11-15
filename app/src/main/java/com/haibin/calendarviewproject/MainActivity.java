@@ -69,13 +69,14 @@ public class MainActivity extends AppCompatActivity implements CalendarView.OnDa
         int year = mCalendarView.getCurYear();
         int month = mCalendarView.getCurMonth();
 
-        schemes.add(getSchemeCalendar(year, month, 3, 0xFF40db25));
-        schemes.add(getSchemeCalendar(year, month, 6, 0xFFe69138));
-        schemes.add(getSchemeCalendar(year, month, 9, 0xFFdf1356));
-        schemes.add(getSchemeCalendar(year, month, 13, 0xFFedc56d));
-        schemes.add(getSchemeCalendar(year, month, 15, 0xFFaacc44));
-        schemes.add(getSchemeCalendar(year, month, 18, 0xFFbc13f0));
-        schemes.add(getSchemeCalendar(year, month, 25, 0xFF13acf0));
+        schemes.add(getSchemeCalendar(year, month, 3, 0xFF40db25,"假"));
+        schemes.add(getSchemeCalendar(year, month, 6, 0xFFe69138,"事"));
+        schemes.add(getSchemeCalendar(year, month, 9, 0xFFdf1356,"议"));
+        schemes.add(getSchemeCalendar(year, month, 13, 0xFFedc56d,"记"));
+        schemes.add(getSchemeCalendar(year, month, 14, 0xFFedc56d,"记"));
+        schemes.add(getSchemeCalendar(year, month, 15, 0xFFaacc44,"假"));
+        schemes.add(getSchemeCalendar(year, month, 18, 0xFFbc13f0,"记"));
+        schemes.add(getSchemeCalendar(year, month, 25, 0xFF13acf0,"假"));
         mCalendarView.setSchemeDate(schemes);
 
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
@@ -84,13 +85,13 @@ public class MainActivity extends AppCompatActivity implements CalendarView.OnDa
         recyclerView.setAdapter(mAdapter);
     }
 
-    private Calendar getSchemeCalendar(int year, int month, int day, int color) {
+    private Calendar getSchemeCalendar(int year, int month, int day, int color,String text) {
         Calendar calendar = new Calendar();
         calendar.setYear(year);
         calendar.setMonth(month);
         calendar.setDay(day);
         calendar.setSchemeColor(color);//如果单独标记颜色、则会使用这个颜色
-        calendar.setScheme("记");
+        calendar.setScheme(text);
         return calendar;
     }
 
