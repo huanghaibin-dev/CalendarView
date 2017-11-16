@@ -15,6 +15,7 @@ compile 'com.haibin:calendarview:3.0.0'
   <type>pom</type>
 </dependency>
 ```
+### 如果你需要完全定制UI，参考demo，简单几步即可绘制你需要的效果，一般只需要实现三个回调函数绘制你需要的特效即可，真正做到热插拔效果，方便大众定制UI需求
 
 ### 效果预览
 ### 收缩展开的魅族风格效果
@@ -160,6 +161,62 @@ public void expand(); //展开
 
 public void shrink(); //收缩
 ```
+
+### 如果你需要完全定制UI，参考demo，简单几步即可绘制你需要的效果
+```java
+public class SimpleCalendarCardView extends BaseCalendarCardView {
+
+    private int mRadius;
+
+    public SimpleCalendarCardView(Context context) {
+        super(context);
+    }
+
+    @Override
+    protected void onPreviewHook() {
+        mRadius = Math.min(mItemWidth, mItemHeight) / 5 * 2;
+        mSchemePaint.setStyle(Paint.Style.STROKE);
+    }
+
+    @Override
+    protected void onLoopStart(int x, int y) {
+
+    }
+
+    @Override
+    protected void onDrawSelected(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme) {
+        int cx = x + mItemWidth / 2;
+        int cy = y + mItemHeight / 2;
+        canvas.drawCircle(cx, cy, mRadius, mSelectedPaint);
+    }
+
+    @Override
+    protected void onDrawScheme(Canvas canvas, Calendar calendar, int x, int y) {
+        int cx = x + mItemWidth / 2;
+        int cy = y + mItemHeight / 2;
+        canvas.drawCircle(cx, cy, mRadius, mSchemePaint);
+    }
+
+    @Override
+    protected void onDrawText(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme, boolean isSelected) {
+        float baselineY = mTextBaseLine + y;
+        int cx = x + mItemWidth / 2;
+        if (hasScheme) {
+            canvas.drawText(String.valueOf(calendar.getDay()),
+                    cx,
+                    baselineY,
+                    calendar.isCurrentDay() ? mCurDayTextPaint :
+                            calendar.isCurrentMonth() ? mSchemeTextPaint : mOtherMonthTextPaint);
+
+        } else {
+            canvas.drawText(String.valueOf(calendar.getDay()), cx, baselineY,
+                    calendar.isCurrentDay() ? mCurDayTextPaint :
+                            calendar.isCurrentMonth() ? mCurMonthTextPaint : mOtherMonthTextPaint);
+        }
+    }
+}
+```
+
 
 ## Licenses
 - Copyright (C) 2013 huanghaibin_dev <huanghaibin_dev@163.com>
