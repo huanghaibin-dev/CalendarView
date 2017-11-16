@@ -36,10 +36,6 @@ import java.util.List;
 @SuppressWarnings("unused")
 public abstract class BaseCalendarCardView extends View implements View.OnClickListener {
 
-    static final int STYLE_FILL = 1;
-
-    static final int STYLE_STROKE = 2;
-
     /**
      * 日历卡高度
      */
@@ -178,17 +174,27 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
     /**
      * 标记的字体颜色
      */
-    protected int mTextSchemeColor;
+    protected int mSchemeTextColor;
+
+    /**
+     * 标记的农历字体颜色
+     */
+    protected int mSchemeLunarTextColor;
 
     /**
      * 当前月份字体颜色
      */
-    protected int mTextCurMonthColor;
+    protected int mCurMonthTextColor;
 
     /**
      * 选中的字体颜色
      */
-    protected int mTextSelectedColor;
+    protected int mSelectedTextColor;
+
+    /**
+     * 选中农历颜色
+     */
+    protected int mSelectedLunarTextColor;
 
     /**
      * 标记颜色
@@ -298,25 +304,27 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
                     calendar.setSchemeColor(scheme.getSchemeColor());
 
                     //if判断规范必须要else，避免错位
+                    mCurMonthLunarTextPaint.setColor(mCurMonthLunarTextColor);
                     if (isSelected) {
                         //将画笔设置为选中颜色
-                        mSchemeTextPaint.setColor(mTextSelectedColor);
-                        mCurMonthLunarTextPaint.setColor(mTextSelectedColor);
+                        mSchemeTextPaint.setColor(mSelectedTextColor);
+                        mCurMonthLunarTextPaint.setColor(mSelectedLunarTextColor);
                         onDrawSelected(canvas, calendar, x, y, true);
                     } else {
                         //将画笔设置为标记颜色
                         mSchemePaint.setColor(calendar.getSchemeColor() != 0 ? calendar.getSchemeColor() : mSchemeColor);
-                        mSchemeTextPaint.setColor(mTextSchemeColor);
-                        mCurMonthLunarTextPaint.setColor(mTextSchemeColor);
+                        mSchemeTextPaint.setColor(mSchemeTextColor);
+                        mCurMonthLunarTextPaint.setColor(mSchemeLunarTextColor);
                         onDrawScheme(canvas, scheme, x, y);
                     }
                     onDrawText(canvas, calendar, x, y, true, isSelected);
                 } else {
                     mCurMonthLunarTextPaint.setColor(mCurMonthLunarTextColor);
-                    mCurMonthTextPaint.setColor(mTextCurMonthColor);
-                    if (d == mCurrentItem) {//绘制选择效果
-                        mCurMonthTextPaint.setColor(mTextSelectedColor);
-                        mCurMonthLunarTextPaint.setColor(mTextSelectedColor);
+                    mCurMonthTextPaint.setColor(mCurMonthTextColor);
+                    if (isSelected) {
+                        //将画笔设置为选中颜色
+                        mCurMonthTextPaint.setColor(mSelectedTextColor);
+                        mCurMonthLunarTextPaint.setColor(mSelectedLunarTextColor);
                         onDrawSelected(canvas, calendar, x, y, false);
                     }
                     onDrawText(canvas, calendar, x, y, false, isSelected);
@@ -530,7 +538,7 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
                       int otherMonthTextColor,
                       int curMonthLunarTextColor,
                       int otherMonthLunarTextColor) {
-        mTextCurMonthColor = curMonthTextColor;
+        mCurMonthTextColor = curMonthTextColor;
         mCurMonthLunarTextColor = curMonthLunarTextColor;
         mCurDayTextPaint.setColor(curDayTextColor);
         mCurMonthTextPaint.setColor(curMonthTextColor);
@@ -547,22 +555,23 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
      * @param schemeColor     标记的颜色
      * @param schemeTextColor 标记的文本颜色
      */
-    void setSchemeColor(int schemeColor, int schemeTextColor) {
+    void setSchemeColor(int schemeColor, int schemeTextColor,int schemeLunarTextColor) {
         mSchemePaint.setStyle(Paint.Style.FILL);
         this.mSchemeColor = schemeColor;
         this.mSchemePaint.setColor(schemeColor);
-        this.mTextSchemeColor = schemeTextColor;
+        this.mSchemeTextColor = schemeTextColor;
         this.mSchemeTextPaint.setColor(schemeTextColor);
+        this.mSchemeLunarTextColor = schemeLunarTextColor;
     }
 
     /**
      * 设置标记的style
      */
-    void setSelectColor( int selectedColor, int selectedTextColor) {
+    void setSelectColor(int selectedColor, int selectedTextColor, int selectedLunarTextColor) {
         mSelectedPaint.setStyle(Paint.Style.FILL);
         this.mSelectedPaint.setColor(selectedColor);
-        this.mTextSelectedColor = selectedTextColor;
-        this.mTextSelectedColor = selectedTextColor;
+        this.mSelectedTextColor = selectedTextColor;
+        this.mSelectedLunarTextColor = selectedLunarTextColor;
     }
 
     /**
@@ -600,7 +609,7 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
      * 1、需要绘制圆形标记事件背景，可以在这里计算半径
      * 2、绘制矩形选中效果，也可以在这里计算矩形宽和高
      */
-    protected  void onPreviewHook(){
+    protected void onPreviewHook() {
         // TODO: 2017/11/16
     }
 
@@ -612,7 +621,7 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
      * @param x 日历Card x起点坐标
      * @param y 日历Card y起点坐标
      */
-    protected  void onLoopStart(int x, int y){
+    protected void onLoopStart(int x, int y) {
         // TODO: 2017/11/16  
     }
 

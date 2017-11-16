@@ -105,22 +105,25 @@
             app:calendar_card_view="com.haibin.calendarviewproject.meizu.MeiZuCalendarCardView"
             app:current_month_text_color="#333333"
             app:lunar_text_color="#CFCFCF"
+            app:lunar_text_size="10sp"
             app:min_year="2004"
             app:other_month_text_color="#e1e1e1"
             app:scheme_text="假"
-            app:scheme_text_color="#333"
-            app:scheme_theme_color="#128c4b"
             app:selected_text_color="#333"
+            app:selected_lunar_text_color="#CFCFCF"
+            app:scheme_text_color="#333"
+            app:scheme_lunar_text_color="#CFCFCF"
+            app:scheme_theme_color="#128c4b"
             app:selected_theme_color="#108cd4"
             app:week_background="#fff"
             app:week_text_color="#111" />
 
         <LinearLayout
             android:id="@+id/linearView"
-            android:clickable="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/content_background"
+            android:clickable="true"
             android:orientation="vertical"
             tools:ignore="KeyboardInaccessibleWidget">
 
@@ -165,7 +168,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:background="@color/line_color"  />
+                android:background="@color/line_color" />
 
             <LinearLayout
                 android:id="@+id/ll_simple"
@@ -252,7 +255,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:background="@color/line_color"  />
+                android:background="@color/line_color" />
 
             <LinearLayout
                 android:id="@+id/ll_colorful"

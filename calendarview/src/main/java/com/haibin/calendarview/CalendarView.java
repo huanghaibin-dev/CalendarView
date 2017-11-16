@@ -58,8 +58,13 @@ public class CalendarView extends FrameLayout {
 
     //字体颜色
     private int mCurDayTextColor, mWeekTextColor,
-            mSchemeTextColor, mOtherMonthTextColor,
-            mCurrentMonthTextColor, mSelectedTextColor, mLunarTextColor;
+            mSchemeTextColor,
+            mSchemeLunarTextColor,
+            mOtherMonthTextColor,
+            mCurrentMonthTextColor,
+            mSelectedTextColor,
+            mSelectedLunarTextColor,
+            mLunarTextColor;
 
     private int mSchemeThemeColor, mSelectedThemeColor;
     private int mWeekBackground;
@@ -81,7 +86,8 @@ public class CalendarView extends FrameLayout {
         super(context, attrs);
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CalendarView);
         mCurDayTextColor = array.getColor(R.styleable.CalendarView_current_day_text_color, Color.RED);
-        mSchemeTextColor = array.getColor(R.styleable.CalendarView_scheme_text_color, Color.RED);
+        mSchemeTextColor = array.getColor(R.styleable.CalendarView_scheme_text_color, 0xFFFFFFFF);
+        mSchemeLunarTextColor = array.getColor(R.styleable.CalendarView_scheme_lunar_text_color, 0xFFe1e1e1);
         mSchemeThemeColor = array.getColor(R.styleable.CalendarView_scheme_theme_color, 0x50CFCFCF);
         mCalendarCardViewClass = array.getString(R.styleable.CalendarView_calendar_card_view);
 
@@ -90,7 +96,7 @@ public class CalendarView extends FrameLayout {
 
         mSelectedThemeColor = array.getColor(R.styleable.CalendarView_selected_theme_color, 0x50CFCFCF);
         mSelectedTextColor = array.getColor(R.styleable.CalendarView_selected_text_color, 0xFF111111);
-
+        mSelectedLunarTextColor = array.getColor(R.styleable.CalendarView_selected_lunar_text_color, 0xFF111111);
         mCurrentMonthTextColor = array.getColor(R.styleable.CalendarView_current_month_text_color, 0xFF111111);
         mOtherMonthTextColor = array.getColor(R.styleable.CalendarView_other_month_text_color, 0xFFe1e1e1);
 
@@ -98,9 +104,9 @@ public class CalendarView extends FrameLayout {
         mMinYear = array.getInt(R.styleable.CalendarView_min_year, 2010);
         mMaxYear = array.getInt(R.styleable.CalendarView_max_year, 2050);
 
-        mDayTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_day_text_size, Util.dipToPx(context,16));
-        mLunarTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_lunar_text_size, Util.dipToPx(context,12));
-        mCalendarItemHeight = (int) array.getDimension(R.styleable.CalendarView_calendar_height, Util.dipToPx(context,56));
+        mDayTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_day_text_size, Util.dipToPx(context, 16));
+        mLunarTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_lunar_text_size, Util.dipToPx(context, 10));
+        mCalendarItemHeight = (int) array.getDimension(R.styleable.CalendarView_calendar_height, Util.dipToPx(context, 56));
         if (mMinYear <= 1900) mMaxYear = 1900;
         if (mMaxYear >= 2099) mMaxYear = 2099;
         array.recycle();
@@ -401,8 +407,8 @@ public class CalendarView extends FrameLayout {
             view.setTag(position);
             view.setCurrentDate(year, month);
             view.setSelectedCalendar(mSelectedCalendar);
-            view.setSchemeColor(mSchemeThemeColor, mSchemeTextColor);
-            view.setSelectColor(mSelectedThemeColor, mSelectedTextColor);
+            view.setSchemeColor(mSchemeThemeColor, mSchemeTextColor, mSchemeLunarTextColor);
+            view.setSelectColor(mSelectedThemeColor, mSelectedTextColor, mSelectedLunarTextColor);
             view.setTextColor(mCurDayTextColor, mCurrentMonthTextColor, mOtherMonthTextColor, mLunarTextColor, mLunarTextColor);
             container.addView(view);
             return view;
@@ -521,8 +527,8 @@ public class CalendarView extends FrameLayout {
         mSelectLayout.update();
         for (int i = 0; i < mViewPager.getChildCount(); i++) {
             BaseCalendarCardView view = (BaseCalendarCardView) mViewPager.getChildAt(i);
-            view.setSchemeColor(mSchemeThemeColor, mSchemeTextColor);
-            view.setSelectColor(mSelectedThemeColor, mSelectedTextColor);
+            view.setSchemeColor(mSchemeThemeColor, mSchemeTextColor, mSchemeLunarTextColor);
+            view.setSelectColor(mSelectedThemeColor, mSelectedTextColor, mSelectedLunarTextColor);
             view.setTextColor(mCurDayTextColor, mCurrentMonthTextColor, mOtherMonthTextColor, mLunarTextColor, mLunarTextColor);
             view.update();
         }

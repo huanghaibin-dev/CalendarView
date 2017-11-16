@@ -18,6 +18,7 @@
 
         <attr name="selected_theme_color" format="color" />
         <attr name="selected_text_color" format="color" />
+        <attr name="selected_lunar_text_color" format="color" />
 
         <attr name="current_day_text_color" format="color" />
         <attr name="current_month_text_color" format="color" />

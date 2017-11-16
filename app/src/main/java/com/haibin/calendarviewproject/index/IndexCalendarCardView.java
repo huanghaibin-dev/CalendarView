@@ -66,7 +66,7 @@ public class IndexCalendarCardView extends BaseCalendarCardView {
             canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
                     calendar.isCurrentDay() ? mCurDayTextPaint :
                             calendar.isCurrentMonth() ? mSchemeTextPaint : mOtherMonthTextPaint);
-            //mSchemeBasicPaint.setColor(calendar.getSchemeColor());
+            mSchemeBasicPaint.setColor(calendar.getSchemeColor());
             canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + y + mItemHeight / 10, mCurMonthLunarTextPaint);
             canvas.drawRect(x + mItemWidth / 2 - mW / 2,
                     y + mItemHeight - mH * 2 - mPadding,

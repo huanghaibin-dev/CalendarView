@@ -42,21 +42,6 @@ public class MeiZuCalendarCardView extends BaseCalendarCardView {
     }
 
     @Override
-    protected void onPreviewHook() {
-        mCurMonthTextPaint.setTextSize(dipToPx(getContext(),16));
-        mOtherMonthTextPaint.setTextSize(dipToPx(getContext(),16));
-        mSchemeTextPaint.setTextSize(dipToPx(getContext(),16));
-        mCurDayTextPaint.setTextSize(dipToPx(getContext(),16));
-        mCurMonthLunarTextPaint.setTextSize(dipToPx(getContext(),12));
-        mOtherMonthLunarTextPaint.setTextSize(dipToPx(getContext(),12));
-    }
-
-    @Override
-    protected void onLoopStart(int x, int y) {
-
-    }
-
-    @Override
     protected void onDrawSelected(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme) {
         mSelectedPaint.setStyle(Paint.Style.FILL);
         mSelectedPaint.setColor(0x80cfcfcf);
@@ -74,7 +59,7 @@ public class MeiZuCalendarCardView extends BaseCalendarCardView {
         int top = y - mItemHeight / 6;
         if (hasScheme) {
             //mSchemeTextPaint.setColor(calendar.getSchemeColor());
-            mCurMonthLunarTextPaint.setColor(mCurMonthLunarTextColor);
+            //mCurMonthLunarTextPaint.setColor(mCurMonthLunarTextColor);
             canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
                     calendar.isCurrentDay() ? mCurDayTextPaint :
                             calendar.isCurrentMonth() ? mSchemeTextPaint : mOtherMonthTextPaint);
