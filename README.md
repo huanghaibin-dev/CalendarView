@@ -152,14 +152,12 @@ public void shrink(); //收缩
 ```
 
 ### 效果预览
-### 多颜色fill风格
-<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/Screenshot_2017-08-30-18-14-09-184_com.haibin.cal.png" height="650"/><img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/Screenshot_2017-08-30-18-14-14-217_com.haibin.cal.png" height="650"/>
-### 快速选择月份
-<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/Screenshot_2017-09-19-15-54-12-763_com.haibin.cal.png" height="650"/><img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/Screenshot_2017-09-19-15-59-30-674_com.haibin.cal.png" height="650"/>
-### 单颜色fill风格
-<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/Screenshot_2017-08-30-18-14-46-468_com.haibin.cal.png" height="650"/><img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/Screenshot_2017-08-30-18-15-00-435_com.haibin.cal.png" height="650"/>
-### 多颜色stroke风格
-<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/Screenshot_2017-08-30-18-39-16-806_com.haibin.cal.png" height="650"/><img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/Screenshot_2017-08-30-18-39-45-843_com.haibin.cal.png" height="650"/>
+### 收缩展开的魅族风格效果
+<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/meizu.jpeg" height="650"/><img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/shrink.jpeg" height="650"/>
+### 下标和多彩风格
+<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/index.jpeg" height="650"/><img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/colorful.jpeg" height="650"/>
+### 快速年份月份切换
+<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/month" height="650"/><img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/simple.jpeg" height="650"/>
 
 ## Licenses
 - Copyright (C) 2013 huanghaibin_dev <huanghaibin_dev@163.com>
