@@ -11,11 +11,17 @@ import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
 import com.haibin.calendarviewproject.R;
 import com.haibin.calendarviewproject.base.activity.BaseActivity;
+import com.haibin.calendarviewproject.index.IndexActivity;
+import com.haibin.calendarviewproject.meizu.MeiZuActivity;
+import com.haibin.calendarviewproject.simple.SimpleActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ColorfulActivity extends BaseActivity implements CalendarView.OnDateSelectedListener, CalendarView.OnDateChangeListener {
+public class ColorfulActivity extends BaseActivity implements
+        CalendarView.OnDateSelectedListener,
+        CalendarView.OnDateChangeListener ,
+        View.OnClickListener{
 
     TextView mTextMonthDay;
 
@@ -91,7 +97,29 @@ public class ColorfulActivity extends BaseActivity implements CalendarView.OnDat
         schemes.add(getSchemeCalendar(year, month, 25, 0xFF13acf0,"假"));
         mCalendarView.setSchemeDate(schemes);
 
+        findViewById(R.id.ll_flyme).setOnClickListener(this);
+        findViewById(R.id.ll_simple).setOnClickListener(this);
+        findViewById(R.id.ll_colorful).setOnClickListener(this);
+        findViewById(R.id.ll_index).setOnClickListener(this);
+    }
 
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.ll_flyme:
+                MeiZuActivity.show(this);
+                break;
+            case R.id.ll_simple:
+                SimpleActivity.show(this);
+                break;
+            case R.id.ll_colorful:
+                ColorfulActivity.show(this);
+                break;
+            case R.id.ll_index:
+                IndexActivity.show(this);
+                break;
+        }
     }
 
     private Calendar getSchemeCalendar(int year, int month, int day, int color,String text) {

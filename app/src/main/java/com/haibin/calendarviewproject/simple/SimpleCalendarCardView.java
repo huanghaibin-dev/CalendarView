@@ -24,6 +24,7 @@ public class SimpleCalendarCardView extends BaseCalendarCardView {
     @Override
     protected void onPreviewHook() {
         mRadius = Math.min(mItemWidth, mItemHeight) / 5 * 2;
+        mSchemePaint.setStyle(Paint.Style.STROKE);
     }
 
     @Override
