@@ -8,7 +8,9 @@
         <attr name="calendar_card_view" format="string" /><!-- -->
 
         <attr name="scheme_text" format="string" />
-        <attr name="scheme_text_size" format="dimension" />
+        <attr name="day_text_size" format="dimension" />
+        <attr name="lunar_text_size" format="dimension" />
+        <attr name="calendar_height" format="dimension" />
         <attr name="scheme_text_color" format="color" />
         <attr name="scheme_month_text_color" format="color" />
         <attr name="scheme_lunar_text_color" format="color" />
@@ -23,21 +25,9 @@
         <attr name="lunar_text_color" format="color" />
         <attr name="other_month_lunar_text_color" format="color" />
 
-
         <attr name="min_year" format="integer" />
         <attr name="max_year" format="integer" />
 
-        <attr name="scheme_theme_style" format="integer">
-            <enum name="fill" value="1" />
-            <enum name="stroke" value="2" />
-        </attr>
-
-        <attr name="selected_theme_style" format="integer">
-            <enum name="fill" value="1" />
-            <enum name="stroke" value="2" />
-        </attr>
-
-        <attr name="show_lunar" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="MonthView">

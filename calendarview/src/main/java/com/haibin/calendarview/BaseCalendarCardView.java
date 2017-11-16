@@ -313,7 +313,10 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
                     onDrawText(canvas, calendar, x, y, true, isSelected);
                 } else {
                     mCurMonthLunarTextPaint.setColor(mCurMonthLunarTextColor);
+                    mCurMonthTextPaint.setColor(mTextCurMonthColor);
                     if (d == mCurrentItem) {//绘制选择效果
+                        mCurMonthTextPaint.setColor(mTextSelectedColor);
+                        mCurMonthLunarTextPaint.setColor(mTextSelectedColor);
                         onDrawSelected(canvas, calendar, x, y, false);
                     }
                     onDrawText(canvas, calendar, x, y, false, isSelected);
@@ -541,16 +544,11 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
     /**
      * 设置事务标记
      *
-     * @param style           标记的style CalendarCardView.STYLE_FILL or CalendarCardView.STYLE_STROKE
      * @param schemeColor     标记的颜色
      * @param schemeTextColor 标记的文本颜色
      */
-    void setSchemeColor(int style, int schemeColor, int schemeTextColor) {
-        if (style == STYLE_STROKE) {
-            mSchemePaint.setStyle(Paint.Style.STROKE);
-        } else {
-            mSchemePaint.setStyle(Paint.Style.FILL);
-        }
+    void setSchemeColor(int schemeColor, int schemeTextColor) {
+        mSchemePaint.setStyle(Paint.Style.FILL);
         this.mSchemeColor = schemeColor;
         this.mSchemePaint.setColor(schemeColor);
         this.mTextSchemeColor = schemeTextColor;
@@ -559,15 +557,9 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
 
     /**
      * 设置标记的style
-     *
-     * @param style 选中的style CalendarCardView.STYLE_FILL or CalendarCardView.STYLE_STROKE
      */
-    void setSelectColor(int style, int selectedColor, int selectedTextColor) {
-        if (style == STYLE_STROKE) {
-            mSelectedPaint.setStyle(Paint.Style.STROKE);
-        } else {
-            mSelectedPaint.setStyle(Paint.Style.FILL);
-        }
+    void setSelectColor( int selectedColor, int selectedTextColor) {
+        mSelectedPaint.setStyle(Paint.Style.FILL);
         this.mSelectedPaint.setColor(selectedColor);
         this.mTextSelectedColor = selectedTextColor;
         this.mTextSelectedColor = selectedTextColor;
@@ -581,11 +573,11 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
      */
     @SuppressWarnings("all")
     void setDayTextSize(float calendarTextSize, float lunarTextSize) {
-        mCurMonthTextPaint.setTextSize(Util.dipToPx(getContext(), calendarTextSize));
+        mCurMonthTextPaint.setTextSize(calendarTextSize);
         mOtherMonthTextPaint.setTextSize(mCurMonthTextPaint.getTextSize());
         mCurDayTextPaint.setTextSize(mCurMonthTextPaint.getTextSize());
         mSchemeTextPaint.setTextSize(mCurMonthTextPaint.getTextSize());
-        mCurMonthLunarTextPaint.setTextSize(Util.dipToPx(getContext(), lunarTextSize));
+        mCurMonthLunarTextPaint.setTextSize(lunarTextSize);
     }
 
 

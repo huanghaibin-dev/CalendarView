@@ -109,12 +109,9 @@
             app:scheme_text="假"
             app:scheme_text_color="#333"
             app:scheme_theme_color="#128c4b"
-            app:scheme_theme_style="fill"
             app:calendar_card_view="com.haibin.calendarviewproject.index.IndexCalendarCardView"
             app:selected_text_color="#333"
             app:selected_theme_color="#108cd4"
-            app:show_lunar="false"
-            app:selected_theme_style="stroke"
             app:week_background="#fff"
             app:week_text_color="#111" />
 

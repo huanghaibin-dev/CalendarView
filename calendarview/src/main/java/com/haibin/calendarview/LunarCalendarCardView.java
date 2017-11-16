@@ -6,7 +6,7 @@ import android.graphics.Canvas;
 /**
  * 带农历的
  */
-
+@SuppressWarnings("unused")
 public class LunarCalendarCardView extends BaseCalendarCardView {
 
     private int mRadius;
