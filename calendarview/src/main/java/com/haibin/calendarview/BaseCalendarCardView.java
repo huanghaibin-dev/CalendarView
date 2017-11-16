@@ -286,6 +286,8 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
                 int y = i * mItemHeight;
                 onLoopStart(x, y);
                 Calendar calendar = mItems.get(d);
+                mCurMonthLunarTextPaint.setColor(mCurMonthLunarTextColor);
+                mOtherMonthLunarTextPaint.setColor(mOtherMonthLunarTextColor);
                 boolean isSelected = d == mCurrentItem;
                 if (mSchemes != null && mSchemes.contains(calendar)) {
                     //标记的日子
@@ -294,7 +296,6 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
                     calendar.setSchemeColor(scheme.getSchemeColor());
 
                     //if判断规范必须要else，避免错位
-                    mCurMonthLunarTextPaint.setColor(mCurMonthLunarTextColor);
                     if (isSelected) {
                         //将画笔设置为选中颜色
                         mSchemeTextPaint.setColor(mSelectedTextColor);
@@ -309,7 +310,6 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
                     }
                     onDrawText(canvas, calendar, x, y, true, isSelected);
                 } else {
-                    mCurMonthLunarTextPaint.setColor(mCurMonthLunarTextColor);
                     mCurMonthTextPaint.setColor(mCurMonthTextColor);
                     if (isSelected) {
                         //将画笔设置为选中颜色

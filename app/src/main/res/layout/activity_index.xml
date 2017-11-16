@@ -103,7 +103,7 @@
             android:layout_height="wrap_content"
             android:background="#fff"
             app:current_month_text_color="#333333"
-            app:lunar_text_color="#CFCFCF"
+            app:current_month_lunar_text_color="#CFCFCF"
             app:min_year="2004"
             app:other_month_text_color="#e1e1e1"
             app:scheme_text="假"

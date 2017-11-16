@@ -23,14 +23,30 @@ import java.io.Serializable;
  */
 @SuppressWarnings("all")
 public class Calendar implements Serializable {
+
+    /**年*/
     private int year;
+
+    /**月*/
     private int month;
+
+    /**日*/
     private int day;
-    private boolean isCurrentMonth;//是否是本月
-    private boolean isCurrentDay;//是否是今天
-    private String lunar;//农历
-    private String scheme;//计划，可以用来标记当天是否有任务
-    private int schemeColor;//各种自定义标记颜色、没有则选择默认颜色
+
+    /**是否是本月*/
+    private boolean isCurrentMonth;
+
+    /**是否是今天*/
+    private boolean isCurrentDay;//
+
+    /**农历*/
+    private String lunar;
+
+    /**计划，可以用来标记当天是否有任务*/
+    private String scheme;
+
+    /**各种自定义标记颜色、没有则选择默认颜色*/
+    private int schemeColor;
 
     public int getYear() {
         return year;

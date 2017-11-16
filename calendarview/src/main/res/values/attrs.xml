@@ -23,7 +23,7 @@
         <attr name="current_day_text_color" format="color" />
         <attr name="current_month_text_color" format="color" />
         <attr name="other_month_text_color" format="color" />
-        <attr name="lunar_text_color" format="color" />
+        <attr name="current_month_lunar_text_color" format="color" />
         <attr name="other_month_lunar_text_color" format="color" />
 
         <attr name="min_year" format="integer" />

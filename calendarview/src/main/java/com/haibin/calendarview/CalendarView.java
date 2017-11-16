@@ -43,20 +43,35 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public class CalendarView extends FrameLayout {
+
+    /**自定义自适应高度的ViewPager*/
     private WrapViewPager mViewPager;
+
+    /**标记的日期*/
     private List<Calendar> mSchemeDate;
 
+    /**日期切换监听*/
     private OnDateChangeListener mListener;
+
+    /**日期被选中监听*/
     private OnDateSelectedListener mDateSelectedListener;
+
+    /**内部日期切换监听，用于内部更新计算*/
     private OnInnerDateSelectedListener mInnerListener;
 
+    /**月份快速选取*/
     private MonthSelectLayout mSelectLayout;
+
+    /**星期栏*/
     private LinearLayout mLinearWeek;
+
+    /**日历外部收缩布局*/
     CalendarLayout mParentLayout;
 
+    /***/
     private int mCurYear, mCurMonth, mCurDay;
 
-    //字体颜色
+    /**各种字体颜色，看名字知道对应的地方*/
     private int mCurDayTextColor, mWeekTextColor,
             mSchemeTextColor,
             mSchemeLunarTextColor,
@@ -64,17 +79,28 @@ public class CalendarView extends FrameLayout {
             mCurrentMonthTextColor,
             mSelectedTextColor,
             mSelectedLunarTextColor,
-            mLunarTextColor;
+            mCurMonthLunarTextColor,
+            mOtherMonthLunarTextColor;
 
+    /**标记的主题色和选中的主题色*/
     private int mSchemeThemeColor, mSelectedThemeColor;
+
+    /**星期栏的背景*/
     private int mWeekBackground;
 
-    //自定义的日历路径
+    /**自定义的日历路径*/
     private String mCalendarCardViewClass;
 
+    /**最小年份和最大年份*/
     static int mMinYear, mMaxYear;
+
+    /**保存选中的日期*/
     private Calendar mSelectedCalendar;
+
+    /**日期和农历文本大小*/
     private int mDayTextSize, mLunarTextSize;
+
+    /**日历卡的项高度*/
     private int mCalendarItemHeight;
 
 
@@ -100,7 +126,8 @@ public class CalendarView extends FrameLayout {
         mCurrentMonthTextColor = array.getColor(R.styleable.CalendarView_current_month_text_color, 0xFF111111);
         mOtherMonthTextColor = array.getColor(R.styleable.CalendarView_other_month_text_color, 0xFFe1e1e1);
 
-        mLunarTextColor = array.getColor(R.styleable.CalendarView_lunar_text_color, Color.GRAY);
+        mCurMonthLunarTextColor = array.getColor(R.styleable.CalendarView_current_month_lunar_text_color, Color.GRAY);
+        mOtherMonthLunarTextColor = array.getColor(R.styleable.CalendarView_other_month_lunar_text_color, Color.GRAY);
         mMinYear = array.getInt(R.styleable.CalendarView_min_year, 2010);
         mMaxYear = array.getInt(R.styleable.CalendarView_max_year, 2050);
 
@@ -409,7 +436,7 @@ public class CalendarView extends FrameLayout {
             view.setSelectedCalendar(mSelectedCalendar);
             view.setSchemeColor(mSchemeThemeColor, mSchemeTextColor, mSchemeLunarTextColor);
             view.setSelectColor(mSelectedThemeColor, mSelectedTextColor, mSelectedLunarTextColor);
-            view.setTextColor(mCurDayTextColor, mCurrentMonthTextColor, mOtherMonthTextColor, mLunarTextColor, mLunarTextColor);
+            view.setTextColor(mCurDayTextColor, mCurrentMonthTextColor, mOtherMonthTextColor, mCurMonthLunarTextColor, mOtherMonthLunarTextColor);
             container.addView(view);
             return view;
         }
@@ -469,16 +496,19 @@ public class CalendarView extends FrameLayout {
     /**
      * 设置文本颜色
      *
-     * @param curMonthTextColor 当前月份字体颜色
-     * @param otherMonthColor   其它月份字体颜色
-     * @param lunarTextColor    农历字体颜色
+     * @param curMonthTextColor        当前月份字体颜色
+     * @param otherMonthColor          其它月份字体颜色
+     * @param curMonthLunarTextColor   当前月份农历字体颜色
+     * @param otherMonthLunarTextColor 其它农历字体颜色
      */
     public void setTextColor(int curMonthTextColor,
                              int otherMonthColor,
-                             int lunarTextColor) {
+                             int curMonthLunarTextColor,
+                             int otherMonthLunarTextColor) {
         this.mCurrentMonthTextColor = curMonthTextColor;
-        this.mLunarTextColor = lunarTextColor;
+        this.mCurMonthLunarTextColor = curMonthLunarTextColor;
         this.mOtherMonthTextColor = otherMonthColor;
+        this.mOtherMonthLunarTextColor = otherMonthLunarTextColor;
     }
 
     /**
@@ -530,7 +560,7 @@ public class CalendarView extends FrameLayout {
             BaseCalendarCardView view = (BaseCalendarCardView) mViewPager.getChildAt(i);
             view.setSchemeColor(mSchemeThemeColor, mSchemeTextColor, mSchemeLunarTextColor);
             view.setSelectColor(mSelectedThemeColor, mSelectedTextColor, mSelectedLunarTextColor);
-            view.setTextColor(mCurDayTextColor, mCurrentMonthTextColor, mOtherMonthTextColor, mLunarTextColor, mLunarTextColor);
+            view.setTextColor(mCurDayTextColor, mCurrentMonthTextColor, mOtherMonthTextColor, mCurMonthLunarTextColor, mOtherMonthLunarTextColor);
             view.update();
         }
     }

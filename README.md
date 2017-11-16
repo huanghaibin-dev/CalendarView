@@ -1,17 +1,17 @@
 # CalenderView
-Android上一个优雅、高度自定义、性能高效的日历控件，支持标记、自定义颜色、农历等。Canvas绘制，速度快、占用内存低，2.0.0版本全新重构、支持收缩展开、性能更加高效，
+Android上一个优雅、高度自定义、性能高效的日历控件，支持标记、自定义颜色、农历等。Canvas绘制，速度快、占用内存低，3.0.0版本全新重构，支持简单重新即可实现任意自定义布局、自定义UI，支持收缩展开、性能非常高效，
 简单的说老版本是使用RecyclerView + Canvas 的、这种方式对于自定义控件的复杂度下降了很多，但是相反内存占用却上升了，如果使用一个View替换RecyclerView，则控件数相比会下降130+，每个页面就有43个控件，
-所以2.0.0版本内存和效率优势提升就相当明显了，而且真正做到收缩+展开，适配多种场景，支持同时多种颜色标记日历事务，更多参考用法请移步MainActivity
+3.0.0版本内存和效率优势提升相当明显，而且真正做到收缩+展开，适配多种场景，支持同时多种颜色标记日历事务，更多参考用法请移步Demo。
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:2.0.2'
+compile 'com.haibin:calendarview:3.0.0'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>2.0.2</version>
+  <version>3.0.0</version>
   <type>pom</type>
 </dependency>
 ```
@@ -24,24 +24,23 @@ compile 'com.haibin:calendarview:2.0.2'
         app:calendar_content_view_id="@+id/recyclerView">
 
         <com.haibin.calendarview.CalendarView
-            android:id="@+id/calendarView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#fff"
-            app:current_month_text_color="#333333"
-            app:lunar_text_color="#CFCFCF"
-            app:min_year="2004"
-            app:other_month_text_color="#e1e1e1"
-            app:scheme_text="假"
-            app:scheme_text_color="#fff"
-            app:scheme_theme_color="#2eb654"
-            app:scheme_theme_style="fill"
-            app:selected_text_color="#333"
-            app:selected_theme_color="#108cd4"
-            app:show_lunar="true"
-            app:selected_theme_style="stroke"
-            app:week_background="#fff"
-            app:week_text_color="#111" />
+             android:id="@+id/calendarView"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:background="#fff"
+             app:calendar_card_view="com.haibin.calendarviewproject.simple.SimpleCalendarCardView"
+             app:calendar_height="50dp"
+             app:current_month_text_color="#333333"
+             app:current_month_lunar_text_color="#CFCFCF"
+             app:min_year="2004"
+             app:other_month_text_color="#e1e1e1"
+             app:scheme_text="假"
+             app:scheme_text_color="#333"
+             app:scheme_theme_color="#333"
+             app:selected_text_color="#fff"
+             app:selected_theme_color="#333"
+             app:week_background="#fff"
+             app:week_text_color="#111" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -55,40 +54,35 @@ compile 'com.haibin:calendarview:2.0.2'
 ```xml
 <declare-styleable name="CalendarView">
 
+        <attr name="calendar_card_view" format="color" /> <!--热插拔自定义类路径-->
+
         <attr name="week_background" format="color" /> <!--星期栏的背景-->
         <attr name="week_text_color" format="color" /> <!--星期栏文本颜色-->
 
         <attr name="current_day_text_color" format="color" /> <!--今天的文本颜色-->
 
-        <attr name="scheme_text" format="string" /> <!--标记文本-->
+        <attr name="day_text_size" format="string" /> <!--天数文本大小-->
+        <attr name="lunar_text_size" format="string" /> <!--农历文本大小-->
 
+        <attr name="scheme_text" format="string" /> <!--标记文本-->
         <attr name="scheme_text_color" format="color" /> <!--标记文本颜色-->
+        <attr name="scheme_month_text_color" format="color" /> <!--标记天数文本颜色-->
+        <attr name="scheme_lunar_text_color" format="color" /> <!--标记农历文本颜色-->
 
         <attr name="scheme_theme_color" format="color" /> <!--标记的颜色-->
 
         <attr name="selected_theme_color" format="color" /> <!--选中颜色-->
-
         <attr name="selected_text_color" format="color" /> <!--选中文本颜色-->
+        <attr name="selected_lunar_text_color" format="color" /> <!--选中农历文本颜色-->
 
         <attr name="current_month_text_color" format="color" /> <!--当前月份的字体颜色-->
         <attr name="other_month_text_color" format="color" /> <!--其它月份的字体颜色-->
 
-        <attr name="lunar_text_color" format="color" /> <!--农历节假日颜色-->
-        <attr name="show_lunar" format="boolean" /> <!--是否显示农历-->
-
+        <attr name="current_month_lunar_text_color" format="color" /> <!--当前月份农历节假日颜色-->
+        <attr name="other_month_lunar_text_color" format="color" /> <!--其它月份农历节假日颜色-->
 
         <attr name="min_year" format="integer" />  <!--最小年份1900-->
         <attr name="max_year" format="integer" /> <!--最大年份2099-->
-
-        <attr name="scheme_theme_style" format="integer"> <!--标记style-->
-            <enum name="fill" value="1" />
-            <enum name="stroke" value="2" />
-        </attr>
-
-        <attr name="selected_theme_style" format="integer"> <!--选择style-->
-            <enum name="fill" value="1" />
-            <enum name="stroke" value="2" />
-        </attr>
         
 </declare-styleable>
 ```
