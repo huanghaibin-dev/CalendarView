@@ -16,6 +16,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".meizu.MeiZuActivity"/>
+        <activity android:name=".index.IndexActivity"/>
+        <activity android:name=".simple.SimpleActivity"/>
+        <activity android:name=".colorful.ColorfulActivity"/>
     </application>
 
 </manifest>

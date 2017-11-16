@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.haibin.calendarviewproject;
+package com.haibin.calendarviewproject.base.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -28,9 +28,9 @@ import java.util.List;
  * 基本的适配器
  */
 @SuppressWarnings("unused")
-abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
+public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
 
-    LayoutInflater mInflater;
+    protected LayoutInflater mInflater;
     private List<T> mItems;
     private OnItemClickListener onItemClickListener;
     private OnClickListener onClickListener;

@@ -608,7 +608,9 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
      * 1、需要绘制圆形标记事件背景，可以在这里计算半径
      * 2、绘制矩形选中效果，也可以在这里计算矩形宽和高
      */
-    protected abstract void onPreviewHook();
+    protected  void onPreviewHook(){
+        // TODO: 2017/11/16
+    }
 
 
     /**
@@ -618,7 +620,9 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
      * @param x 日历Card x起点坐标
      * @param y 日历Card y起点坐标
      */
-    protected abstract void onLoopStart(int x, int y);
+    protected  void onLoopStart(int x, int y){
+        // TODO: 2017/11/16  
+    }
 
     /**
      * 绘制选中的日期

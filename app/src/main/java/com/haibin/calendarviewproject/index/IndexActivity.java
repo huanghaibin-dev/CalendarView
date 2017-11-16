@@ -1,6 +1,10 @@
-package com.haibin.calendarviewproject;
+package com.haibin.calendarviewproject.index;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -8,18 +12,12 @@ import android.widget.TextView;
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
 import com.haibin.calendarviewproject.base.activity.BaseActivity;
-import com.haibin.calendarviewproject.colorful.ColorfulActivity;
-import com.haibin.calendarviewproject.index.IndexActivity;
-import com.haibin.calendarviewproject.meizu.MeiZuActivity;
-import com.haibin.calendarviewproject.simple.SimpleActivity;
+import com.haibin.calendarviewproject.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseActivity implements
-        CalendarView.OnDateSelectedListener,
-        CalendarView.OnDateChangeListener,
-        View.OnClickListener{
+public class IndexActivity extends BaseActivity implements CalendarView.OnDateSelectedListener, CalendarView.OnDateChangeListener {
 
     TextView mTextMonthDay;
 
@@ -34,9 +32,13 @@ public class MainActivity extends BaseActivity implements
     RelativeLayout mRelativeTool;
     private int mYear;
 
+    public static void show(Context context) {
+        context.startActivity(new Intent(context, IndexActivity.class));
+    }
+
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_main;
+        return R.layout.activity_index;
     }
 
     @SuppressLint("SetTextI18n")
@@ -79,38 +81,26 @@ public class MainActivity extends BaseActivity implements
         List<Calendar> schemes = new ArrayList<>();
         int year = mCalendarView.getCurYear();
         int month = mCalendarView.getCurMonth();
-        schemes.add(getSchemeCalendar(year, month, 3, 0xFF40db25,"假"));
-        schemes.add(getSchemeCalendar(year, month, 6, 0xFFe69138,"事"));
-        schemes.add(getSchemeCalendar(year, month, 9, 0xFFdf1356,"议"));
-        schemes.add(getSchemeCalendar(year, month, 13, 0xFFedc56d,"记"));
-        schemes.add(getSchemeCalendar(year, month, 14, 0xFFedc56d,"记"));
-        schemes.add(getSchemeCalendar(year, month, 15, 0xFFaacc44,"假"));
-        schemes.add(getSchemeCalendar(year, month, 18, 0xFFbc13f0,"记"));
-        schemes.add(getSchemeCalendar(year, month, 25, 0xFF13acf0,"假"));
+
+        schemes.add(getSchemeCalendar(year, month, 3, 0xFF40db25, "假"));
+        schemes.add(getSchemeCalendar(year, month, 6, 0xFFe69138, "事"));
+        schemes.add(getSchemeCalendar(year, month, 9, 0xFFdf1356, "议"));
+        schemes.add(getSchemeCalendar(year, month, 13, 0xFFedc56d, "记"));
+        schemes.add(getSchemeCalendar(year, month, 14, 0xFFedc56d, "记"));
+        schemes.add(getSchemeCalendar(year, month, 15, 0xFFaacc44, "假"));
+        schemes.add(getSchemeCalendar(year, month, 18, 0xFFbc13f0, "记"));
+        schemes.add(getSchemeCalendar(year, month, 25, 0xFF13acf0, "假"));
         mCalendarView.setSchemeDate(schemes);
-        findViewById(R.id.ll_flyme).setOnClickListener(this);
-        findViewById(R.id.ll_simple).setOnClickListener(this);
-        findViewById(R.id.ll_colorful).setOnClickListener(this);
-        findViewById(R.id.ll_index).setOnClickListener(this);
-    }
 
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.ll_flyme:
-                MeiZuActivity.show(this);
-                break;
-            case R.id.ll_simple:
-                SimpleActivity.show(this);
-                break;
-            case R.id.ll_colorful:
-                ColorfulActivity.show(this);
-                break;
-            case R.id.ll_index:
-                IndexActivity.show(this);
-                break;
-        }
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        final StringAdapter mAdapter = new StringAdapter(this);
+//        recyclerView.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                recyclerView.setAdapter(mAdapter);
+//            }
+//        });
     }
 
     private Calendar getSchemeCalendar(int year, int month, int day, int color, String text) {

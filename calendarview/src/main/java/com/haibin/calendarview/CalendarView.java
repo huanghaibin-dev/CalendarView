@@ -83,8 +83,8 @@ public class CalendarView extends FrameLayout {
         super(context, attrs);
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CalendarView);
         mCurDayTextColor = array.getColor(R.styleable.CalendarView_current_day_text_color, Color.RED);
-        mSchemeStyle = array.getInt(R.styleable.CalendarView_scheme_theme_style, CalendarCardView.STYLE_STROKE);
-        mSelectThemeStyle = array.getInt(R.styleable.CalendarView_selected_theme_style, CalendarCardView.STYLE_STROKE);
+        mSchemeStyle = array.getInt(R.styleable.CalendarView_scheme_theme_style, BaseCalendarCardView.STYLE_STROKE);
+        mSelectThemeStyle = array.getInt(R.styleable.CalendarView_selected_theme_style, BaseCalendarCardView.STYLE_STROKE);
         mSchemeTextColor = array.getColor(R.styleable.CalendarView_scheme_text_color, Color.RED);
         mSchemeThemeColor = array.getColor(R.styleable.CalendarView_scheme_theme_color, 0x50CFCFCF);
         isShowLunar = array.getBoolean(R.styleable.CalendarView_show_lunar, true);
@@ -114,7 +114,7 @@ public class CalendarView extends FrameLayout {
      * @param context context
      */
     private void init(Context context) {
-        BaseCalendarCardView.ITEM_HEIGHT = Util.dipToPx(context, 50);
+        BaseCalendarCardView.ITEM_HEIGHT = Util.dipToPx(context, 56);
         BaseCalendarCardView.mItemHeight = BaseCalendarCardView.ITEM_HEIGHT;
         LayoutInflater.from(context).inflate(R.layout.cv_layout_calendar_view, this, true);
         this.mViewPager = (WrapViewPager) findViewById(R.id.vp_calendar);

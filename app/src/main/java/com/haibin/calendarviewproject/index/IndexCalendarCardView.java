@@ -1,4 +1,4 @@
-package com.haibin.calendarviewproject;
+package com.haibin.calendarviewproject.index;
 
 import android.content.Context;
 import android.graphics.Canvas;

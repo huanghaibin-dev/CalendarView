@@ -1,4 +1,4 @@
-package com.haibin.calendarviewproject;
+package com.haibin.calendarviewproject.meizu;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -43,7 +43,12 @@ public class MeiZuCalendarCardView extends BaseCalendarCardView {
 
     @Override
     protected void onPreviewHook() {
-
+        mCurMonthTextPaint.setTextSize(dipToPx(getContext(),16));
+        mOtherMonthTextPaint.setTextSize(dipToPx(getContext(),16));
+        mSchemeTextPaint.setTextSize(dipToPx(getContext(),16));
+        mCurDayTextPaint.setTextSize(dipToPx(getContext(),16));
+        mCurMonthLunarTextPaint.setTextSize(dipToPx(getContext(),12));
+        mOtherMonthLunarTextPaint.setTextSize(dipToPx(getContext(),12));
     }
 
     @Override
