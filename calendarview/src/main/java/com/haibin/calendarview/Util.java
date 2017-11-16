@@ -61,6 +61,7 @@ final class Util {
 
     @SuppressWarnings("unused")
     @SuppressLint("WrongConstant")
+    @Deprecated
     static int getCardHeight(int year, int month) {
         java.util.Calendar date = java.util.Calendar.getInstance();
         date.set(year, month - 1, 1);
@@ -69,7 +70,8 @@ final class Util {
         date.set(year, month - 1, mDaysCount);
         int mLastCount = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;//月最后一天为星期几,星期天 == 0
         int nextMonthDaysOffset = 6 - mLastCount;//下个月的日偏移天数
-        return 6 * BaseCalendarCardView.mItemHeight;
+        //return 6 * BaseCalendarCardView.mItemHeight;
+        return 0;
         //return (firstDayOfWeek + mDaysCount + nextMonthDaysOffset) / 7 * CalendarCardViewV2.mItemHeight;
     }
 

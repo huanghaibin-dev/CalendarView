@@ -119,10 +119,9 @@ public class CalendarView extends FrameLayout {
      * @param context context
      */
     private void init(Context context) {
-        BaseCalendarCardView.ITEM_HEIGHT = mCalendarItemHeight;
-        BaseCalendarCardView.mItemHeight = BaseCalendarCardView.ITEM_HEIGHT;
         LayoutInflater.from(context).inflate(R.layout.cv_layout_calendar_view, this, true);
         this.mViewPager = (WrapViewPager) findViewById(R.id.vp_calendar);
+        this.mViewPager.mItemHeight = mCalendarItemHeight;
         this.mLinearWeek = (LinearLayout) findViewById(R.id.ll_week);
         mSelectLayout = (MonthSelectLayout) findViewById(R.id.selectLayout);
         mLinearWeek.setBackgroundColor(mWeekBackground);
@@ -398,6 +397,7 @@ public class CalendarView extends FrameLayout {
                     return null;
                 }
             }
+            view.setItemHeight(mCalendarItemHeight);
             view.setDayTextSize(mDayTextSize, mLunarTextSize);
             view.mParentLayout = mParentLayout;
             view.mSchemes = mSchemeDate;
@@ -430,6 +430,7 @@ public class CalendarView extends FrameLayout {
         super.onAttachedToWindow();
         if (getParent() != null && getParent() instanceof CalendarLayout) {
             mParentLayout = (CalendarLayout) getParent();
+            mParentLayout.mItemHeight = mCalendarItemHeight;
             mViewPager.mParentLayout = mParentLayout;
             mParentLayout.initCalendarPosition(mSelectedCalendar);
         }

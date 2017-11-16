@@ -14,6 +14,8 @@ public class WrapViewPager extends ViewPager {
     private int mNextViewHeight, mPreViewHeight, mCurrentViewHeight;
     private boolean isFirstInit = true;
     CalendarLayout mParentLayout;
+    int mItemHeight;
+
     public WrapViewPager(Context context) {
         this(context, null);
     }
@@ -53,16 +55,16 @@ public class WrapViewPager extends ViewPager {
             public void onPageSelected(int position) {
                 int year = position / 12 + CalendarView.mMinYear;
                 int month = position % 12 + 1;
-                mCurrentViewHeight = Util.getCardHeight(year, month);
+                mCurrentViewHeight = getCardHeight();
                 if (month == 1) {
-                    mNextViewHeight = Util.getCardHeight(year, month + 1);
-                    mPreViewHeight = Util.getCardHeight(year - 1, 12);
+                    mNextViewHeight = getCardHeight();
+                    mPreViewHeight = getCardHeight();
                 } else {
-                    mPreViewHeight = Util.getCardHeight(year, month - 1);
+                    mPreViewHeight = getCardHeight();
                     if (month == 12) {
-                        mNextViewHeight = Util.getCardHeight(year + 1, 1);
+                        mNextViewHeight = getCardHeight();
                     } else {
-                        mNextViewHeight = Util.getCardHeight(year, month + 1);
+                        mNextViewHeight = getCardHeight();
                     }
                 }
                 if (isFirstInit) {
@@ -82,23 +84,17 @@ public class WrapViewPager extends ViewPager {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        heightMeasureSpec = MeasureSpec.makeMeasureSpec(Util.getCardHeight(0,0),MeasureSpec.EXACTLY);
+        heightMeasureSpec = MeasureSpec.makeMeasureSpec(getCardHeight(), MeasureSpec.EXACTLY);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
-
-
     /**
-     * ViewPager平移会调用这个方法
+     * 获取日历卡高度
      *
-     * @param y y
-     * @param isFinish isFinish
+     * @return 获取日历卡高度
      */
-    void onTranslate(int y, boolean isFinish) {
-
+    private int getCardHeight() {
+        return 6 * mItemHeight;
     }
 
-    int getCurrentHeight() {
-        return mCurrentViewHeight;
-    }
 }

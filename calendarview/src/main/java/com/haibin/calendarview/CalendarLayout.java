@@ -60,6 +60,8 @@ public class CalendarLayout extends LinearLayout {
     private VelocityTracker mVelocityTracker;
     private int mMaximumVelocity;
 
+    int mItemHeight;
+
     public CalendarLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         setOrientation(LinearLayout.VERTICAL);
@@ -90,7 +92,7 @@ public class CalendarLayout extends LinearLayout {
      */
     void setSelectPosition(int selectPosition) {
         int line = (selectPosition + 7) / 7;
-        mViewPagerTranslateY = (line - 1) * BaseCalendarCardView.ITEM_HEIGHT;
+        mViewPagerTranslateY = (line - 1) * mItemHeight;
     }
 
 
@@ -99,7 +101,7 @@ public class CalendarLayout extends LinearLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
         if (mContentView != null && mViewPager != null) {
-            int h = getHeight() - BaseCalendarCardView.ITEM_HEIGHT
+            int h = getHeight() - mItemHeight
                     - Util.dipToPx(getContext(), 41);
             int heightSpec = MeasureSpec.makeMeasureSpec(h,
                     MeasureSpec.EXACTLY);
@@ -110,7 +112,7 @@ public class CalendarLayout extends LinearLayout {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        mContentViewTranslateY = mViewPager.getMeasuredHeight() - BaseCalendarCardView.ITEM_HEIGHT;
+        mContentViewTranslateY = mViewPager.getMeasuredHeight() - mItemHeight;
     }
 
     @Override

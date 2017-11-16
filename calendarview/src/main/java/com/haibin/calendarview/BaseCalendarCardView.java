@@ -36,10 +36,6 @@ import java.util.List;
 @SuppressWarnings("unused")
 public abstract class BaseCalendarCardView extends View implements View.OnClickListener {
 
-    /**
-     * 日历卡高度
-     */
-    static int ITEM_HEIGHT;
 
     /**
      * 当前月份日期的笔
@@ -134,7 +130,7 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
     /**
      * 每一项的高度
      */
-    protected static int mItemHeight;
+    protected int mItemHeight;
 
     /**
      * 每一项的宽度
@@ -271,10 +267,6 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
         mPaddingLeft = Util.dipToPx(context, 8);
         mPaddingRight = Util.dipToPx(context, 8);
 
-        mItemHeight = ITEM_HEIGHT;
-
-        Paint.FontMetrics metrics = mCurMonthTextPaint.getFontMetrics();
-        mTextBaseLine = mItemHeight / 2 - metrics.descent + (metrics.bottom - metrics.top) / 2;
         setOnClickListener(this);
     }
 
@@ -288,8 +280,6 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
         onPreviewHook();
 
         int d = 0;
-        int radius = isShowLunar ? Math.min(mItemWidth, mItemHeight) / 7 * 3 :
-                Math.min(mItemWidth, mItemHeight) / 5 * 2;
         for (int i = 0; i < mLineCount; i++) {
             for (int j = 0; j < 7; j++) {
                 int x = j * mItemWidth + mPaddingLeft;
@@ -597,9 +587,15 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         if (mLineCount != 0) {
-            heightMeasureSpec = MeasureSpec.makeMeasureSpec(ITEM_HEIGHT * mLineCount, MeasureSpec.EXACTLY);
+            heightMeasureSpec = MeasureSpec.makeMeasureSpec(mItemHeight * mLineCount, MeasureSpec.EXACTLY);
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
+    public void setItemHeight(int itemHeight) {
+        this.mItemHeight = itemHeight;
+        Paint.FontMetrics metrics = mCurMonthTextPaint.getFontMetrics();
+        mTextBaseLine = mItemHeight / 2 - metrics.descent + (metrics.bottom - metrics.top) / 2;
     }
 
     /**
