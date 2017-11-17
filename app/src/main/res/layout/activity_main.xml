@@ -103,17 +103,17 @@
             android:layout_height="wrap_content"
             android:background="#fff"
             app:calendar_card_view="com.haibin.calendarviewproject.meizu.MeiZuCalendarCardView"
-            app:current_month_text_color="#333333"
             app:current_month_lunar_text_color="#CFCFCF"
+            app:current_month_text_color="#333333"
             app:lunar_text_size="10sp"
             app:min_year="2004"
             app:other_month_text_color="#e1e1e1"
-            app:scheme_text="假"
-            app:selected_text_color="#333"
-            app:selected_lunar_text_color="#CFCFCF"
-            app:scheme_text_color="#333"
             app:scheme_lunar_text_color="#CFCFCF"
+            app:scheme_text="假"
+            app:scheme_text_color="#333"
             app:scheme_theme_color="#128c4b"
+            app:selected_lunar_text_color="#CFCFCF"
+            app:selected_text_color="#333"
             app:selected_theme_color="#108cd4"
             app:week_background="#fff"
             app:week_text_color="#111" />
@@ -173,9 +173,9 @@
 
             <LinearLayout
                 android:id="@+id/ll_simple"
-                android:background="@drawable/bg_material"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_material"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -218,9 +218,9 @@
 
             <LinearLayout
                 android:id="@+id/ll_index"
-                android:background="@drawable/bg_material"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_material"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -262,9 +262,9 @@
 
             <LinearLayout
                 android:id="@+id/ll_colorful"
-                android:background="@drawable/bg_material"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_material"
                 android:orientation="horizontal">
 
                 <ImageView

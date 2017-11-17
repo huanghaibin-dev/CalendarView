@@ -278,7 +278,6 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
             return;
         mItemWidth = (getWidth() - mPaddingLeft - mPaddingRight) / 7;
         onPreviewHook();
-
         int d = 0;
         for (int i = 0; i < mLineCount; i++) {
             for (int j = 0; j < 7; j++) {
