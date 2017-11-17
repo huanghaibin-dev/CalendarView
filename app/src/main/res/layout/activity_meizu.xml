@@ -118,10 +118,10 @@
 
         <LinearLayout
             android:id="@+id/linearView"
-            android:clickable="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/content_background"
+            android:clickable="true"
             android:orientation="vertical"
             tools:ignore="KeyboardInaccessibleWidget">
 
@@ -129,18 +129,19 @@
                 android:id="@+id/ll_flyme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_material"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="36dp"
+                    android:layout_height="39dp"
                     android:layout_margin="16dp"
                     android:contentDescription="flyme"
                     android:src="@mipmap/ic_flyme_logo" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:layout_marginTop="16dp"
                     android:orientation="vertical">
@@ -154,7 +155,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="301dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="点击查看魅族flyme风格的日历控件"
@@ -166,24 +167,25 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:background="@color/line_color"  />
+                android:background="@color/line_color" />
 
             <LinearLayout
                 android:id="@+id/ll_simple"
+                android:background="@drawable/bg_material"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="39dp"
+                    android:layout_height="39dp"
                     android:layout_margin="16dp"
                     android:contentDescription="flyme"
                     android:src="@mipmap/ic_simple_logo" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:layout_marginTop="16dp"
                     android:orientation="vertical">
@@ -214,20 +216,21 @@
 
             <LinearLayout
                 android:id="@+id/ll_index"
+                android:background="@drawable/bg_material"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="39dp"
+                    android:layout_height="39dp"
                     android:layout_margin="16dp"
                     android:contentDescription="flyme"
                     android:src="@mipmap/ic_index_logo" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:layout_marginTop="16dp"
                     android:orientation="vertical">
@@ -253,24 +256,25 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:background="@color/line_color"  />
+                android:background="@color/line_color" />
 
             <LinearLayout
                 android:id="@+id/ll_colorful"
+                android:background="@drawable/bg_material"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="39dp"
+                    android:layout_height="39dp"
                     android:layout_margin="16dp"
                     android:contentDescription="flyme"
                     android:src="@mipmap/ic_colorful_logo" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
                     android:layout_marginTop="16dp"
                     android:orientation="vertical">
