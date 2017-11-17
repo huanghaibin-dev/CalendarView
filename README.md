@@ -19,7 +19,7 @@ compile 'com.haibin:calendarview:3.0.0'
 
 ### 效果预览
 ### 收缩展开的魅族风格效果
-<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/meizu.jpeg" style="margin-right:20px;" height="650"/><img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/shrink.jpeg" height="650"/>
+<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/meizu.jpeg" height="650"/><img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/shrink.jpeg" height="650"/>
 ### 下标和多彩风格
 <img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/index.jpeg" height="650"/><img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/colorful.jpeg" height="650"/>
 ### 快速年份月份切换
