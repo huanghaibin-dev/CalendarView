@@ -71,7 +71,8 @@ compile 'com.haibin:calendarview:3.0.0'
         <attr name="week_text_color" format="color" /> <!--星期栏文本颜色-->
 
         <attr name="current_day_text_color" format="color" /> <!--今天的文本颜色-->
-
+  
+        <attr name="calendar_height" format="string" /> <!--日历每项的高度，56dp-->
         <attr name="day_text_size" format="string" /> <!--天数文本大小-->
         <attr name="lunar_text_size" format="string" /> <!--农历文本大小-->
 
