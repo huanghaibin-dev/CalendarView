@@ -97,10 +97,10 @@ public class SimpleActivity extends BaseActivity implements
         schemes.add(getSchemeCalendar(year, month, 25, 0,"假"));
         mCalendarView.setSchemeDate(schemes);
 
-        findViewById(R.id.ll_flyme).setOnClickListener(this);
-        findViewById(R.id.ll_simple).setOnClickListener(this);
-        findViewById(R.id.ll_colorful).setOnClickListener(this);
-        findViewById(R.id.ll_index).setOnClickListener(this);
+//        findViewById(R.id.ll_flyme).setOnClickListener(this);
+//        findViewById(R.id.ll_simple).setOnClickListener(this);
+//        findViewById(R.id.ll_colorful).setOnClickListener(this);
+//        findViewById(R.id.ll_index).setOnClickListener(this);
     }
 
 

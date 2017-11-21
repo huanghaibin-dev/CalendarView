@@ -13,9 +13,10 @@
 
         <com.haibin.calendarview.WrapViewPager
             android:id="@+id/vp_calendar"
-            android:layout_marginTop="41dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="41dp" />
+
 
         <LinearLayout
             android:id="@+id/ll_week"
@@ -88,9 +89,9 @@
             android:id="@+id/line"
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:layout_marginTop="40dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:layout_marginTop="40dp"
             android:background="#cfcfcf" />
 
 
