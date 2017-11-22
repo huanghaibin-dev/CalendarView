@@ -17,6 +17,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="41dp" />
 
+        <com.haibin.calendarview.WeekViewPager
+            android:id="@+id/vp_week"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="41dp"
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/ll_week"

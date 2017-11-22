@@ -40,9 +40,15 @@ import android.widget.LinearLayout;
  */
 public class CalendarLayout extends LinearLayout {
 
-    /**自定义ViewPager*/
+    /**
+     * 自定义ViewPager
+     */
     WrapViewPager mViewPager;
-    /**ContentView*/
+
+    WeekViewPager mWeekPager;
+    /**
+     * ContentView
+     */
     ViewGroup mContentView;
 
     private int mTouchSlop;
@@ -53,10 +59,14 @@ public class CalendarLayout extends LinearLayout {
     private float mLastY;
     private boolean isAnimating = false;
 
-    /**内容布局id*/
+    /**
+     * 内容布局id
+     */
     private int mContentViewId;
 
-    /**手速判断*/
+    /**
+     * 手速判断
+     */
     private VelocityTracker mVelocityTracker;
     private int mMaximumVelocity;
 
@@ -77,13 +87,14 @@ public class CalendarLayout extends LinearLayout {
 
     /**
      * 初始化当前时间的位置
+     *
      * @param cur 当前日期时间
      */
     void initCalendarPosition(Calendar cur) {
         java.util.Calendar date = java.util.Calendar.getInstance();
         date.set(cur.getYear(), cur.getMonth() - 1, 1);
         int diff = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;//月第一天为星期几,星期天 == 0,则偏移几天
-        int size = diff + cur.getDay() -1;
+        int size = diff + cur.getDay() - 1;
         setSelectPosition(size);
     }
 
@@ -119,6 +130,7 @@ public class CalendarLayout extends LinearLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
         mViewPager = (WrapViewPager) findViewById(R.id.vp_calendar).findViewById(R.id.vp_calendar);
+        mWeekPager = (WeekViewPager) findViewById(R.id.vp_week).findViewById(R.id.vp_week);
         mContentView = (ViewGroup) findViewById(mContentViewId);
         if (mContentView != null) {
             mContentView.setOverScrollMode(View.OVER_SCROLL_NEVER);
@@ -194,8 +206,11 @@ public class CalendarLayout extends LinearLayout {
                 float dy = y - mLastY;
                 if (dy < 0 && mContentView.getTranslationY() == -mContentViewTranslateY) {
                     mContentView.onTouchEvent(event);
+                    showWeek();
                     return false;
                 }
+                hideWeek();
+
                 if (dy > 0 && mContentView.getTranslationY() + dy >= 0) {
                     mContentView.setTranslationY(0);
                     translationViewPager();
@@ -265,6 +280,8 @@ public class CalendarLayout extends LinearLayout {
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 isAnimating = false;
+                hideWeek();
+
             }
         });
         objectAnimator.start();
@@ -292,9 +309,22 @@ public class CalendarLayout extends LinearLayout {
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 isAnimating = false;
+                showWeek();
+
             }
         });
         objectAnimator.start();
+    }
+
+    private void hideWeek() {
+        mWeekPager.setVisibility(GONE);
+        mViewPager.setVisibility(VISIBLE);
+    }
+
+    private void showWeek() {
+        mWeekPager.getAdapter().notifyDataSetChanged();
+        mWeekPager.setVisibility(VISIBLE);
+        mViewPager.setVisibility(INVISIBLE);
     }
 
     /**
