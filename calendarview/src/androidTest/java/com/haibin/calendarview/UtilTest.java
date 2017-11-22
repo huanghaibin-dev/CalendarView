@@ -10,7 +10,6 @@ import static org.junit.Assert.*;
  */
 public class UtilTest {
 
-
     /**
      * 测试获取某年第几个星期第一天：即星期一在第几个月，如2004年第6周刚刚是2月1日
      * @throws Exception 如果测试失败则异常 AssertionError
@@ -18,6 +17,7 @@ public class UtilTest {
     @Test
     public void getMonthFromWeekFirstDayInYear() throws Exception {
         assertEquals(1,Util.getMonthFromWeekFirstDayInYear(2005,6));
+        assertEquals(1,Util.getMonthFromWeekFirstDayInYear(2006,7));
     }
 
     /**
@@ -26,7 +26,8 @@ public class UtilTest {
      */
     @Test
     public void getMonthFromDayInYear() throws Exception {
-        assertEquals(2,Util.getMonthFromDayInYear(2005,60));
+        assertEquals(2,Util.getMonthFromDayInYear(2005,61));
+        assertEquals(2,Util.getMonthFromDayInYear(2006,60));
     }
 
     /**
@@ -41,4 +42,26 @@ public class UtilTest {
         calendar.setDay(1);
         assertEquals(calendar,Util.getFirstCalendarFormWeekInYear(2005,1));
     }
+
+    /**
+     * 从一个日期Calendar中获取所处在一年中的第几个星期
+     * @throws Exception  如果测试失败则异常 AssertionError
+     */
+    @Test
+    public void getWeekFromCalendarInYear() throws Exception {
+
+        Calendar calendar1 = new Calendar();
+        calendar1.setYear(2004);
+        calendar1.setMonth(2);
+        calendar1.setDay(29);
+
+        Calendar calendar2 = new Calendar();
+        calendar2.setYear(2004);
+        calendar2.setMonth(1);
+        calendar2.setDay(31);
+
+        assertEquals(10,Util.getWeekFromCalendarInYear(calendar1));
+        assertEquals(5,Util.getWeekFromCalendarInYear(calendar2));
+    }
+
 }

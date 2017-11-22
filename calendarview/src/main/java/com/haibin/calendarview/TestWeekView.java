@@ -59,7 +59,7 @@ public class TestWeekView extends WeekView {
             //mCurMonthLunarTextPaint.setColor(mCurMonthLunarTextColor);
             canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
                     calendar.isCurrentDay() ? mCurDayTextPaint :
-                            calendar.isCurrentMonth() ? mSchemeTextPaint : mOtherMonthTextPaint);
+                            calendar.isCurrentMonth() ? mSchemeTextPaint : mSchemeTextPaint);
 
             canvas.drawText(calendar.getLunar(), cx, mTextBaseLine +  mItemHeight / 10, mCurMonthLunarTextPaint);
 

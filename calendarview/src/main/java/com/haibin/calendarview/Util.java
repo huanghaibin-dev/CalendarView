@@ -177,12 +177,12 @@ final class Util {
             if (diy <= count) {
                 month = i;
                 break;
-            }else {
+            } else {
                 day -= monthDayCount;
             }
 
         }
-        if(day <= 0){
+        if (day <= 0) {
             day = 1;
         }
         Calendar calendar = new Calendar();
@@ -191,6 +191,24 @@ final class Util {
         calendar.setDay(day);
         calendar.setLunar(LunarCalendar.getLunarText(calendar.getYear(), calendar.getMonth(), calendar.getDay()));
         return calendar;
+    }
+
+
+    /**
+     * 从一个日期Calendar中获取所处在一年中的第几个星期
+     *
+     * @param calendar 日期Calendar
+     * @return 0 —— 53
+     */
+    static int getWeekFromCalendarInYear(Calendar calendar) {
+        java.util.Calendar date = java.util.Calendar.getInstance();
+        date.set(calendar.getYear(), 0, 1);
+        int count = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;//前补位
+        for (int i = 1; i < calendar.getMonth(); i++) {
+            count += getMonthDaysCount(calendar.getYear(), i);
+        }
+        count += calendar.getDay() -1;
+        return count / 7 + 1 ;
     }
 
     /**

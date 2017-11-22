@@ -319,7 +319,6 @@ public class CalendarView extends FrameLayout {
             }
         });
         mSelectLayout.setSchemeColor(mSchemeThemeColor);
-        //mWeekPager.setCurrentItem(y * 53 + 44);
         mWeekPager.updateSelected(mSelectedCalendar);
     }
 

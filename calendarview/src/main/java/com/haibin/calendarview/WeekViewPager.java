@@ -96,7 +96,6 @@ public class WeekViewPager extends ViewPager {
             public void onPageSelected(int position) {
                 int year = position / 53 + mMinYear;
                 int month = (position % 53) % 12 + 1;
-                Log.e("onPageSelected", "  --  " + year + "  --   " + month + "  --  " + position + "   --    " + (position % 53));
             }
 
             @Override
@@ -117,10 +116,10 @@ public class WeekViewPager extends ViewPager {
 
     void updateSelected(Calendar calendar) {
         this.mSelectedCalendar = calendar;
+        setCurrentItem(53 * (mSelectedCalendar.getYear() - mMinYear) + Util.getWeekFromCalendarInYear(mSelectedCalendar) - 1);
         for (int i = 0; i < getChildCount(); i++) {
             WeekView view = (WeekView) getChildAt(i);
             view.setSelectedCalendar(mSelectedCalendar);
-            view.invalidate();
         }
     }
 
@@ -160,7 +159,7 @@ public class WeekViewPager extends ViewPager {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             int year = position / 53 + mMinYear;
-            int week = position % 53 +1;
+            int week = position % 53 + 1;
             Calendar calendar = Util.getFirstCalendarFormWeekInYear(year, week);
             Log.e("instantiateItem", "  --  " + year + "  --   " + calendar.getMonth() + "  --  " + calendar.getDay() + "   --    " + week);
             WeekView view;

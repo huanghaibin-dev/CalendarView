@@ -131,7 +131,6 @@
                 android:id="@+id/ll_flyme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_material"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -175,7 +174,6 @@
                 android:id="@+id/ll_simple"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_material"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -220,7 +218,6 @@
                 android:id="@+id/ll_index"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_material"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -264,7 +261,6 @@
                 android:id="@+id/ll_colorful"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_material"
                 android:orientation="horizontal">
 
                 <ImageView
