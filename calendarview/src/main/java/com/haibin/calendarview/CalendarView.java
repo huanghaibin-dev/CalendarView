@@ -290,6 +290,20 @@ public class CalendarView extends FrameLayout {
                     view.invalidate();
                 }
             }
+
+            @Override
+            public void onWeekSelected(Calendar calendar) {
+                mSelectedCalendar = calendar;
+                mWeekPager.mSelectedCalendar = calendar;
+                int y = calendar.getYear() - mMinYear;
+                int position = 12 * y + mSelectedCalendar.getMonth() - 1;
+                mViewPager.setCurrentItem(position);
+                for (int i = 0; i < mViewPager.getChildCount(); i++) {
+                    BaseCalendarCardView view = (BaseCalendarCardView) mViewPager.getChildAt(i);
+                    view.setSelectedCalendar(mSelectedCalendar);
+                    view.invalidate();
+                }
+            }
         };
 
         int position;
@@ -538,6 +552,10 @@ public class CalendarView extends FrameLayout {
             mParentLayout = (CalendarLayout) getParent();
             mParentLayout.mItemHeight = mCalendarItemHeight;
             mViewPager.mParentLayout = mParentLayout;
+            mWeekPager.mParentLayout = mParentLayout;
+            mWeekPager.mListener = mListener;
+            mWeekPager.mDateSelectedListener = mDateSelectedListener;
+            mWeekPager.mInnerListener = mInnerListener;
             mParentLayout.initCalendarPosition(mSelectedCalendar);
         }
     }
@@ -668,6 +686,8 @@ public class CalendarView extends FrameLayout {
      */
     interface OnInnerDateSelectedListener {
         void onDateSelected(Calendar calendar);
+
+        void onWeekSelected(Calendar calendar);
     }
 
     /**

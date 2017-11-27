@@ -106,6 +106,9 @@ public class CalendarLayout extends LinearLayout {
         mViewPagerTranslateY = (line - 1) * mItemHeight;
     }
 
+    void setSelectWeek(int line){
+        mViewPagerTranslateY = (line - 1) * mItemHeight;
+    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -264,6 +267,8 @@ public class CalendarLayout extends LinearLayout {
      */
     public void expand() {
 
+        if (isAnimating)
+            return;
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(mContentView,
                 "translationY", mContentView.getTranslationY(), 0f);
         objectAnimator.setDuration(240);
@@ -273,6 +278,7 @@ public class CalendarLayout extends LinearLayout {
                 float currentValue = (Float) animation.getAnimatedValue();
                 float percent = currentValue * 1.0f / mContentViewTranslateY;
                 mViewPager.setTranslationY(mViewPagerTranslateY * percent);
+                isAnimating = true;
             }
         });
         objectAnimator.addListener(new AnimatorListenerAdapter() {
@@ -293,6 +299,8 @@ public class CalendarLayout extends LinearLayout {
      */
     public void shrink() {
 
+        if (isAnimating)
+            return;
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(mContentView,
                 "translationY", mContentView.getTranslationY(), -mContentViewTranslateY);
         objectAnimator.setDuration(240);
@@ -302,6 +310,7 @@ public class CalendarLayout extends LinearLayout {
                 float currentValue = (Float) animation.getAnimatedValue();
                 float percent = currentValue * 1.0f / mContentViewTranslateY;
                 mViewPager.setTranslationY(mViewPagerTranslateY * percent);
+                isAnimating = true;
             }
         });
         objectAnimator.addListener(new AnimatorListenerAdapter() {

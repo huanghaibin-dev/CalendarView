@@ -28,14 +28,31 @@ import java.util.List;
 
 /**
  * 周视图滑动ViewPager，需要动态固定高度
- * 我们知道一年有365或366天，都不是7的整数倍，所以很容易确定每年都有53个星期，是个定值，
- * 所以Adapter的count数量就是: (maxYear-minYear)*53
+ * 周视图是连续不断的视图，因此不能简单的得出每年都有52+1周，这样会计算重叠的部分
  * WeekViewPager需要和CalendarView关联:
- * 1、WeekViewPager切换时，如果月份改变，CalendarView需要一起改变；如果月份没有改变，则改变CalendarView的选择，从而改变滚动
- * CalendarView每个月份都是6周，因此CalendarView切换时，WeekViewPager的position应该至少切换
  */
 @SuppressWarnings("unused")
 public class WeekViewPager extends ViewPager {
+
+    /**
+     * 日期被选中监听
+     */
+    CalendarView.OnDateSelectedListener mDateSelectedListener;
+
+    /**
+     * 内部日期切换监听，用于内部更新计算
+     */
+    CalendarView.OnInnerDateSelectedListener mInnerListener;
+
+    /**
+     * 日期切换监听
+     */
+    CalendarView.OnDateChangeListener mListener;
+
+    /**
+     * 日历布局，需要在日历下方放自己的布局
+     */
+    CalendarLayout mParentLayout;
 
     private String mWeekViewClass;
     /**
@@ -116,7 +133,9 @@ public class WeekViewPager extends ViewPager {
 
     void updateSelected(Calendar calendar) {
         this.mSelectedCalendar = calendar;
-        setCurrentItem(53 * (mSelectedCalendar.getYear() - mMinYear) + Util.getWeekFromCalendarInYear(mSelectedCalendar) - 1);
+        int position = Util.getWeekFromCalendarBetweenYearAndYear(calendar, mMinYear) -1;
+        Log.e("updateSelected","  --  " + position);
+        setCurrentItem(position);
         for (int i = 0; i < getChildCount(); i++) {
             WeekView view = (WeekView) getChildAt(i);
             view.setSelectedCalendar(mSelectedCalendar);
@@ -148,7 +167,7 @@ public class WeekViewPager extends ViewPager {
 
         @Override
         public int getCount() {
-            return (mMaxYear - mMinYear) * 53;
+            return Util.getWeekCountBetweenYearAndYear(mMinYear, mMaxYear);
         }
 
         @Override
@@ -158,10 +177,8 @@ public class WeekViewPager extends ViewPager {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            int year = position / 53 + mMinYear;
-            int week = position % 53 + 1;
-            Calendar calendar = Util.getFirstCalendarFormWeekInYear(year, week);
-            Log.e("instantiateItem", "  --  " + year + "  --   " + calendar.getMonth() + "  --  " + calendar.getDay() + "   --    " + week);
+            Calendar calendar = Util.getFirstCalendarFromWeekCount(mMinYear,position + 1);
+            Log.e("instantiateItem", "  --  " + calendar.getYear() + "  --   " + calendar.getMonth() + "  --  " + calendar.getDay() + "   --    " + position);
             WeekView view;
             try {
                 Class cls = Class.forName(mWeekViewClass);
@@ -172,6 +189,10 @@ public class WeekViewPager extends ViewPager {
                 e.printStackTrace();
                 view = new TestWeekView(getContext());
             }
+            view.mListener = mListener;
+            view.mDateSelectedListener = mDateSelectedListener;
+            view.mInnerListener = mInnerListener;
+            view.mParentLayout = mParentLayout;
             view.setItemHeight(mItemHeight);
             view.setup(calendar);
             view.setDayTextSize(mDayTextSize, mLunarTextSize);

@@ -11,6 +11,17 @@ import static org.junit.Assert.*;
 public class UtilTest {
 
     /**
+     * 获取两个年份之间一共有多少周
+     * @throws Exception 如果测试失败则异常 AssertionError
+     */
+    @Test
+    public void getWeekCountBetweenYearByYear() throws Exception {
+        assertEquals(210,Util.getWeekCountBetweenYearAndYear(2004,2007));
+        assertEquals(732,Util.getWeekCountBetweenYearAndYear(2004,2017));
+    }
+
+
+    /**
      * 测试获取某年第几个星期第一天：即星期一在第几个月，如2004年第6周刚刚是2月1日
      * @throws Exception 如果测试失败则异常 AssertionError
      */
@@ -62,6 +73,46 @@ public class UtilTest {
 
         assertEquals(10,Util.getWeekFromCalendarInYear(calendar1));
         assertEquals(5,Util.getWeekFromCalendarInYear(calendar2));
+    }
+
+    /**
+     * 获取某天在该月的第几周
+     * @throws Exception 如果测试失败则异常 AssertionError
+     */
+    @Test
+    public void getWeekFromDayInMonth() throws Exception {
+        Calendar calendar1 = new Calendar();
+        calendar1.setYear(2018);
+        calendar1.setMonth(3);
+        calendar1.setDay(31);
+
+        Calendar calendar2 = new Calendar();
+        calendar2.setYear(2018);
+        calendar2.setMonth(4);
+        calendar2.setDay(7);
+
+        assertEquals(5,Util.getWeekFromDayInMonth(calendar1));
+        assertEquals(1,Util.getWeekFromDayInMonth(calendar2));
+    }
+
+
+    /**
+     * 根据日期获取两个年份中第几周
+     * @throws Exception 如果测试失败则异常 AssertionError
+     */
+    @Test
+    public void getWeekFromCalendarBetweenYearAndYear() throws Exception {
+        Calendar calendar1 = new Calendar();
+        calendar1.setYear(2004);
+        calendar1.setMonth(1);
+        calendar1.setDay(10);
+
+        Calendar calendar2 = new Calendar();
+        calendar2.setYear(2017);
+        calendar2.setMonth(11);
+        calendar2.setDay(27);
+        assertEquals(2,Util.getWeekFromCalendarBetweenYearAndYear(calendar1,2004));
+        assertEquals(727,Util.getWeekFromCalendarBetweenYearAndYear(calendar2,2004));
     }
 
 }

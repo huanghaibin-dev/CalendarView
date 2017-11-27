@@ -26,6 +26,9 @@ import java.util.Date;
  */
 @SuppressWarnings("unused")
 final class Util {
+
+    private static final long ONE_DAY = 1000 * 3600 * 24;
+
     @SuppressLint("SimpleDateFormat")
     static int getDate(String formatStr, Date date) {
         SimpleDateFormat format = new SimpleDateFormat(formatStr);
@@ -135,6 +138,20 @@ final class Util {
 
 
     /**
+     * 获取某天在该月的第几周
+     *
+     * @param calendar calendar
+     * @return 获取某天在该月的第几周
+     */
+    static int getWeekFromDayInMonth(Calendar calendar) {
+        java.util.Calendar date = java.util.Calendar.getInstance();
+        date.set(calendar.getYear(), calendar.getMonth() - 1, 1);
+        int diff = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;//该月第一天为星期几,星期天 == 0，也就是偏移量
+        int week = (calendar.getDay() + diff - 1) / 7 + 1;
+        return week;
+    }
+
+    /**
      * 获取某年第几周是在第几个月
      *
      * @param year       年
@@ -163,7 +180,9 @@ final class Util {
      * @param weekInYear 某年第几周
      * @return Calendar
      */
+    @Deprecated
     static Calendar getFirstCalendarFormWeekInYear(int year, int weekInYear) {
+        // TODO: 2017/11/23 发生意外bug ，每年的12月和下一年的1月交替的时候需要判断重合的部分
         java.util.Calendar date = java.util.Calendar.getInstance();
         date.set(year, 0, 1);
         int diff = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;//1月第一天为星期几,星期天 == 0，也就是偏移量
@@ -195,6 +214,111 @@ final class Util {
 
 
     /**
+     * 获取某年第几周起始第一天，如遇到前一个月，则为1号
+     *
+     * @param year       年
+     * @param weekInYear 某年第几周
+     * @return Calendar
+     */
+    static Calendar getFirstCalendarFormWeekInYearV2(int year, int weekInYear) {
+        // TODO: 2017/11/23 发生意外bug ，每年的12月和下一年的1月交替的时候需要判断重合的部分
+        java.util.Calendar date = java.util.Calendar.getInstance();
+        date.set(year, 0, 1);
+        int diff = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;//1月第一天为星期几,星期天 == 0，也就是偏移量
+        int count = 0;
+        int diy = (weekInYear - 1) * 7 - diff + 1;
+        int month = 0;
+        int day = diy;
+        for (int i = 1; i <= 12; i++) {
+            int monthDayCount = getMonthDaysCount(year, i);
+            count += monthDayCount;
+            if (diy <= count) {
+                month = i;
+                break;
+            } else {
+                day -= monthDayCount;
+            }
+
+        }
+        if (day <= 0) {
+            day = 1;
+        }
+        Calendar calendar = new Calendar();
+        calendar.setYear(year);
+        calendar.setMonth(month);
+        calendar.setDay(day);
+        calendar.setLunar(LunarCalendar.getLunarText(calendar.getYear(), calendar.getMonth(), calendar.getDay()));
+        return calendar;
+    }
+
+
+    /**
+     * 获取两个年份之间一共有多少周
+     *
+     * @param minYear minYear
+     * @param maxYear maxYear
+     * @return 周数
+     */
+    static int getWeekCountBetweenYearAndYear(int minYear, int maxYear) {
+        if (minYear > maxYear)
+            return 0;
+        if (minYear == maxYear) {
+            return 53;
+        }
+        java.util.Calendar date = java.util.Calendar.getInstance();
+        date.set(minYear, 0, 1);//1月1日
+        int preDiff = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;//1月第一天为星期几,星期天 == 0，也就是偏移量
+        date.set(maxYear, 11, 31);//12月31日
+        int nextDiff = 7 - date.get(java.util.Calendar.DAY_OF_WEEK);//1月第一天为星期几,星期天 == 0，也就是偏移量
+        int count = preDiff + nextDiff;
+        for (int i = minYear; i <= maxYear; i++) {
+            count += getYearCount(i);
+        }
+        int w = count / 7;
+        return count / 7;
+    }
+
+    /**
+     * 根据日期获取两个年份中第几周
+     *
+     * @param calendar calendar
+     * @param minYear  minYear
+     * @return 返回两个年份中第几周
+     */
+    static int getWeekFromCalendarBetweenYearAndYear(Calendar calendar, int minYear) {
+        java.util.Calendar date = java.util.Calendar.getInstance();
+        date.set(minYear, 0, 1);//1月1日
+        long firstTime = date.getTimeInMillis();//获得起始时间戳
+        int preDiff = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;//1月第一天为星期几,星期天 == 0，也就是偏移量
+        date.set(calendar.getYear(), calendar.getMonth() - 1, calendar.getDay());
+        long curTime = date.getTimeInMillis();//给定时间戳
+        int c = (int) ((curTime - firstTime) / ONE_DAY);
+        int count = preDiff + c;
+        return count / 7 + 1;
+    }
+
+    /**
+     * 根据星期数和最小年份推算出该星期的第一天
+     *
+     * @param minYear 最小年份
+     * @param week    从最小年份1月1日开始的第几周
+     * @return 该星期的第一天日期
+     */
+    static Calendar getFirstCalendarFromWeekCount(int minYear, int week) {
+        java.util.Calendar date = java.util.Calendar.getInstance();
+        date.set(minYear, 0, 1);//1月1日
+        long firstTime = date.getTimeInMillis();//获得起始时间戳
+        int dayCount = (week - 1) * 7 + 1;
+        long timeCount = dayCount * ONE_DAY + firstTime;
+        date.setTimeInMillis(timeCount);
+        Calendar calendar = new Calendar();
+        calendar.setYear(date.get(java.util.Calendar.YEAR));
+        calendar.setMonth(date.get(java.util.Calendar.MONTH) + 1);
+        calendar.setDay(date.get(java.util.Calendar.DAY_OF_MONTH));
+        return calendar;
+    }
+
+    /**
      * 从一个日期Calendar中获取所处在一年中的第几个星期
      *
      * @param calendar 日期Calendar
@@ -207,8 +331,8 @@ final class Util {
         for (int i = 1; i < calendar.getMonth(); i++) {
             count += getMonthDaysCount(calendar.getYear(), i);
         }
-        count += calendar.getDay() -1;
-        return count / 7 + 1 ;
+        count += calendar.getDay() - 1;
+        return count / 7 + 1;
     }
 
     /**

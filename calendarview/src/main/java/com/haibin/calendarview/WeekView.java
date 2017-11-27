@@ -321,7 +321,6 @@ public abstract class WeekView extends View implements View.OnClickListener {
                 if (isClick) {
                     mDY = event.getY() - mY;
                     isClick = Math.abs(mDY) <= 50;
-
                 }
                 break;
             case MotionEvent.ACTION_UP:
@@ -338,22 +337,21 @@ public abstract class WeekView extends View implements View.OnClickListener {
             Calendar calendar = getIndex();
             if (calendar != null) {
                 if (mInnerListener != null) {
-                    mInnerListener.onDateSelected(calendar);
+                    mInnerListener.onWeekSelected(calendar);
                 }
-//                if (!calendar.isCurrentMonth() && mParentLayout != null) {
-//                    int cur = mParentLayout.mViewPager.getCurrentItem();
-//                    int position = mCurrentItem < 7 ? cur - 1 : cur + 1;
-//                    mParentLayout.mViewPager.setCurrentItem(position);
+                // TODO: 2017/11/23 12月31日周视图切换bug
+                if (mParentLayout != null){
+                    mParentLayout.setSelectWeek(Util.getWeekFromDayInMonth(calendar));
+                }
+
+
+//                if (mDateSelectedListener != null) {
+//                    mDateSelectedListener.onDateSelected(calendar);
 //                }
 //
-//                if (mParentLayout != null && calendar.isCurrentMonth())
-//                    mParentLayout.setSelectPosition(mItems.indexOf(calendar));
-                if (mDateSelectedListener != null) {
-                    mDateSelectedListener.onDateSelected(calendar);
-                }
-                if (mListener != null) {
-                    mListener.onDateChange(calendar);
-                }
+//                if (mListener != null) {
+//                    mListener.onDateChange(calendar);
+//                }
                 invalidate();
             }
         }
