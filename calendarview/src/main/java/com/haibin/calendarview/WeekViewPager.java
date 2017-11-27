@@ -31,7 +31,7 @@ import java.util.List;
  * 周视图是连续不断的视图，因此不能简单的得出每年都有52+1周，这样会计算重叠的部分
  * WeekViewPager需要和CalendarView关联:
  */
-@SuppressWarnings("unused")
+
 public class WeekViewPager extends ViewPager {
 
     /**
@@ -111,8 +111,7 @@ public class WeekViewPager extends ViewPager {
 
             @Override
             public void onPageSelected(int position) {
-                int year = position / 53 + mMinYear;
-                int month = (position % 53) % 12 + 1;
+
             }
 
             @Override
@@ -133,8 +132,8 @@ public class WeekViewPager extends ViewPager {
 
     void updateSelected(Calendar calendar) {
         this.mSelectedCalendar = calendar;
-        int position = Util.getWeekFromCalendarBetweenYearAndYear(calendar, mMinYear) -1;
-        Log.e("updateSelected","  --  " + position);
+        int position = Util.getWeekFromCalendarBetweenYearAndYear(calendar, mMinYear) - 1;
+        Log.e("updateSelected", "  --  " + position);
         setCurrentItem(position);
         for (int i = 0; i < getChildCount(); i++) {
             WeekView view = (WeekView) getChildAt(i);
@@ -177,7 +176,7 @@ public class WeekViewPager extends ViewPager {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            Calendar calendar = Util.getFirstCalendarFromWeekCount(mMinYear,position + 1);
+            Calendar calendar = Util.getFirstCalendarFromWeekCount(mMinYear, position + 1);
             Log.e("instantiateItem", "  --  " + calendar.getYear() + "  --   " + calendar.getMonth() + "  --  " + calendar.getDay() + "   --    " + position);
             WeekView view;
             try {

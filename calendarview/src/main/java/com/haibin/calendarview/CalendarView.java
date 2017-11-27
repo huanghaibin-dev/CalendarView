@@ -204,22 +204,6 @@ public class CalendarView extends FrameLayout {
         this.mWeekPager.mSelectedThemeColor = mSelectedThemeColor;
         this.mWeekPager.mDayTextSize = mDayTextSize;
         this.mWeekPager.mLunarTextSize = mLunarTextSize;
-        this.mWeekPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                //
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
 
         this.mLinearWeek = (LinearLayout) findViewById(R.id.ll_week);
         mSelectLayout = (MonthSelectLayout) findViewById(R.id.selectLayout);
@@ -241,19 +225,32 @@ public class CalendarView extends FrameLayout {
                 calendar.setYear(position / 12 + mMinYear);
                 calendar.setMonth(position % 12 + 1);
                 calendar.setDay(1);
+                calendar.setCurrentMonth(calendar.getMonth() == mCurMonth);
                 calendar.setLunar(LunarCalendar.numToChineseDay(LunarCalendar.solarToLunar(calendar.getYear(), calendar.getMonth(), 1)[2]));
+                if (!calendar.isCurrentMonth()) {
+                    mSelectedCalendar = calendar;
+                } else {
+                    mSelectedCalendar.setYear(mCurYear);
+                    mSelectedCalendar.setMonth(mCurMonth);
+                    mSelectedCalendar.setDay(mCurDay);
+                    mSelectedCalendar.setCurrentDay(true);
+                    mSelectedCalendar.setCurrentMonth(true);
+                }
                 if (mListener != null) {
                     mListener.onDateChange(calendar);
                 }
                 if (mParentLayout != null) {
-                    View view = mViewPager.findViewWithTag(position);
+                    BaseCalendarCardView view = (BaseCalendarCardView) mViewPager.findViewWithTag(position);
                     if (view != null) {
-                        int index = ((BaseCalendarCardView) view).getSelectedIndex(mSelectedCalendar);
+                        int index = view.getSelectedIndex(mSelectedCalendar);
+                        view.mCurrentItem = index;
                         if (index >= 0) {
                             mParentLayout.setSelectPosition(index);
                         }
+                        view.invalidate();
                     }
                 }
+                mWeekPager.updateSelected(mSelectedCalendar);
             }
 
             @Override
@@ -696,4 +693,5 @@ public class CalendarView extends FrameLayout {
     public interface OnDateSelectedListener {
         void onDateSelected(Calendar calendar);
     }
+
 }

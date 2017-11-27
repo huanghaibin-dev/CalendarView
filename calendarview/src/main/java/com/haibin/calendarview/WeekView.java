@@ -76,11 +76,6 @@ public abstract class WeekView extends View implements View.OnClickListener {
     CalendarView.OnDateChangeListener mListener;
 
     /**
-     * 当前日历
-     */
-    Calendar mCurrent;
-
-    /**
      * 当前日历卡年份
      */
     private int mYear;
@@ -340,14 +335,14 @@ public abstract class WeekView extends View implements View.OnClickListener {
                     mInnerListener.onWeekSelected(calendar);
                 }
                 // TODO: 2017/11/23 12月31日周视图切换bug
-                if (mParentLayout != null){
+                if (mParentLayout != null) {
                     mParentLayout.setSelectWeek(Util.getWeekFromDayInMonth(calendar));
                 }
 
 
-//                if (mDateSelectedListener != null) {
-//                    mDateSelectedListener.onDateSelected(calendar);
-//                }
+                if (mDateSelectedListener != null) {
+                    mDateSelectedListener.onDateSelected(calendar);
+                }
 //
 //                if (mListener != null) {
 //                    mListener.onDateChange(calendar);
@@ -356,6 +351,27 @@ public abstract class WeekView extends View implements View.OnClickListener {
             }
         }
     }
+
+    void performClickCalendar() {
+        if (mItems == null || mInnerListener == null || mParentLayout == null) {
+            return;
+        }
+//        if (mCurrent == null) {
+//            mInnerListener.onWeekSelected(mItems.get(0));
+//            mParentLayout.setSelectWeek(Util.getWeekFromDayInMonth(mItems.get(0)));
+//            return;
+//        }
+//        java.util.Calendar date = java.util.Calendar.getInstance();
+//        date.set(mCurrent.getYear(), mCurrent.getMonth() - 1, mCurrent.getDay());
+//        int diff = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;
+//        Calendar calendar = mItems.get(diff);
+//        mInnerListener.onWeekSelected(calendar);
+//        mParentLayout.setSelectWeek(Util.getWeekFromDayInMonth(calendar));
+//        if (mDateSelectedListener != null) {
+//            mDateSelectedListener.onDateSelected(calendar);
+//        }
+    }
+
 
     private Calendar getIndex() {
         int width = (getWidth() - mPaddingLeft - mPaddingRight) / 7;
@@ -378,12 +394,9 @@ public abstract class WeekView extends View implements View.OnClickListener {
      */
     void setSelectedCalendar(Calendar calendar) {
         mCurrentItem = mItems.indexOf(calendar);
+        performClickCalendar();
     }
 
-
-    void setupFromWeek(Calendar calendar) {
-
-    }
 
     void setup(Calendar calendar) {
         java.util.Calendar date = java.util.Calendar.getInstance();
@@ -446,6 +459,7 @@ public abstract class WeekView extends View implements View.OnClickListener {
             mItems.add(calendarDate);
         }
         invalidate();
+        performClickCalendar();
     }
 
 

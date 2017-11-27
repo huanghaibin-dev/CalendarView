@@ -147,8 +147,7 @@ final class Util {
         java.util.Calendar date = java.util.Calendar.getInstance();
         date.set(calendar.getYear(), calendar.getMonth() - 1, 1);
         int diff = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;//该月第一天为星期几,星期天 == 0，也就是偏移量
-        int week = (calendar.getDay() + diff - 1) / 7 + 1;
-        return week;
+        return (calendar.getDay() + diff - 1) / 7 + 1;
     }
 
     /**
