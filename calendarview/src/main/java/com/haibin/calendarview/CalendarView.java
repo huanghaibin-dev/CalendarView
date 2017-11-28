@@ -694,4 +694,7 @@ public class CalendarView extends FrameLayout {
         void onDateSelected(Calendar calendar);
     }
 
+    interface CalendarViewDelegate {
+
+    }
 }
