@@ -97,11 +97,11 @@ public class WeekViewPager extends ViewPager {
 
     public WeekViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context);
+        init();
     }
 
 
-    private void init(Context context) {
+    private void init() {
         setAdapter(new WeekViewPagerAdapter());
         addOnPageChangeListener(new OnPageChangeListener() {
             @Override
@@ -111,7 +111,13 @@ public class WeekViewPager extends ViewPager {
 
             @Override
             public void onPageSelected(int position) {
-
+                //默认的显示星期四，周视图切换就显示星期4
+                if (getVisibility() == GONE)
+                    return;
+                WeekView view = (WeekView) findViewWithTag(position);
+                if (view != null) {
+                    view.performClickCalendar();
+                }
             }
 
             @Override
@@ -119,14 +125,6 @@ public class WeekViewPager extends ViewPager {
 
             }
         });
-    }
-
-    public void setup() {
-
-    }
-
-    public void change(Calendar calendar, int line) {
-
     }
 
 

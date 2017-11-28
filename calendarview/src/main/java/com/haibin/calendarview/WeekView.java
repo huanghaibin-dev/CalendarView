@@ -336,40 +336,34 @@ public abstract class WeekView extends View implements View.OnClickListener {
                 }
                 // TODO: 2017/11/23 12月31日周视图切换bug
                 if (mParentLayout != null) {
-                    mParentLayout.setSelectWeek(Util.getWeekFromDayInMonth(calendar));
+                    int i = Util.getWeekFromDayInMonth(calendar);
+                    mParentLayout.setSelectWeek(i);
                 }
-
 
                 if (mDateSelectedListener != null) {
                     mDateSelectedListener.onDateSelected(calendar);
                 }
-//
-//                if (mListener != null) {
-//                    mListener.onDateChange(calendar);
-//                }
+
                 invalidate();
             }
         }
     }
 
     void performClickCalendar() {
+        mCurrentItem = 0;
         if (mItems == null || mInnerListener == null || mParentLayout == null) {
             return;
         }
-//        if (mCurrent == null) {
-//            mInnerListener.onWeekSelected(mItems.get(0));
-//            mParentLayout.setSelectWeek(Util.getWeekFromDayInMonth(mItems.get(0)));
-//            return;
-//        }
-//        java.util.Calendar date = java.util.Calendar.getInstance();
-//        date.set(mCurrent.getYear(), mCurrent.getMonth() - 1, mCurrent.getDay());
-//        int diff = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;
-//        Calendar calendar = mItems.get(diff);
-//        mInnerListener.onWeekSelected(calendar);
-//        mParentLayout.setSelectWeek(Util.getWeekFromDayInMonth(calendar));
-//        if (mDateSelectedListener != null) {
-//            mDateSelectedListener.onDateSelected(calendar);
-//        }
+        Calendar calendar = mItems.get(0);
+        mInnerListener.onWeekSelected(calendar);
+
+        int i = Util.getWeekFromDayInMonth(calendar);
+        mParentLayout.setSelectWeek(i);
+
+        if (mDateSelectedListener != null) {
+            mDateSelectedListener.onDateSelected(calendar);
+        }
+        invalidate();
     }
 
 
@@ -394,7 +388,6 @@ public abstract class WeekView extends View implements View.OnClickListener {
      */
     void setSelectedCalendar(Calendar calendar) {
         mCurrentItem = mItems.indexOf(calendar);
-        performClickCalendar();
     }
 
 
@@ -459,7 +452,6 @@ public abstract class WeekView extends View implements View.OnClickListener {
             mItems.add(calendarDate);
         }
         invalidate();
-        performClickCalendar();
     }
 
 

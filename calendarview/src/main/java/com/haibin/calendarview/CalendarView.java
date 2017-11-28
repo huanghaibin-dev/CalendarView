@@ -227,6 +227,12 @@ public class CalendarView extends FrameLayout {
                 calendar.setDay(1);
                 calendar.setCurrentMonth(calendar.getMonth() == mCurMonth);
                 calendar.setLunar(LunarCalendar.numToChineseDay(LunarCalendar.solarToLunar(calendar.getYear(), calendar.getMonth(), 1)[2]));
+                if (mListener != null) {
+                    mListener.onDateChange(calendar);
+                }
+                if (mParentLayout == null || mViewPager.getVisibility() == INVISIBLE) {
+                    return;
+                }
                 if (!calendar.isCurrentMonth()) {
                     mSelectedCalendar = calendar;
                 } else {
@@ -236,9 +242,7 @@ public class CalendarView extends FrameLayout {
                     mSelectedCalendar.setCurrentDay(true);
                     mSelectedCalendar.setCurrentMonth(true);
                 }
-                if (mListener != null) {
-                    mListener.onDateChange(calendar);
-                }
+
                 if (mParentLayout != null) {
                     BaseCalendarCardView view = (BaseCalendarCardView) mViewPager.findViewWithTag(position);
                     if (view != null) {
@@ -694,6 +698,9 @@ public class CalendarView extends FrameLayout {
         void onDateSelected(Calendar calendar);
     }
 
+    /**
+     * 新版本将按照google控件规范整理代码
+     */
     interface CalendarViewDelegate {
 
     }
