@@ -1,21 +1,20 @@
 # CalenderView
-Android上一个优雅、高度自定义、性能高效的日历控件，支持标记、自定义颜色、农历等。Canvas绘制，速度快、占用内存低，3.0.0版本全新重构，支持简单重新即可实现任意自定义布局、自定义UI，支持收缩展开、性能非常高效，
-简单的说老版本是使用RecyclerView + Canvas 的、这种方式对于自定义控件的复杂度下降了很多，但是相反内存占用却上升了，如果使用一个View替换RecyclerView，则控件数相比会下降130+，每个页面就有43个控件，
-3.0.0版本内存和效率优势提升相当明显，而且真正做到收缩+展开，适配多种场景，支持同时多种颜色标记日历事务，更多参考用法请移步Demo。
+Android上一个优雅、高度自定义、性能高效的日历控件，完美支持周视图，支持标记、自定义颜色、农历等。Canvas绘制，速度快、占用内存低，3.0.0版本全新重构，支持简单重新即可实现任意自定义布局、自定义UI，支持收缩展开、性能非常高效，
+这个控件内存和效率优势相当明显，而且真正做到收缩+展开，适配多种场景，支持同时多种颜色标记日历事务，更多参考用法请移步Demo，Demo实现了4个精美的自定义效果。
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.0.0'
+compile 'com.haibin:calendarview:3.0.1'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.0.0</version>
+  <version>3.0.1</version>
   <type>pom</type>
 </dependency>
 ```
-### 如果你需要完全定制UI，参考demo，简单几步即可绘制你需要的效果，一般只需要实现三个回调函数绘制你需要的特效即可，真正做到热插拔效果，方便大众定制UI需求
+### 如果你需要完全定制UI，参考demo，简单几步即可绘制你需要的效果，一般只需要实现三个回调函数绘制你需要的特效即可，自定义日历UI需要同时自定义周视图，真正做到热插拔效果，方便大众定制UI需求
 
 ### 效果预览
 ### 收缩展开的魅族风格效果
@@ -40,6 +39,7 @@ compile 'com.haibin:calendarview:3.0.0'
              android:layout_height="wrap_content"
              android:background="#fff"
              app:calendar_card_view="com.haibin.calendarviewproject.simple.SimpleCalendarCardView"
+             app:week_view="com.haibin.calendarviewproject.simple.SimpleWeekView"
              app:calendar_height="50dp"
              app:current_month_text_color="#333333"
              app:current_month_lunar_text_color="#CFCFCF"
@@ -65,7 +65,8 @@ compile 'com.haibin:calendarview:3.0.0'
 ```xml
 <declare-styleable name="CalendarView">
 
-        <attr name="calendar_card_view" format="color" /> <!--热插拔自定义类路径-->
+        <attr name="calendar_card_view" format="color" /> <!--热插拔自定义类日历月视图路径-->
+        <attr name="week_view" format="color" /> <!--热插拔自定义类周视图路径-->
 
         <attr name="week_background" format="color" /> <!--星期栏的背景-->
         <attr name="week_text_color" format="color" /> <!--星期栏文本颜色-->
