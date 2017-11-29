@@ -36,6 +36,16 @@ final class Util {
     }
 
     /**
+     * 判断一个日期是否是周末，即周六日
+     * @param calendar calendar
+     * @return 判断一个日期是否是周末，即周六日
+     */
+    static boolean isWeekend(Calendar calendar) {
+        int week = getWeekFormCalendar(calendar);
+        return week == 0 || week == 6;
+    }
+
+    /**
      * 获取某月的天数
      *
      * @param year  年
@@ -65,6 +75,7 @@ final class Util {
         }
         return count;
     }
+
 
     /**
      * 是否是闰年
@@ -152,10 +163,11 @@ final class Util {
 
     /**
      * 获取某个日期是星期几
+     *
      * @param calendar 某个日期
      * @return 返回某个日期是星期几
      */
-    static int getWeekFormCalendar(Calendar calendar){
+    static int getWeekFormCalendar(Calendar calendar) {
         java.util.Calendar date = java.util.Calendar.getInstance();
         date.set(calendar.getYear(), calendar.getMonth() - 1, calendar.getDay());
         return date.get(java.util.Calendar.DAY_OF_WEEK) - 1;

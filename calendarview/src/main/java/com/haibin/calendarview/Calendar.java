@@ -48,6 +48,12 @@ public class Calendar implements Serializable {
     /**各种自定义标记颜色、没有则选择默认颜色*/
     private int schemeColor;
 
+    /**是否是周末*/
+    private boolean isWeekend;
+
+    /**星期*/
+    private int week;
+
     public int getYear() {
         return year;
     }
@@ -75,6 +81,7 @@ public class Calendar implements Serializable {
     public boolean isCurrentMonth() {
         return isCurrentMonth;
     }
+
 
     public void setCurrentMonth(boolean currentMonth) {
         this.isCurrentMonth = currentMonth;
@@ -111,6 +118,22 @@ public class Calendar implements Serializable {
 
     public void setSchemeColor(int schemeColor) {
         this.schemeColor = schemeColor;
+    }
+
+    public boolean isWeekend() {
+        return isWeekend;
+    }
+
+    public void setWeekend(boolean weekend) {
+        isWeekend = weekend;
+    }
+
+    public int getWeek() {
+        return week;
+    }
+
+    public void setWeek(int week) {
+        this.week = week;
     }
 
     @Override

@@ -518,6 +518,8 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
                 calendarDate.setCurrentDay(true);
                 mCurrentItem = i;
             }
+            calendarDate.setWeekend(Util.isWeekend(calendarDate));
+            calendarDate.setWeek(Util.getWeekFormCalendar(calendarDate));
             calendarDate.setLunar(LunarCalendar.getLunarText(calendarDate.getYear(), calendarDate.getMonth(), calendarDate.getDay()));
             mItems.add(calendarDate);
         }

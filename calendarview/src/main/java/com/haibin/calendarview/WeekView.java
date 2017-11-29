@@ -483,6 +483,8 @@ public abstract class WeekView extends View implements View.OnClickListener {
                 calendarDate.setDay(day);
                 day += 1;
             }
+            calendarDate.setWeekend(Util.isWeekend(calendarDate));
+            calendarDate.setWeek(Util.getWeekFormCalendar(calendarDate));
             calendarDate.setCurrentDay(calendarDate.equals(mDelegate.getCurrentDay()));
             calendarDate.setLunar(LunarCalendar.getLunarText(calendarDate.getYear(), calendarDate.getMonth(), calendarDate.getDay()));
             mItems.add(calendarDate);
