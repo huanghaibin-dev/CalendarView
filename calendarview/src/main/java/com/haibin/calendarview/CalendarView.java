@@ -139,18 +139,19 @@ public class CalendarView extends FrameLayout {
                 calendar.setCurrentMonth(calendar.getMonth() == mDelegate.getCurrentDay().getMonth());
                 calendar.setLunar(LunarCalendar.numToChineseDay(LunarCalendar.solarToLunar(calendar.getYear(), calendar.getMonth(), 1)[2]));
 
+                if (mListener != null) {
+                    mListener.onDateChange(mSelectedCalendar);
+                }
 
+                if (mParentLayout == null || mViewPager.getVisibility() == INVISIBLE || mWeekPager.getVisibility() == VISIBLE) {
+                    return;
+                }
                 if (!calendar.isCurrentMonth()) {
                     mSelectedCalendar = calendar;
                 } else {
                     mSelectedCalendar = mDelegate.getCurrentDay();
                 }
-                if (mListener != null) {
-                    mListener.onDateChange(mSelectedCalendar);
-                }
-                if (mParentLayout == null || mViewPager.getVisibility() == INVISIBLE) {
-                    return;
-                }
+
                 BaseCalendarCardView view = (BaseCalendarCardView) mViewPager.findViewWithTag(position);
                 if (view != null) {
                     int index = view.getSelectedIndex(mSelectedCalendar);
