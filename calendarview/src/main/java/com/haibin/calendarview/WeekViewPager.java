@@ -19,7 +19,6 @@ import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -159,7 +158,6 @@ public class WeekViewPager extends ViewPager {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             Calendar calendar = Util.getFirstCalendarFromWeekCount(mDelegate.getMinYear(), position + 1);
-            Log.e("instantiateItem","  "  + calendar.getYear() + "  --  " + calendar.getMonth() + "  --  " + calendar.getDay());
             WeekView view;
             try {
                 Class cls = Class.forName(mDelegate.getWeekViewClass());

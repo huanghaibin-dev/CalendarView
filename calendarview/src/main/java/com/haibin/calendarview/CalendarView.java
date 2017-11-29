@@ -24,7 +24,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +39,6 @@ import java.util.List;
  * 日历布局
  * 各个类使用包权限，避免不必要的public
  */
-@SuppressWarnings("unused")
 public class CalendarView extends FrameLayout {
 
     private CalendarViewDelegate mDelegate;
@@ -133,7 +131,6 @@ public class CalendarView extends FrameLayout {
 
             @Override
             public void onPageSelected(int position) {
-                Log.e("onPageSelected","  "  + position);
                 Calendar calendar = new Calendar();
                 calendar.setYear(position / 12 + mDelegate.getMinYear());
                 calendar.setMonth(position % 12 + 1);
@@ -232,8 +229,6 @@ public class CalendarView extends FrameLayout {
         if (mDelegate.getMinYear() >= mCurYear) mDelegate.setMinYear(mCurYear);
         if (mDelegate.getMaxYear() <= mCurYear) mDelegate.setMaxYear(mCurYear + 2);
         mSelectLayout.setYearSpan(mDelegate.getMinYear(), mDelegate.getMaxYear());
-        int mCurMonth = mSelectedCalendar.getMonth();
-        int mCurDay = mSelectedCalendar.getDay();
         int y = mSelectedCalendar.getYear() - mDelegate.getMinYear();
         mCurrentViewItem = 12 * y + mSelectedCalendar.getMonth() - 1;
         CalendarViewPagerAdapter adapter = new CalendarViewPagerAdapter();
@@ -336,6 +331,7 @@ public class CalendarView extends FrameLayout {
      *
      * @param year 快速滚动的年份
      */
+    @SuppressWarnings("unused")
     public void scrollToYear(int year) {
         mViewPager.setCurrentItem(12 * (year - mDelegate.getMinYear()) + mDelegate.getCurrentDay().getMonth() - 1);
     }
@@ -507,6 +503,7 @@ public class CalendarView extends FrameLayout {
      * @param weekBackground        星期栏背景色
      * @param lineBg                线的颜色
      */
+    @SuppressWarnings("unused")
     public void setBackground(int monthLayoutBackground, int weekBackground, int lineBg) {
         mLinearWeek.setBackgroundColor(weekBackground);
         mSelectLayout.setBackgroundColor(monthLayoutBackground);
@@ -540,6 +537,7 @@ public class CalendarView extends FrameLayout {
      * @param curMonthLunarTextColor   当前月份农历字体颜色
      * @param otherMonthLunarTextColor 其它农历字体颜色
      */
+    @SuppressWarnings("unused")
     public void setTextColor(
             int currentDayTextColor,
             int curMonthTextColor,
@@ -604,6 +602,7 @@ public class CalendarView extends FrameLayout {
      * @param weekBackground 背景色
      * @param weekTextColor  字体颜色
      */
+    @SuppressWarnings("unused")
     public void setWeeColor(int weekBackground, int weekTextColor) {
         mLinearWeek.setBackgroundColor(weekBackground);
         for (int i = 0; i < mLinearWeek.getChildCount(); i++) {
@@ -616,6 +615,7 @@ public class CalendarView extends FrameLayout {
      * 更新界面，
      * 重新设置颜色等都需要调用该方法
      */
+    @SuppressWarnings("unused")
     public void update() {
         mSelectLayout.update();
         for (int i = 0; i < mViewPager.getChildCount(); i++) {
@@ -628,6 +628,7 @@ public class CalendarView extends FrameLayout {
     /**
      * 获取选择的日期
      */
+    @SuppressWarnings("unused")
     public Calendar getSelectedCalendar() {
         return mSelectedCalendar;
     }
@@ -809,6 +810,7 @@ public class CalendarView extends FrameLayout {
          * @param calendarTextSize 日期大小
          * @param lunarTextSize    农历大小
          */
+        @SuppressWarnings("unused")
         void setDayTextSize(float calendarTextSize, float lunarTextSize);
 
 
