@@ -24,6 +24,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -132,18 +133,20 @@ public class CalendarView extends FrameLayout {
 
             @Override
             public void onPageSelected(int position) {
+                Log.e("onPageSelected","  "  + position);
                 Calendar calendar = new Calendar();
                 calendar.setYear(position / 12 + mDelegate.getMinYear());
                 calendar.setMonth(position % 12 + 1);
                 calendar.setDay(1);
-                calendar.setCurrentMonth(calendar.getMonth() == mDelegate.getCurrentDay().getMonth());
+                calendar.setCurrentMonth(calendar.getYear() == mDelegate.getCurrentDay().getYear()&&
+                        calendar.getMonth() == mDelegate.getCurrentDay().getMonth());
                 calendar.setLunar(LunarCalendar.numToChineseDay(LunarCalendar.solarToLunar(calendar.getYear(), calendar.getMonth(), 1)[2]));
 
-                if (mListener != null) {
-                    mListener.onDateChange(mSelectedCalendar);
-                }
 
                 if (mParentLayout == null || mViewPager.getVisibility() == INVISIBLE || mWeekPager.getVisibility() == VISIBLE) {
+                    if (mListener != null) {
+                        mListener.onDateChange(calendar);
+                    }
                     return;
                 }
                 if (!calendar.isCurrentMonth()) {
@@ -151,6 +154,10 @@ public class CalendarView extends FrameLayout {
                 } else {
                     mSelectedCalendar = mDelegate.getCurrentDay();
                 }
+                if (mListener != null) {
+                    mListener.onDateChange(mSelectedCalendar);
+                }
+
 
                 BaseCalendarCardView view = (BaseCalendarCardView) mViewPager.findViewWithTag(position);
                 if (view != null) {
@@ -190,7 +197,9 @@ public class CalendarView extends FrameLayout {
         mInnerListener = new OnInnerDateSelectedListener() {
             @Override
             public void onDateSelected(Calendar calendar) {
-                if (calendar.getMonth() == mDelegate.getCurrentDay().getMonth() && mViewPager.getCurrentItem() != mCurrentViewItem) {
+                if (calendar.getYear() == mDelegate.getCurrentDay().getYear() &&
+                        calendar.getMonth() == mDelegate.getCurrentDay().getMonth()
+                        && mViewPager.getCurrentItem() != mCurrentViewItem) {
                     return;
                 }
                 mSelectedCalendar = calendar;
@@ -217,7 +226,6 @@ public class CalendarView extends FrameLayout {
             }
         };
 
-        int position;
         mSelectedCalendar = mDelegate.getCurrentDay();
 
         int mCurYear = mSelectedCalendar.getYear();
@@ -440,10 +448,10 @@ public class CalendarView extends FrameLayout {
             view.mListener = mListener;
             view.mDateSelectedListener = mDateSelectedListener;
             view.mInnerListener = mInnerListener;
+            view.setup(mDelegate);
             view.setTag(position);
             view.setCurrentDate(year, month);
             view.setSelectedCalendar(mSelectedCalendar);
-            view.setup(mDelegate);
             container.addView(view);
             return view;
         }

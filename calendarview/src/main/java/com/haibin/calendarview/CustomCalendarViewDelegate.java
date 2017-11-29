@@ -217,7 +217,6 @@ class CustomCalendarViewDelegate implements CalendarView.CalendarViewDelegate {
         this.mMaxYear = maxYear;
     }
 
-
     @Override
     public void setTextColor(int curDayTextColor, int curMonthTextColor, int otherMonthTextColor, int curMonthLunarTextColor, int otherMonthLunarTextColor) {
         mCurrentMonthTextColor = curMonthTextColor;
