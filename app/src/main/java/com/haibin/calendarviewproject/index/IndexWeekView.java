@@ -49,7 +49,7 @@ public class IndexWeekView extends WeekView {
             mCurMonthLunarTextPaint.setColor(mCurMonthLunarTextColor);
             canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
                     calendar.isCurrentDay() ? mCurDayTextPaint :
-                            calendar.isCurrentMonth() ? mSchemeTextPaint : mOtherMonthTextPaint);
+                            calendar.isCurrentMonth() ? mSchemeTextPaint : mCurMonthTextPaint);
             mSchemeBasicPaint.setColor(calendar.getSchemeColor());
             canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + mItemHeight / 10, mCurMonthLunarTextPaint);
             canvas.drawRect(x + mItemWidth / 2 - mW / 2,
@@ -59,7 +59,7 @@ public class IndexWeekView extends WeekView {
         } else {
             canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
                     calendar.isCurrentDay() ? mCurDayTextPaint :
-                            calendar.isCurrentMonth() ? mCurMonthTextPaint : mOtherMonthTextPaint);
+                            calendar.isCurrentMonth() ? mCurMonthTextPaint : mCurMonthTextPaint);
             canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + mItemHeight / 10, mCurMonthLunarTextPaint);
         }
     }

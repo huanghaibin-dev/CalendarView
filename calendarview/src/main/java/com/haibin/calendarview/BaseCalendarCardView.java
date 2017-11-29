@@ -247,7 +247,7 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
         mSchemeTextPaint.setTextSize(Util.dipToPx(context, TEXT_SIZE));
 
         mSchemePaint.setAntiAlias(true);
-        mSchemePaint.setStyle(Paint.Style.STROKE);
+        mSchemePaint.setStyle(Paint.Style.FILL);
         mSchemePaint.setStrokeWidth(2);
         mSchemePaint.setColor(0xffefefef);
 

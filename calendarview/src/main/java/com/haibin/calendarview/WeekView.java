@@ -20,7 +20,7 @@ import java.util.List;
 
 public abstract class WeekView extends View implements View.OnClickListener {
 
-
+    private CalendarView.CalendarViewDelegate mDelegate;
     /**
      * 当前月份日期的笔
      */
@@ -213,7 +213,7 @@ public abstract class WeekView extends View implements View.OnClickListener {
         mSchemeTextPaint.setTextSize(Util.dipToPx(context, TEXT_SIZE));
 
         mSchemePaint.setAntiAlias(true);
-        mSchemePaint.setStyle(Paint.Style.STROKE);
+        mSchemePaint.setStyle(Paint.Style.FILL);
         mSchemePaint.setStrokeWidth(2);
         mSchemePaint.setColor(0xffefefef);
 
@@ -234,6 +234,7 @@ public abstract class WeekView extends View implements View.OnClickListener {
     }
 
     void setup(CalendarView.CalendarViewDelegate delegate) {
+        this.mDelegate = delegate;
         mCurMonthTextColor = delegate.getCurrentMonthTextColor();
         mCurMonthLunarTextColor = delegate.getCurrentMonthLunarTextColor();
         mCurDayTextPaint.setColor(delegate.getCurDayTextColor());
@@ -482,6 +483,7 @@ public abstract class WeekView extends View implements View.OnClickListener {
                 calendarDate.setDay(day);
                 day += 1;
             }
+            calendarDate.setCurrentDay(calendarDate.equals(mDelegate.getCurrentDay()));
             calendarDate.setLunar(LunarCalendar.getLunarText(calendarDate.getYear(), calendarDate.getMonth(), calendarDate.getDay()));
             mItems.add(calendarDate);
         }
@@ -515,6 +517,7 @@ public abstract class WeekView extends View implements View.OnClickListener {
 
     /**
      * 设置高度
+     *
      * @param itemHeight itemHeight
      */
     private void setItemHeight(int itemHeight) {
@@ -541,6 +544,7 @@ public abstract class WeekView extends View implements View.OnClickListener {
      *
      * @param x 日历Card x起点坐标
      */
+    @SuppressWarnings("unused")
     protected void onLoopStart(int x) {
         // TODO: 2017/11/16
     }

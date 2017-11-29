@@ -149,7 +149,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="317dp"
                         android:layout_height="wrap_content"
                         android:text="FLYME"
                         android:textColor="#333333"
