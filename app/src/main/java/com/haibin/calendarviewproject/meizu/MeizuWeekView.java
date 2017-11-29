@@ -1,24 +1,26 @@
-package com.haibin.calendarview;
+package com.haibin.calendarviewproject.meizu;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import com.haibin.calendarview.Calendar;
+import com.haibin.calendarview.WeekView;
+
 /**
- * 测试
- * Created by huanghaibin on 2017/11/21.
+ * 魅族周视图
+ * Created by huanghaibin on 2017/11/29.
  */
 
-public class TestWeekView extends WeekView {
-
+public class MeizuWeekView extends WeekView {
     private Paint mTextPaint = new Paint();
     private Paint mSchemeBasicPaint = new Paint();
     private float mRadio;
     private int mPadding;
     private float mSchemeBaseLine;
 
-    public TestWeekView(Context context) {
+    public MeizuWeekView(Context context) {
         super(context);
 
         mTextPaint.setTextSize(dipToPx(context, 8));
@@ -39,10 +41,10 @@ public class TestWeekView extends WeekView {
     }
 
     @Override
-    protected void onDrawSelected(Canvas canvas, Calendar calendar, int x,  boolean hasScheme) {
+    protected void onDrawSelected(Canvas canvas, Calendar calendar, int x, boolean hasScheme) {
         mSelectedPaint.setStyle(Paint.Style.FILL);
         mSelectedPaint.setColor(0x80cfcfcf);
-        canvas.drawRect(x + mPadding, mPadding, x + mItemWidth - mPadding,  mItemHeight - mPadding, mSelectedPaint);
+        canvas.drawRect(x + mPadding, mPadding, x + mItemWidth - mPadding, mItemHeight - mPadding, mSelectedPaint);
     }
 
     @Override
@@ -51,9 +53,9 @@ public class TestWeekView extends WeekView {
     }
 
     @Override
-    protected void onDrawText(Canvas canvas, Calendar calendar, int x,boolean hasScheme, boolean isSelected) {
+    protected void onDrawText(Canvas canvas, Calendar calendar, int x, boolean hasScheme, boolean isSelected) {
         int cx = x + mItemWidth / 2;
-        int top =  - mItemHeight / 6;
+        int top = -mItemHeight / 6;
         if (hasScheme) {
             //mSchemeTextPaint.setColor(calendar.getSchemeColor());
             //mCurMonthLunarTextPaint.setColor(mCurMonthLunarTextColor);
@@ -61,20 +63,20 @@ public class TestWeekView extends WeekView {
                     calendar.isCurrentDay() ? mCurDayTextPaint :
                             calendar.isCurrentMonth() ? mSchemeTextPaint : mSchemeTextPaint);
 
-            canvas.drawText(calendar.getLunar(), cx, mTextBaseLine +  mItemHeight / 10, mCurMonthLunarTextPaint);
+            canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + mItemHeight / 10, mCurMonthLunarTextPaint);
 
             mTextPaint.setColor(Color.WHITE);
             mSchemeBasicPaint.setColor(calendar.getSchemeColor());
 
-            canvas.drawCircle(x + mItemWidth - mPadding - mRadio / 2,  mPadding + mRadio, mRadio, mSchemeBasicPaint);
+            canvas.drawCircle(x + mItemWidth - mPadding - mRadio / 2, mPadding + mRadio, mRadio, mSchemeBasicPaint);
 
-            canvas.drawText(calendar.getScheme(), x + mItemWidth - mPadding - mRadio,  mPadding + mSchemeBaseLine, mTextPaint);
+            canvas.drawText(calendar.getScheme(), x + mItemWidth - mPadding - mRadio, mPadding + mSchemeBaseLine, mTextPaint);
 
         } else {
             canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
                     calendar.isCurrentDay() ? mCurDayTextPaint :
                             calendar.isCurrentMonth() ? mCurMonthTextPaint : mCurMonthTextPaint);
-            canvas.drawText(calendar.getLunar(), cx, mTextBaseLine +  mItemHeight / 10, mCurMonthLunarTextPaint);
+            canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + mItemHeight / 10, mCurMonthLunarTextPaint);
         }
     }
 

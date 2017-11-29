@@ -116,7 +116,8 @@
             app:selected_text_color="#333"
             app:selected_theme_color="#108cd4"
             app:week_background="#fff"
-            app:week_text_color="#111" />
+            app:week_text_color="#111"
+            app:week_view="com.haibin.calendarviewproject.meizu.MeizuWeekView" />
 
         <LinearLayout
             android:id="@+id/linearView"

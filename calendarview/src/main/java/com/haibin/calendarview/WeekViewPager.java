@@ -19,7 +19,6 @@ import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -34,6 +33,7 @@ import java.util.List;
 
 public class WeekViewPager extends ViewPager {
 
+    private CalendarView.CalendarViewDelegate mDelegate;
     /**
      * 日期被选中监听
      */
@@ -54,40 +54,11 @@ public class WeekViewPager extends ViewPager {
      */
     CalendarLayout mParentLayout;
 
-    private String mWeekViewClass;
-    /**
-     * 周视图高度
-     */
-    private int mItemHeight;
-
-    /**
-     * 最小年份和最大年份
-     */
-    int mMinYear, mMaxYear;
-
     /**
      * 标记的日期
      */
     List<Calendar> mSchemeDate;
 
-    /**
-     * 各种字体颜色，看名字知道对应的地方
-     */
-    int mCurDayTextColor, mWeekTextColor,
-            mSchemeTextColor,
-            mSchemeLunarTextColor,
-            mOtherMonthTextColor,
-            mCurrentMonthTextColor,
-            mSelectedTextColor,
-            mSelectedLunarTextColor,
-            mCurMonthLunarTextColor,
-            mOtherMonthLunarTextColor;
-
-    int mDayTextSize, mLunarTextSize;
-    /**
-     * 标记的主题色和选中的主题色
-     */
-    int mSchemeThemeColor, mSelectedThemeColor;
 
     Calendar mSelectedCalendar;
 
@@ -97,9 +68,12 @@ public class WeekViewPager extends ViewPager {
 
     public WeekViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
     }
 
+    void setup(CalendarView.CalendarViewDelegate delegate) {
+        this.mDelegate = delegate;
+        init();
+    }
 
     private void init() {
         setAdapter(new WeekViewPagerAdapter());
@@ -132,7 +106,7 @@ public class WeekViewPager extends ViewPager {
      */
     void scrollToCurrent(Calendar calendar) {
         this.mSelectedCalendar = calendar;
-        int position = Util.getWeekFromCalendarBetweenYearAndYear(mSelectedCalendar, mMinYear) - 1;
+        int position = Util.getWeekFromCalendarBetweenYearAndYear(mSelectedCalendar, mDelegate.getMinYear()) - 1;
         setCurrentItem(position);
         for (int i = 0; i < getChildCount(); i++) {
             WeekView view = (WeekView) getChildAt(i);
@@ -142,7 +116,7 @@ public class WeekViewPager extends ViewPager {
 
     void updateSelected(Calendar calendar) {
         this.mSelectedCalendar = calendar;
-        int position = Util.getWeekFromCalendarBetweenYearAndYear(calendar, mMinYear) - 1;
+        int position = Util.getWeekFromCalendarBetweenYearAndYear(calendar, mDelegate.getMinYear()) - 1;
         setCurrentItem(position);
         for (int i = 0; i < getChildCount(); i++) {
             WeekView view = (WeekView) getChildAt(i);
@@ -150,13 +124,11 @@ public class WeekViewPager extends ViewPager {
         }
     }
 
-    /**
-     * 设置周视图高度
-     *
-     * @param mItemHeight 周视图高度
-     */
-    public void setItemHeight(int mItemHeight) {
-        this.mItemHeight = mItemHeight;
+    void update() {
+        for (int i = 0; i < getChildCount(); i++) {
+            WeekView view = (WeekView) getChildAt(i);
+            view.update();
+        }
     }
 
     /**
@@ -164,7 +136,7 @@ public class WeekViewPager extends ViewPager {
      */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        heightMeasureSpec = MeasureSpec.makeMeasureSpec(mItemHeight, MeasureSpec.EXACTLY);
+        heightMeasureSpec = MeasureSpec.makeMeasureSpec(mDelegate.getCalendarItemHeight(), MeasureSpec.EXACTLY);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
@@ -175,7 +147,7 @@ public class WeekViewPager extends ViewPager {
 
         @Override
         public int getCount() {
-            return Util.getWeekCountBetweenYearAndYear(mMinYear, mMaxYear);
+            return Util.getWeekCountBetweenYearAndYear(mDelegate.getMinYear(), mDelegate.getMaxYear());
         }
 
         @Override
@@ -185,30 +157,26 @@ public class WeekViewPager extends ViewPager {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            Calendar calendar = Util.getFirstCalendarFromWeekCount(mMinYear, position + 1);
+            Calendar calendar = Util.getFirstCalendarFromWeekCount(mDelegate.getMinYear(), position + 1);
             WeekView view;
             try {
-                Class cls = Class.forName(mWeekViewClass);
+                Class cls = Class.forName(mDelegate.getWeekViewClass());
                 @SuppressWarnings("unchecked")
                 Constructor constructor = cls.getConstructor(Context.class);
                 view = (WeekView) constructor.newInstance(getContext());
             } catch (Exception e) {
                 e.printStackTrace();
-                view = new TestWeekView(getContext());
+                return null;
             }
             view.mListener = mListener;
             view.mDateSelectedListener = mDateSelectedListener;
             view.mInnerListener = mInnerListener;
             view.mParentLayout = mParentLayout;
-            view.setItemHeight(mItemHeight);
+            view.setup(mDelegate);
             view.setup(calendar);
-            view.setDayTextSize(mDayTextSize, mLunarTextSize);
             view.setTag(position);
             view.setSelectedCalendar(mSelectedCalendar);
             view.mSchemes = mSchemeDate;
-            view.setSchemeColor(mSchemeThemeColor, mSchemeTextColor, mSchemeLunarTextColor);
-            view.setSelectColor(mSelectedThemeColor, mSelectedTextColor, mSelectedLunarTextColor);
-            view.setTextColor(mCurDayTextColor, mCurrentMonthTextColor, mOtherMonthTextColor, mCurMonthLunarTextColor, mOtherMonthLunarTextColor);
             container.addView(view);
             return view;
         }

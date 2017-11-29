@@ -6,6 +6,7 @@
         <attr name="week_text_color" format="color" />
 
         <attr name="calendar_card_view" format="string" /><!-- -->
+        <attr name="week_view" format="string" /><!-- -->
 
         <attr name="scheme_text" format="string" />
         <attr name="day_text_size" format="dimension" />

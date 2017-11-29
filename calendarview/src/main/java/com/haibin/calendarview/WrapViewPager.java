@@ -11,10 +11,10 @@ import android.view.ViewGroup;
  */
 @SuppressWarnings("unused")
 public class WrapViewPager extends ViewPager {
+    private CalendarView.CalendarViewDelegate mDelegate;
     private int mNextViewHeight, mPreViewHeight, mCurrentViewHeight;
     private boolean isFirstInit = true;
     CalendarLayout mParentLayout;
-    int mItemHeight;
 
     public WrapViewPager(Context context) {
         this(context, null);
@@ -53,7 +53,7 @@ public class WrapViewPager extends ViewPager {
 
             @Override
             public void onPageSelected(int position) {
-                int year = position / 12 + CalendarView.mMinYear;
+                int year = position / 12 + mDelegate.getMinYear();
                 int month = position % 12 + 1;
                 mCurrentViewHeight = getCardHeight();
                 if (month == 1) {
@@ -82,6 +82,10 @@ public class WrapViewPager extends ViewPager {
         });
     }
 
+    void setup(CalendarView.CalendarViewDelegate delegate) {
+        this.mDelegate = delegate;
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         heightMeasureSpec = MeasureSpec.makeMeasureSpec(getCardHeight(), MeasureSpec.EXACTLY);
@@ -94,7 +98,7 @@ public class WrapViewPager extends ViewPager {
      * @return 获取日历卡高度
      */
     private int getCardHeight() {
-        return 6 * mItemHeight;
+        return 6 * mDelegate.getCalendarItemHeight();
     }
 
 }

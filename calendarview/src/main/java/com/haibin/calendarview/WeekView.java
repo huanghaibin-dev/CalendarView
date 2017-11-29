@@ -17,8 +17,9 @@ import java.util.List;
  * 周视图，因为日历UI采用热插拔实现，所以这里必须继承实现，达到UI一致即可
  * Created by huanghaibin on 2017/11/21.
  */
-@SuppressWarnings("unused")
+
 public abstract class WeekView extends View implements View.OnClickListener {
+
 
     /**
      * 当前月份日期的笔
@@ -76,16 +77,6 @@ public abstract class WeekView extends View implements View.OnClickListener {
     CalendarView.OnDateChangeListener mListener;
 
     /**
-     * 当前日历卡年份
-     */
-    private int mYear;
-
-    /**
-     * 当前日历卡月份
-     */
-    private int mMonth;
-
-    /**
      * 日历布局，需要在日历下方放自己的布局
      */
     CalendarLayout mParentLayout;
@@ -99,11 +90,6 @@ public abstract class WeekView extends View implements View.OnClickListener {
      * 标记事件
      */
     List<Calendar> mSchemes;
-
-    /**
-     * 日历的行数
-     */
-    private int mLineCount;
 
     /**
      * 每一项的高度
@@ -247,6 +233,37 @@ public abstract class WeekView extends View implements View.OnClickListener {
         setOnClickListener(this);
     }
 
+    void setup(CalendarView.CalendarViewDelegate delegate) {
+        mCurMonthTextColor = delegate.getCurrentMonthTextColor();
+        mCurMonthLunarTextColor = delegate.getCurrentMonthLunarTextColor();
+        mCurDayTextPaint.setColor(delegate.getCurDayTextColor());
+        mCurMonthTextPaint.setColor(delegate.getCurrentMonthTextColor());
+        mOtherMonthTextPaint.setColor(delegate.getOtherMonthTextColor());
+        mCurMonthLunarTextPaint.setColor(delegate.getCurrentMonthLunarTextColor());
+        mOtherMonthLunarTextColor = delegate.getOtherMonthLunarTextColor();
+        mOtherMonthLunarTextPaint.setColor(mOtherMonthLunarTextColor);
+
+
+        this.mSchemeColor = delegate.getSchemeThemeColor();
+        this.mSchemePaint.setColor(mSchemeColor);
+        this.mSchemeTextColor = delegate.getSchemeTextColor();
+        this.mSchemeTextPaint.setColor(mSchemeTextColor);
+        this.mSchemeLunarTextColor = delegate.getSchemeLunarTextColor();
+
+
+        mCurMonthTextPaint.setTextSize(delegate.getDayTextSize());
+        mOtherMonthTextPaint.setTextSize(mCurMonthTextPaint.getTextSize());
+        mCurDayTextPaint.setTextSize(mCurMonthTextPaint.getTextSize());
+        mSchemeTextPaint.setTextSize(mCurMonthTextPaint.getTextSize());
+        mCurMonthLunarTextPaint.setTextSize(delegate.getLunarTextSize());
+
+        mSelectedPaint.setStyle(Paint.Style.FILL);
+        this.mSelectedPaint.setColor(delegate.getSelectedThemeColor());
+        this.mSelectedTextColor = delegate.getSelectedTextColor();
+        this.mSelectedLunarTextColor = delegate.getSelectedLunarTextColor();
+        setItemHeight(delegate.getCalendarItemHeight());
+    }
+
     /**
      * 绘制日历文本
      *
@@ -349,6 +366,11 @@ public abstract class WeekView extends View implements View.OnClickListener {
         }
     }
 
+    /**
+     * 周视图切换点击默认位置
+     *
+     * @param calendar calendar
+     */
     void performClickCalendar(Calendar calendar) {
         if (mItems == null || mInnerListener == null || mParentLayout == null || mItems.size() == 0) {
             return;
@@ -369,6 +391,11 @@ public abstract class WeekView extends View implements View.OnClickListener {
     }
 
 
+    /**
+     * 获取点击的日历
+     *
+     * @return 获取点击的日历
+     */
     private Calendar getIndex() {
         int width = (getWidth() - mPaddingLeft - mPaddingRight) / 7;
         int indexX = (int) mX / width;
@@ -393,6 +420,11 @@ public abstract class WeekView extends View implements View.OnClickListener {
     }
 
 
+    /**
+     * 初始化周视图控件
+     *
+     * @param calendar calendar
+     */
     void setup(Calendar calendar) {
         java.util.Calendar date = java.util.Calendar.getInstance();
         date.set(calendar.getYear(), calendar.getMonth() - 1, calendar.getDay());
@@ -404,7 +436,7 @@ public abstract class WeekView extends View implements View.OnClickListener {
         }
 
         int preDiff = 0, nextDiff = 0;
-        int preMonthDaysCount = 0, nextMonthDaysCount = 0;
+        int preMonthDaysCount = 0;
         int preYear = 0, preMonth = 0;
         int nextYear = 0, nextMonth = 0;
 
@@ -474,75 +506,6 @@ public abstract class WeekView extends View implements View.OnClickListener {
         }
     }
 
-    /**
-     * 设置文本的颜色
-     *
-     * @param curDayTextColor          今天的日期文本颜色
-     * @param curMonthTextColor        当前月份的日期颜色
-     * @param otherMonthTextColor      其它月份的日期颜色
-     * @param curMonthLunarTextColor   当前月份农历字体颜色
-     * @param otherMonthLunarTextColor 其它月份农历字体颜色
-     */
-    void setTextColor(int curDayTextColor,
-                      int curMonthTextColor,
-                      int otherMonthTextColor,
-                      int curMonthLunarTextColor,
-                      int otherMonthLunarTextColor) {
-        mCurMonthTextColor = curMonthTextColor;
-        mCurMonthLunarTextColor = curMonthLunarTextColor;
-        mCurDayTextPaint.setColor(curDayTextColor);
-        mCurMonthTextPaint.setColor(curMonthTextColor);
-        mOtherMonthTextPaint.setColor(otherMonthTextColor);
-        mCurMonthLunarTextPaint.setColor(curMonthLunarTextColor);
-        mOtherMonthLunarTextColor = otherMonthLunarTextColor;
-        mOtherMonthLunarTextPaint.setColor(mOtherMonthLunarTextColor);
-    }
-
-
-    /**
-     * 设置事务标记
-     *
-     * @param schemeColor     标记的颜色
-     * @param schemeTextColor 标记的文本颜色
-     */
-    void setSchemeColor(int schemeColor, int schemeTextColor, int schemeLunarTextColor) {
-        mSchemePaint.setStyle(Paint.Style.FILL);
-        this.mSchemeColor = schemeColor;
-        this.mSchemePaint.setColor(schemeColor);
-        this.mSchemeTextColor = schemeTextColor;
-        this.mSchemeTextPaint.setColor(schemeTextColor);
-        this.mSchemeLunarTextColor = schemeLunarTextColor;
-    }
-
-    /**
-     * 设置标记的style
-     */
-    void setSelectColor(int selectedColor, int selectedTextColor, int selectedLunarTextColor) {
-        mSelectedPaint.setStyle(Paint.Style.FILL);
-        this.mSelectedPaint.setColor(selectedColor);
-        this.mSelectedTextColor = selectedTextColor;
-        this.mSelectedLunarTextColor = selectedLunarTextColor;
-    }
-
-    /**
-     * 设置字体大小
-     *
-     * @param calendarTextSize 日期大小
-     * @param lunarTextSize    农历大小
-     */
-    @SuppressWarnings("all")
-    void setDayTextSize(float calendarTextSize, float lunarTextSize) {
-        mCurMonthTextPaint.setTextSize(calendarTextSize);
-        mOtherMonthTextPaint.setTextSize(mCurMonthTextPaint.getTextSize());
-        mCurDayTextPaint.setTextSize(mCurMonthTextPaint.getTextSize());
-        mSchemeTextPaint.setTextSize(mCurMonthTextPaint.getTextSize());
-        mCurMonthLunarTextPaint.setTextSize(lunarTextSize);
-    }
-
-
-    int getSelectedIndex(Calendar calendar) {
-        return mItems.indexOf(calendar);
-    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -550,7 +513,11 @@ public abstract class WeekView extends View implements View.OnClickListener {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
-    public void setItemHeight(int itemHeight) {
+    /**
+     * 设置高度
+     * @param itemHeight itemHeight
+     */
+    private void setItemHeight(int itemHeight) {
         this.mItemHeight = itemHeight;
         Paint.FontMetrics metrics = mCurMonthTextPaint.getFontMetrics();
         mTextBaseLine = mItemHeight / 2 - metrics.descent + (metrics.bottom - metrics.top) / 2;

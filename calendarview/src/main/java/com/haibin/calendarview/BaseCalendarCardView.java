@@ -36,7 +36,6 @@ import java.util.List;
 
 public abstract class BaseCalendarCardView extends View implements View.OnClickListener {
 
-
     /**
      * 当前月份日期的笔
      */
@@ -268,6 +267,36 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
         setOnClickListener(this);
     }
 
+    void setup(CalendarView.CalendarViewDelegate delegate) {
+        mCurMonthTextColor = delegate.getCurrentMonthTextColor();
+        mCurMonthLunarTextColor = delegate.getCurrentMonthLunarTextColor();
+        mCurDayTextPaint.setColor(delegate.getCurDayTextColor());
+        mCurMonthTextPaint.setColor(delegate.getCurrentMonthTextColor());
+        mOtherMonthTextPaint.setColor(delegate.getOtherMonthTextColor());
+        mCurMonthLunarTextPaint.setColor(delegate.getCurrentMonthLunarTextColor());
+        mOtherMonthLunarTextColor = delegate.getOtherMonthLunarTextColor();
+        mOtherMonthLunarTextPaint.setColor(mOtherMonthLunarTextColor);
+
+
+        this.mSchemeColor = delegate.getSchemeThemeColor();
+        this.mSchemePaint.setColor(mSchemeColor);
+        this.mSchemeTextColor = delegate.getSchemeTextColor();
+        this.mSchemeTextPaint.setColor(mSchemeTextColor);
+        this.mSchemeLunarTextColor = delegate.getSchemeLunarTextColor();
+
+
+        mCurMonthTextPaint.setTextSize(delegate.getDayTextSize());
+        mOtherMonthTextPaint.setTextSize(mCurMonthTextPaint.getTextSize());
+        mCurDayTextPaint.setTextSize(mCurMonthTextPaint.getTextSize());
+        mSchemeTextPaint.setTextSize(mCurMonthTextPaint.getTextSize());
+        mCurMonthLunarTextPaint.setTextSize(delegate.getLunarTextSize());
+
+        mSelectedPaint.setStyle(Paint.Style.FILL);
+        this.mSelectedPaint.setColor(delegate.getSelectedThemeColor());
+        this.mSelectedTextColor = delegate.getSelectedTextColor();
+        this.mSelectedLunarTextColor = delegate.getSelectedLunarTextColor();
+        setItemHeight(delegate.getCalendarItemHeight());
+    }
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -518,71 +547,6 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
             invalidate();
         }
     }
-
-    /**
-     * 设置文本的颜色
-     *
-     * @param curDayTextColor          今天的日期文本颜色
-     * @param curMonthTextColor        当前月份的日期颜色
-     * @param otherMonthTextColor      其它月份的日期颜色
-     * @param curMonthLunarTextColor   当前月份农历字体颜色
-     * @param otherMonthLunarTextColor 其它月份农历字体颜色
-     */
-    void setTextColor(int curDayTextColor,
-                      int curMonthTextColor,
-                      int otherMonthTextColor,
-                      int curMonthLunarTextColor,
-                      int otherMonthLunarTextColor) {
-        mCurMonthTextColor = curMonthTextColor;
-        mCurMonthLunarTextColor = curMonthLunarTextColor;
-        mCurDayTextPaint.setColor(curDayTextColor);
-        mCurMonthTextPaint.setColor(curMonthTextColor);
-        mOtherMonthTextPaint.setColor(otherMonthTextColor);
-        mCurMonthLunarTextPaint.setColor(curMonthLunarTextColor);
-        mOtherMonthLunarTextColor = otherMonthLunarTextColor;
-        mOtherMonthLunarTextPaint.setColor(mOtherMonthLunarTextColor);
-    }
-
-
-    /**
-     * 设置事务标记
-     *
-     * @param schemeColor     标记的颜色
-     * @param schemeTextColor 标记的文本颜色
-     */
-    void setSchemeColor(int schemeColor, int schemeTextColor, int schemeLunarTextColor) {
-        mSchemePaint.setStyle(Paint.Style.FILL);
-        this.mSchemeColor = schemeColor;
-        this.mSchemePaint.setColor(schemeColor);
-        this.mSchemeTextColor = schemeTextColor;
-        this.mSchemeTextPaint.setColor(schemeTextColor);
-        this.mSchemeLunarTextColor = schemeLunarTextColor;
-    }
-
-    /**
-     * 设置标记的style
-     */
-    void setSelectColor(int selectedColor, int selectedTextColor, int selectedLunarTextColor) {
-        mSelectedPaint.setStyle(Paint.Style.FILL);
-        this.mSelectedPaint.setColor(selectedColor);
-        this.mSelectedTextColor = selectedTextColor;
-        this.mSelectedLunarTextColor = selectedLunarTextColor;
-    }
-
-    /**
-     * 设置字体大小
-     *
-     * @param calendarTextSize 日期大小
-     * @param lunarTextSize    农历大小
-     */
-    void setDayTextSize(float calendarTextSize, float lunarTextSize) {
-        mCurMonthTextPaint.setTextSize(calendarTextSize);
-        mOtherMonthTextPaint.setTextSize(mCurMonthTextPaint.getTextSize());
-        mCurDayTextPaint.setTextSize(mCurMonthTextPaint.getTextSize());
-        mSchemeTextPaint.setTextSize(mCurMonthTextPaint.getTextSize());
-        mCurMonthLunarTextPaint.setTextSize(lunarTextSize);
-    }
-
 
     int getSelectedIndex(Calendar calendar) {
         return mItems.indexOf(calendar);
