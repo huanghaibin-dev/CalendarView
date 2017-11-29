@@ -164,6 +164,14 @@ public void expand(); //展开
 public void shrink(); //收缩
 ```
 
+### 混淆proguard-rules
+```java
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context);
+}
+```
+
+
 ### 如果你需要完全定制UI，参考demo，简单几步即可绘制你需要的效果，月视图和周视图需要同时更换，达到UI一致
 #### 首先绘制月视图
 ```java
