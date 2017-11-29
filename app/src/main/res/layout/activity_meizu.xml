@@ -111,6 +111,7 @@
             app:scheme_theme_color="#128c4b"
             app:selected_lunar_text_color="#CFCFCF"
             app:calendar_card_view="com.haibin.calendarviewproject.meizu.MeiZuCalendarCardView"
+            app:week_view="com.haibin.calendarviewproject.meizu.MeizuWeekView"
             app:selected_text_color="#333"
             app:selected_theme_color="#108cd4"
             app:week_background="#fff"
