@@ -151,6 +151,17 @@ final class Util {
     }
 
     /**
+     * 获取某个日期是星期几
+     * @param calendar 某个日期
+     * @return 返回某个日期是星期几
+     */
+    static int getWeekFormCalendar(Calendar calendar){
+        java.util.Calendar date = java.util.Calendar.getInstance();
+        date.set(calendar.getYear(), calendar.getMonth() - 1, calendar.getDay());
+        return date.get(java.util.Calendar.DAY_OF_WEEK) - 1;
+    }
+
+    /**
      * 获取某年第几周是在第几个月
      *
      * @param year       年

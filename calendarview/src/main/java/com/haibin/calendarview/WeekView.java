@@ -349,19 +349,21 @@ public abstract class WeekView extends View implements View.OnClickListener {
         }
     }
 
-    void performClickCalendar() {
-        mCurrentItem = 0;
-        if (mItems == null || mInnerListener == null || mParentLayout == null) {
+    void performClickCalendar(Calendar calendar) {
+        if (mItems == null || mInnerListener == null || mParentLayout == null || mItems.size() == 0) {
             return;
         }
-        Calendar calendar = mItems.get(0);
-        mInnerListener.onWeekSelected(calendar);
 
-        int i = Util.getWeekFromDayInMonth(calendar);
+        int week = Util.getWeekFormCalendar(calendar);
+        mCurrentItem = week;
+        Calendar currentCalendar = mItems.get(week);
+        mInnerListener.onWeekSelected(currentCalendar);
+
+        int i = Util.getWeekFromDayInMonth(currentCalendar);
         mParentLayout.setSelectWeek(i);
 
         if (mDateSelectedListener != null) {
-            mDateSelectedListener.onDateSelected(calendar);
+            mDateSelectedListener.onDateSelected(currentCalendar);
         }
         invalidate();
     }

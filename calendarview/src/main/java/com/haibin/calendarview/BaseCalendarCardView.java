@@ -353,17 +353,24 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
         if (isClick) {
             Calendar calendar = getIndex();
             if (calendar != null) {
-                if (mInnerListener != null) {
-                    mInnerListener.onDateSelected(calendar);
-                }
+
                 if (!calendar.isCurrentMonth() && mParentLayout != null) {
                     int cur = mParentLayout.mViewPager.getCurrentItem();
                     int position = mCurrentItem < 7 ? cur - 1 : cur + 1;
                     mParentLayout.mViewPager.setCurrentItem(position);
                 }
 
-                if (mParentLayout != null && calendar.isCurrentMonth()){
-                    mParentLayout.setSelectPosition(mItems.indexOf(calendar));
+                if (mInnerListener != null) {
+                    mInnerListener.onDateSelected(calendar);
+                }
+
+                if (mParentLayout != null ) {
+                    if(calendar.isCurrentMonth()){
+                        mParentLayout.setSelectPosition(mItems.indexOf(calendar));
+                    }else {
+                        mParentLayout.setSelectWeek(Util.getWeekFromDayInMonth(calendar));
+                    }
+
                 }
 
                 if (mDateSelectedListener != null) {
@@ -543,7 +550,7 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
      * @param schemeColor     标记的颜色
      * @param schemeTextColor 标记的文本颜色
      */
-    void setSchemeColor(int schemeColor, int schemeTextColor,int schemeLunarTextColor) {
+    void setSchemeColor(int schemeColor, int schemeTextColor, int schemeLunarTextColor) {
         mSchemePaint.setStyle(Paint.Style.FILL);
         this.mSchemeColor = schemeColor;
         this.mSchemePaint.setColor(schemeColor);
@@ -568,7 +575,6 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
      * @param calendarTextSize 日期大小
      * @param lunarTextSize    农历大小
      */
-    @SuppressWarnings("all")
     void setDayTextSize(float calendarTextSize, float lunarTextSize) {
         mCurMonthTextPaint.setTextSize(calendarTextSize);
         mOtherMonthTextPaint.setTextSize(mCurMonthTextPaint.getTextSize());

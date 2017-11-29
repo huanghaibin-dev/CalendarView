@@ -116,7 +116,7 @@ public class WeekViewPager extends ViewPager {
                     return;
                 WeekView view = (WeekView) findViewWithTag(position);
                 if (view != null) {
-                    view.performClickCalendar();
+                    view.performClickCalendar(mSelectedCalendar);
                 }
             }
 
@@ -127,11 +127,22 @@ public class WeekViewPager extends ViewPager {
         });
     }
 
+    /**
+     * 返回到当前的日历周视图，这个方法调用了，月视图就不调用滚动
+     */
+    void scrollToCurrent(Calendar calendar) {
+        this.mSelectedCalendar = calendar;
+        int position = Util.getWeekFromCalendarBetweenYearAndYear(mSelectedCalendar, mMinYear) - 1;
+        setCurrentItem(position);
+        for (int i = 0; i < getChildCount(); i++) {
+            WeekView view = (WeekView) getChildAt(i);
+            view.setSelectedCalendar(mSelectedCalendar);
+        }
+    }
 
     void updateSelected(Calendar calendar) {
         this.mSelectedCalendar = calendar;
         int position = Util.getWeekFromCalendarBetweenYearAndYear(calendar, mMinYear) - 1;
-        Log.e("updateSelected", "  --  " + position);
         setCurrentItem(position);
         for (int i = 0; i < getChildCount(); i++) {
             WeekView view = (WeekView) getChildAt(i);
@@ -175,7 +186,6 @@ public class WeekViewPager extends ViewPager {
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             Calendar calendar = Util.getFirstCalendarFromWeekCount(mMinYear, position + 1);
-            Log.e("instantiateItem", "  --  " + calendar.getYear() + "  --   " + calendar.getMonth() + "  --  " + calendar.getDay() + "   --    " + position);
             WeekView view;
             try {
                 Class cls = Class.forName(mWeekViewClass);

@@ -106,6 +106,10 @@ public class CalendarLayout extends LinearLayout {
         mViewPagerTranslateY = (line - 1) * mItemHeight;
     }
 
+    /**
+     * 设置选中的周，更新位置
+     * @param line line
+     */
     void setSelectWeek(int line){
         mViewPagerTranslateY = (line - 1) * mItemHeight;
     }

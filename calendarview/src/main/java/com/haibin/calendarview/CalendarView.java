@@ -90,8 +90,6 @@ public class CalendarView extends FrameLayout {
      */
     CalendarLayout mParentLayout;
 
-    /***/
-    private int mCurYear, mCurMonth, mCurDay;
 
     /**
      * 各种字体颜色，看名字知道对应的地方
@@ -140,6 +138,11 @@ public class CalendarView extends FrameLayout {
      * 日历卡的项高度
      */
     private int mCalendarItemHeight;
+
+    /**
+     * 今天的日子
+     */
+    private Calendar mCurrentDate;
 
 
     public CalendarView(@NonNull Context context) {
@@ -225,34 +228,29 @@ public class CalendarView extends FrameLayout {
                 calendar.setYear(position / 12 + mMinYear);
                 calendar.setMonth(position % 12 + 1);
                 calendar.setDay(1);
-                calendar.setCurrentMonth(calendar.getMonth() == mCurMonth);
+                calendar.setCurrentMonth(calendar.getMonth() == mCurrentDate.getMonth());
                 calendar.setLunar(LunarCalendar.numToChineseDay(LunarCalendar.solarToLunar(calendar.getYear(), calendar.getMonth(), 1)[2]));
+
+
+                if (!calendar.isCurrentMonth()) {
+                    mSelectedCalendar = calendar;
+                } else {
+                    mSelectedCalendar = mCurrentDate;
+                }
                 if (mListener != null) {
-                    mListener.onDateChange(calendar);
+                    mListener.onDateChange(mSelectedCalendar);
                 }
                 if (mParentLayout == null || mViewPager.getVisibility() == INVISIBLE) {
                     return;
                 }
-                if (!calendar.isCurrentMonth()) {
-                    mSelectedCalendar = calendar;
-                } else {
-                    mSelectedCalendar.setYear(mCurYear);
-                    mSelectedCalendar.setMonth(mCurMonth);
-                    mSelectedCalendar.setDay(mCurDay);
-                    mSelectedCalendar.setCurrentDay(true);
-                    mSelectedCalendar.setCurrentMonth(true);
-                }
-
-                if (mParentLayout != null) {
-                    BaseCalendarCardView view = (BaseCalendarCardView) mViewPager.findViewWithTag(position);
-                    if (view != null) {
-                        int index = view.getSelectedIndex(mSelectedCalendar);
-                        view.mCurrentItem = index;
-                        if (index >= 0) {
-                            mParentLayout.setSelectPosition(index);
-                        }
-                        view.invalidate();
+                BaseCalendarCardView view = (BaseCalendarCardView) mViewPager.findViewWithTag(position);
+                if (view != null) {
+                    int index = view.getSelectedIndex(mSelectedCalendar);
+                    view.mCurrentItem = index;
+                    if (index >= 0) {
+                        mParentLayout.setSelectPosition(index);
                     }
+                    view.invalidate();
                 }
                 mWeekPager.updateSelected(mSelectedCalendar);
             }
@@ -283,6 +281,9 @@ public class CalendarView extends FrameLayout {
         mInnerListener = new OnInnerDateSelectedListener() {
             @Override
             public void onDateSelected(Calendar calendar) {
+                if (calendar.getMonth() == mCurrentDate.getMonth() && mViewPager.getCurrentItem() != mCurrentViewItem) {
+                    return;
+                }
                 mSelectedCalendar = calendar;
                 mWeekPager.updateSelected(mSelectedCalendar);
                 for (int i = 0; i < mViewPager.getChildCount(); i++) {
@@ -314,18 +315,18 @@ public class CalendarView extends FrameLayout {
         mSelectedCalendar.setYear(Util.getDate("yyyy", d));
         mSelectedCalendar.setMonth(Util.getDate("MM", d));
         mSelectedCalendar.setDay(Util.getDate("dd", d));
-
-        mCurYear = mSelectedCalendar.getYear();
+        mCurrentDate = mSelectedCalendar;
+        int mCurYear = mSelectedCalendar.getYear();
         if (mMinYear >= mCurYear) mMinYear = mCurYear;
         if (mMaxYear <= mCurYear) mMaxYear = mCurYear + 2;
         mSelectLayout.setYearSpan(mMinYear, mMaxYear);
-        mCurMonth = mSelectedCalendar.getMonth();
-        mCurDay = mSelectedCalendar.getDay();
+        int mCurMonth = mSelectedCalendar.getMonth();
+        int mCurDay = mSelectedCalendar.getDay();
         int y = mSelectedCalendar.getYear() - mMinYear;
-        position = 12 * y + mSelectedCalendar.getMonth() - 1;
+        mCurrentViewItem = 12 * y + mSelectedCalendar.getMonth() - 1;
         CalendarViewPagerAdapter adapter = new CalendarViewPagerAdapter();
         mViewPager.setAdapter(adapter);
-        mViewPager.setCurrentItem(position);
+        mViewPager.setCurrentItem(mCurrentViewItem);
         mSelectLayout.setOnMonthSelectedListener(new MonthRecyclerView.OnMonthSelectedListener() {
             @Override
             public void onMonthSelected(int year, int month) {
@@ -335,7 +336,10 @@ public class CalendarView extends FrameLayout {
         });
         mSelectLayout.setSchemeColor(mSchemeThemeColor);
         mWeekPager.updateSelected(mSelectedCalendar);
+
     }
+
+    private int mCurrentViewItem;
 
     /**
      * 获取当天
@@ -343,7 +347,7 @@ public class CalendarView extends FrameLayout {
      * @return 返回今天
      */
     public int getCurDay() {
-        return mCurDay;
+        return mCurrentDate.getDay();
     }
 
     /**
@@ -352,7 +356,7 @@ public class CalendarView extends FrameLayout {
      * @return 返回本月
      */
     public int getCurMonth() {
-        return mCurMonth;
+        return mCurrentDate.getMonth();
     }
 
     /**
@@ -361,7 +365,7 @@ public class CalendarView extends FrameLayout {
      * @return 返回本年
      */
     public int getCurYear() {
-        return mCurYear;
+        return mCurrentDate.getYear();
     }
 
     /**
@@ -371,8 +375,11 @@ public class CalendarView extends FrameLayout {
      */
     public void showSelectLayout(final int year) {
         if (mParentLayout != null && mParentLayout.mContentView != null) {
+            mParentLayout.expand();
             mParentLayout.mContentView.setVisibility(GONE);
         }
+        mWeekPager.setVisibility(GONE);
+
         mLinearWeek.animate()
                 .translationY(-mLinearWeek.getHeight())
                 .setInterpolator(new LinearInterpolator())
@@ -386,6 +393,7 @@ public class CalendarView extends FrameLayout {
                         mSelectLayout.init(year);
                     }
                 });
+
         mViewPager.animate()
                 .scaleX(0)
                 .scaleY(0)
@@ -404,7 +412,11 @@ public class CalendarView extends FrameLayout {
      * 滚动到当前
      */
     public void scrollToCurrent() {
-        mViewPager.setCurrentItem(12 * (mCurYear - mMinYear) + mCurMonth - 1);
+        if (mWeekPager.getVisibility() == VISIBLE) {
+            mWeekPager.scrollToCurrent(mCurrentDate);
+            return;
+        }
+        mViewPager.setCurrentItem(12 * (mCurrentDate.getYear() - mMinYear) + mCurrentDate.getMonth() - 1);
     }
 
     /**
@@ -413,7 +425,7 @@ public class CalendarView extends FrameLayout {
      * @param year 快速滚动的年份
      */
     public void scrollToYear(int year) {
-        mViewPager.setCurrentItem(12 * (year - mMinYear) + mCurMonth - 1);
+        mViewPager.setCurrentItem(12 * (year - mMinYear) + mCurrentDate.getMonth() - 1);
     }
 
     /**
