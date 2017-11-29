@@ -30,6 +30,16 @@ public class IndexWeekView extends WeekView {
     }
 
     @Override
+    protected void onPreviewHook() {
+        mCurMonthTextPaint.setTextSize(dipToPx(getContext(), 16));
+        mOtherMonthTextPaint.setTextSize(dipToPx(getContext(), 16));
+        mSchemeTextPaint.setTextSize(dipToPx(getContext(), 16));
+        mCurDayTextPaint.setTextSize(dipToPx(getContext(), 16));
+        mCurMonthLunarTextPaint.setTextSize(dipToPx(getContext(), 12));
+        mOtherMonthLunarTextPaint.setTextSize(dipToPx(getContext(), 12));
+    }
+
+    @Override
     protected void onDrawSelected(Canvas canvas, Calendar calendar, int x, boolean hasScheme) {
         mSelectedPaint.setStyle(Paint.Style.FILL);
         mSelectedPaint.setColor(0x80cfcfcf);
