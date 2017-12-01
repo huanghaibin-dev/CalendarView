@@ -24,6 +24,7 @@ import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -33,6 +34,7 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 
 /**
@@ -43,7 +45,7 @@ public class CalendarLayout extends LinearLayout {
     /**
      * 自定义ViewPager
      */
-    MonthViewPager mViewPager;
+    MonthViewPager mMonthView;
 
     WeekViewPager mWeekPager;
     /**
@@ -118,7 +120,7 @@ public class CalendarLayout extends LinearLayout {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        if (mContentView != null && mViewPager != null) {
+        if (mContentView != null && mMonthView != null) {
             int h = getHeight() - mItemHeight
                     - Util.dipToPx(getContext(), 41);
             int heightSpec = MeasureSpec.makeMeasureSpec(h,
@@ -127,16 +129,17 @@ public class CalendarLayout extends LinearLayout {
         }
     }
 
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        mContentViewTranslateY = mViewPager.getMeasuredHeight() - mItemHeight;
+        mContentViewTranslateY = mMonthView.getMeasuredHeight() - mItemHeight;
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mViewPager = (MonthViewPager) findViewById(R.id.vp_calendar).findViewById(R.id.vp_calendar);
+        mMonthView = (MonthViewPager) findViewById(R.id.vp_calendar).findViewById(R.id.vp_calendar);
         mWeekPager = (WeekViewPager) findViewById(R.id.vp_week).findViewById(R.id.vp_week);
         mContentView = (ViewGroup) findViewById(mContentViewId);
         if (mContentView != null) {
@@ -262,7 +265,7 @@ public class CalendarLayout extends LinearLayout {
 
     private void translationViewPager() {
         float percent = mContentView.getTranslationY() * 1.0f / mContentViewTranslateY;
-        mViewPager.setTranslationY(mViewPagerTranslateY * percent);
+        mMonthView.setTranslationY(mViewPagerTranslateY * percent);
     }
 
 
@@ -281,7 +284,7 @@ public class CalendarLayout extends LinearLayout {
             public void onAnimationUpdate(ValueAnimator animation) {
                 float currentValue = (Float) animation.getAnimatedValue();
                 float percent = currentValue * 1.0f / mContentViewTranslateY;
-                mViewPager.setTranslationY(mViewPagerTranslateY * percent);
+                mMonthView.setTranslationY(mViewPagerTranslateY * percent);
                 isAnimating = true;
             }
         });
@@ -313,7 +316,7 @@ public class CalendarLayout extends LinearLayout {
             public void onAnimationUpdate(ValueAnimator animation) {
                 float currentValue = (Float) animation.getAnimatedValue();
                 float percent = currentValue * 1.0f / mContentViewTranslateY;
-                mViewPager.setTranslationY(mViewPagerTranslateY * percent);
+                mMonthView.setTranslationY(mViewPagerTranslateY * percent);
                 isAnimating = true;
             }
         });
@@ -331,13 +334,13 @@ public class CalendarLayout extends LinearLayout {
 
     private void hideWeek() {
         mWeekPager.setVisibility(GONE);
-        mViewPager.setVisibility(VISIBLE);
+        mMonthView.setVisibility(VISIBLE);
     }
 
     private void showWeek() {
         mWeekPager.getAdapter().notifyDataSetChanged();
         mWeekPager.setVisibility(VISIBLE);
-        mViewPager.setVisibility(INVISIBLE);
+        mMonthView.setVisibility(INVISIBLE);
     }
 
     /**
@@ -355,6 +358,8 @@ public class CalendarLayout extends LinearLayout {
             }
             return result;
         }
+        if(mContentView instanceof NestedScrollView || mContentView instanceof ScrollView)
+            return mContentView.getScrollY() == 0;
         return mContentView.getScrollY() == 0;
     }
 }

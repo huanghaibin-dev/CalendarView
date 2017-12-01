@@ -338,10 +338,13 @@ public abstract class WeekView extends View implements View.OnClickListener {
                 if (mDelegate.mInnerListener != null) {
                     mDelegate.mInnerListener.onWeekSelected(calendar);
                 }
-                // TODO: 2017/11/23 12月31日周视图切换bug
                 if (mParentLayout != null) {
                     int i = Util.getWeekFromDayInMonth(calendar);
                     mParentLayout.setSelectWeek(i);
+                }
+
+                if (mDelegate.mDateChangeListener != null) {
+                    mDelegate.mDateChangeListener.onDateChange(calendar);
                 }
 
                 if (mDelegate.mDateSelectedListener != null) {
@@ -371,8 +374,8 @@ public abstract class WeekView extends View implements View.OnClickListener {
         int i = Util.getWeekFromDayInMonth(currentCalendar);
         mParentLayout.setSelectWeek(i);
 
-        if (mDelegate.mDateSelectedListener != null) {
-            mDelegate.mDateSelectedListener.onDateSelected(currentCalendar);
+        if (mDelegate.mDateChangeListener != null) {
+            mDelegate.mDateChangeListener.onDateChange(currentCalendar);
         }
         invalidate();
     }

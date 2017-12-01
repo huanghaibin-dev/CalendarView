@@ -170,10 +170,13 @@ public class MonthViewPager extends ViewPager {
         BaseCalendarCardView view = (BaseCalendarCardView) findViewWithTag(position);
         if (view != null) {
             view.setSelectedCalendar(mDelegate.getCurrentDay());
-            mParentLayout.setSelectPosition(view.getSelectedIndex(mDelegate.getCurrentDay()));
             view.invalidate();
+            if (mParentLayout != null) {
+                mParentLayout.setSelectPosition(view.getSelectedIndex(mDelegate.getCurrentDay()));
+            }
         }
     }
+
 
     /**
      * 更新选择效果

@@ -103,10 +103,9 @@
             android:layout_height="wrap_content"
             android:background="#fff"
             app:calendar_card_view="com.haibin.calendarviewproject.simple.SimpleCalendarCardView"
-            app:week_view="com.haibin.calendarviewproject.simple.SimpleWeekView"
             app:calendar_height="46dp"
-            app:current_month_text_color="#333333"
             app:current_month_lunar_text_color="#CFCFCF"
+            app:current_month_text_color="#333333"
             app:min_year="2004"
             app:other_month_text_color="#e1e1e1"
             app:scheme_text="假"
@@ -115,60 +114,234 @@
             app:selected_text_color="#fff"
             app:selected_theme_color="#333"
             app:week_background="#fff"
-            app:week_text_color="#111" />
+            app:week_text_color="#111"
+            app:week_view="com.haibin.calendarviewproject.simple.SimpleWeekView" />
 
         <LinearLayout
             android:id="@+id/linearView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/content_background"
-            android:clickable="true"
             android:orientation="vertical"
-            android:paddingBottom="16dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:paddingTop="16dp"
-            tools:ignore="KeyboardInaccessibleWidget">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <TextView
-                android:text="星期天"
-                android:textColor="#3bc2ef"
-                android:textStyle="bold"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="40sp" />
+                android:background="@color/content_background"
+                android:clickable="true"
+                android:orientation="vertical"
+                android:paddingBottom="16dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="16dp"
+                tools:ignore="KeyboardInaccessibleWidget">
 
-            <TextView
-                android:text="SUNDAY"
-                android:textColor="#3bc2ef"
-                android:textStyle="bold"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="30sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:text="星期天"
+                    android:textColor="#3bc2ef"
+                    android:textSize="40sp"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:text="不加班"
-                android:textColor="#3bc2ef"
-                android:textStyle="bold"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="30sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:text="SUNDAY"
+                    android:textColor="#3bc2ef"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:text="周末"
-                android:textColor="#d1d5d6"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="130sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:text="不加班"
+                    android:textColor="#3bc2ef"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="周末"
+                    android:textColor="#d1d5d6"
+                    android:textSize="130sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <android.support.v4.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/content_background"
+                        android:clickable="true"
+                        android:orientation="vertical"
+                        android:paddingBottom="16dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:paddingTop="16dp"
+                        tools:ignore="KeyboardInaccessibleWidget">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:text="星期天"
+                            android:textColor="#3bc2ef"
+                            android:textSize="40sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:text="SUNDAY"
+                            android:textColor="#3bc2ef"
+                            android:textSize="30sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:text="不加班"
+                            android:textColor="#3bc2ef"
+                            android:textSize="30sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="周末"
+                            android:textColor="#d1d5d6"
+                            android:textSize="130sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/content_background"
+                        android:clickable="true"
+                        android:orientation="vertical"
+                        android:paddingBottom="16dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:paddingTop="16dp"
+                        tools:ignore="KeyboardInaccessibleWidget">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:text="星期天"
+                            android:textColor="#3bc2ef"
+                            android:textSize="40sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:text="SUNDAY"
+                            android:textColor="#3bc2ef"
+                            android:textSize="30sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:text="不加班"
+                            android:textColor="#3bc2ef"
+                            android:textSize="30sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="周末"
+                            android:textColor="#d1d5d6"
+                            android:textSize="130sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/content_background"
+                        android:clickable="true"
+                        android:orientation="vertical"
+                        android:paddingBottom="16dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:paddingTop="16dp"
+                        tools:ignore="KeyboardInaccessibleWidget">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:text="星期天"
+                            android:textColor="#3bc2ef"
+                            android:textSize="40sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:text="SUNDAY"
+                            android:textColor="#3bc2ef"
+                            android:textSize="30sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:text="不加班"
+                            android:textColor="#3bc2ef"
+                            android:textSize="30sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="周末"
+                            android:textColor="#d1d5d6"
+                            android:textSize="130sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </android.support.v4.widget.NestedScrollView>
+
         </LinearLayout>
-    </com.haibin.calendarview.CalendarLayout>
 
+        　
+    </com.haibin.calendarview.CalendarLayout>
 
 </LinearLayout>

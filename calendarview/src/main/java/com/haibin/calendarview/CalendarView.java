@@ -107,7 +107,6 @@ public class CalendarView extends FrameLayout {
 
         this.mMonthPager = (MonthViewPager) findViewById(R.id.vp_calendar);
         this.mMonthPager.mWeekPager = mWeekPager;
-        this.mMonthPager.setup(mDelegate);
 
         mSelectLayout.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -117,6 +116,9 @@ public class CalendarView extends FrameLayout {
 
             @Override
             public void onPageSelected(int position) {
+                if(mWeekPager.getVisibility() == VISIBLE){
+                    return;
+                }
                 if (mDelegate.mDateChangeListener != null) {
                     mDelegate.mDateChangeListener.onYearChange(position + mDelegate.getMinYear());
                 }
@@ -144,7 +146,6 @@ public class CalendarView extends FrameLayout {
             @Override
             public void onWeekSelected(Calendar calendar) {
                 mDelegate.mSelectedCalendar = calendar;
-                //mWeekPager.mSelectedCalendar = calendar;
                 int y = calendar.getYear() - mDelegate.getMinYear();
                 int position = 12 * y + mDelegate.mSelectedCalendar.getMonth() - 1;
                 mMonthPager.setCurrentItem(position);
