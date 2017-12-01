@@ -151,6 +151,7 @@ class CustomCalendarViewDelegate {
         mCurrentDate.setYear(Util.getDate("yyyy", d));
         mCurrentDate.setMonth(Util.getDate("MM", d));
         mCurrentDate.setDay(Util.getDate("dd", d));
+        mCurrentDate.setLunar(LunarCalendar.getLunarText(mCurrentDate));
     }
 
     int getCurDayTextColor() {

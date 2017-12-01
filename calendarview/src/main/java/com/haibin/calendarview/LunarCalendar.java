@@ -52,15 +52,16 @@ class LunarCalendar {
 
     /**
      * 返回传统农历节日
-     * @param year 农历年
+     *
+     * @param year  农历年
      * @param month 农历月
-     * @param day 农历日
+     * @param day   农历日
      * @return 返回传统农历节日
      */
-    private static String getTraditionFestivalText(int year,int month,int day){
-        if(month == 12){
+    private static String getTraditionFestivalText(int year, int month, int day) {
+        if (month == 12) {
             int count = daysInLunarMonth(year, month);
-            if(day == count){
+            if (day == count) {
                 return TRADITION_FESTIVAL_STR[0];//除夕
             }
         }
@@ -543,7 +544,6 @@ class LunarCalendar {
     }
 
 
-
     /**
      * 获取农历节日
      *
@@ -560,11 +560,19 @@ class LunarCalendar {
         if (!TextUtils.isEmpty(termText))
             return termText;
         int[] lunar = LunarCalendar.solarToLunar(year, month, day);
-        String festival = getTraditionFestivalText(lunar[0],lunar[1],lunar[2]);
+        String festival = getTraditionFestivalText(lunar[0], lunar[1], lunar[2]);
         if (!TextUtils.isEmpty(festival))
             return festival;
         return LunarCalendar.numToChinese(lunar[1], lunar[2]);
     }
 
 
+    /**
+     * 获取农历节日
+     * @param calendar calendar
+     * @return 获取农历节日
+     */
+    static String getLunarText(Calendar calendar) {
+        return getLunarText(calendar.getYear(), calendar.getMonth(), calendar.getDay());
+    }
 }
