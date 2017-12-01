@@ -43,7 +43,7 @@ public class CalendarLayout extends LinearLayout {
     /**
      * 自定义ViewPager
      */
-    WrapViewPager mViewPager;
+    MonthViewPager mViewPager;
 
     WeekViewPager mWeekPager;
     /**
@@ -136,7 +136,7 @@ public class CalendarLayout extends LinearLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mViewPager = (WrapViewPager) findViewById(R.id.vp_calendar).findViewById(R.id.vp_calendar);
+        mViewPager = (MonthViewPager) findViewById(R.id.vp_calendar).findViewById(R.id.vp_calendar);
         mWeekPager = (WeekViewPager) findViewById(R.id.vp_week).findViewById(R.id.vp_week);
         mContentView = (ViewGroup) findViewById(mContentViewId);
         if (mContentView != null) {

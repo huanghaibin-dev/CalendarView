@@ -20,7 +20,7 @@ import java.util.List;
 
 public abstract class WeekView extends View implements View.OnClickListener {
 
-    private CalendarView.CalendarViewDelegate mDelegate;
+    private CustomCalendarViewDelegate mDelegate;
     /**
      * 当前月份日期的笔
      */
@@ -61,20 +61,6 @@ public abstract class WeekView extends View implements View.OnClickListener {
      */
     protected Paint mSelectedPaint = new Paint();
 
-    /**
-     * 日期被选中监听
-     */
-    CalendarView.OnDateSelectedListener mDateSelectedListener;
-
-    /**
-     * 内部日期切换监听，用于内部更新计算
-     */
-    CalendarView.OnInnerDateSelectedListener mInnerListener;
-
-    /**
-     * 日期切换监听
-     */
-    CalendarView.OnDateChangeListener mListener;
 
     /**
      * 日历布局，需要在日历下方放自己的布局
@@ -233,7 +219,7 @@ public abstract class WeekView extends View implements View.OnClickListener {
         setOnClickListener(this);
     }
 
-    void setup(CalendarView.CalendarViewDelegate delegate) {
+    void setup(CustomCalendarViewDelegate delegate) {
         this.mDelegate = delegate;
         mCurMonthTextColor = delegate.getCurrentMonthTextColor();
         mCurMonthLunarTextColor = delegate.getCurrentMonthLunarTextColor();
@@ -349,8 +335,8 @@ public abstract class WeekView extends View implements View.OnClickListener {
         if (isClick) {
             Calendar calendar = getIndex();
             if (calendar != null) {
-                if (mInnerListener != null) {
-                    mInnerListener.onWeekSelected(calendar);
+                if (mDelegate.mInnerListener != null) {
+                    mDelegate.mInnerListener.onWeekSelected(calendar);
                 }
                 // TODO: 2017/11/23 12月31日周视图切换bug
                 if (mParentLayout != null) {
@@ -358,8 +344,8 @@ public abstract class WeekView extends View implements View.OnClickListener {
                     mParentLayout.setSelectWeek(i);
                 }
 
-                if (mDateSelectedListener != null) {
-                    mDateSelectedListener.onDateSelected(calendar);
+                if (mDelegate.mDateSelectedListener != null) {
+                    mDelegate.mDateSelectedListener.onDateSelected(calendar);
                 }
 
                 invalidate();
@@ -373,20 +359,20 @@ public abstract class WeekView extends View implements View.OnClickListener {
      * @param calendar calendar
      */
     void performClickCalendar(Calendar calendar) {
-        if (mItems == null || mInnerListener == null || mParentLayout == null || mItems.size() == 0) {
+        if (mItems == null || mDelegate.mInnerListener == null || mParentLayout == null || mItems.size() == 0) {
             return;
         }
 
         int week = Util.getWeekFormCalendar(calendar);
         mCurrentItem = week;
         Calendar currentCalendar = mItems.get(week);
-        mInnerListener.onWeekSelected(currentCalendar);
+        mDelegate.mInnerListener.onWeekSelected(currentCalendar);
 
         int i = Util.getWeekFromDayInMonth(currentCalendar);
         mParentLayout.setSelectWeek(i);
 
-        if (mDateSelectedListener != null) {
-            mDateSelectedListener.onDateSelected(currentCalendar);
+        if (mDelegate.mDateSelectedListener != null) {
+            mDelegate.mDateSelectedListener.onDateSelected(currentCalendar);
         }
         invalidate();
     }

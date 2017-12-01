@@ -22,11 +22,12 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Google规范化的属性委托
  */
-class CustomCalendarViewDelegate implements CalendarView.CalendarViewDelegate {
+class CustomCalendarViewDelegate {
 
     /**
      * 各种字体颜色，看名字知道对应的地方
@@ -62,6 +63,11 @@ class CustomCalendarViewDelegate implements CalendarView.CalendarViewDelegate {
     private String mWeekViewClass;
 
     /**
+     * 自定义周栏路径
+     */
+    private String mWeekBarClass;
+
+    /**
      * 最小年份和最大年份
      */
     private int mMinYear, mMaxYear;
@@ -81,6 +87,30 @@ class CustomCalendarViewDelegate implements CalendarView.CalendarViewDelegate {
      */
     private Calendar mCurrentDate;
 
+    /**
+     * 标记的日期
+     */
+    List<Calendar> mSchemeDate;
+
+    /**
+     * 日期切换监听
+     */
+    CalendarView.OnDateChangeListener mDateChangeListener;
+
+    /**
+     * 日期被选中监听
+     */
+    CalendarView.OnDateSelectedListener mDateSelectedListener;
+
+    /**
+     * 内部日期切换监听，用于内部更新计算
+     */
+    CalendarView.OnInnerDateSelectedListener mInnerListener;
+
+    /**
+     * 保存选中的日期
+     */
+    Calendar mSelectedCalendar;
 
     CustomCalendarViewDelegate(Context context, @Nullable AttributeSet attrs) {
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CalendarView);
@@ -90,7 +120,7 @@ class CustomCalendarViewDelegate implements CalendarView.CalendarViewDelegate {
         mSchemeThemeColor = array.getColor(R.styleable.CalendarView_scheme_theme_color, 0x50CFCFCF);
         mCalendarCardViewClass = array.getString(R.styleable.CalendarView_calendar_card_view);
         mWeekViewClass = array.getString(R.styleable.CalendarView_week_view);
-
+        mWeekBarClass = array.getString(R.styleable.CalendarView_week_bar_view);
         mWeekBackground = array.getColor(R.styleable.CalendarView_week_background, Color.WHITE);
         mWeekTextColor = array.getColor(R.styleable.CalendarView_week_text_color, Color.BLACK);
 
@@ -108,13 +138,14 @@ class CustomCalendarViewDelegate implements CalendarView.CalendarViewDelegate {
         mDayTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_day_text_size, Util.dipToPx(context, 16));
         mLunarTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_lunar_text_size, Util.dipToPx(context, 10));
         mCalendarItemHeight = (int) array.getDimension(R.styleable.CalendarView_calendar_height, Util.dipToPx(context, 56));
+
         if (mMinYear <= 1900) mMaxYear = 1900;
         if (mMaxYear >= 2099) mMaxYear = 2099;
         array.recycle();
         init();
     }
 
-    private void init(){
+    private void init() {
         mCurrentDate = new Calendar();
         Date d = new Date();
         mCurrentDate.setYear(Util.getDate("yyyy", d));
@@ -122,145 +153,128 @@ class CustomCalendarViewDelegate implements CalendarView.CalendarViewDelegate {
         mCurrentDate.setDay(Util.getDate("dd", d));
     }
 
-    @Override
-    public int getCurDayTextColor() {
+    int getCurDayTextColor() {
         return mCurDayTextColor;
     }
 
-    @Override
-    public int getWeekTextColor() {
+    @SuppressWarnings("unused")
+    int getWeekTextColor() {
         return mWeekTextColor;
     }
 
-    @Override
-    public int getSchemeTextColor() {
+    int getSchemeTextColor() {
         return mSchemeTextColor;
     }
 
-    @Override
-    public int getSchemeLunarTextColor() {
+    int getSchemeLunarTextColor() {
         return mSchemeLunarTextColor;
     }
 
-    @Override
-    public int getOtherMonthTextColor() {
+    int getOtherMonthTextColor() {
         return mOtherMonthTextColor;
     }
 
-    @Override
-    public int getCurrentMonthTextColor() {
+    int getCurrentMonthTextColor() {
         return mCurrentMonthTextColor;
     }
 
-    @Override
-    public int getSelectedTextColor() {
+    int getSelectedTextColor() {
         return mSelectedTextColor;
     }
 
-    @Override
-    public int getSelectedLunarTextColor() {
+    int getSelectedLunarTextColor() {
         return mSelectedLunarTextColor;
     }
 
-    @Override
-    public int getCurrentMonthLunarTextColor() {
+    int getCurrentMonthLunarTextColor() {
         return mCurMonthLunarTextColor;
     }
 
-    @Override
-    public int getOtherMonthLunarTextColor() {
+    int getOtherMonthLunarTextColor() {
         return mOtherMonthLunarTextColor;
     }
 
-    @Override
-    public int getSchemeThemeColor() {
+    int getSchemeThemeColor() {
         return mSchemeThemeColor;
     }
 
-    @Override
-    public int getSelectedThemeColor() {
+    int getSelectedThemeColor() {
         return mSelectedThemeColor;
     }
 
-    @Override
-    public int getWeekBackground() {
+    int getWeekBackground() {
         return mWeekBackground;
     }
 
-    @Override
-    public String getCalendarCardViewClass() {
+    String getCalendarCardViewClass() {
         return mCalendarCardViewClass;
     }
 
-    @Override
-    public String getWeekViewClass() {
+    String getWeekViewClass() {
         return mWeekViewClass;
     }
 
-    @Override
-    public int getMinYear() {
+    String getWeekBarClass() {
+        return mWeekBarClass;
+    }
+
+    int getMinYear() {
         return mMinYear;
     }
 
-    @Override
-    public int getMaxYear() {
+    int getMaxYear() {
         return mMaxYear;
     }
 
-    @Override
-    public int getDayTextSize() {
+    int getDayTextSize() {
         return mDayTextSize;
     }
 
-    @Override
-    public int getLunarTextSize() {
+    int getLunarTextSize() {
         return mLunarTextSize;
     }
 
-    @Override
-    public int getCalendarItemHeight() {
+    int getCalendarItemHeight() {
         return mCalendarItemHeight;
     }
 
-    @Override
-    public void setMinYear(int minYear) {
+    void setMinYear(int minYear) {
         this.mMinYear = minYear;
     }
 
-    @Override
-    public void setMaxYear(int maxYear) {
+    void setMaxYear(int maxYear) {
         this.mMaxYear = maxYear;
     }
 
-    @Override
-    public void setTextColor(int curDayTextColor, int curMonthTextColor, int otherMonthTextColor, int curMonthLunarTextColor, int otherMonthLunarTextColor) {
+    void setTextColor(int curDayTextColor, int curMonthTextColor, int otherMonthTextColor, int curMonthLunarTextColor, int otherMonthLunarTextColor) {
+        mCurDayTextColor = curDayTextColor;
+        mOtherMonthTextColor = otherMonthTextColor;
         mCurrentMonthTextColor = curMonthTextColor;
         mCurMonthLunarTextColor = curMonthLunarTextColor;
         mOtherMonthLunarTextColor = otherMonthLunarTextColor;
     }
 
-    @Override
-    public void setSchemeColor(int schemeColor, int schemeTextColor, int schemeLunarTextColor) {
+    void setSchemeColor(int schemeColor, int schemeTextColor, int schemeLunarTextColor) {
         this.mSchemeThemeColor = schemeColor;
         this.mSchemeTextColor = schemeTextColor;
         this.mSchemeLunarTextColor = schemeLunarTextColor;
     }
 
-    @Override
-    public void setSelectColor(int selectedColor, int selectedTextColor, int selectedLunarTextColor) {
+    void setSelectColor(int selectedColor, int selectedTextColor, int selectedLunarTextColor) {
         this.mSelectedThemeColor = selectedColor;
         this.mSelectedTextColor = selectedTextColor;
         this.mSelectedLunarTextColor = selectedLunarTextColor;
     }
 
-    @Override
-    public void setDayTextSize(float calendarTextSize, float lunarTextSize) {
+    @SuppressWarnings("unused")
+    @Deprecated
+    void setDayTextSize(float calendarTextSize, float lunarTextSize) {
         mDayTextSize = (int) calendarTextSize;
         mLunarTextSize = (int) lunarTextSize;
     }
 
-    @Override
-    public Calendar getCurrentDay() {
+    Calendar getCurrentDay() {
         return mCurrentDate;
     }
+
 }

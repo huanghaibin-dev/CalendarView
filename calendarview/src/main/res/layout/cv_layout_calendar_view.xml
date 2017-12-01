@@ -6,12 +6,13 @@
     tools:ignore="HardcodedText">
 
     <FrameLayout
+        android:id="@+id/frameContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:visibility="visible">
 
-        <com.haibin.calendarview.WrapViewPager
+        <com.haibin.calendarview.MonthViewPager
             android:id="@+id/vp_calendar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -24,73 +25,6 @@
             android:layout_marginTop="41dp"
             android:visibility="gone" />
 
-        <LinearLayout
-            android:id="@+id/ll_week"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="#00FFFFFF"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp"
-            android:paddingTop="8dp"
-            tools:ignore="UnusedAttribute">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="日"
-                android:textSize="12sp" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="一"
-                android:textSize="12sp" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="二"
-                android:textSize="12sp" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="三"
-                android:textSize="12sp" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="四"
-                android:textSize="12sp" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="五"
-                android:textSize="12sp" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="六"
-                android:textSize="12sp" />
-        </LinearLayout>
-
         <View
             android:id="@+id/line"
             android:layout_width="match_parent"
@@ -99,7 +33,6 @@
             android:layout_marginRight="16dp"
             android:layout_marginTop="40dp"
             android:background="#cfcfcf" />
-
 
     </FrameLayout>
 

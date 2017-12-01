@@ -18,12 +18,12 @@ package com.haibin.calendarview;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.lang.reflect.Constructor;
-import java.util.List;
 
 /**
  * 周视图滑动ViewPager，需要动态固定高度
@@ -33,34 +33,13 @@ import java.util.List;
 
 public class WeekViewPager extends ViewPager {
 
-    private CalendarView.CalendarViewDelegate mDelegate;
-    /**
-     * 日期被选中监听
-     */
-    CalendarView.OnDateSelectedListener mDateSelectedListener;
-
-    /**
-     * 内部日期切换监听，用于内部更新计算
-     */
-    CalendarView.OnInnerDateSelectedListener mInnerListener;
-
-    /**
-     * 日期切换监听
-     */
-    CalendarView.OnDateChangeListener mListener;
+    private CustomCalendarViewDelegate mDelegate;
 
     /**
      * 日历布局，需要在日历下方放自己的布局
      */
     CalendarLayout mParentLayout;
 
-    /**
-     * 标记的日期
-     */
-    List<Calendar> mSchemeDate;
-
-
-    Calendar mSelectedCalendar;
 
     public WeekViewPager(Context context) {
         this(context, null);
@@ -70,7 +49,7 @@ public class WeekViewPager extends ViewPager {
         super(context, attrs);
     }
 
-    void setup(CalendarView.CalendarViewDelegate delegate) {
+    void setup(CustomCalendarViewDelegate delegate) {
         this.mDelegate = delegate;
         init();
     }
@@ -90,7 +69,7 @@ public class WeekViewPager extends ViewPager {
                     return;
                 WeekView view = (WeekView) findViewWithTag(position);
                 if (view != null) {
-                    view.performClickCalendar(mSelectedCalendar);
+                    view.performClickCalendar(mDelegate.mSelectedCalendar);
                 }
             }
 
@@ -101,30 +80,25 @@ public class WeekViewPager extends ViewPager {
         });
     }
 
-    /**
-     * 返回到当前的日历周视图，这个方法调用了，月视图就不调用滚动
-     */
-    void scrollToCurrent(Calendar calendar) {
-        this.mSelectedCalendar = calendar;
-        int position = Util.getWeekFromCalendarBetweenYearAndYear(mSelectedCalendar, mDelegate.getMinYear()) - 1;
-        setCurrentItem(position);
-        for (int i = 0; i < getChildCount(); i++) {
-            WeekView view = (WeekView) getChildAt(i);
-            view.setSelectedCalendar(mSelectedCalendar);
-        }
-    }
 
+    /**
+     * 更新任意一个选择的日期
+     */
     void updateSelected(Calendar calendar) {
-        this.mSelectedCalendar = calendar;
         int position = Util.getWeekFromCalendarBetweenYearAndYear(calendar, mDelegate.getMinYear()) - 1;
         setCurrentItem(position);
-        for (int i = 0; i < getChildCount(); i++) {
-            WeekView view = (WeekView) getChildAt(i);
-            view.setSelectedCalendar(mSelectedCalendar);
+        WeekView view = (WeekView) findViewWithTag(position);
+        if (view != null) {
+            view.setSelectedCalendar(calendar);
+            view.invalidate();
         }
     }
 
-    void update() {
+
+    /**
+     * 更新标记日期
+     */
+    void updateScheme() {
         for (int i = 0; i < getChildCount(); i++) {
             WeekView view = (WeekView) getChildAt(i);
             view.update();
@@ -159,24 +133,25 @@ public class WeekViewPager extends ViewPager {
         public Object instantiateItem(ViewGroup container, int position) {
             Calendar calendar = Util.getFirstCalendarFromWeekCount(mDelegate.getMinYear(), position + 1);
             WeekView view;
-            try {
-                Class cls = Class.forName(mDelegate.getWeekViewClass());
-                @SuppressWarnings("unchecked")
-                Constructor constructor = cls.getConstructor(Context.class);
-                view = (WeekView) constructor.newInstance(getContext());
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
+            if (TextUtils.isEmpty(mDelegate.getWeekViewClass())) {
+                view = new DefaultWeekView(getContext());
+            } else {
+                try {
+                    Class cls = Class.forName(mDelegate.getWeekViewClass());
+                    @SuppressWarnings("unchecked")
+                    Constructor constructor = cls.getConstructor(Context.class);
+                    view = (WeekView) constructor.newInstance(getContext());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
             }
-            view.mListener = mListener;
-            view.mDateSelectedListener = mDateSelectedListener;
-            view.mInnerListener = mInnerListener;
             view.mParentLayout = mParentLayout;
             view.setup(mDelegate);
             view.setup(calendar);
             view.setTag(position);
-            view.setSelectedCalendar(mSelectedCalendar);
-            view.mSchemes = mSchemeDate;
+            view.setSelectedCalendar(mDelegate.mSelectedCalendar);
+            view.mSchemes = mDelegate.mSchemeDate;
             container.addView(view);
             return view;
         }

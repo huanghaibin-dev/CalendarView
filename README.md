@@ -4,13 +4,13 @@ Android上一个优雅、高度自定义、性能高效的日历控件，完美�
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.0.1'
+compile 'com.haibin:calendarview:3.0.2'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.0.1</version>
+  <version>3.0.2</version>
   <type>pom</type>
 </dependency>
 ```
@@ -18,11 +18,11 @@ compile 'com.haibin:calendarview:3.0.1'
 
 ### 效果预览
 ### 收缩展开的魅族风格效果
-<img src="https://gitee.com/huanghaibin_dev/CalendarView/raw/master/app/src/main/assets/meizu.jpeg" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://gitee.com/huanghaibin_dev/CalendarView/raw/master/app/src/main/assets/shrink.jpeg" height="650"/>
+<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/meizu.jpeg" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/shrink.jpeg" height="650"/>
 ### 下标和多彩风格
-<img src="https://gitee.com/huanghaibin_dev/CalendarView/raw/master/app/src/main/assets/index.jpeg" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://gitee.com/huanghaibin_dev/CalendarView/raw/master/app/src/main/assets/colorful.jpeg" height="650"/>
+<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/index.jpeg" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/colorful.jpeg" height="650"/>
 ### 快速年份月份切换
-<img src="https://gitee.com/huanghaibin_dev/CalendarView/raw/master/app/src/main/assets/month.jpeg" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://gitee.com/huanghaibin_dev/CalendarView/raw/master/app/src/main/assets/simple.jpeg" height="650"/>
+<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/month.jpeg" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/simple.jpeg" height="650"/>
 
 
 ### 使用方法
@@ -40,6 +40,7 @@ compile 'com.haibin:calendarview:3.0.1'
              android:background="#fff"
              app:calendar_card_view="com.haibin.calendarviewproject.simple.SimpleCalendarCardView"
              app:week_view="com.haibin.calendarviewproject.simple.SimpleWeekView"
+             app:week_bar_view="com.haibin.calendarviewproject.EnglishWeekBar"
              app:calendar_height="50dp"
              app:current_month_text_color="#333333"
              app:current_month_lunar_text_color="#CFCFCF"
@@ -67,6 +68,7 @@ compile 'com.haibin:calendarview:3.0.1'
 
         <attr name="calendar_card_view" format="color" /> <!--热插拔自定义类日历月视图路径-->
         <attr name="week_view" format="color" /> <!--热插拔自定义类周视图路径-->
+        <attr name="week_bar_view" format="color" /> <!--自定义类周栏路径-->
 
         <attr name="week_background" format="color" /> <!--星期栏的背景-->
         <attr name="week_text_color" format="color" /> <!--星期栏文本颜色-->

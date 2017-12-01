@@ -88,6 +88,7 @@
                 android:textColor="#000000"
                 android:textSize="12sp" />
         </FrameLayout>
+
     </RelativeLayout>
 
     <com.haibin.calendarview.CalendarLayout
@@ -102,7 +103,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#fff"
-            app:calendar_card_view="com.haibin.calendarviewproject.meizu.MeiZuCalendarCardView"
             app:current_month_lunar_text_color="#CFCFCF"
             app:current_month_text_color="#333333"
             app:lunar_text_size="10sp"
@@ -116,8 +116,8 @@
             app:selected_text_color="#333"
             app:selected_theme_color="#108cd4"
             app:week_background="#fff"
-            app:week_text_color="#111"
-            app:week_view="com.haibin.calendarviewproject.meizu.MeizuWeekView" />
+            app:week_bar_view="com.haibin.calendarviewproject.EnglishWeekBar"
+            app:week_text_color="#111" />
 
         <LinearLayout
             android:id="@+id/linearView"

@@ -5,8 +5,9 @@
         <attr name="week_background" format="color" />
         <attr name="week_text_color" format="color" />
 
-        <attr name="calendar_card_view" format="string" /><!-- -->
-        <attr name="week_view" format="string" /><!-- -->
+        <attr name="calendar_card_view" format="string" /><!--完全自定义月视图-->
+        <attr name="week_view" format="string" /><!--完全自定义周视图-->
+        <attr name="week_bar_view" format="string" /><!--如果需要的话使用自定义星期栏-->
 
         <attr name="scheme_text" format="string" />
         <attr name="day_text_size" format="dimension" />
@@ -29,6 +30,7 @@
 
         <attr name="min_year" format="integer" />
         <attr name="max_year" format="integer" />
+
 
     </declare-styleable>
 

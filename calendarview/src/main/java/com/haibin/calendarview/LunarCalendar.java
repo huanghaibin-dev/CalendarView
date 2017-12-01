@@ -26,17 +26,17 @@ class LunarCalendar {
     /**
      * 农历月份第一天转写
      */
-    private static final String[] monthStr = {"春节", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "冬月", "腊月"};
+    private static final String[] MONTH_STR = {"春节", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "冬月", "腊月"};
 
     /**
      * 传统农历节日
      */
-    private static final String[] traditionFestivalStr = {"除夕", "0101春节", "0115元宵", "0505端午", "0707七夕", "0815中秋", "0909重阳"};
+    private static final String[] TRADITION_FESTIVAL_STR = {"除夕", "0101春节", "0115元宵", "0505端午", "0707七夕", "0815中秋", "0909重阳"};
 
     /**
      * 农历大写
      */
-    private static final String daysStr[] = {"初一", "初二", "初三", "初四", "初五", "初六",
+    private static final String DAY_STR[] = {"初一", "初二", "初三", "初四", "初五", "初六",
             "初七", "初八", "初九", "初十", "十一", "十二", "十三", "十四", "十五", "十六", "十七",
             "十八", "十九", "二十", "廿一", "廿二", "廿三", "廿四", "廿五", "廿六", "廿七", "廿八",
             "廿九", "三十"};
@@ -44,7 +44,7 @@ class LunarCalendar {
     /**
      * 公历节日
      */
-    private final static String[] mSolarCalendar = {
+    private final static String[] SOLAR_CALENDAR = {
             "0101元旦", "0214情人节", "0315消权日", "0401愚人节", "0501劳动节", "0504青年节",
             "0601儿童节", "0701建党节", "0801建军节", "0910教师节", "1001国庆节", "1224平安夜",
             "1225圣诞节"
@@ -61,12 +61,12 @@ class LunarCalendar {
         if(month == 12){
             int count = daysInLunarMonth(year, month);
             if(day == count){
-                return traditionFestivalStr[0];//除夕
+                return TRADITION_FESTIVAL_STR[0];//除夕
             }
         }
         String text = getString(month, day);
         String festivalStr = "";
-        for (String festival : traditionFestivalStr) {
+        for (String festival : TRADITION_FESTIVAL_STR) {
             if (festival.contains(text)) {
                 festivalStr = festival.replace(text, "");
                 break;
@@ -83,7 +83,7 @@ class LunarCalendar {
      * @return 数字转换为汉字月份
      */
     private static String numToChineseMonth(int month) {
-        return monthStr[month - 1];
+        return MONTH_STR[month - 1];
     }
 
     /**
@@ -93,7 +93,7 @@ class LunarCalendar {
      * @return 数字转换为汉字日
      */
     static String numToChineseDay(int day) {
-        return daysStr[day - 1];
+        return DAY_STR[day - 1];
     }
 
     /**
@@ -107,7 +107,7 @@ class LunarCalendar {
         if (day == 1) {
             return numToChineseMonth(month);
         }
-        return daysStr[day - 1];
+        return DAY_STR[day - 1];
     }
 
     /**
@@ -382,7 +382,7 @@ class LunarCalendar {
         return ((LUNAR_INFO[year - MIN_YEAR] & 0xF00000)) >> 20;
     }
 
-    private final static int[] solarTermInfo = {
+    private final static int[] SOLAR_TERM_INFO = {
             0, 21208, 42467, 63836, 85337, 107014, 128867, 150921,
             173149, 195551, 218072, 240693, 263343, 285989, 308563, 331033,
             353350, 375494, 397447, 419210, 440795, 462224, 483532, 504758
@@ -399,7 +399,7 @@ class LunarCalendar {
     private static String getSolarCalendar(int month, int day) {
         String text = getString(month, day);
         String solar = "";
-        for (String aMSolarCalendar : mSolarCalendar) {
+        for (String aMSolarCalendar : SOLAR_CALENDAR) {
             if (aMSolarCalendar.contains(text)) {
                 solar = aMSolarCalendar.replace(text, "");
                 break;
@@ -415,7 +415,7 @@ class LunarCalendar {
     /**
      * 农历24节气
      */
-    private final static String[] mSolarTerm = {
+    private final static String[] SOLAR_TERM = {
             "小寒", "大寒", "立春", "雨水", "惊蛰", "春分",
             "清明", "谷雨", "立夏", "小满", "芒种", "夏至",
             "小暑", "大暑", "立秋", "处暑", "白露", "秋分",
@@ -428,9 +428,9 @@ class LunarCalendar {
     private static String getTermString(int solarYear, int solarMonth, int solarDay) {
         String termString = "";
         if (getSolarTermDay(solarYear, solarMonth * 2) == solarDay) {
-            termString = mSolarTerm[solarMonth * 2];
+            termString = SOLAR_TERM[solarMonth * 2];
         } else if (getSolarTermDay(solarYear, solarMonth * 2 + 1) == solarDay) {
-            termString = mSolarTerm[solarMonth * 2 + 1];
+            termString = SOLAR_TERM[solarMonth * 2 + 1];
         }
         return termString;
     }
@@ -455,7 +455,7 @@ class LunarCalendar {
      */
     private static Date getSolarTermCalendar(int solarYear, int index) {
         long l = (long) 31556925974.7 * (solarYear - 1900)
-                + solarTermInfo[index] * 60000L;
+                + SOLAR_TERM_INFO[index] * 60000L;
         l = l + UTC(1900, 0, 6, 2, 5, 0);
         return new Date(l);
     }

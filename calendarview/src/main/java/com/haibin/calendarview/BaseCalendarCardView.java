@@ -26,7 +26,6 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,6 +35,7 @@ import java.util.List;
 
 public abstract class BaseCalendarCardView extends View implements View.OnClickListener {
 
+    private CustomCalendarViewDelegate mDelegate;
     /**
      * 当前月份日期的笔
      */
@@ -75,26 +75,6 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
      * 被选择的日期背景色
      */
     protected Paint mSelectedPaint = new Paint();
-
-    /**
-     * 日期被选中监听
-     */
-    CalendarView.OnDateSelectedListener mDateSelectedListener;
-
-    /**
-     * 内部日期切换监听，用于内部更新计算
-     */
-    CalendarView.OnInnerDateSelectedListener mInnerListener;
-
-    /**
-     * 日期切换监听
-     */
-    CalendarView.OnDateChangeListener mListener;
-
-    /**
-     * 当前日历
-     */
-    Calendar mCurrent;
 
     /**
      * 当前日历卡年份
@@ -267,7 +247,8 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
         setOnClickListener(this);
     }
 
-    void setup(CalendarView.CalendarViewDelegate delegate) {
+    void setup(CustomCalendarViewDelegate delegate) {
+        this.mDelegate = delegate;
         mCurMonthTextColor = delegate.getCurrentMonthTextColor();
         mCurMonthLunarTextColor = delegate.getCurrentMonthLunarTextColor();
         mCurDayTextPaint.setColor(delegate.getCurDayTextColor());
@@ -389,24 +370,24 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
                     mParentLayout.mViewPager.setCurrentItem(position);
                 }
 
-                if (mInnerListener != null) {
-                    mInnerListener.onDateSelected(calendar);
+                if (mDelegate.mInnerListener != null) {
+                    mDelegate.mInnerListener.onDateSelected(calendar);
                 }
 
-                if (mParentLayout != null ) {
-                    if(calendar.isCurrentMonth()){
+                if (mParentLayout != null) {
+                    if (calendar.isCurrentMonth()) {
                         mParentLayout.setSelectPosition(mItems.indexOf(calendar));
-                    }else {
+                    } else {
                         mParentLayout.setSelectWeek(Util.getWeekFromDayInMonth(calendar));
                     }
 
                 }
 
-                if (mDateSelectedListener != null) {
-                    mDateSelectedListener.onDateSelected(calendar);
+                if (mDelegate.mDateSelectedListener != null) {
+                    mDelegate.mDateSelectedListener.onDateSelected(calendar);
                 }
-                if (mListener != null) {
-                    mListener.onDateChange(calendar);
+                if (mDelegate.mDateChangeListener != null) {
+                    mDelegate.mDateChangeListener.onDateChange(calendar);
                 }
                 invalidate();
             }
@@ -445,11 +426,6 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
     void setCurrentDate(int year, int month) {
         mYear = year;
         mMonth = month;
-        mCurrent = new Calendar();
-        Date d = new Date();
-        mCurrent.setYear(Util.getDate("yyyy", d));
-        mCurrent.setMonth(Util.getDate("MM", d));
-        mCurrent.setDay(Util.getDate("dd", d));
         initCalendar();
     }
 
@@ -514,7 +490,7 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
                 calendarDate.setCurrentMonth(true);
                 calendarDate.setDay(i - firstDayOfWeek + 1);
             }
-            if (calendarDate.equals(mCurrent)) {
+            if (calendarDate.equals(mDelegate.getCurrentDay())) {
                 calendarDate.setCurrentDay(true);
                 mCurrentItem = i;
             }
