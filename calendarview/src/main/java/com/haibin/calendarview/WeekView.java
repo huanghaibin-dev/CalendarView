@@ -73,10 +73,6 @@ public abstract class WeekView extends View implements View.OnClickListener {
      */
     private List<Calendar> mItems;
 
-    /**
-     * 标记事件
-     */
-    List<Calendar> mSchemes;
 
     /**
      * 每一项的高度
@@ -272,9 +268,9 @@ public abstract class WeekView extends View implements View.OnClickListener {
             mCurMonthLunarTextPaint.setColor(mCurMonthLunarTextColor);
             mOtherMonthLunarTextPaint.setColor(mOtherMonthLunarTextColor);
             boolean isSelected = i == mCurrentItem;
-            if (mSchemes != null && mSchemes.contains(calendar)) {
+            if (mDelegate.mSchemeDate != null && mDelegate.mSchemeDate.contains(calendar)) {
                 //标记的日子
-                Calendar scheme = mSchemes.get(mSchemes.indexOf(calendar));
+                Calendar scheme = mDelegate.mSchemeDate.get(mDelegate.mSchemeDate.indexOf(calendar));
                 calendar.setScheme(scheme.getScheme());
                 calendar.setSchemeColor(scheme.getSchemeColor());
 
@@ -490,10 +486,10 @@ public abstract class WeekView extends View implements View.OnClickListener {
      * 更新界面
      */
     void update() {
-        if (mSchemes != null) {
+        if (mDelegate.mSchemeDate != null) {
             for (Calendar a : mItems) {
                 a.setScheme("");
-                for (Calendar d : mSchemes) {
+                for (Calendar d : mDelegate.mSchemeDate) {
                     if (d.equals(a)) {
                         a.setScheme(d.getScheme());
                     }

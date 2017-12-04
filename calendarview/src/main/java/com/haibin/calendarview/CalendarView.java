@@ -376,6 +376,7 @@ public class CalendarView extends FrameLayout {
             mMonthPager.mParentLayout = mParentLayout;
             mWeekPager.mParentLayout = mParentLayout;
             mParentLayout.initCalendarPosition(mDelegate.mSelectedCalendar);
+            mParentLayout.initStatus();
         }
     }
 
@@ -512,11 +513,8 @@ public class CalendarView extends FrameLayout {
     @SuppressWarnings("unused")
     public void update() {
         mSelectLayout.update();
-        for (int i = 0; i < mMonthPager.getChildCount(); i++) {
-            BaseCalendarCardView view = (BaseCalendarCardView) mMonthPager.getChildAt(i);
-            view.setup(mDelegate);
-            view.update();
-        }
+        mMonthPager.updateScheme();
+        mWeekPager.updateScheme();
     }
 
     /**

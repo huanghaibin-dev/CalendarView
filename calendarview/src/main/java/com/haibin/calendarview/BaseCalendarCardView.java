@@ -97,11 +97,6 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
     private List<Calendar> mItems;
 
     /**
-     * 标记事件
-     */
-    List<Calendar> mSchemes;
-
-    /**
      * 日历的行数
      */
     private int mLineCount;
@@ -296,9 +291,9 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
                 mCurMonthLunarTextPaint.setColor(mCurMonthLunarTextColor);
                 mOtherMonthLunarTextPaint.setColor(mOtherMonthLunarTextColor);
                 boolean isSelected = d == mCurrentItem;
-                if (mSchemes != null && mSchemes.contains(calendar)) {
+                if (mDelegate.mSchemeDate != null && mDelegate.mSchemeDate.contains(calendar)) {
                     //标记的日子
-                    Calendar scheme = mSchemes.get(mSchemes.indexOf(calendar));
+                    Calendar scheme = mDelegate.mSchemeDate.get(mDelegate.mSchemeDate.indexOf(calendar));
                     calendar.setScheme(scheme.getScheme());
                     calendar.setSchemeColor(scheme.getSchemeColor());
 
@@ -358,6 +353,7 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
         return super.onTouchEvent(event);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public void onClick(View v) {
         if (isClick) {
@@ -500,9 +496,9 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
             mItems.add(calendarDate);
         }
         mLineCount = mItems.size() / 7;
-        if (mSchemes != null) {
+        if (mDelegate.mSchemeDate != null) {
             for (Calendar a : mItems) {
-                for (Calendar d : mSchemes) {
+                for (Calendar d : mDelegate.mSchemeDate) {
                     if (d.equals(a)) {
                         a.setScheme(d.getScheme());
                     }
@@ -513,10 +509,10 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
     }
 
     void update() {
-        if (mSchemes != null) {
+        if (mDelegate.mSchemeDate != null) {
             for (Calendar a : mItems) {
                 a.setScheme("");
-                for (Calendar d : mSchemes) {
+                for (Calendar d : mDelegate.mSchemeDate) {
                     if (d.equals(a)) {
                         a.setScheme(d.getScheme());
                     }

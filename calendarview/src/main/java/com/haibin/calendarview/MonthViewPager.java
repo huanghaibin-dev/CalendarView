@@ -201,7 +201,6 @@ public class MonthViewPager extends ViewPager {
     void updateScheme() {
         for (int i = 0; i < getChildCount(); i++) {
             BaseCalendarCardView view = (BaseCalendarCardView) getChildAt(i);
-            view.mSchemes = mDelegate.mSchemeDate;
             view.update();
         }
     }
@@ -247,7 +246,7 @@ public class MonthViewPager extends ViewPager {
                 }
             }
             view.mParentLayout = mParentLayout;
-            view.mSchemes = mDelegate.mSchemeDate;
+
             view.setup(mDelegate);
             view.setTag(position);
             view.setCurrentDate(year, month);

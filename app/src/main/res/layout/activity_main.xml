@@ -92,10 +92,12 @@
     </RelativeLayout>
 
     <com.haibin.calendarview.CalendarLayout
+        android:id="@+id/calendarLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#fff"
         android:orientation="vertical"
+        app:default_status="shrink"
         app:calendar_content_view_id="@+id/linearView">
 
         <com.haibin.calendarview.CalendarView

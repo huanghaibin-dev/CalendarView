@@ -161,7 +161,6 @@ public class WeekViewPager extends ViewPager {
             view.setup(calendar);
             view.setTag(position);
             view.setSelectedCalendar(mDelegate.mSelectedCalendar);
-            view.mSchemes = mDelegate.mSchemeDate;
             container.addView(view);
             return view;
         }

@@ -41,6 +41,10 @@
     </declare-styleable>
 
     <declare-styleable name="CalendarLayout">
+        <attr name="default_status">
+            <enum name="expand" value="0" />
+            <enum name="shrink" value="1" />
+        </attr>
         <attr name="calendar_content_view_id" format="integer" />
     </declare-styleable>
 

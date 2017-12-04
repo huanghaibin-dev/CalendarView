@@ -7,6 +7,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.haibin.calendarview.Calendar;
+import com.haibin.calendarview.CalendarLayout;
 import com.haibin.calendarview.CalendarView;
 import com.haibin.calendarviewproject.base.activity.BaseActivity;
 import com.haibin.calendarviewproject.colorful.ColorfulActivity;
@@ -34,6 +35,7 @@ public class MainActivity extends BaseActivity implements
 
     RelativeLayout mRelativeTool;
     private int mYear;
+    CalendarLayout mCalendarLayout;
 
     @Override
     protected int getLayoutId() {
@@ -66,6 +68,7 @@ public class MainActivity extends BaseActivity implements
             }
         });
 
+        mCalendarLayout = (CalendarLayout)findViewById(R.id.calendarLayout);
         mCalendarView.setOnYearChangeListener(this);
         mCalendarView.setOnDateSelectedListener(this);
         mTextYear.setText(String.valueOf(mCalendarView.getCurYear()));
@@ -77,9 +80,9 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     protected void initData() {
-        List<Calendar> schemes = new ArrayList<>();
-        int year = mCalendarView.getCurYear();
-        int month = mCalendarView.getCurMonth();
+        final List<Calendar> schemes = new ArrayList<>();
+        final int year = mCalendarView.getCurYear();
+        final int month = mCalendarView.getCurMonth();
         schemes.add(getSchemeCalendar(year, month, 3, 0xFF40db25,"假"));
         schemes.add(getSchemeCalendar(year, month, 6, 0xFFe69138,"事"));
         schemes.add(getSchemeCalendar(year, month, 9, 0xFFdf1356,"议"));
@@ -89,6 +92,19 @@ public class MainActivity extends BaseActivity implements
         schemes.add(getSchemeCalendar(year, month, 18, 0xFFbc13f0,"记"));
         schemes.add(getSchemeCalendar(year, month, 25, 0xFF13acf0,"假"));
         mCalendarView.setSchemeDate(schemes);
+        mCalendarView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(mCalendarView == null)
+                    return;
+                final List<Calendar> schemeList = new ArrayList<>();
+                schemeList.add(getSchemeCalendar(year, month, 4, 0xFF40db25,"假"));
+                schemeList.add(getSchemeCalendar(year, month, 6, 0xFF40db25,"假"));
+                schemeList.add(getSchemeCalendar(year, month, 9, 0xFF40db25,"假"));
+                mCalendarView.setSchemeDate(schemeList);
+
+            }
+        },5000);
         findViewById(R.id.ll_flyme).setOnClickListener(this);
         findViewById(R.id.ll_simple).setOnClickListener(this);
         findViewById(R.id.ll_colorful).setOnClickListener(this);

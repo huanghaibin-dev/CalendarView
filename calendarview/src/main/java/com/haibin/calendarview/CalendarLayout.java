@@ -24,7 +24,6 @@ import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -34,13 +33,27 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 
 
 /**
  * 日历布局
  */
 public class CalendarLayout extends LinearLayout {
+
+    /**
+     * 默认展开
+     */
+    private static final int STATUS_EXPAND = 0;
+
+    /**
+     * 默认收缩
+     */
+    private static final int STATUS_SHRINK = 1;
+
+    /**
+     * 默认状态
+     */
+    private int mDefaultStatus;
 
     /**
      * 自定义ViewPager
@@ -79,6 +92,7 @@ public class CalendarLayout extends LinearLayout {
         setOrientation(LinearLayout.VERTICAL);
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CalendarLayout);
         mContentViewId = array.getResourceId(R.styleable.CalendarLayout_calendar_content_view_id, 0);
+        mDefaultStatus = array.getInt(R.styleable.CalendarLayout_default_status,STATUS_EXPAND);
         array.recycle();
         //setSelectPosition(6);
         mVelocityTracker = VelocityTracker.obtain();
@@ -110,9 +124,10 @@ public class CalendarLayout extends LinearLayout {
 
     /**
      * 设置选中的周，更新位置
+     *
      * @param line line
      */
-    void setSelectWeek(int line){
+    void setSelectWeek(int line) {
         mViewPagerTranslateY = (line - 1) * mItemHeight;
     }
 
@@ -332,6 +347,38 @@ public class CalendarLayout extends LinearLayout {
         objectAnimator.start();
     }
 
+    void initStatus() {
+        if(mDefaultStatus == STATUS_SHRINK){
+            post(new Runnable() {
+                @Override
+                public void run() {
+                    ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(mContentView,
+                            "translationY", mContentView.getTranslationY(), -mContentViewTranslateY);
+                    objectAnimator.setDuration(0);
+                    objectAnimator.addUpdateListener(new AnimatorUpdateListener() {
+                        @Override
+                        public void onAnimationUpdate(ValueAnimator animation) {
+                            float currentValue = (Float) animation.getAnimatedValue();
+                            float percent = currentValue * 1.0f / mContentViewTranslateY;
+                            mMonthView.setTranslationY(mViewPagerTranslateY * percent);
+                            isAnimating = true;
+                        }
+                    });
+                    objectAnimator.addListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            isAnimating = false;
+                            showWeek();
+
+                        }
+                    });
+                    objectAnimator.start();
+                }
+            });
+        }
+    }
+
     private void hideWeek() {
         mWeekPager.setVisibility(GONE);
         mMonthView.setVisibility(VISIBLE);
@@ -358,8 +405,6 @@ public class CalendarLayout extends LinearLayout {
             }
             return result;
         }
-        if(mContentView instanceof NestedScrollView || mContentView instanceof ScrollView)
-            return mContentView.getScrollY() == 0;
         return mContentView.getScrollY() == 0;
     }
 }
