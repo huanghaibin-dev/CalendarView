@@ -358,7 +358,7 @@ public abstract class WeekView extends View implements View.OnClickListener {
      *
      * @param calendar calendar
      */
-    void performClickCalendar(Calendar calendar) {
+    void performClickCalendar(Calendar calendar, boolean isNotice) {
         if (mItems == null || mDelegate.mInnerListener == null || mParentLayout == null || mItems.size() == 0) {
             return;
         }
@@ -366,15 +366,16 @@ public abstract class WeekView extends View implements View.OnClickListener {
         int week = Util.getWeekFormCalendar(calendar);
         mCurrentItem = week;
         Calendar currentCalendar = mItems.get(week);
+        currentCalendar.setCurrentDay(currentCalendar.equals(mDelegate.getCurrentDay()));
         mDelegate.mInnerListener.onWeekSelected(currentCalendar);
 
         int i = Util.getWeekFromDayInMonth(currentCalendar);
         mParentLayout.setSelectWeek(i);
 
-        if (mDelegate.mDateChangeListener != null) {
+        if (mDelegate.mDateChangeListener != null && isNotice) {
             mDelegate.mDateChangeListener.onDateChange(currentCalendar);
         }
-        if (mDelegate.mDateSelectedListener != null) {
+        if (mDelegate.mDateSelectedListener != null && isNotice) {
             mDelegate.mDateSelectedListener.onDateSelected(currentCalendar);
         }
         invalidate();

@@ -88,6 +88,11 @@ class CustomCalendarViewDelegate {
     private Calendar mCurrentDate;
 
     /**
+     * 当前月份和周视图的item位置
+     */
+    int mCurrentMonthViewItem, mCurrentWeekViewItem;
+
+    /**
      * 标记的日期
      */
     List<Calendar> mSchemeDate;
@@ -95,6 +100,7 @@ class CustomCalendarViewDelegate {
     /**
      * 日期切换监听
      */
+    @SuppressWarnings("all")
     CalendarView.OnDateChangeListener mDateChangeListener;
 
     /**
@@ -156,7 +162,10 @@ class CustomCalendarViewDelegate {
         mCurrentDate.setYear(Util.getDate("yyyy", d));
         mCurrentDate.setMonth(Util.getDate("MM", d));
         mCurrentDate.setDay(Util.getDate("dd", d));
+        mCurrentDate.setWeekend(Util.isWeekend(mCurrentDate));
+        mCurrentDate.setWeek(Util.getWeekFormCalendar(mCurrentDate));
         mCurrentDate.setLunar(LunarCalendar.getLunarText(mCurrentDate));
+        mCurrentWeekViewItem = Util.getWeekFromCalendarBetweenYearAndYear(mCurrentDate, mMinYear);
     }
 
     int getCurDayTextColor() {
@@ -283,4 +292,15 @@ class CustomCalendarViewDelegate {
         return mCurrentDate;
     }
 
+    Calendar createCurrentDate() {
+        Calendar calendar = new Calendar();
+        calendar.setYear(mCurrentDate.getYear());
+        calendar.setWeek(mCurrentDate.getWeek());
+        calendar.setMonth(mCurrentDate.getMonth());
+        calendar.setDay(mCurrentDate.getDay());
+        calendar.setWeekend(mCurrentDate.isWeekend());
+        calendar.setCurrentDay(true);
+        calendar.setLunar(mCurrentDate.getLunar());
+        return calendar;
+    }
 }

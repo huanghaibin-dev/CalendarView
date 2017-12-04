@@ -21,6 +21,8 @@ import java.util.List;
 
 public class ArticleAdapter extends BaseRecyclerAdapter<Article> {
 
+    private static final int TYPE_ARTICLE_GROUP = 1;
+    private static final int TYPE_ARTICLE = 2;
     private RequestManager mLoader;
 
     public ArticleAdapter(Context context) {
@@ -31,19 +33,40 @@ public class ArticleAdapter extends BaseRecyclerAdapter<Article> {
     }
 
     @Override
+    public int getItemViewType(int position) {
+        Article article = mItems.get(position);
+        if (article.getType() == TYPE_ARTICLE)
+            return TYPE_ARTICLE;
+        else
+            return TYPE_ARTICLE_GROUP;
+    }
+
+    @Override
     protected RecyclerView.ViewHolder onCreateDefaultViewHolder(ViewGroup parent, int type) {
-        return new ArticleViewHolder(mInflater.inflate(R.layout.item_list_article, parent, false));
+        if (type == TYPE_ARTICLE)
+            return new ArticleViewHolder(mInflater.inflate(R.layout.item_list_article, parent, false));
+        else
+            return new GroupViewHolder(mInflater.inflate(R.layout.item_list_article_group, parent, false));
     }
 
     @Override
     protected void onBindViewHolder(RecyclerView.ViewHolder holder, Article item, int position) {
-        ArticleViewHolder h = (ArticleViewHolder) holder;
-        h.mTextTitle.setText(item.getTitle());
-        h.mTextContent.setText(item.getContent());
-        mLoader.load(item.getImgUrl())
-                .asBitmap()
-                .centerCrop()
-                .into(h.mImageView);
+        int type = getItemViewType(position);
+        switch (type) {
+            case TYPE_ARTICLE_GROUP:
+                GroupViewHolder groupHolder = (GroupViewHolder) holder;
+                groupHolder.mTextGroup.setText(item.getTitle());
+                break;
+            case TYPE_ARTICLE:
+                ArticleViewHolder h = (ArticleViewHolder) holder;
+                h.mTextTitle.setText(item.getTitle());
+                h.mTextContent.setText(item.getContent());
+                mLoader.load(item.getImgUrl())
+                        .asBitmap()
+                        .centerCrop()
+                        .into(h.mImageView);
+                break;
+        }
     }
 
     private static class ArticleViewHolder extends RecyclerView.ViewHolder {
@@ -59,16 +82,34 @@ public class ArticleAdapter extends BaseRecyclerAdapter<Article> {
         }
     }
 
+    private static class GroupViewHolder extends RecyclerView.ViewHolder {
+        private TextView mTextGroup;
+
+        private GroupViewHolder(View itemView) {
+            super(itemView);
+            mTextGroup = (TextView) itemView.findViewById(R.id.tv_group);
+        }
+    }
+
     private static Article create(String title, String content, String imgUrl) {
         Article article = new Article();
         article.setTitle(title);
         article.setContent(content);
         article.setImgUrl(imgUrl);
+        article.setType(TYPE_ARTICLE);
         return article;
     }
 
-    private static List<Article> create(){
+    private static Article create(String title, int type) {
+        Article article = new Article();
+        article.setTitle(title);
+        article.setType(type);
+        return article;
+    }
+
+    private static List<Article> create() {
         List<Article> list = new ArrayList<>();
+        list.add(create("今日推荐",TYPE_ARTICLE_GROUP));
         list.add(create("新西兰克马德克群岛发生5.7级地震 震源深度10千米",
                 "#地震快讯#中国地震台网正式测定：12月04日08时08分在克马德克群岛（南纬32.82度，西经178.73度）发生5.7级地震，震源深度10千米。",
                 "http://cms-bucket.nosdn.127.net/catchpic/2/27/27e2ce7fd02e6c096e21b1689a8a3fe9.jpg?imageView&thumbnail=550x0"));
@@ -78,6 +119,7 @@ public class ArticleAdapter extends BaseRecyclerAdapter<Article> {
         list.add(create("中企投资巴西获支持 英媒:巴西人感激\"保住饭碗\"",
                 "参考消息网12月4日报道 英媒称，里约热内卢附近的阿苏港曾被埃克·巴蒂斯塔称为“通往中国的公路”，10多年前，这位现已名誉扫地的巴西前首富创建了这个超级港，大宗商品热潮结束后，他在巴西的商业帝国几乎无一幸存并于2014年破产，但此后至今有一个项目仍蓬勃发展，那就是阿苏港。",
                 "http://cms-bucket.nosdn.127.net/catchpic/8/8b/8ba2d19b7f63efc5cf714960d5edd2c3.jpg?imageView&thumbnail=550x0"));
+        list.add(create("本周最热",TYPE_ARTICLE_GROUP));
         list.add(create("美电视台记者因误报有关弗林新闻被停职四周",
                 "【环球网报道】据俄罗斯卫星网12月3日报道，美国ABC电视台记者布莱恩·罗素因在有关美国总统前国家安全顾问迈克尔·弗林的新闻报道中的失误，临时被停职。",
                 "http://cms-bucket.nosdn.127.net/5d18566fde70407b9cc3a728822115c320171203133214.jpeg?imageView&thumbnail=550x0"));
@@ -88,6 +130,7 @@ public class ArticleAdapter extends BaseRecyclerAdapter<Article> {
                 "2019年投产 电咖整车生产基地落户浙江绍兴",
                 "网易汽车11月30日报道 两周前的广州车展上，电咖发布了其首款电动汽车EV10，官方指导价为13.38万-14.18万，扣除补贴后的零售价为5.98万元-6.78万元，性价比很高。抛开车辆本身，引起业界关注的是这家新势力造车企业的几位核心成员，当年上汽大众团队的三位老兵--张海亮、向东平、牛胜福携手用了957天造了一辆可以上市的车。",
                 "http://cms-bucket.nosdn.127.net/674c392123254bb69bdd9227442965eb20171129203658.jpeg?imageView&thumbnail=550x0"));
+        list.add(create("最高评论",TYPE_ARTICLE_GROUP));
         list.add(create(
                 "2017年进入尾声，苹果大笔押注的ARkit还好么？",
                 "谷歌推出了AR眼镜、ARCore平台和应用在手机上的Project Tango，Facebook也上线了AR开发平台和工具。至于苹果，更是把AR当做发展的重中之重。在新品iPhone8和iPhoneX中，后置摄像头专为AR进行校准，前置摄像头还添加了可以带来更好AR效果的深度传感器。",

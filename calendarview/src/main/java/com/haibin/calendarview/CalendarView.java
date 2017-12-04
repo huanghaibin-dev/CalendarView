@@ -139,7 +139,7 @@ public class CalendarView extends FrameLayout {
             public void onDateSelected(Calendar calendar) {
                 if (calendar.getYear() == mDelegate.getCurrentDay().getYear() &&
                         calendar.getMonth() == mDelegate.getCurrentDay().getMonth()
-                        && mMonthPager.getCurrentItem() != mCurrentViewItem) {
+                        && mMonthPager.getCurrentItem() != mDelegate.mCurrentMonthViewItem) {
                     return;
                 }
                 mDelegate.mSelectedCalendar = calendar;
@@ -157,16 +157,16 @@ public class CalendarView extends FrameLayout {
             }
         };
 
-        mDelegate.mSelectedCalendar = mDelegate.getCurrentDay();
+        mDelegate.mSelectedCalendar = mDelegate.createCurrentDate();
 
         int mCurYear = mDelegate.mSelectedCalendar.getYear();
         if (mDelegate.getMinYear() >= mCurYear) mDelegate.setMinYear(mCurYear);
         if (mDelegate.getMaxYear() <= mCurYear) mDelegate.setMaxYear(mCurYear + 2);
         mSelectLayout.setYearSpan(mDelegate.getMinYear(), mDelegate.getMaxYear());
         int y = mDelegate.mSelectedCalendar.getYear() - mDelegate.getMinYear();
-        mCurrentViewItem = 12 * y + mDelegate.mSelectedCalendar.getMonth() - 1;
+        mDelegate.mCurrentMonthViewItem = 12 * y + mDelegate.mSelectedCalendar.getMonth() - 1;
         mMonthPager.setup(mDelegate);
-        mMonthPager.setCurrentItem(mCurrentViewItem);
+        mMonthPager.setCurrentItem(mDelegate.mCurrentMonthViewItem);
         mSelectLayout.setOnMonthSelectedListener(new MonthRecyclerView.OnMonthSelectedListener() {
             @Override
             public void onMonthSelected(int year, int month) {
@@ -179,7 +179,6 @@ public class CalendarView extends FrameLayout {
 
     }
 
-    private int mCurrentViewItem;
 
     /**
      * 获取当天
@@ -252,15 +251,17 @@ public class CalendarView extends FrameLayout {
      * 滚动到当前
      */
     public void scrollToCurrent() {
+        mDelegate.mSelectedCalendar = mDelegate.createCurrentDate();
+        if (mDelegate.mDateSelectedListener != null &&
+                mDelegate.mCurrentWeekViewItem == mWeekPager.getCurrentItem()) {
+            mDelegate.mDateSelectedListener.onDateSelected(mDelegate.createCurrentDate());
+        }
         mWeekPager.scrollToCurrent();
         mMonthPager.scrollToCurrent();
-        mDelegate.mSelectedCalendar = mDelegate.getCurrentDay();
         if (mDelegate.mDateChangeListener != null) {
-            mDelegate.mDateChangeListener.onDateChange(mDelegate.getCurrentDay());
+            mDelegate.mDateChangeListener.onDateChange(mDelegate.createCurrentDate());
         }
-        if (mDelegate.mDateSelectedListener != null) {
-            mDelegate.mDateSelectedListener.onDateSelected(mDelegate.getCurrentDay());
-        }
+
     }
 
     /**

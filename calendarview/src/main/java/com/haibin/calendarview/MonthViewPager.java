@@ -130,9 +130,6 @@ public class MonthViewPager extends ViewPager {
                     if (mDelegate.mDateChangeListener != null) {
                         mDelegate.mDateChangeListener.onDateChange(calendar);
                     }
-                    if (mDelegate.mDateSelectedListener != null) {
-                        mDelegate.mDateSelectedListener.onDateSelected(calendar);
-                    }
                     return;
                 }
                 if (!calendar.isCurrentMonth()) {

@@ -69,7 +69,7 @@ public class WeekViewPager extends ViewPager {
                     return;
                 WeekView view = (WeekView) findViewWithTag(position);
                 if (view != null) {
-                    view.performClickCalendar(mDelegate.mSelectedCalendar);
+                    view.performClickCalendar(mDelegate.mSelectedCalendar, true);
                 }
             }
 
@@ -80,12 +80,15 @@ public class WeekViewPager extends ViewPager {
         });
     }
 
-    void scrollToCurrent(){
+    /**
+     * 滚动到当前
+     */
+    void scrollToCurrent() {
         int position = Util.getWeekFromCalendarBetweenYearAndYear(mDelegate.getCurrentDay(), mDelegate.getMinYear()) - 1;
         setCurrentItem(position);
         WeekView view = (WeekView) findViewWithTag(position);
-        if(view!= null){
-            view.performClickCalendar(mDelegate.getCurrentDay());
+        if (view != null) {
+            view.performClickCalendar(mDelegate.getCurrentDay(), false);
             view.setSelectedCalendar(mDelegate.getCurrentDay());
             view.invalidate();
         }

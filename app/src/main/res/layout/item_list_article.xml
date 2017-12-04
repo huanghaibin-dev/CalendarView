@@ -7,6 +7,9 @@
     android:paddingBottom="12dp"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:background="#FFFFFF"
     android:paddingTop="12dp">
 
     <ImageView
@@ -40,8 +43,9 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:lines="2"
+            android:layout_marginTop="4dp"
             android:textColor="#9f9f9f"
-            android:textSize="14sp"
+            android:textSize="12sp"
             tools:text="地震快讯#中国地震台网正式测定：12月04日08时08分在克马德克群岛（南纬32.82度，西经178.73度）发生5.7级地震，震源深度10千米。" />
     </LinearLayout>
 </LinearLayout>
