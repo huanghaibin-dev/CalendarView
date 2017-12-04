@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.haibin.calendarviewproject">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -17,10 +18,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".meizu.MeiZuActivity"/>
-        <activity android:name=".index.IndexActivity"/>
-        <activity android:name=".simple.SimpleActivity"/>
-        <activity android:name=".colorful.ColorfulActivity"/>
+        <activity android:name=".meizu.MeiZuActivity" />
+        <activity android:name=".index.IndexActivity" />
+        <activity android:name=".simple.SimpleActivity" />
+        <activity android:name=".colorful.ColorfulActivity" />
     </application>
 
 </manifest>

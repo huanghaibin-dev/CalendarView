@@ -31,11 +31,11 @@ import java.util.List;
 public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
 
     protected LayoutInflater mInflater;
-    private List<T> mItems;
+    protected List<T> mItems;
     private OnItemClickListener onItemClickListener;
     private OnClickListener onClickListener;
 
-    BaseRecyclerAdapter(Context context) {
+   public   BaseRecyclerAdapter(Context context) {
         this.mItems = new ArrayList<>();
         mInflater = LayoutInflater.from(context);
         onClickListener = new OnClickListener() {
@@ -63,9 +63,9 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
         onBindViewHolder(holder, mItems.get(position), position);
     }
 
-    abstract RecyclerView.ViewHolder onCreateDefaultViewHolder(ViewGroup parent, int type);
+    protected abstract RecyclerView.ViewHolder onCreateDefaultViewHolder(ViewGroup parent, int type);
 
-    abstract void onBindViewHolder(RecyclerView.ViewHolder holder, T item, int position);
+    protected abstract void onBindViewHolder(RecyclerView.ViewHolder holder, T item, int position);
 
     @Override
     public int getItemCount() {

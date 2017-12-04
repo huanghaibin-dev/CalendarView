@@ -248,8 +248,9 @@ public class CalendarView extends FrameLayout {
      * 滚动到当前
      */
     public void scrollToCurrent() {
-        mWeekPager.updateSelected(mDelegate.getCurrentDay());
+        mWeekPager.scrollToCurrent();
         mMonthPager.scrollToCurrent();
+        mDelegate.mSelectedCalendar = mDelegate.getCurrentDay();
         if (mDelegate.mDateChangeListener != null) {
             mDelegate.mDateChangeListener.onDateChange(mDelegate.getCurrentDay());
         }

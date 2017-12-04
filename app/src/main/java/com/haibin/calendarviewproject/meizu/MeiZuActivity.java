@@ -3,12 +3,15 @@ package com.haibin.calendarviewproject.meizu;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
+import com.haibin.calendarviewproject.ArticleAdapter;
 import com.haibin.calendarviewproject.base.activity.BaseActivity;
 import com.haibin.calendarviewproject.R;
 import com.haibin.calendarviewproject.colorful.ColorfulActivity;
@@ -35,6 +38,8 @@ public class MeiZuActivity extends BaseActivity implements
 
     RelativeLayout mRelativeTool;
     private int mYear;
+
+    RecyclerView mRecyclerView;
 
     public static void show(Context context) {
         context.startActivity(new Intent(context, MeiZuActivity.class));
@@ -97,10 +102,14 @@ public class MeiZuActivity extends BaseActivity implements
         schemes.add(getSchemeCalendar(year, month, 25, 0xFF13acf0,"假"));
         mCalendarView.setSchemeDate(schemes);
 
-        findViewById(R.id.ll_flyme).setOnClickListener(this);
-        findViewById(R.id.ll_simple).setOnClickListener(this);
-        findViewById(R.id.ll_colorful).setOnClickListener(this);
-        findViewById(R.id.ll_index).setOnClickListener(this);
+//        findViewById(R.id.ll_flyme).setOnClickListener(this);
+//        findViewById(R.id.ll_simple).setOnClickListener(this);
+//        findViewById(R.id.ll_colorful).setOnClickListener(this);
+//        findViewById(R.id.ll_index).setOnClickListener(this);
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setAdapter(new ArticleAdapter(this));
     }
 
 

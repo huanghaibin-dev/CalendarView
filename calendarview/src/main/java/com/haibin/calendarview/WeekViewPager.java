@@ -20,7 +20,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -81,6 +80,16 @@ public class WeekViewPager extends ViewPager {
         });
     }
 
+    void scrollToCurrent(){
+        int position = Util.getWeekFromCalendarBetweenYearAndYear(mDelegate.getCurrentDay(), mDelegate.getMinYear()) - 1;
+        setCurrentItem(position);
+        WeekView view = (WeekView) findViewWithTag(position);
+        if(view!= null){
+            view.performClickCalendar(mDelegate.getCurrentDay());
+            view.setSelectedCalendar(mDelegate.getCurrentDay());
+            view.invalidate();
+        }
+    }
 
     /**
      * 更新任意一个选择的日期
