@@ -23,7 +23,7 @@ import java.util.List;
 
 public class SimpleActivity extends BaseActivity implements
         CalendarView.OnDateSelectedListener,
-        CalendarView.OnDateChangeListener,
+        CalendarView.OnYearChangeListener,
         View.OnClickListener {
 
     TextView mTextMonthDay;
@@ -77,7 +77,7 @@ public class SimpleActivity extends BaseActivity implements
             }
         });
 
-        mCalendarView.setOnDateChangeListener(this);
+        mCalendarView.setOnYearChangeListener(this);
         mCalendarView.setOnDateSelectedListener(this);
         mTextYear.setText(String.valueOf(mCalendarView.getCurYear()));
         mYear = mCalendarView.getCurYear();
@@ -142,18 +142,13 @@ public class SimpleActivity extends BaseActivity implements
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onDateChange(Calendar calendar) {
+    public void onDateSelected(Calendar calendar) {
         mTextLunar.setVisibility(View.VISIBLE);
         mTextYear.setVisibility(View.VISIBLE);
         mTextMonthDay.setText(calendar.getMonth() + "月" + calendar.getDay() + "日");
         mTextYear.setText(String.valueOf(calendar.getYear()));
         mTextLunar.setText(calendar.getLunar());
         mYear = calendar.getYear();
-    }
-
-    @Override
-    public void onDateSelected(Calendar calendar) {
-        onDateChange(calendar);
     }
 
 

@@ -29,6 +29,7 @@ import java.lang.reflect.Constructor;
 /**
  * 这是一个自适应高度的View
  */
+@SuppressWarnings("deprecation")
 public class MonthViewPager extends ViewPager {
     private CustomCalendarViewDelegate mDelegate;
     CalendarLayout mParentLayout;
@@ -129,6 +130,9 @@ public class MonthViewPager extends ViewPager {
                     if (mDelegate.mDateChangeListener != null) {
                         mDelegate.mDateChangeListener.onDateChange(calendar);
                     }
+                    if (mDelegate.mDateSelectedListener != null) {
+                        mDelegate.mDateSelectedListener.onDateSelected(calendar);
+                    }
                     return;
                 }
                 if (!calendar.isCurrentMonth()) {
@@ -139,7 +143,9 @@ public class MonthViewPager extends ViewPager {
                 if (mDelegate.mDateChangeListener != null) {
                     mDelegate.mDateChangeListener.onDateChange(mDelegate.mSelectedCalendar);
                 }
-
+                if (mDelegate.mDateSelectedListener != null) {
+                    mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar);
+                }
 
                 BaseCalendarCardView view = (BaseCalendarCardView) findViewWithTag(position);
                 if (view != null) {

@@ -18,6 +18,7 @@ import java.util.List;
  * Created by huanghaibin on 2017/11/21.
  */
 
+@SuppressWarnings("deprecation")
 public abstract class WeekView extends View implements View.OnClickListener {
 
     private CustomCalendarViewDelegate mDelegate;
@@ -376,6 +377,9 @@ public abstract class WeekView extends View implements View.OnClickListener {
 
         if (mDelegate.mDateChangeListener != null) {
             mDelegate.mDateChangeListener.onDateChange(currentCalendar);
+        }
+        if (mDelegate.mDateSelectedListener != null) {
+            mDelegate.mDateSelectedListener.onDateSelected(currentCalendar);
         }
         invalidate();
     }

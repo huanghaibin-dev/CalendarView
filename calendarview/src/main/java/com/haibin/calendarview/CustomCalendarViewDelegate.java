@@ -108,6 +108,11 @@ class CustomCalendarViewDelegate {
     CalendarView.OnInnerDateSelectedListener mInnerListener;
 
     /**
+     * 快速年份切换
+     */
+    CalendarView.OnYearChangeListener mYearChangeListener;
+
+    /**
      * 保存选中的日期
      */
     Calendar mSelectedCalendar;

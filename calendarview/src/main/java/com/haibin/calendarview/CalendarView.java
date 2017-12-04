@@ -34,6 +34,7 @@ import java.util.List;
  * 日历布局
  * 各个类使用包权限，避免不必要的public
  */
+@SuppressWarnings("deprecation")
 public class CalendarView extends FrameLayout {
 
     /**
@@ -116,11 +117,14 @@ public class CalendarView extends FrameLayout {
 
             @Override
             public void onPageSelected(int position) {
-                if(mWeekPager.getVisibility() == VISIBLE){
+                if (mWeekPager.getVisibility() == VISIBLE) {
                     return;
                 }
                 if (mDelegate.mDateChangeListener != null) {
                     mDelegate.mDateChangeListener.onYearChange(position + mDelegate.getMinYear());
+                }
+                if (mDelegate.mYearChangeListener != null) {
+                    mDelegate.mYearChangeListener.onYearChange(position + mDelegate.getMinYear());
                 }
             }
 
@@ -254,6 +258,9 @@ public class CalendarView extends FrameLayout {
         if (mDelegate.mDateChangeListener != null) {
             mDelegate.mDateChangeListener.onDateChange(mDelegate.getCurrentDay());
         }
+        if (mDelegate.mDateSelectedListener != null) {
+            mDelegate.mDateSelectedListener.onDateSelected(mDelegate.getCurrentDay());
+        }
     }
 
     /**
@@ -276,13 +283,17 @@ public class CalendarView extends FrameLayout {
         mWeekBar.setVisibility(VISIBLE);
         mMonthPager.setVisibility(VISIBLE);
         if (position == mMonthPager.getCurrentItem()) {
+            Calendar calendar = new Calendar();
+            calendar.setYear(position / 12 + mDelegate.getMinYear());
+            calendar.setMonth(position % 12 + 1);
+            calendar.setDay(1);
+            calendar.setLunar(LunarCalendar.numToChineseDay(LunarCalendar.solarToLunar(calendar.getYear(), calendar.getMonth(), 1)[2]));
+            mDelegate.mSelectedCalendar = calendar;
             if (mDelegate.mDateChangeListener != null) {
-                Calendar calendar = new Calendar();
-                calendar.setYear(position / 12 + mDelegate.getMinYear());
-                calendar.setMonth(position % 12 + 1);
-                calendar.setDay(1);
-                calendar.setLunar(LunarCalendar.numToChineseDay(LunarCalendar.solarToLunar(calendar.getYear(), calendar.getMonth(), 1)[2]));
                 mDelegate.mDateChangeListener.onDateChange(calendar);
+            }
+            if (mDelegate.mDateSelectedListener != null) {
+                mDelegate.mDateSelectedListener.onDateSelected(calendar);
             }
         } else {
             mMonthPager.setCurrentItem(position, true);
@@ -321,8 +332,24 @@ public class CalendarView extends FrameLayout {
      *
      * @param listener 监听
      */
+    @Deprecated
     public void setOnDateChangeListener(OnDateChangeListener listener) {
         this.mDelegate.mDateChangeListener = listener;
+        if (mDelegate.mDateChangeListener != null) {
+            mDelegate.mDateChangeListener.onDateChange(mDelegate.mSelectedCalendar);
+        }
+
+    }
+
+
+    /**
+     * 年份改变事件
+     *
+     * @param listener listener
+     */
+    @SuppressWarnings("unused")
+    public void setOnYearChangeListener(OnYearChangeListener listener) {
+        this.mDelegate.mYearChangeListener = listener;
     }
 
     /**
@@ -332,6 +359,9 @@ public class CalendarView extends FrameLayout {
      */
     public void setOnDateSelectedListener(OnDateSelectedListener listener) {
         this.mDelegate.mDateSelectedListener = listener;
+        if (mDelegate.mDateSelectedListener != null) {
+            mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar);
+        }
     }
 
     /**
@@ -499,11 +529,26 @@ public class CalendarView extends FrameLayout {
 
 
     /**
+     * 年份改变事件，快速年份切换
+     */
+    public interface OnYearChangeListener {
+        void onYearChange(int year);
+    }
+
+    /**
      * 日期改变、左右切换、快速年份、月份切换
      */
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     public interface OnDateChangeListener {
+        /**
+         * 这个方法是准确传递的，但和onDateSelected一样会跟新日历选中状态，造成误区，故新版本建议弃用，
+         * 统一使用onDateSelected
+         */
+        @Deprecated
         void onDateChange(Calendar calendar);
 
+        @Deprecated
         void onYearChange(int year);
     }
 
