@@ -108,7 +108,11 @@ public int getCurMonth(); //当前的月份
 public int getCurYear(); //今年
 public void showSelectLayout(final int year); //快速弹出年份选择月份
 public void closeSelectLayout(final int position); //关闭选择年份并跳转日期
+@Deprecated
 public void setOnDateChangeListener(OnDateChangeListener listener);//添加事件
+
+public void setOnYearChangeListener(OnYearChangeListener listener);//年份切换事件
+
 public void setOnDateSelectedListener(OnDateSelectedListener listener);//日期选择事件
 public void setSchemeDate(List<Calendar> mSchemeDate);//标记日期
 public void update();//动态更新
