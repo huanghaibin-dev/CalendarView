@@ -117,8 +117,16 @@
             app:week_text_color="#111"
             app:week_view="com.haibin.calendarviewproject.simple.SimpleWeekView" />
 
-        <android.support.v7.widget.RecyclerView
+        <com.haibin.calendarviewproject.group.GroupRecyclerView
             android:id="@+id/recyclerView"
+            app:group_background="@color/content_background"
+            app:group_center="false"
+            app:group_height="42dp"
+            app:group_has_header="false"
+            app:group_padding_left="16dp"
+            app:group_padding_right="16dp"
+            app:group_text_size="14sp"
+            app:group_text_color="#555555"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/content_background" />

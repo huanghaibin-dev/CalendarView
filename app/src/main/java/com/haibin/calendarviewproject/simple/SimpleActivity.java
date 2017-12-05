@@ -11,10 +11,13 @@ import android.widget.TextView;
 
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
+import com.haibin.calendarviewproject.Article;
 import com.haibin.calendarviewproject.ArticleAdapter;
 import com.haibin.calendarviewproject.R;
 import com.haibin.calendarviewproject.base.activity.BaseActivity;
 import com.haibin.calendarviewproject.colorful.ColorfulActivity;
+import com.haibin.calendarviewproject.group.GroupItemDecoration;
+import com.haibin.calendarviewproject.group.GroupRecyclerView;
 import com.haibin.calendarviewproject.index.IndexActivity;
 import com.haibin.calendarviewproject.meizu.MeiZuActivity;
 
@@ -38,7 +41,7 @@ public class SimpleActivity extends BaseActivity implements
 
     RelativeLayout mRelativeTool;
 
-    RecyclerView mRecyclerView;
+    GroupRecyclerView mRecyclerView;
     private int mYear;
 
     public static void show(Context context) {
@@ -84,9 +87,11 @@ public class SimpleActivity extends BaseActivity implements
         mTextMonthDay.setText(mCalendarView.getCurMonth() + "月" + mCalendarView.getCurDay() + "日");
         mTextLunar.setText("今日");
         mTextCurrentDay.setText(String.valueOf(mCalendarView.getCurDay()));
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        mRecyclerView = (GroupRecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(new ArticleAdapter(SimpleActivity.this));
+        mRecyclerView.addItemDecoration(new GroupItemDecoration<String,Article>());
+        mRecyclerView.setAdapter(new ArticleAdapter(this));
+        mRecyclerView.notifyDataSetChanged();
     }
 
     @Override

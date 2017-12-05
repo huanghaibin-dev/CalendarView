@@ -117,188 +117,21 @@
             app:week_background="#fff"
             app:week_text_color="#111" />
 
-        <android.support.v7.widget.RecyclerView
+        <com.haibin.calendarviewproject.group.GroupRecyclerView
             android:id="@+id/recyclerView"
+            app:group_background="@color/content_background"
+            app:group_center="false"
+            app:group_height="42dp"
+            app:group_has_header="false"
+            app:group_padding_left="16dp"
+            app:group_padding_right="16dp"
+            app:group_text_size="14sp"
+            app:group_text_color="#555555"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/content_background" />
-        <!--<LinearLayout-->
-            <!--android:id="@+id/linearView"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:background="@color/content_background"-->
-            <!--android:clickable="true"-->
-            <!--android:orientation="vertical"-->
-            <!--tools:ignore="KeyboardInaccessibleWidget">-->
 
-            <!--<LinearLayout-->
-                <!--android:id="@+id/ll_flyme"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:orientation="horizontal">-->
-
-                <!--<ImageView-->
-                    <!--android:layout_width="36dp"-->
-                    <!--android:layout_height="39dp"-->
-                    <!--android:layout_margin="16dp"-->
-                    <!--android:contentDescription="flyme"-->
-                    <!--android:src="@mipmap/ic_flyme_logo" />-->
-
-                <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginBottom="16dp"-->
-                    <!--android:layout_marginTop="16dp"-->
-                    <!--android:orientation="vertical">-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="FLYME"-->
-                        <!--android:textColor="#333333"-->
-                        <!--android:textSize="18sp"-->
-                        <!--android:textStyle="bold" />-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="301dp"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginTop="4dp"-->
-                        <!--android:text="点击查看魅族flyme风格的日历控件"-->
-                        <!--android:textColor="#666666"-->
-                        <!--android:textSize="14sp" />-->
-                <!--</LinearLayout>-->
-            <!--</LinearLayout>-->
-
-            <!--<View-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="1px"-->
-                <!--android:background="@color/line_color" />-->
-
-            <!--<LinearLayout-->
-                <!--android:id="@+id/ll_simple"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:orientation="horizontal">-->
-
-                <!--<ImageView-->
-                    <!--android:layout_width="39dp"-->
-                    <!--android:layout_height="39dp"-->
-                    <!--android:layout_margin="16dp"-->
-                    <!--android:contentDescription="flyme"-->
-                    <!--android:src="@mipmap/ic_simple_logo" />-->
-
-                <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginBottom="16dp"-->
-                    <!--android:layout_marginTop="16dp"-->
-                    <!--android:orientation="vertical">-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="简单日历风格"-->
-                        <!--android:textColor="#333333"-->
-                        <!--android:textSize="18sp"-->
-                        <!--android:textStyle="bold" />-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginTop="4dp"-->
-                        <!--android:text="点击查看简单没有农历风格的日历"-->
-                        <!--android:textColor="#666666"-->
-                        <!--android:textSize="14sp" />-->
-                <!--</LinearLayout>-->
-            <!--</LinearLayout>-->
-
-            <!--<View-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="1px"-->
-                <!--android:background="@color/line_color" />-->
-
-
-            <!--<LinearLayout-->
-                <!--android:id="@+id/ll_index"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:orientation="horizontal">-->
-
-                <!--<ImageView-->
-                    <!--android:layout_width="39dp"-->
-                    <!--android:layout_height="39dp"-->
-                    <!--android:layout_margin="16dp"-->
-                    <!--android:contentDescription="flyme"-->
-                    <!--android:src="@mipmap/ic_index_logo" />-->
-
-                <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginBottom="16dp"-->
-                    <!--android:layout_marginTop="16dp"-->
-                    <!--android:orientation="vertical">-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="下标风格"-->
-                        <!--android:textColor="#333333"-->
-                        <!--android:textSize="18sp"-->
-                        <!--android:textStyle="bold" />-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginTop="4dp"-->
-                        <!--android:text="点击查看下标风格的日历控件"-->
-                        <!--android:textColor="#666666"-->
-                        <!--android:textSize="14sp" />-->
-                <!--</LinearLayout>-->
-            <!--</LinearLayout>-->
-
-            <!--<View-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="1px"-->
-                <!--android:background="@color/line_color" />-->
-
-            <!--<LinearLayout-->
-                <!--android:id="@+id/ll_colorful"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:orientation="horizontal">-->
-
-                <!--<ImageView-->
-                    <!--android:layout_width="39dp"-->
-                    <!--android:layout_height="39dp"-->
-                    <!--android:layout_margin="16dp"-->
-                    <!--android:contentDescription="flyme"-->
-                    <!--android:src="@mipmap/ic_colorful_logo" />-->
-
-                <!--<LinearLayout-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginBottom="16dp"-->
-                    <!--android:layout_marginTop="16dp"-->
-                    <!--android:orientation="vertical">-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="多彩风格"-->
-                        <!--android:textColor="#333333"-->
-                        <!--android:textSize="18sp"-->
-                        <!--android:textStyle="bold" />-->
-
-                    <!--<TextView-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginTop="4dp"-->
-                        <!--android:text="点击查看多彩风格风格的日历控件"-->
-                        <!--android:textColor="#666666"-->
-                        <!--android:textSize="14sp" />-->
-                <!--</LinearLayout>-->
-            <!--</LinearLayout>-->
-        <!--</LinearLayout>-->
     </com.haibin.calendarview.CalendarLayout>
+
 
 </LinearLayout>

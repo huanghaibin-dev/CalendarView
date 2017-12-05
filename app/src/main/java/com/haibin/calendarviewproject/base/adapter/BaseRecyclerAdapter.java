@@ -35,7 +35,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
     private OnItemClickListener onItemClickListener;
     private OnClickListener onClickListener;
 
-   public   BaseRecyclerAdapter(Context context) {
+   public  BaseRecyclerAdapter(Context context) {
         this.mItems = new ArrayList<>();
         mInflater = LayoutInflater.from(context);
         onClickListener = new OnClickListener() {
@@ -114,5 +114,25 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
 
     interface OnItemClickListener {
         void onItemClick(int position, long itemId);
+    }
+
+    public final void removeItem(T item) {
+        if (this.mItems.contains(item)) {
+            int position = mItems.indexOf(item);
+            this.mItems.remove(item);
+            notifyItemRemoved(position);
+        }
+    }
+
+    protected final void removeItem(int position) {
+        if (this.getItemCount() > position) {
+            this.mItems.remove(position);
+            notifyItemRemoved(position);
+        }
+    }
+
+    protected final void clear(){
+        mItems.clear();
+        notifyDataSetChanged();
     }
 }

@@ -3,14 +3,19 @@ package com.haibin.calendarviewproject.colorful;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarView;
+import com.haibin.calendarviewproject.Article;
+import com.haibin.calendarviewproject.ArticleAdapter;
 import com.haibin.calendarviewproject.R;
 import com.haibin.calendarviewproject.base.activity.BaseActivity;
+import com.haibin.calendarviewproject.group.GroupItemDecoration;
+import com.haibin.calendarviewproject.group.GroupRecyclerView;
 import com.haibin.calendarviewproject.index.IndexActivity;
 import com.haibin.calendarviewproject.meizu.MeiZuActivity;
 import com.haibin.calendarviewproject.simple.SimpleActivity;
@@ -35,6 +40,8 @@ public class ColorfulActivity extends BaseActivity implements
 
     RelativeLayout mRelativeTool;
     private int mYear;
+
+    GroupRecyclerView mRecyclerView;
 
     public static void show(Context context) {
         context.startActivity(new Intent(context, ColorfulActivity.class));
@@ -97,10 +104,11 @@ public class ColorfulActivity extends BaseActivity implements
         schemes.add(getSchemeCalendar(year, month, 25, 0xFF13acf0,"假"));
         mCalendarView.setSchemeDate(schemes);
 
-        findViewById(R.id.ll_flyme).setOnClickListener(this);
-        findViewById(R.id.ll_simple).setOnClickListener(this);
-        findViewById(R.id.ll_colorful).setOnClickListener(this);
-        findViewById(R.id.ll_index).setOnClickListener(this);
+        mRecyclerView = (GroupRecyclerView) findViewById(R.id.recyclerView);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.addItemDecoration(new GroupItemDecoration<String,Article>());
+        mRecyclerView.setAdapter(new ArticleAdapter(this));
+        mRecyclerView.notifyDataSetChanged();
     }
 
 
