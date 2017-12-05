@@ -92,19 +92,6 @@ public class MainActivity extends BaseActivity implements
         schemes.add(getSchemeCalendar(year, month, 18, 0xFFbc13f0,"记"));
         schemes.add(getSchemeCalendar(year, month, 25, 0xFF13acf0,"假"));
         mCalendarView.setSchemeDate(schemes);
-        mCalendarView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if(mCalendarView == null)
-                    return;
-                final List<Calendar> schemeList = new ArrayList<>();
-                schemeList.add(getSchemeCalendar(year, month, 4, 0xFF40db25,"假"));
-                schemeList.add(getSchemeCalendar(year, month, 6, 0xFF40db25,"假"));
-                schemeList.add(getSchemeCalendar(year, month, 9, 0xFF40db25,"假"));
-                mCalendarView.setSchemeDate(schemeList);
-
-            }
-        },5000);
         findViewById(R.id.ll_flyme).setOnClickListener(this);
         findViewById(R.id.ll_simple).setOnClickListener(this);
         findViewById(R.id.ll_colorful).setOnClickListener(this);
