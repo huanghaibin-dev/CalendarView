@@ -364,6 +364,10 @@ public abstract class WeekView extends View implements View.OnClickListener {
         }
 
         int week = Util.getWeekFormCalendar(calendar);
+        if(mItems.contains(mDelegate.getCurrentDay())){
+            week = Util.getWeekFormCalendar(mDelegate.getCurrentDay());
+        }
+
         mCurrentItem = week;
         Calendar currentCalendar = mItems.get(week);
         currentCalendar.setCurrentDay(currentCalendar.equals(mDelegate.getCurrentDay()));

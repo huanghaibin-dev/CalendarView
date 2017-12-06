@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarLayout;
 import com.haibin.calendarview.CalendarView;
-import com.haibin.calendarview.LunarTest;
+import com.haibin.calendarview.SolarTermUtil;
 import com.haibin.calendarviewproject.base.activity.BaseActivity;
 import com.haibin.calendarviewproject.colorful.ColorfulActivity;
 import com.haibin.calendarviewproject.index.IndexActivity;
@@ -103,15 +103,14 @@ public class MainActivity extends BaseActivity implements
         findViewById(R.id.ll_simple).setOnClickListener(this);
         findViewById(R.id.ll_colorful).setOnClickListener(this);
         findViewById(R.id.ll_index).setOnClickListener(this);
-        LunarTest st = new LunarTest();
-        st.JQtest(2006);
-        st.JQtest(2004);
-        st.JQtest(2015);
-        st.JQtest(2016);
-        st.JQtest(2018);
-        st.JQtest(2017);
-        st.JQtest(1918);
-        st.JQtest(2021);
+        SolarTermUtil.getSolarTerms(2006);
+        SolarTermUtil.getSolarTerms(2004);
+        SolarTermUtil.getSolarTerms(2015);
+        SolarTermUtil.getSolarTerms(2016);
+        SolarTermUtil.getSolarTerms(2018);
+        SolarTermUtil.getSolarTerms(2017);
+        SolarTermUtil.getSolarTerms(1970);
+        SolarTermUtil.getSolarTerms(2021);
     }
 
 
