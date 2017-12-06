@@ -1,12 +1,10 @@
 package com.haibin.calendarview;
 
-import android.util.Log;
-
 /**
  * http://www.cnblogs.com/moodlxs/archive/2010/12/18/2345392.html
  * 24节气计算公式，参考该博客实现
  */
-public final class SolarTermUtil {
+final class SolarTermUtil {
 
     /**
      * 24节气
@@ -146,8 +144,8 @@ public final class SolarTermUtil {
      */
     @SuppressWarnings("all")
     private static double toJulian(Time time, boolean UTC) {
-        double y = time.Y; // 取出年月
-        double m = time.M;
+        double y = time.year; // 取出年月
+        double m = time.month;
         double n = 0;
 
         if (m <= 2) {
@@ -155,15 +153,15 @@ public final class SolarTermUtil {
             y--;
         }
 
-        if (time.Y * 372 + time.M * 31 + time.D >= 588829) {
+        if (time.year * 372 + time.month * 31 + time.day >= 588829) {
             // 判断是否为格里高利历日1582*372+10*31+15
             n = doubleFloor(y / 100);
             n = 2 - n + doubleFloor(n / 4);// 加百年闰
         }
 
         n += doubleFloor(365.2500001 * (y + 4716)); // 加上年引起的偏移日数
-        n += doubleFloor(30.6 * (m + 1)) + time.D; // 加上月引起的偏移日数及日偏移数
-        n += ((time.s / 60 + time.m) / 60 + time.h) / 24 - 1524.5;
+        n += doubleFloor(30.6 * (m + 1)) + time.day; // 加上月引起的偏移日数及日偏移数
+        n += ((time.second / 60 + time.minute) / 60 + time.hour) / 24 - 1524.5;
         if (UTC)
             return n + atomTimeDiff(n - J2000);
 
@@ -194,25 +192,25 @@ public final class SolarTermUtil {
             A += 1 + D - doubleFloor(D / 4);
         }
         A += 1524; // 向前移4年零2个月
-        time.Y = doubleFloor((A - 122.1) / 365.25);// 年
-        D = A - doubleFloor(365.25 * time.Y); // 去除整年日数后余下日数
-        time.M = doubleFloor(D / 30.6001); // 月数
-        time.D = D - doubleFloor(time.M * 30.6001);// 去除整月日数后余下日数
-        time.Y -= 4716;
-        time.M--;
-        if (time.M > 12)
-            time.M -= 12;
-        if (time.M <= 2)
-            time.Y++;
+        time.year = doubleFloor((A - 122.1) / 365.25);// 年
+        D = A - doubleFloor(365.25 * time.year); // 去除整年日数后余下日数
+        time.month = doubleFloor(D / 30.6001); // 月数
+        time.day = D - doubleFloor(time.month * 30.6001);// 去除整月日数后余下日数
+        time.year -= 4716;
+        time.month--;
+        if (time.month > 12)
+            time.month -= 12;
+        if (time.month <= 2)
+            time.year++;
         // 日的小数转为时分秒
         F *= 24;
-        time.h = doubleFloor(F);
-        F -= time.h;
+        time.hour = doubleFloor(F);
+        F -= time.hour;
         F *= 60;
-        time.m = doubleFloor(F);
-        F -= time.m;
+        time.minute = doubleFloor(F);
+        F -= time.minute;
         F *= 60;
-        time.s = F;
+        time.second = F;
         return time;
     }
 
@@ -561,14 +559,13 @@ public final class SolarTermUtil {
      * @param year 年
      * @return 24节气
      */
-    public static String[] getSolarTerms(int year) {
+    static String[] getSolarTerms(int year) {
         String[] solarTerms = new String[24];
         double jd = 365.2422 * (year - 2000), q;
         for (int i = 0; i < 24; i++) {
             q = getTimeFromAngle(jd + i * 15.2, i * 15, 0);
             q = q + J2000 + (double) 8 / 24; // 计算第i个节气(i=0是春风),结果转为北京时
             Time time = setFromJulian(q, true);
-            Log.e("lunar", SOLAR_TERMS[i] + "   --   " + time.toString());
             solarTerms[i] = time.toString() + SOLAR_TERMS[i];
         }
         return solarTerms;
@@ -593,16 +590,16 @@ public final class SolarTermUtil {
 
 
     private static class Time {
-        private double Y;
-        private double M;
-        private double D;
-        private double h;
-        private double m;
-        private double s;
+        private double year;
+        private double month;
+        private double day;
+        private double hour;
+        private double minute;
+        private double second;
 
         @Override
         public String toString() {
-            return String.format("%s%s%s", doubleToString(Y), doubleToString(M), doubleToString(D));
+            return String.format("%s%s%s", doubleToString(year), doubleToString(month), doubleToString(day));
         }
     }
 

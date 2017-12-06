@@ -9,7 +9,6 @@ import android.widget.TextView;
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarLayout;
 import com.haibin.calendarview.CalendarView;
-import com.haibin.calendarview.SolarTermUtil;
 import com.haibin.calendarviewproject.base.activity.BaseActivity;
 import com.haibin.calendarviewproject.colorful.ColorfulActivity;
 import com.haibin.calendarviewproject.index.IndexActivity;
@@ -93,24 +92,10 @@ public class MainActivity extends BaseActivity implements
         schemes.add(getSchemeCalendar(year, month, 18, 0xFFbc13f0, "记"));
         schemes.add(getSchemeCalendar(year, month, 25, 0xFF13acf0, "假"));
         mCalendarView.setSchemeDate(schemes);
-        mCalendarLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //mCalendarView.scrollToCalendar(2004, 3, 13);
-            }
-        }, 5000);
         findViewById(R.id.ll_flyme).setOnClickListener(this);
         findViewById(R.id.ll_simple).setOnClickListener(this);
         findViewById(R.id.ll_colorful).setOnClickListener(this);
         findViewById(R.id.ll_index).setOnClickListener(this);
-        SolarTermUtil.getSolarTerms(2006);
-        SolarTermUtil.getSolarTerms(2004);
-        SolarTermUtil.getSolarTerms(2015);
-        SolarTermUtil.getSolarTerms(2016);
-        SolarTermUtil.getSolarTerms(2018);
-        SolarTermUtil.getSolarTerms(2017);
-        SolarTermUtil.getSolarTerms(1970);
-        SolarTermUtil.getSolarTerms(2021);
     }
 
 

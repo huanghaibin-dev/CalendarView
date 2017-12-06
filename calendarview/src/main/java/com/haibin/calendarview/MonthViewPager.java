@@ -101,6 +101,11 @@ public class MonthViewPager extends ViewPager {
 //        });
     }
 
+    /**
+     * 初始化
+     *
+     * @param delegate delegate
+     */
     void setup(CustomCalendarViewDelegate delegate) {
         this.mDelegate = delegate;
         init();
@@ -132,6 +137,7 @@ public class MonthViewPager extends ViewPager {
                     }
                     return;
                 }
+
                 if (!calendar.isCurrentMonth()) {
                     mDelegate.mSelectedCalendar = calendar;
                 } else {
@@ -140,8 +146,8 @@ public class MonthViewPager extends ViewPager {
                 if (mDelegate.mDateChangeListener != null) {
                     mDelegate.mDateChangeListener.onDateChange(mDelegate.mSelectedCalendar);
                 }
-                //&&(calendar.getYear()!= mDelegate.mSelectedCalendar.getYear() && calendar.getMonth() == mDelegate.mSelectedCalendar.getMonth())
-                if (mDelegate.mDateSelectedListener != null ) {
+
+                if (mDelegate.mDateSelectedListener != null) {
                     mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar);
                 }
 
@@ -254,7 +260,7 @@ public class MonthViewPager extends ViewPager {
 
         @Override
         public int getCount() {
-            return 12 * (mDelegate.getMaxYear() - mDelegate.getMinYear());
+            return 12 * (mDelegate.getMaxYear() - mDelegate.getMinYear() + 1);
         }
 
         @Override

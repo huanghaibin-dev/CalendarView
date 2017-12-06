@@ -17,7 +17,7 @@ public class LunarCalendarTest {
      */
     @Test
     public void getTermsOffset() throws Exception {
-        assertEquals(1, LunarCalendar.getTermsOffset(1911));
+
     }
 
     /**

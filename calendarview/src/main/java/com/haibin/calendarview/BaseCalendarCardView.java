@@ -359,7 +359,11 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
         if (isClick) {
             Calendar calendar = getIndex();
             if (calendar != null) {
-
+                if (calendar.getYear() < mDelegate.getMinYear() ||
+                        calendar.getYear() > mDelegate.getMaxYear()) {
+                    mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);
+                    return;
+                }
                 if (!calendar.isCurrentMonth() && mParentLayout != null) {
                     int cur = mParentLayout.mMonthView.getCurrentItem();
                     int position = mCurrentItem < 7 ? cur - 1 : cur + 1;

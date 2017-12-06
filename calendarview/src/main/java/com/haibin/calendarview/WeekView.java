@@ -332,6 +332,11 @@ public abstract class WeekView extends View implements View.OnClickListener {
         if (isClick) {
             Calendar calendar = getIndex();
             if (calendar != null) {
+                if (calendar.getYear() < mDelegate.getMinYear() ||
+                        calendar.getYear() > mDelegate.getMaxYear()) {
+                    mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);
+                    return;
+                }
                 if (mDelegate.mInnerListener != null) {
                     mDelegate.mInnerListener.onWeekSelected(calendar);
                 }
@@ -364,12 +369,20 @@ public abstract class WeekView extends View implements View.OnClickListener {
         }
 
         int week = Util.getWeekFormCalendar(calendar);
-        if(mItems.contains(mDelegate.getCurrentDay())){
+        if (mItems.contains(mDelegate.getCurrentDay())) {
             week = Util.getWeekFormCalendar(mDelegate.getCurrentDay());
         }
 
         mCurrentItem = week;
+
         Calendar currentCalendar = mItems.get(week);
+
+        if (currentCalendar.getYear() < mDelegate.getMinYear() ||
+                currentCalendar.getYear() > mDelegate.getMaxYear()) {
+            mCurrentItem = getEdgeIndex(currentCalendar.getYear() < mDelegate.getMinYear());
+            currentCalendar = mItems.get(mCurrentItem);
+        }
+
         currentCalendar.setCurrentDay(currentCalendar.equals(mDelegate.getCurrentDay()));
         mDelegate.mInnerListener.onWeekSelected(currentCalendar);
 
@@ -385,6 +398,17 @@ public abstract class WeekView extends View implements View.OnClickListener {
         invalidate();
     }
 
+    private int getEdgeIndex(boolean isMinEdge) {
+        for (int i = 0; i < mItems.size(); i++) {
+            Calendar item = mItems.get(i);
+            if (isMinEdge && item.getYear() == mDelegate.getMinYear()) {
+                return i;
+            } else if (!isMinEdge && item.getYear() == mDelegate.getMaxYear() + 1) {
+                return i - 1;
+            }
+        }
+        return isMinEdge ? 6 : 0;
+    }
 
     /**
      * 获取点击的日历

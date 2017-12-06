@@ -34,7 +34,7 @@ import java.util.List;
  * 日历布局
  * 各个类使用包权限，避免不必要的public
  */
-@SuppressWarnings("deprecation")
+@SuppressWarnings("deprecation,unused")
 public class CalendarView extends FrameLayout {
 
     /**

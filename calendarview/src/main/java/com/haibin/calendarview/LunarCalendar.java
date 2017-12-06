@@ -1,10 +1,12 @@
 package com.haibin.calendarview;
 
+import android.annotation.SuppressLint;
 import android.text.TextUtils;
 
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.TimeZone;
+import java.util.HashMap;
+import java.util.Map;
 
 @SuppressWarnings("unused")
 class LunarCalendar {
@@ -44,11 +46,17 @@ class LunarCalendar {
     /**
      * 公历节日
      */
-    private final static String[] SOLAR_CALENDAR = {
+    private static final String[] SOLAR_CALENDAR = {
             "0101元旦", "0214情人节", "0315消权日", "0401愚人节", "0501劳动节", "0504青年节",
             "0601儿童节", "0701建党节", "0801建军节", "0910教师节", "1001国庆节", "1224平安夜",
             "1225圣诞节"
     };
+
+    /**
+     * 保存每年24节气
+     */
+    @SuppressLint("UseSparseArrays")
+    private static final Map<Integer, String[]> SOLAR_TERMS = new HashMap<>();
 
     /**
      * 返回传统农历节日
@@ -144,100 +152,6 @@ class LunarCalendar {
             0x069349, 0x7729BD, 0x06AA51, 0x0AD546, 0x54DABA, 0x04B64E, 0x0A5743, 0x452738, 0x0D264A, 0x8E933E,/*2081-2090*/
             0x0D5252, 0x0DAA47, 0x66B53B, 0x056D4F, 0x04AE45, 0x4A4EB9, 0x0A4D4C, 0x0D1541, 0x2D92B5          /*2091-2099*/
     };
-
-    /**
-     * 将农历日期转换为公历日期
-     *
-     * @param year        农历年份
-     * @param month       农历月
-     * @param monthDay    农历日
-     * @param isLeapMonth 该月是否是闰月
-     * @return 返回农历日期对应的公历日期，year0, month1, day2.
-     */
-    static int[] lunarToSolar(int year, int month, int monthDay,
-                              boolean isLeapMonth) {
-        int dayOffset;
-        int leapMonth;
-        int i;
-
-        if (year < MIN_YEAR || year > MAX_YEAR || month < 1 || month > 12
-                || monthDay < 1 || monthDay > 30) {
-            throw new IllegalArgumentException(
-                    "Illegal lunar date, must be like that:\n\t" +
-                            "year : 1900~2099\n\t" +
-                            "month : 1~12\n\t" +
-                            "day : 1~30");
-        }
-
-        dayOffset = (LUNAR_INFO[year - MIN_YEAR] & 0x001F) - 1;
-
-        if (((LUNAR_INFO[year - MIN_YEAR] & 0x0060) >> 5) == 2)
-            dayOffset += 31;
-
-        for (i = 1; i < month; i++) {
-            if ((LUNAR_INFO[year - MIN_YEAR] & (0x80000 >> (i - 1))) == 0)
-                dayOffset += 29;
-            else
-                dayOffset += 30;
-        }
-
-        dayOffset += monthDay;
-        leapMonth = (LUNAR_INFO[year - MIN_YEAR] & 0xf00000) >> 20;
-
-        // 这一年有闰月
-        if (leapMonth != 0) {
-            if (month > leapMonth || (month == leapMonth && isLeapMonth)) {
-                if ((LUNAR_INFO[year - MIN_YEAR] & (0x80000 >> (month - 1))) == 0)
-                    dayOffset += 29;
-                else
-                    dayOffset += 30;
-            }
-        }
-
-        if (dayOffset > 366 || (year % 4 != 0 && dayOffset > 365)) {
-            year += 1;
-            if (year % 4 == 1)
-                dayOffset -= 366;
-            else
-                dayOffset -= 365;
-        }
-
-        int[] solarInfo = new int[3];
-        for (i = 1; i < 13; i++) {
-            int iPos = DAYS_BEFORE_MONTH[i];
-            if (year % 4 == 0 && i > 2) {
-                iPos += 1;
-            }
-
-            if (year % 4 == 0 && i == 2 && iPos + 1 == dayOffset) {
-                solarInfo[1] = i;
-                solarInfo[2] = dayOffset - 31;
-                break;
-            }
-
-            if (iPos >= dayOffset) {
-                solarInfo[1] = i;
-                iPos = DAYS_BEFORE_MONTH[i - 1];
-                if (year % 4 == 0 && i > 2) {
-                    iPos += 1;
-                }
-                if (dayOffset > iPos)
-                    solarInfo[2] = dayOffset - iPos;
-                else if (dayOffset == iPos) {
-                    if (year % 4 == 0 && i == 2)
-                        solarInfo[2] = DAYS_BEFORE_MONTH[i] - DAYS_BEFORE_MONTH[i - 1] + 1;
-                    else
-                        solarInfo[2] = DAYS_BEFORE_MONTH[i] - DAYS_BEFORE_MONTH[i - 1];
-
-                } else
-                    solarInfo[2] = dayOffset;
-                break;
-            }
-        }
-        solarInfo[0] = year;
-
-        return solarInfo;
-    }
 
     /**
      * 将公历日期转换为农历日期，且标识是否是闰月
@@ -412,114 +326,6 @@ class LunarCalendar {
         return (month >= 10 ? String.valueOf(month) : "0" + month) + (day >= 10 ? day : "0" + day);
     }
 
-    /**
-     * 农历24节气
-     */
-    private final static String[] SOLAR_TERM = {
-            "小寒", "大寒", "立春", "雨水", "惊蛰", "春分",
-            "清明", "谷雨", "立夏", "小满", "芒种", "夏至",
-            "小暑", "大暑", "立秋", "处暑", "白露", "秋分",
-            "寒露", "霜降", "立冬", "小雪", "大雪", "冬至"
-    };
-
-    /**
-     * 返回24节气
-     */
-    private static String getTermString(int solarYear, int solarMonth, int solarDay) {
-        String termString = "";
-        if (getSolarTermDay(solarYear, solarMonth * 2) == solarDay) {
-            termString = SOLAR_TERM[solarMonth * 2];
-        } else if (getSolarTermDay(solarYear, solarMonth * 2 + 1) == solarDay) {
-            termString = SOLAR_TERM[solarMonth * 2 + 1];
-        }
-        return termString;
-    }
-
-    /**
-     * 返回公历年节气的日期
-     *
-     * @param solarYear 指定公历年份(数字)
-     * @param index     指定节气序号(数字,0从小寒算起)
-     * @return 日期(数字, 所在月份的第几天)
-     */
-    private static int getSolarTermDay(int solarYear, int index) {
-        return getUTCDay(getSolarTermCalendar(solarYear, index));
-    }
-
-    /**
-     * 返回公历年节气的日期
-     *
-     * @param solarYear 指定公历年份(数字)
-     * @param index     指定节气序号(数字,0从小寒算起)
-     * @return 日期(数字, 所在月份的第几天)
-     */
-    private static Date getSolarTermCalendar(int solarYear, int index) {
-        long l = (long) 31556925974.7 * (solarYear - 1900)
-                + SOLAR_TERM_INFO[index] * 60000L;
-        l = l + UTC(1900, 0, 6, 2, 5, 0);
-        return new Date(l);
-    }
-
-    /**
-     * 返回全球标准时间 (UTC) (或 GMT) 的 1970 年 1 月 1 日到所指定日期之间所间隔的毫秒数。
-     *
-     * @param y   指定年份
-     * @param m   指定月份
-     * @param d   指定日期
-     * @param h   指定小时
-     * @param min 指定分钟
-     * @param sec 指定秒数
-     * @return 全球标准时间 (UTC) (或 GMT) 的 1970 年 1 月 1 日到所指定日期之间所间隔的毫秒数
-     */
-    @SuppressWarnings("all")
-    private static synchronized long UTC(int y, int m, int d, int h, int min, int sec) {
-        makeUTCCalendar();
-        synchronized (utcCal) {
-            utcCal.clear();
-            utcCal.set(y, m, d, h, min, sec);
-            return utcCal.getTimeInMillis();
-        }
-    }
-
-    private static GregorianCalendar utcCal = null;
-
-    /**
-     * 取 Date 对象中用全球标准时间 (UTC) 表示的日期
-     *
-     * @param date 指定日期
-     * @return UTC 全球标准时间 (UTC) 表示的日期
-     */
-    @SuppressWarnings("SynchronizeOnNonFinalField")
-    private static synchronized int getUTCDay(Date date) {
-        makeUTCCalendar();
-        synchronized (utcCal) {
-            utcCal.clear();
-            utcCal.setTimeInMillis(date.getTime());
-            return utcCal.get(java.util.Calendar.DAY_OF_MONTH);
-        }
-    }
-
-    private static void makeUTCCalendar() {
-        if (utcCal == null) {
-            utcCal = new GregorianCalendar(TimeZone.getTimeZone("UTC"));
-        }
-    }
-
-
-    /**
-     * 检查节气是否加1 ，例如清明是4号还是5号
-     *
-     * @param year 今年
-     * @return 检查节气偏移量
-     */
-    @SuppressWarnings("all")
-    static int getTermsOffset(int year) {
-        boolean isLeapYear = isLeapYear(year);
-        int d = getWinterSolstice(year - 1);//获取去年冬至是21还是22，农历
-        if (d == 22 && isLeapYear) return 2;//几百年才几次出现清明是6号
-        if (d == 22) return 1;
-        return 0;
-    }
 
     /**
      * 判断是否闰年
@@ -531,15 +337,29 @@ class LunarCalendar {
         return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
     }
 
-    private final static double D = 0.2422;
-    private final static double C = 21.94;// (year*D + C) - leap 20世纪C=22.60
 
     /**
-     * 冬至是每年的第几日 21 or 22
+     * 返回24节气
+     *
+     * @param year  年
+     * @param month 月
+     * @param day   日
+     * @return 返回24节气
      */
-    private static int getWinterSolstice(int year) {
-        int dYear = Integer.parseInt(String.valueOf(year).substring(2, 4));
-        return (int) (dYear * D + C - (dYear / 4));
+    private static String getTermString(int year, int month, int day) {
+        if (!SOLAR_TERMS.containsKey(year)) {
+            SOLAR_TERMS.put(year, SolarTermUtil.getSolarTerms(year));
+        }
+        String[] solarTerm = SOLAR_TERMS.get(year);
+        String text = String.format("%s%s",year,getString(month, day));
+        String solar = "";
+        for (String solarTermName : solarTerm) {
+            if (solarTermName.contains(text)) {
+                solar = solarTermName.replace(text, "");
+                break;
+            }
+        }
+        return solar;
     }
 
 
@@ -552,7 +372,7 @@ class LunarCalendar {
      * @return 农历节日
      */
     static String getLunarText(int year, int month, int day) {
-        String termText = LunarCalendar.getTermString(year, month - 1, day);
+        String termText = LunarCalendar.getTermString(year, month , day);
         String solar = LunarCalendar.getSolarCalendar(month, day);
         if (!TextUtils.isEmpty(solar))
             return solar;
