@@ -306,7 +306,7 @@ class LunarCalendar {
      * @return 传回天数
      */
     private static int daysInMonth(int year, int month) {
-        return daysInMonth(year, month, false);
+        return daysInMonth(year, month, leapMonth(year) == month);
     }
 
     /**
@@ -317,7 +317,6 @@ class LunarCalendar {
      * @param leap  当月是否是闰月
      * @return 传回天数，如果闰月是错误的，返回0.
      */
-    @SuppressWarnings("all")
     private static int daysInMonth(int year, int month, boolean leap) {
         int leapMonth = leapMonth(year);
         int offset = 0;
@@ -569,6 +568,7 @@ class LunarCalendar {
 
     /**
      * 获取农历节日
+     *
      * @param calendar calendar
      * @return 获取农历节日
      */

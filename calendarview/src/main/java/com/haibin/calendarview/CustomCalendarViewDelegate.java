@@ -165,6 +165,7 @@ class CustomCalendarViewDelegate {
         mCurrentDate.setWeekend(Util.isWeekend(mCurrentDate));
         mCurrentDate.setWeek(Util.getWeekFormCalendar(mCurrentDate));
         mCurrentDate.setLunar(LunarCalendar.getLunarText(mCurrentDate));
+        mCurrentDate.setCurrentDay(true);
         mCurrentWeekViewItem = Util.getWeekFromCalendarBetweenYearAndYear(mCurrentDate, mMinYear);
     }
 

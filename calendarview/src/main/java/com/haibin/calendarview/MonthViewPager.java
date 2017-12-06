@@ -135,12 +135,13 @@ public class MonthViewPager extends ViewPager {
                 if (!calendar.isCurrentMonth()) {
                     mDelegate.mSelectedCalendar = calendar;
                 } else {
-                    mDelegate.mSelectedCalendar = mDelegate.getCurrentDay();
+                    mDelegate.mSelectedCalendar = mDelegate.createCurrentDate();
                 }
                 if (mDelegate.mDateChangeListener != null) {
                     mDelegate.mDateChangeListener.onDateChange(mDelegate.mSelectedCalendar);
                 }
-                if (mDelegate.mDateSelectedListener != null) {
+                //&&(calendar.getYear()!= mDelegate.mSelectedCalendar.getYear() && calendar.getMonth() == mDelegate.mSelectedCalendar.getMonth())
+                if (mDelegate.mDateSelectedListener != null ) {
                     mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar);
                 }
 
@@ -163,6 +164,43 @@ public class MonthViewPager extends ViewPager {
         });
     }
 
+    /**
+     * 滚动到指定日期
+     *
+     * @param year  年
+     * @param month 月
+     * @param day   日
+     */
+    void scrollToCalendar(int year, int month, int day) {
+        Calendar calendar = new Calendar();
+        calendar.setYear(year);
+        calendar.setMonth(month);
+        calendar.setDay(day);
+        calendar.setCurrentDay(calendar.equals(mDelegate.getCurrentDay()));
+        mDelegate.mSelectedCalendar = calendar;
+
+        int y = calendar.getYear() - mDelegate.getMinYear();
+        int position = 12 * y + calendar.getMonth() - 1;
+        setCurrentItem(position);
+
+        if (mParentLayout != null) {
+            int i = Util.getWeekFromDayInMonth(calendar);
+            mParentLayout.setSelectWeek(i);
+        }
+
+        if (mDelegate.mInnerListener != null) {
+            mDelegate.mInnerListener.onDateSelected(calendar);
+        }
+
+        if (mDelegate.mDateSelectedListener != null) {
+            mDelegate.mDateSelectedListener.onDateSelected(calendar);
+        }
+        if (mDelegate.mDateChangeListener != null) {
+            mDelegate.mDateChangeListener.onDateChange(calendar);
+        }
+
+        updateSelected();
+    }
 
     /**
      * 滚动到当前日期

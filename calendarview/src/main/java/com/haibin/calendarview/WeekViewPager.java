@@ -81,6 +81,23 @@ public class WeekViewPager extends ViewPager {
     }
 
     /**
+     * 滚动到指定日期
+     *
+     * @param year  年
+     * @param month 月
+     * @param day   日
+     */
+    void scrollToCalendar(int year, int month, int day) {
+        Calendar calendar = new Calendar();
+        calendar.setYear(year);
+        calendar.setMonth(month);
+        calendar.setDay(day);
+        calendar.setCurrentDay(calendar.equals(mDelegate.getCurrentDay()));
+        mDelegate.mSelectedCalendar = calendar;
+        updateSelected(calendar);
+    }
+
+    /**
      * 滚动到当前
      */
     void scrollToCurrent() {

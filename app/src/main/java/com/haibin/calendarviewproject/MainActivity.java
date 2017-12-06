@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarLayout;
 import com.haibin.calendarview.CalendarView;
+import com.haibin.calendarview.LunarTest;
 import com.haibin.calendarviewproject.base.activity.BaseActivity;
 import com.haibin.calendarviewproject.colorful.ColorfulActivity;
 import com.haibin.calendarviewproject.index.IndexActivity;
@@ -21,7 +22,7 @@ import java.util.List;
 public class MainActivity extends BaseActivity implements
         CalendarView.OnDateSelectedListener,
         CalendarView.OnYearChangeListener,
-        View.OnClickListener{
+        View.OnClickListener {
 
     TextView mTextMonthDay;
 
@@ -68,7 +69,7 @@ public class MainActivity extends BaseActivity implements
             }
         });
 
-        mCalendarLayout = (CalendarLayout)findViewById(R.id.calendarLayout);
+        mCalendarLayout = (CalendarLayout) findViewById(R.id.calendarLayout);
         mCalendarView.setOnYearChangeListener(this);
         mCalendarView.setOnDateSelectedListener(this);
         mTextYear.setText(String.valueOf(mCalendarView.getCurYear()));
@@ -83,25 +84,40 @@ public class MainActivity extends BaseActivity implements
         final List<Calendar> schemes = new ArrayList<>();
         final int year = mCalendarView.getCurYear();
         final int month = mCalendarView.getCurMonth();
-        schemes.add(getSchemeCalendar(year, month, 3, 0xFF40db25,"假"));
-        schemes.add(getSchemeCalendar(year, month, 6, 0xFFe69138,"事"));
-        schemes.add(getSchemeCalendar(year, month, 9, 0xFFdf1356,"议"));
-        schemes.add(getSchemeCalendar(year, month, 13, 0xFFedc56d,"记"));
-        schemes.add(getSchemeCalendar(year, month, 14, 0xFFedc56d,"记"));
-        schemes.add(getSchemeCalendar(year, month, 15, 0xFFaacc44,"假"));
-        schemes.add(getSchemeCalendar(year, month, 18, 0xFFbc13f0,"记"));
-        schemes.add(getSchemeCalendar(year, month, 25, 0xFF13acf0,"假"));
+        schemes.add(getSchemeCalendar(year, month, 3, 0xFF40db25, "假"));
+        schemes.add(getSchemeCalendar(year, month, 6, 0xFFe69138, "事"));
+        schemes.add(getSchemeCalendar(year, month, 9, 0xFFdf1356, "议"));
+        schemes.add(getSchemeCalendar(year, month, 13, 0xFFedc56d, "记"));
+        schemes.add(getSchemeCalendar(year, month, 14, 0xFFedc56d, "记"));
+        schemes.add(getSchemeCalendar(year, month, 15, 0xFFaacc44, "假"));
+        schemes.add(getSchemeCalendar(year, month, 18, 0xFFbc13f0, "记"));
+        schemes.add(getSchemeCalendar(year, month, 25, 0xFF13acf0, "假"));
         mCalendarView.setSchemeDate(schemes);
+        mCalendarLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //mCalendarView.scrollToCalendar(2004, 3, 13);
+            }
+        }, 5000);
         findViewById(R.id.ll_flyme).setOnClickListener(this);
         findViewById(R.id.ll_simple).setOnClickListener(this);
         findViewById(R.id.ll_colorful).setOnClickListener(this);
         findViewById(R.id.ll_index).setOnClickListener(this);
+        LunarTest st = new LunarTest();
+        st.JQtest(2006);
+        st.JQtest(2004);
+        st.JQtest(2015);
+        st.JQtest(2016);
+        st.JQtest(2018);
+        st.JQtest(2017);
+        st.JQtest(1918);
+        st.JQtest(2021);
     }
 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.ll_flyme:
                 MeiZuActivity.show(this);
                 break;
@@ -130,7 +146,7 @@ public class MainActivity extends BaseActivity implements
     @SuppressLint("SetTextI18n")
     @Override
     public void onDateSelected(Calendar calendar) {
-        Log.e("onDateSelected","  --  " + calendar.toString());
+        Log.e("onDateSelected", "  --  " + calendar.toString() + "  -   " + calendar.isCurrentDay());
         mTextLunar.setVisibility(View.VISIBLE);
         mTextYear.setVisibility(View.VISIBLE);
         mTextMonthDay.setText(calendar.getMonth() + "月" + calendar.getDay() + "日");

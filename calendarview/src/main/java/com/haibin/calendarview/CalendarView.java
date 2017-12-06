@@ -261,7 +261,44 @@ public class CalendarView extends FrameLayout {
         if (mDelegate.mDateChangeListener != null) {
             mDelegate.mDateChangeListener.onDateChange(mDelegate.createCurrentDate());
         }
+    }
 
+    /**
+     * 滚动到下一个月
+     */
+    public void scrollToNext() {
+        if (mWeekPager.getVisibility() == VISIBLE) {
+            mWeekPager.setCurrentItem(mWeekPager.getCurrentItem() + 1);
+        } else {
+            mMonthPager.setCurrentItem(mMonthPager.getCurrentItem() + 1);
+        }
+
+    }
+
+    /**
+     * 滚动到上一个月
+     */
+    public void scrollToPre() {
+        if (mWeekPager.getVisibility() == VISIBLE) {
+            mWeekPager.setCurrentItem(mWeekPager.getCurrentItem() - 1);
+        } else {
+            mMonthPager.setCurrentItem(mMonthPager.getCurrentItem() - 1);
+        }
+    }
+
+    /**
+     * 滚动到指定日期
+     *
+     * @param year  year
+     * @param month month
+     * @param day   day
+     */
+    public void scrollToCalendar(int year, int month, int day) {
+        if (mWeekPager.getVisibility() == VISIBLE) {
+            mWeekPager.scrollToCalendar(year, month, day);
+        } else {
+            mMonthPager.scrollToCalendar(year, month, day);
+        }
     }
 
     /**
