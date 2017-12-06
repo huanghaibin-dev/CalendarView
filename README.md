@@ -4,13 +4,13 @@ Android上一个优雅、高度自定义、性能高效的日历控件，完美�
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.0.5'
+compile 'com.haibin:calendarview:3.0.6'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.0.5</version>
+  <version>3.0.6</version>
   <type>pom</type>
 </dependency>
 ```
@@ -31,6 +31,7 @@ compile 'com.haibin:calendarview:3.0.5'
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        app:default_status="shrink"
         app:calendar_content_view_id="@+id/recyclerView">
 
         <com.haibin.calendarview.CalendarView
@@ -117,6 +118,12 @@ public void setOnDateSelectedListener(OnDateSelectedListener listener);//日期�
 public void setSchemeDate(List<Calendar> mSchemeDate);//标记日期
 public void update();//动态更新
 public Calendar getSelectedCalendar(); //获取选择的日期
+
+public void scrollToPre();//滚动到上一个月
+
+public void scrollToNext();//滚动到下一个月
+
+public void scrollToCalendar(int year, int month, int day);//滚动到指定日期
 
 /**
   * 设置背景色
