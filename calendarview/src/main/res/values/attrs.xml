@@ -30,7 +30,8 @@
 
         <attr name="min_year" format="integer" />
         <attr name="max_year" format="integer" />
-
+        <attr name="min_year_month" format="integer" />
+        <attr name="max_year_month" format="integer" />
 
     </declare-styleable>
 

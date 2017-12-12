@@ -1,29 +1,28 @@
+/*
+ * Copyright (C) 2016 huanghaibin_dev <huanghaibin_dev@163.com>
+ * WebSite https://github.com/MiracleTimes-Dev
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.haibin.calendarview;
 
 import android.annotation.SuppressLint;
 import android.text.TextUtils;
 
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
-@SuppressWarnings("unused")
 class LunarCalendar {
-    /**
-     * 支持转换的最小农历年份
-     */
-    private static final int MIN_YEAR = 1900;
-    /**
-     * 支持转换的最大农历年份
-     */
-    private static final int MAX_YEAR = 2099;
 
-    /**
-     * 公历每月前的天数
-     */
-    private static final int DAYS_BEFORE_MONTH[] = {0, 31, 59, 90, 120, 151, 181,
-            212, 243, 273, 304, 334, 365};
 
     /**
      * 农历月份第一天转写
@@ -89,20 +88,14 @@ class LunarCalendar {
      * 数字转换为汉字月份
      *
      * @param month 月
+     * @param leap  1==闰月
      * @return 数字转换为汉字月份
      */
-    private static String numToChineseMonth(int month) {
+    private static String numToChineseMonth(int month, int leap) {
+        if (leap == 1) {
+            return String.format("闰%s", MONTH_STR[month - 1]);
+        }
         return MONTH_STR[month - 1];
-    }
-
-    /**
-     * 数字转换为汉字日
-     *
-     * @param day day
-     * @return 数字转换为汉字日
-     */
-    static String numToChineseDay(int day) {
-        return DAY_STR[day - 1];
     }
 
     /**
@@ -110,11 +103,12 @@ class LunarCalendar {
      *
      * @param month 月
      * @param day   日
+     * @param leap  1==闰月
      * @return 数字转换为汉字日
      */
-    private static String numToChinese(int month, int day) {
+    private static String numToChinese(int month, int day, int leap) {
         if (day == 1) {
-            return numToChineseMonth(month);
+            return numToChineseMonth(month, leap);
         }
         return DAY_STR[day - 1];
     }
@@ -153,124 +147,6 @@ class LunarCalendar {
             0x0D5252, 0x0DAA47, 0x66B53B, 0x056D4F, 0x04AE45, 0x4A4EB9, 0x0A4D4C, 0x0D1541, 0x2D92B5          /*2091-2099*/
     };
 
-    /**
-     * 将公历日期转换为农历日期，且标识是否是闰月
-     *
-     * @param year     year
-     * @param month    month
-     * @param monthDay monthDay
-     * @return 返回公历日期对应的农历日期，year0，month1，day2，leap3
-     */
-    static int[] solarToLunar(int year, int month, int monthDay) {
-        int[] lunarDate = new int[4];
-        Date baseDate = new GregorianCalendar(1900, 0, 31).getTime();
-        Date objDate = new GregorianCalendar(year, month - 1, monthDay).getTime();
-        int offset = (int) ((objDate.getTime() - baseDate.getTime()) / 86400000L);
-
-        // 用offset减去每农历年的天数计算当天是农历第几天
-        // iYear最终结果是农历的年份, offset是当年的第几天
-        int iYear, daysOfYear = 0;
-        for (iYear = MIN_YEAR; iYear <= MAX_YEAR && offset > 0; iYear++) {
-            daysOfYear = daysInLunarYear(iYear);
-            offset -= daysOfYear;
-        }
-        if (offset < 0) {
-            offset += daysOfYear;
-            iYear--;
-        }
-
-        // 农历年份
-        lunarDate[0] = iYear;
-
-        int leapMonth = leapMonth(iYear); // 闰哪个月,1-12
-        boolean isLeap = false;
-        // 用当年的天数offset,逐个减去每月（农历）的天数，求出当天是本月的第几天
-        int iMonth, daysOfMonth = 0;
-        for (iMonth = 1; iMonth <= 13 && offset > 0; iMonth++) {
-            daysOfMonth = daysInLunarMonth(iYear, iMonth);
-            offset -= daysOfMonth;
-        }
-        // 当前月超过闰月，要校正
-        if (leapMonth != 0 && iMonth > leapMonth) {
-            --iMonth;
-
-            if (iMonth == leapMonth) {
-                isLeap = true;
-            }
-        }
-        // offset小于0时，也要校正
-        if (offset < 0) {
-            offset += daysOfMonth;
-            --iMonth;
-        }
-
-        lunarDate[1] = iMonth;
-        lunarDate[2] = offset + 1;
-        lunarDate[3] = isLeap ? 1 : 0;
-
-        return lunarDate;
-    }
-
-    /**
-     * y
-     * 传回农历year年month月的总天数
-     *
-     * @param year  要计算的年份
-     * @param month 要计算的月
-     * @return 传回天数
-     */
-    private static int daysInMonth(int year, int month) {
-        return daysInMonth(year, month, leapMonth(year) == month);
-    }
-
-    /**
-     * 传回农历year年month月的总天数
-     *
-     * @param year  要计算的年份
-     * @param month 要计算的月
-     * @param leap  当月是否是闰月
-     * @return 传回天数，如果闰月是错误的，返回0.
-     */
-    private static int daysInMonth(int year, int month, boolean leap) {
-        int leapMonth = leapMonth(year);
-        int offset = 0;
-
-        // 如果本年有闰月且month大于闰月时，需要校正
-        if (leapMonth != 0 && month > leapMonth) {
-            offset = 1;
-        }
-
-        // 不考虑闰月
-        if (!leap) {
-            return daysInLunarMonth(year, month + offset);
-        } else {
-            // 传入的闰月是正确的月份
-            if (leapMonth != 0 && leapMonth == month) {
-                return daysInLunarMonth(year, month + 1);
-            }
-        }
-
-        return 0;
-    }
-
-    /**
-     * 传回农历 year年的总天数
-     *
-     * @param year 将要计算的年份
-     * @return 返回传入年份的总天数
-     */
-    private static int daysInLunarYear(int year) {
-        int i, sum = 348;
-        if (leapMonth(year) != 0) {
-            sum = 377;
-        }
-        int monthInfo = LUNAR_INFO[year - MIN_YEAR] & 0x0FFF80;
-        for (i = 0x80000; i > 0x7; i >>= 1) {
-            if ((monthInfo & i) != 0)
-                sum += 1;
-        }
-        return sum;
-    }
 
     /**
      * 传回农历 year年month月的总天数，总共有13个月包括闰月
@@ -280,28 +156,11 @@ class LunarCalendar {
      * @return 传回农历 year年month月的总天数
      */
     private static int daysInLunarMonth(int year, int month) {
-        if ((LUNAR_INFO[year - MIN_YEAR] & (0x100000 >> month)) == 0)
+        if ((LUNAR_INFO[year - CustomCalendarViewDelegate.MIN_YEAR] & (0x100000 >> month)) == 0)
             return 29;
         else
             return 30;
     }
-
-    /**
-     * 传回农历 year年闰哪个月 1-12 , 没闰传回 0
-     *
-     * @param year 将要计算的年份
-     * @return 传回农历 year年闰哪个月1-12, 没闰传回 0
-     */
-    private static int leapMonth(int year) {
-        return ((LUNAR_INFO[year - MIN_YEAR] & 0xF00000)) >> 20;
-    }
-
-    private final static int[] SOLAR_TERM_INFO = {
-            0, 21208, 42467, 63836, 85337, 107014, 128867, 150921,
-            173149, 195551, 218072, 240693, 263343, 285989, 308563, 331033,
-            353350, 375494, 397447, 419210, 440795, 462224, 483532, 504758
-    };
-
 
     /**
      * 获取公历节日
@@ -328,17 +187,6 @@ class LunarCalendar {
 
 
     /**
-     * 判断是否闰年
-     *
-     * @param year year
-     * @return 是否闰年
-     */
-    private static boolean isLeapYear(int year) {
-        return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
-    }
-
-
-    /**
      * 返回24节气
      *
      * @param year  年
@@ -351,7 +199,7 @@ class LunarCalendar {
             SOLAR_TERMS.put(year, SolarTermUtil.getSolarTerms(year));
         }
         String[] solarTerm = SOLAR_TERMS.get(year);
-        String text = String.format("%s%s",year,getString(month, day));
+        String text = String.format("%s%s", year, getString(month, day));
         String solar = "";
         for (String solarTermName : solarTerm) {
             if (solarTermName.contains(text)) {
@@ -372,17 +220,17 @@ class LunarCalendar {
      * @return 农历节日
      */
     static String getLunarText(int year, int month, int day) {
-        String termText = LunarCalendar.getTermString(year, month , day);
+        String termText = LunarCalendar.getTermString(year, month, day);
         String solar = LunarCalendar.getSolarCalendar(month, day);
         if (!TextUtils.isEmpty(solar))
             return solar;
         if (!TextUtils.isEmpty(termText))
             return termText;
-        int[] lunar = LunarCalendar.solarToLunar(year, month, day);
+        int[] lunar = LunarUtil.solarToLunar(year, month, day);
         String festival = getTraditionFestivalText(lunar[0], lunar[1], lunar[2]);
         if (!TextUtils.isEmpty(festival))
             return festival;
-        return LunarCalendar.numToChinese(lunar[1], lunar[2]);
+        return LunarCalendar.numToChinese(lunar[1], lunar[2], lunar[3]);
     }
 
 

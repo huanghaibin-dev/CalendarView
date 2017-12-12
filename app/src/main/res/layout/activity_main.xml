@@ -98,7 +98,7 @@
         android:background="#fff"
         android:orientation="vertical"
         app:calendar_content_view_id="@+id/linearView"
-        app:default_status="shrink">
+        app:default_status="expand">
 
         <com.haibin.calendarview.CalendarView
             android:id="@+id/calendarView"
@@ -108,8 +108,10 @@
             app:current_month_lunar_text_color="#CFCFCF"
             app:current_month_text_color="#333333"
             app:lunar_text_size="10sp"
-            app:max_year="2022"
-            app:min_year="2004"
+            app:max_year="2017"
+            app:max_year_month="12"
+            app:min_year="2017"
+            app:min_year_month="2"
             app:other_month_text_color="#e1e1e1"
             app:scheme_lunar_text_color="#CFCFCF"
             app:scheme_text="假"

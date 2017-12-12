@@ -30,6 +30,15 @@ import java.util.List;
 class CustomCalendarViewDelegate {
 
     /**
+     * 支持转换的最小农历年份
+     */
+    static final int MIN_YEAR = 1900;
+    /**
+     * 支持转换的最大农历年份
+     */
+    private static final int MAX_YEAR = 2099;
+
+    /**
      * 各种字体颜色，看名字知道对应的地方
      */
     private int mCurDayTextColor, mWeekTextColor,
@@ -71,6 +80,12 @@ class CustomCalendarViewDelegate {
      * 最小年份和最大年份
      */
     private int mMinYear, mMaxYear;
+
+    /**
+     * 最小年份和最大年份对应最小月份和最大月份
+     * when you want set 2015-07 to 2017-08
+     */
+    private int mMinYearMonth, mMaxYearMonth;
 
     /**
      * 日期和农历文本大小
@@ -143,15 +158,17 @@ class CustomCalendarViewDelegate {
 
         mCurMonthLunarTextColor = array.getColor(R.styleable.CalendarView_current_month_lunar_text_color, Color.GRAY);
         mOtherMonthLunarTextColor = array.getColor(R.styleable.CalendarView_other_month_lunar_text_color, Color.GRAY);
-        mMinYear = array.getInt(R.styleable.CalendarView_min_year, 2010);
-        mMaxYear = array.getInt(R.styleable.CalendarView_max_year, 2050);
+        mMinYear = array.getInt(R.styleable.CalendarView_min_year, 1971);
+        mMaxYear = array.getInt(R.styleable.CalendarView_max_year, 2055);
+        mMinYearMonth = array.getInt(R.styleable.CalendarView_min_year_month, 1);
+        mMaxYearMonth = array.getInt(R.styleable.CalendarView_max_year_month, 12);
 
         mDayTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_day_text_size, Util.dipToPx(context, 16));
         mLunarTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_lunar_text_size, Util.dipToPx(context, 10));
         mCalendarItemHeight = (int) array.getDimension(R.styleable.CalendarView_calendar_height, Util.dipToPx(context, 56));
 
-        if (mMinYear <= 1900) mMaxYear = 1900;
-        if (mMaxYear >= 2099) mMaxYear = 2099;
+        if (mMinYear <= MIN_YEAR) mMaxYear = 1971;
+        if (mMaxYear >= MAX_YEAR) mMaxYear = 2055;
         array.recycle();
         init();
     }
@@ -166,7 +183,7 @@ class CustomCalendarViewDelegate {
         mCurrentDate.setWeek(Util.getWeekFormCalendar(mCurrentDate));
         mCurrentDate.setLunar(LunarCalendar.getLunarText(mCurrentDate));
         mCurrentDate.setCurrentDay(true);
-        mCurrentWeekViewItem = Util.getWeekFromCalendarBetweenYearAndYear(mCurrentDate, mMinYear);
+        mCurrentWeekViewItem = Util.getWeekFromCalendarBetweenYearAndYear(mCurrentDate, mMinYear, mMinYearMonth);
     }
 
     int getCurDayTextColor() {
@@ -260,6 +277,14 @@ class CustomCalendarViewDelegate {
 
     void setMaxYear(int maxYear) {
         this.mMaxYear = maxYear;
+    }
+
+    int getMinYearMonth() {
+        return mMinYearMonth;
+    }
+
+    int getMaxYearMonth() {
+        return mMaxYearMonth;
     }
 
     void setTextColor(int curDayTextColor, int curMonthTextColor, int otherMonthTextColor, int curMonthLunarTextColor, int otherMonthLunarTextColor) {

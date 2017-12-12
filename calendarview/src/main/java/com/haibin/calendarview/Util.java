@@ -37,6 +37,7 @@ final class Util {
 
     /**
      * 判断一个日期是否是周末，即周六日
+     *
      * @param calendar calendar
      * @return 判断一个日期是否是周末，即周六日
      */
@@ -284,9 +285,6 @@ final class Util {
     static int getWeekCountBetweenYearAndYear(int minYear, int maxYear) {
         if (minYear > maxYear)
             return 0;
-        if (minYear == maxYear) {
-            return 53;
-        }
         java.util.Calendar date = java.util.Calendar.getInstance();
         date.set(minYear, 0, 1);//1月1日
         int preDiff = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;//1月第一天为星期几,星期天 == 0，也就是偏移量
@@ -296,6 +294,31 @@ final class Util {
         for (int i = minYear; i <= maxYear; i++) {
             count += getYearCount(i);
         }
+        int w = count / 7;
+        return count / 7;
+    }
+
+
+    /**
+     * 获取两个年份之间一共有多少周
+     *
+     * @param minYear      minYear 最小年份
+     * @param minYearMonth maxYear 最小年份月份
+     * @param maxYear      maxYear 最大年份
+     * @param maxYearMonth maxYear 最大年份月份
+     * @return 周数
+     */
+    static int getWeekCountBetweenYearAndYear(int minYear, int minYearMonth, int maxYear, int maxYearMonth) {
+        java.util.Calendar date = java.util.Calendar.getInstance();
+        date.set(minYear, minYearMonth - 1, 1);
+        long minTime = date.getTimeInMillis();//给定时间戳
+        int preDiff = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;//1月第一天为星期几,星期天 == 0，也就是偏移量
+        date.set(maxYear, maxYearMonth - 1, getMonthDaysCount(maxYear, maxYearMonth));
+        long maxTime = date.getTimeInMillis();//给定时间戳
+        int nextDiff = 7 - date.get(java.util.Calendar.DAY_OF_WEEK);//1月第一天为星期几,星期天 == 0，也就是偏移量
+        int count = preDiff + nextDiff;
+        int c = (int) ((maxTime - minTime) / ONE_DAY) + 1;
+        count += c;
         int w = count / 7;
         return count / 7;
     }
@@ -320,6 +343,68 @@ final class Util {
     }
 
     /**
+     * 根据日期获取两个年份中第几周
+     *
+     * @param calendar calendar
+     * @param minYear  minYear
+     * @return 返回两个年份中第几周
+     */
+    static int getWeekFromCalendarBetweenYearAndYear(Calendar calendar, int minYear, int minYearMonth) {
+        java.util.Calendar date = java.util.Calendar.getInstance();
+        date.set(minYear, 0, 1);//1月1日
+        long firstTime = date.getTimeInMillis();//获得起始时间戳
+        int preDiff = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;//1月第一天为星期几,星期天 == 0，也就是偏移量
+        date.set(calendar.getYear(), calendar.getMonth() - 1, calendar.getDay());
+        long curTime = date.getTimeInMillis();//给定时间戳
+        int c = (int) ((curTime - firstTime) / ONE_DAY);
+        int count = preDiff + c;
+        int weekDiff = getWeekCountDiff(minYear, minYearMonth);
+        return count / 7 - weekDiff;
+    }
+
+
+    /**
+     * 是否在日期范围內
+     *
+     * @param calendar     calendar
+     * @param minYear      minYear
+     * @param minYearMonth minYearMonth
+     * @param maxYear      maxYear
+     * @param maxYearMonth maxYearMonth
+     * @return 是否在日期范围內
+     */
+    static boolean isCalendarInRange(Calendar calendar, int minYear, int minYearMonth, int maxYear, int maxYearMonth) {
+        return !(calendar.getYear() < minYear ||
+                calendar.getYear() > maxYear) &&
+                !(calendar.getYear() == minYear &&
+                        calendar.getMonth() < minYearMonth) &&
+                !(calendar.getYear() == maxYear
+                        && calendar.getMonth() > maxYear);
+    }
+
+
+    /**
+     * 是否在日期范围內
+     *
+     * @param year         year
+     * @param month        month
+     * @param minYear      minYear
+     * @param minYearMonth minYearMonth
+     * @param maxYear      maxYear
+     * @param maxYearMonth maxYearMonth
+     * @return 是否在日期范围內
+     */
+    static boolean isMonthInRange(int year, int month, int minYear, int minYearMonth, int maxYear, int maxYearMonth) {
+        return !(year < minYear ||
+                year > maxYear) &&
+                !(year == minYear &&
+                        month < minYearMonth) &&
+                !(year == maxYear
+                        && month > maxYear);
+    }
+
+
+    /**
      * 根据星期数和最小年份推算出该星期的第一天
      *
      * @param minYear 最小年份
@@ -338,6 +423,53 @@ final class Util {
         calendar.setMonth(date.get(java.util.Calendar.MONTH) + 1);
         calendar.setDay(date.get(java.util.Calendar.DAY_OF_MONTH));
         return calendar;
+    }
+
+
+    /**
+     * 根据星期数和最小年份推算出该星期的第一天
+     *
+     * @param minYear      最小年份如2017
+     * @param minYearMonth maxYear 最小年份月份，like : 2017-07
+     * @param week         从最小年份1月1日开始的第几周
+     * @return 该星期的第一天日期
+     */
+    static Calendar getFirstCalendarFromWeekCount(int minYear, int minYearMonth, int week) {
+        java.util.Calendar date = java.util.Calendar.getInstance();
+        date.set(minYear, 0, 1);//1月1日
+        long firstTime = date.getTimeInMillis();//获得起始时间戳
+        int dayCount = (week + getWeekCountDiff(minYear, minYearMonth)) * 7 + 1;
+        long timeCount = dayCount * ONE_DAY + firstTime;
+        date.setTimeInMillis(timeCount);
+        Calendar calendar = new Calendar();
+        calendar.setYear(date.get(java.util.Calendar.YEAR));
+        calendar.setMonth(date.get(java.util.Calendar.MONTH) + 1);
+        calendar.setDay(date.get(java.util.Calendar.DAY_OF_MONTH));
+        return calendar;
+    }
+
+
+    /**
+     * 获取星期偏移了多少周
+     *
+     * @param minYear      minYear
+     * @param minYearMonth minYearMonth
+     * @return 获取星期偏移了多少周
+     */
+    static int getWeekCountDiff(int minYear, int minYearMonth) {
+        if (minYearMonth == 1) {
+            return 0;
+        }
+        java.util.Calendar date = java.util.Calendar.getInstance();
+        date.set(minYear, 0, 1);//1月1日
+        long firstTime = date.getTimeInMillis();//获得起始时间戳
+        int preDiff = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;//1月第一天为星期几,星期天 == 0，也就是偏移量
+        date.set(minYear, minYearMonth - 1, 1);
+        long minTime = date.getTimeInMillis();//获得时间戳
+        int nextDiff = 7 - date.get(java.util.Calendar.DAY_OF_WEEK);//minYearMonth月第一天为星期几,星期天 == 0，也就是偏移量
+        int c = (int) ((minTime - firstTime) / ONE_DAY) - 1;
+        int count = preDiff + c - nextDiff;
+        return count / 7;
     }
 
     /**

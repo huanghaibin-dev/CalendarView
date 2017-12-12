@@ -576,16 +576,37 @@ final class SolarTermUtil {
      */
     static String[] getSolarTerms(int year) {
         String[] solarTerms = new String[24];
+        String[] offsets = getSolarTermsOffset(year - 1);
+        System.arraycopy(offsets, 0, solarTerms, 0, offsets.length);
         double jd = 365.2422 * (year - 2000), q;
-        for (int i = 0; i < 24; i++) {
+        for (int i = 0; i < 21; i++) {
             q = getTimeFromAngle(jd + i * 15.2, i * 15, 0);
             q = q + J2000 + (double) 8 / 24; // 计算第i个节气(i=0是春风),结果转为北京时
             Time time = setFromJulian(q, true);
-            solarTerms[i] = time.toString() + SOLAR_TERMS[i];
+            solarTerms[i + 3] = time.toString() + SOLAR_TERMS[i];
         }
+
         return solarTerms;
     }
 
+
+    /**
+     * 要获得2018年24节气需要传入2017年
+     *
+     * @param year 要获得2018年24节气需要传入2017年
+     * @return 返回 立春 雨水 惊蛰
+     */
+    private static String[] getSolarTermsOffset(int year) {
+        String[] solarTerms = new String[3];
+        double jd = 365.2422 * (year - 2000), q;
+        for (int i = 21; i < 24; i++) {
+            q = getTimeFromAngle(jd + i * 15.2, i * 15, 0);
+            q = q + J2000 + (double) 8 / 24; // 计算第i个节气(i=0是春分)
+            Time time = setFromJulian(q, true);
+            solarTerms[i - 21] = time.toString() + SOLAR_TERMS[i];
+        }
+        return solarTerms;
+    }
 
     /**
      * 章动

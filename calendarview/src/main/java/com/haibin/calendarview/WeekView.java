@@ -332,8 +332,8 @@ public abstract class WeekView extends View implements View.OnClickListener {
         if (isClick) {
             Calendar calendar = getIndex();
             if (calendar != null) {
-                if (calendar.getYear() < mDelegate.getMinYear() ||
-                        calendar.getYear() > mDelegate.getMaxYear()) {
+                if (!Util.isCalendarInRange(calendar, mDelegate.getMinYear(),
+                        mDelegate.getMinYearMonth(), mDelegate.getMaxYear(), mDelegate.getMaxYearMonth())) {
                     mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);
                     return;
                 }

@@ -29,11 +29,11 @@ import java.util.List;
  * ViewPager + RecyclerView
  */
 public class MonthSelectLayout extends ViewPager {
+    private CustomCalendarViewDelegate mDelegate;
     private boolean isInit;
     private int mSchemeColor;
     private MonthRecyclerView.OnMonthSelectedListener mListener;
     private List<Calendar> mSchemes;
-    private int mMinYear, mMaxYear;
 
     public MonthSelectLayout(Context context) {
         this(context, null);
@@ -43,20 +43,20 @@ public class MonthSelectLayout extends ViewPager {
         super(context, attrs);
     }
 
-    void setYearSpan(int minYear, int maxYear) {
-        this.mMinYear = minYear;
-        this.mMaxYear = maxYear;
+
+    void setup(CustomCalendarViewDelegate delegate) {
+        this.mDelegate = delegate;
     }
 
     void init(int year) {
         if (isInit) {
-            setCurrentItem(year - mMinYear);
+            setCurrentItem(year - mDelegate.getMinYear());
             return;
         }
         setAdapter(new PagerAdapter() {
             @Override
             public int getCount() {
-                return mMaxYear-mMinYear;
+                return mDelegate.getMaxYear() - mDelegate.getMinYear() + 1;
             }
 
             @Override
@@ -68,9 +68,10 @@ public class MonthSelectLayout extends ViewPager {
             public Object instantiateItem(ViewGroup container, int position) {
                 MonthRecyclerView view = new MonthRecyclerView(getContext());
                 container.addView(view);
+                view.setup(mDelegate);
                 view.setOnMonthSelectedListener(mListener);
                 view.setSchemeColor(mSchemeColor);
-                view.init(position + mMinYear);
+                view.init(position + mDelegate.getMinYear());
                 view.setSchemes(mSchemes);
                 return view;
             }
@@ -82,7 +83,11 @@ public class MonthSelectLayout extends ViewPager {
             }
         });
         isInit = true;
-        setCurrentItem(year - mMinYear);
+        setCurrentItem(year - mDelegate.getMinYear());
+    }
+
+    void scrollToYear(int year) {
+        setCurrentItem(year - mDelegate.getMinYear());
     }
 
     void setSchemes(List<Calendar> mSchemes) {

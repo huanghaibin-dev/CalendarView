@@ -41,64 +41,6 @@ public class MonthViewPager extends ViewPager {
 
     public MonthViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
-//        addOnPageChangeListener(new OnPageChangeListener() {
-//            /**
-//             * 这里现在暂时弃用，后续不显示其它月份可以实现
-//             * @param position position如果小于当前position，则代表往前一页滑动，否则为下一页
-//             * @param positionOffset 滑动比例
-//             * @param positionOffsetPixels 滑动像素
-//             */
-//            @Override
-//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-////                if (getTranslationY() != 0) {
-////                    return;
-////                }
-////                int height;
-////                if (position < getCurrentItem()) {//右滑-1
-////                    height = (int) ((mPreViewHeight)
-////                            * (1 - positionOffset) +
-////                            mCurrentViewHeight
-////                                    * positionOffset);
-////                } else {//左滑+！
-////                    height = (int) ((mCurrentViewHeight)
-////                            * (1 - positionOffset) +
-////                            (mNextViewHeight)
-////                                    * positionOffset);
-////                }
-////                ViewGroup.LayoutParams params = getLayoutParams();
-////                params.height = height;
-////                setLayoutParams(params);
-//            }
-//
-//            @Override
-//            public void onPageSelected(int position) {
-////                int year = position / 12 + mDelegate.getMinYear();
-////                int month = position % 12 + 1;
-////                mCurrentViewHeight = getCardHeight();
-////                if (month == 1) {
-////                    mNextViewHeight = getCardHeight();
-////                    mPreViewHeight = getCardHeight();
-////                } else {
-////                    mPreViewHeight = getCardHeight();
-////                    if (month == 12) {
-////                        mNextViewHeight = getCardHeight();
-////                    } else {
-////                        mNextViewHeight = getCardHeight();
-////                    }
-////                }
-////                if (isFirstInit) {
-////                    ViewGroup.LayoutParams params = getLayoutParams();
-////                    params.height = mCurrentViewHeight;
-////                    setLayoutParams(params);
-////                    isFirstInit = false;
-////                }
-//            }
-//
-//            @Override
-//            public void onPageScrollStateChanged(int state) {
-//
-//            }
-//        });
     }
 
     /**
@@ -123,12 +65,12 @@ public class MonthViewPager extends ViewPager {
             @Override
             public void onPageSelected(int position) {
                 Calendar calendar = new Calendar();
-                calendar.setYear(position / 12 + mDelegate.getMinYear());
-                calendar.setMonth(position % 12 + 1);
+                calendar.setYear((position + mDelegate.getMinYearMonth() -1) / 12 + mDelegate.getMinYear());
+                calendar.setMonth((position + mDelegate.getMinYearMonth() -1 ) % 12 + 1);
                 calendar.setDay(1);
                 calendar.setCurrentMonth(calendar.getYear() == mDelegate.getCurrentDay().getYear() &&
                         calendar.getMonth() == mDelegate.getCurrentDay().getMonth());
-                calendar.setLunar(LunarCalendar.numToChineseDay(LunarCalendar.solarToLunar(calendar.getYear(), calendar.getMonth(), 1)[2]));
+                calendar.setLunar(LunarCalendar.getLunarText(calendar));
 
 
                 if (mParentLayout == null || getVisibility() == INVISIBLE || mWeekPager.getVisibility() == VISIBLE) {
@@ -258,9 +200,17 @@ public class MonthViewPager extends ViewPager {
      */
     private class MonthViewPagerAdapter extends PagerAdapter {
 
+        private int count;
+
+        private MonthViewPagerAdapter() {
+            count = 12 * (mDelegate.getMaxYear() - mDelegate.getMinYear())
+                    - mDelegate.getMinYearMonth() + 1 +
+                    mDelegate.getMaxYearMonth();
+        }
+
         @Override
         public int getCount() {
-            return 12 * (mDelegate.getMaxYear() - mDelegate.getMinYear() + 1);
+            return count;
         }
 
         @Override
@@ -270,8 +220,8 @@ public class MonthViewPager extends ViewPager {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            int year = position / 12 + mDelegate.getMinYear();
-            int month = position % 12 + 1;
+            int year = (position + mDelegate.getMinYearMonth() -1) / 12 + mDelegate.getMinYear();
+            int month = (position + mDelegate.getMinYearMonth() -1) % 12 + 1;
             BaseCalendarCardView view;
             if (TextUtils.isEmpty(mDelegate.getCalendarCardViewClass())) {
                 view = new DefaultCalendarCardView(getContext());

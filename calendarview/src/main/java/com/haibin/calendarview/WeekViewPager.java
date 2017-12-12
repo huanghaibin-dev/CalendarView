@@ -101,7 +101,7 @@ public class WeekViewPager extends ViewPager {
      * 滚动到当前
      */
     void scrollToCurrent() {
-        int position = Util.getWeekFromCalendarBetweenYearAndYear(mDelegate.getCurrentDay(), mDelegate.getMinYear()) - 1;
+        int position = Util.getWeekFromCalendarBetweenYearAndYear(mDelegate.getCurrentDay(), mDelegate.getMinYear(), mDelegate.getMinYearMonth()) - 1;
         setCurrentItem(position);
         WeekView view = (WeekView) findViewWithTag(position);
         if (view != null) {
@@ -115,7 +115,7 @@ public class WeekViewPager extends ViewPager {
      * 更新任意一个选择的日期
      */
     void updateSelected(Calendar calendar) {
-        int position = Util.getWeekFromCalendarBetweenYearAndYear(calendar, mDelegate.getMinYear()) - 1;
+        int position = Util.getWeekFromCalendarBetweenYearAndYear(calendar, mDelegate.getMinYear(), mDelegate.getMinYearMonth()) - 1;
         setCurrentItem(position);
         WeekView view = (WeekView) findViewWithTag(position);
         if (view != null) {
@@ -149,9 +149,16 @@ public class WeekViewPager extends ViewPager {
      */
     private class WeekViewPagerAdapter extends PagerAdapter {
 
+        private int count;
+
+        private WeekViewPagerAdapter() {
+            count = Util.getWeekCountBetweenYearAndYear(mDelegate.getMinYear(), mDelegate.getMinYearMonth(),
+                    mDelegate.getMaxYear(), mDelegate.getMaxYearMonth());
+        }
+
         @Override
         public int getCount() {
-            return Util.getWeekCountBetweenYearAndYear(mDelegate.getMinYear(), mDelegate.getMaxYear());
+            return count;
         }
 
         @Override
@@ -161,7 +168,7 @@ public class WeekViewPager extends ViewPager {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            Calendar calendar = Util.getFirstCalendarFromWeekCount(mDelegate.getMinYear(), position + 1);
+            Calendar calendar = Util.getFirstCalendarFromWeekCount(mDelegate.getMinYear(), mDelegate.getMinYearMonth(), position + 1);
             WeekView view;
             if (TextUtils.isEmpty(mDelegate.getWeekViewClass())) {
                 view = new DefaultWeekView(getContext());

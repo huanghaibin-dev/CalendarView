@@ -26,6 +26,7 @@ import java.util.List;
 
 @SuppressWarnings("all")
 public class MonthRecyclerView extends RecyclerView {
+    private CustomCalendarViewDelegate mDelegate;
     private MonthAdapter mAdapter;
     private OnMonthSelectedListener mListener;
 
@@ -41,12 +42,21 @@ public class MonthRecyclerView extends RecyclerView {
         mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position, long itemId) {
-                if (mListener != null) {
+                if (mListener != null && mDelegate != null) {
                     Month month = mAdapter.getItem(position);
+                    if (!Util.isMonthInRange(month.getYear(), month.getMonth(),
+                            mDelegate.getMinYear(), mDelegate.getMinYearMonth(),
+                            mDelegate.getMaxYear(), mDelegate.getMaxYearMonth())) {
+                        return;
+                    }
                     mListener.onMonthSelected(month.getYear(), month.getMonth());
                 }
             }
         });
+    }
+
+    void setup(CustomCalendarViewDelegate delegate) {
+        this.mDelegate = delegate;
     }
 
     void init(int year) {
@@ -76,7 +86,7 @@ public class MonthRecyclerView extends RecyclerView {
         this.mListener = listener;
     }
 
-    public interface OnMonthSelectedListener {
+    interface OnMonthSelectedListener {
         void onMonthSelected(int year, int month);
     }
 }

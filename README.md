@@ -4,13 +4,13 @@ Android上一个优雅、高度自定义、性能高效的日历控件，完美�
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.0.6'
+compile 'com.haibin:calendarview:3.0.8'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.0.6</version>
+  <version>3.0.8</version>
   <type>pom</type>
 </dependency>
 ```
@@ -99,6 +99,8 @@ compile 'com.haibin:calendarview:3.0.6'
 
         <attr name="min_year" format="integer" />  <!--最小年份1900-->
         <attr name="max_year" format="integer" /> <!--最大年份2099-->
+        <attr name="min_year_month" format="integer" /> <!--最小年份对应月份-->
+        <attr name="max_year_month" format="integer" /> <!--最大年份对应月份-->
         
 </declare-styleable>
 ```
