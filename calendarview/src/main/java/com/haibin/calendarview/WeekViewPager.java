@@ -101,7 +101,9 @@ public class WeekViewPager extends ViewPager {
      * 滚动到当前
      */
     void scrollToCurrent() {
-        int position = Util.getWeekFromCalendarBetweenYearAndYear(mDelegate.getCurrentDay(), mDelegate.getMinYear(), mDelegate.getMinYearMonth()) - 1;
+        int position = Util.getWeekFromCalendarBetweenYearAndYear(mDelegate.getCurrentDay(),
+                mDelegate.getMinYear(),
+                mDelegate.getMinYearMonth()) - 1;
         setCurrentItem(position);
         WeekView view = (WeekView) findViewWithTag(position);
         if (view != null) {

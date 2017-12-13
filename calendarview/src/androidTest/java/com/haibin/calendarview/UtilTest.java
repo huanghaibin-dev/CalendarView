@@ -14,13 +14,13 @@ public class UtilTest {
         Calendar calendar = new Calendar();
         calendar.setYear(2017);
         calendar.setMonth(1);
-        calendar.setDay(29);
+        calendar.setDay(1);
 
         Calendar calendar1 = new Calendar();
         calendar1.setYear(2017);
         calendar1.setMonth(7);
         calendar1.setDay(31);
-        assertEquals(calendar, Util.getFirstCalendarFromWeekCount(2017, 2,1));
+        assertEquals(calendar, Util.getFirstCalendarFromWeekCount(2017, 7,1));
         //assertEquals(calendar1, Util.getFirstCalendarFromWeekCount(2017, 8,1));
     }
 
@@ -28,7 +28,7 @@ public class UtilTest {
     public void getWeekCountDiff() throws Exception {
         //assertEquals(4, Util.getWeekCountDiff(2017, 2));
         //assertEquals(8, Util.getWeekCountDiff(2018, 3));
-        assertEquals(30, Util.getWeekCountDiff(2017, 8));
+        assertEquals(0, Util.getWeekCountDiff(2017, 9));
     }
 
     @Test

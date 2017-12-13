@@ -377,9 +377,9 @@ public abstract class WeekView extends View implements View.OnClickListener {
 
         Calendar currentCalendar = mItems.get(week);
 
-        if (currentCalendar.getYear() < mDelegate.getMinYear() ||
-                currentCalendar.getYear() > mDelegate.getMaxYear()) {
-            mCurrentItem = getEdgeIndex(currentCalendar.getYear() < mDelegate.getMinYear());
+        if (!Util.isCalendarInRange(currentCalendar,mDelegate.getMinYear(),
+                mDelegate.getMinYearMonth(),mDelegate.getMaxYear(),mDelegate.getMaxYearMonth())) {
+            mCurrentItem = getEdgeIndex(isLeftEdge(currentCalendar));
             currentCalendar = mItems.get(mCurrentItem);
         }
 
@@ -398,12 +398,23 @@ public abstract class WeekView extends View implements View.OnClickListener {
         invalidate();
     }
 
+    private boolean isLeftEdge(Calendar calendar){
+        java.util.Calendar c = java.util.Calendar.getInstance();
+        c.set(mDelegate.getMinYear(),mDelegate.getMinYearMonth()-1,1);
+        long minTime = c.getTimeInMillis();
+        c.set(calendar.getYear(),calendar.getMonth()-1,calendar.getDay());
+        long curTime = c.getTimeInMillis();
+        return curTime < minTime;
+    }
+
     private int getEdgeIndex(boolean isMinEdge) {
         for (int i = 0; i < mItems.size(); i++) {
             Calendar item = mItems.get(i);
-            if (isMinEdge && item.getYear() == mDelegate.getMinYear()) {
+            if (isMinEdge && Util.isCalendarInRange(item,mDelegate.getMinYear(),mDelegate.getMinYearMonth(),
+                    mDelegate.getMaxYear(),mDelegate.getMaxYearMonth())) {
                 return i;
-            } else if (!isMinEdge && item.getYear() == mDelegate.getMaxYear() + 1) {
+            } else if (!isMinEdge && !Util.isCalendarInRange(item,mDelegate.getMinYear(),mDelegate.getMinYearMonth(),
+                    mDelegate.getMaxYear(),mDelegate.getMaxYearMonth())) {
                 return i - 1;
             }
         }

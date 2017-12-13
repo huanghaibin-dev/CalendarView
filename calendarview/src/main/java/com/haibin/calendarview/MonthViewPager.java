@@ -154,7 +154,8 @@ public class MonthViewPager extends ViewPager {
      * 滚动到当前日期
      */
     void scrollToCurrent() {
-        int position = 12 * (mDelegate.getCurrentDay().getYear() - mDelegate.getMinYear()) + mDelegate.getCurrentDay().getMonth() - 1;
+        int position = 12 * (mDelegate.getCurrentDay().getYear() - mDelegate.getMinYear()) +
+                mDelegate.getCurrentDay().getMonth() - mDelegate.getMinYearMonth();
         setCurrentItem(position);
         BaseCalendarCardView view = (BaseCalendarCardView) findViewWithTag(position);
         if (view != null) {

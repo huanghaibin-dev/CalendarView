@@ -251,6 +251,9 @@ public class CalendarView extends FrameLayout {
      * 滚动到当前
      */
     public void scrollToCurrent() {
+        if(!Util.isCalendarInRange(mDelegate.getCurrentDay(), mDelegate)){
+            return;
+        }
         mDelegate.mSelectedCalendar = mDelegate.createCurrentDate();
         if (mDelegate.mDateSelectedListener != null &&
                 mDelegate.mCurrentWeekViewItem == mWeekPager.getCurrentItem()) {
@@ -309,7 +312,8 @@ public class CalendarView extends FrameLayout {
      */
     @SuppressWarnings("unused")
     public void scrollToYear(int year) {
-        mMonthPager.setCurrentItem(12 * (year - mDelegate.getMinYear()) + mDelegate.getCurrentDay().getMonth() - 1);
+        mMonthPager.setCurrentItem(12 * (year - mDelegate.getMinYear()) +
+                mDelegate.getCurrentDay().getMonth() - mDelegate.getMinYearMonth());
         mSelectLayout.scrollToYear(year);
     }
 
@@ -400,6 +404,9 @@ public class CalendarView extends FrameLayout {
     public void setOnDateSelectedListener(OnDateSelectedListener listener) {
         this.mDelegate.mDateSelectedListener = listener;
         if (mDelegate.mDateSelectedListener != null) {
+            if(!Util.isCalendarInRange(mDelegate.mSelectedCalendar, mDelegate)){
+                return;
+            }
             mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar);
         }
     }

@@ -374,14 +374,20 @@ final class Util {
      * @return 是否在日期范围內
      */
     static boolean isCalendarInRange(Calendar calendar, int minYear, int minYearMonth, int maxYear, int maxYearMonth) {
-        return !(calendar.getYear() < minYear ||
-                calendar.getYear() > maxYear) &&
-                !(calendar.getYear() == minYear &&
-                        calendar.getMonth() < minYearMonth) &&
-                !(calendar.getYear() == maxYear
-                        && calendar.getMonth() > maxYear);
+        java.util.Calendar c = java.util.Calendar.getInstance();
+        c.set(minYear, minYearMonth - 1, 1);
+        long minTime = c.getTimeInMillis();
+        c.set(maxYear, maxYearMonth - 1, getMonthDaysCount(maxYear, maxYearMonth));
+        long maxTime = c.getTimeInMillis();
+        c.set(calendar.getYear(), calendar.getMonth() - 1, calendar.getDay());
+        long curTime = c.getTimeInMillis();
+        return curTime >= minTime && curTime <= maxTime;
     }
 
+    static boolean isCalendarInRange(Calendar calendar, CustomCalendarViewDelegate delegate) {
+        return isCalendarInRange(calendar, delegate.getMinYear(), delegate.getMinYearMonth(),
+                delegate.getMaxYear(), delegate.getMaxYearMonth());
+    }
 
     /**
      * 是否在日期范围內
@@ -395,12 +401,9 @@ final class Util {
      * @return 是否在日期范围內
      */
     static boolean isMonthInRange(int year, int month, int minYear, int minYearMonth, int maxYear, int maxYearMonth) {
-        return !(year < minYear ||
-                year > maxYear) &&
-                !(year == minYear &&
-                        month < minYearMonth) &&
-                !(year == maxYear
-                        && month > maxYear);
+        return !(year < minYear || year > maxYear) &&
+                !(year == minYear && month < minYearMonth) &&
+                !(year == maxYear && month > maxYearMonth);
     }
 
 
@@ -458,7 +461,7 @@ final class Util {
      */
     static int getWeekCountDiff(int minYear, int minYearMonth) {
         if (minYearMonth == 1) {
-            return 0;
+            return -1;
         }
         java.util.Calendar date = java.util.Calendar.getInstance();
         date.set(minYear, 0, 1);//1月1日
@@ -466,7 +469,7 @@ final class Util {
         int preDiff = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;//1月第一天为星期几,星期天 == 0，也就是偏移量
         date.set(minYear, minYearMonth - 1, 1);
         long minTime = date.getTimeInMillis();//获得时间戳
-        int nextDiff = 7 - date.get(java.util.Calendar.DAY_OF_WEEK);//minYearMonth月第一天为星期几,星期天 == 0，也就是偏移量
+        int nextDiff = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;//minYearMonth月第一天为星期几,星期天 == 0，也就是偏移量
         int c = (int) ((minTime - firstTime) / ONE_DAY) - 1;
         int count = preDiff + c - nextDiff;
         return count / 7;
