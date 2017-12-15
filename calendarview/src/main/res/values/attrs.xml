@@ -28,6 +28,15 @@
         <attr name="current_month_lunar_text_color" format="color" />
         <attr name="other_month_lunar_text_color" format="color" />
 
+
+        <!-- 年视图相关 -->
+        <attr name="year_view_month_text_size" format="dimension" />
+        <attr name="year_view_day_text_size" format="dimension" />
+        <attr name="year_view_month_text_color" format="color" />
+        <attr name="year_view_day_text_color" format="color" />
+        <attr name="year_view_scheme_color" format="color" />
+        <!---->
+
         <attr name="min_year" format="integer" />
         <attr name="max_year" format="integer" />
         <attr name="min_year_month" format="integer" />
@@ -35,11 +44,6 @@
 
     </declare-styleable>
 
-    <declare-styleable name="MonthView">
-        <attr name="month_view_text_size" format="dimension" />
-        <attr name="month_view_text_color" format="color" />
-        <attr name="month_view_remark_color" format="color" />
-    </declare-styleable>
 
     <declare-styleable name="CalendarLayout">
         <attr name="default_status">

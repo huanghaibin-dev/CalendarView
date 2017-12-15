@@ -33,6 +33,7 @@ import java.lang.reflect.Constructor;
 
 public class WeekViewPager extends ViewPager {
 
+    private int mWeekCount;
     private CustomCalendarViewDelegate mDelegate;
 
     /**
@@ -55,6 +56,8 @@ public class WeekViewPager extends ViewPager {
     }
 
     private void init() {
+        mWeekCount = Util.getWeekCountBetweenYearAndYear(mDelegate.getMinYear(), mDelegate.getMinYearMonth(),
+                mDelegate.getMaxYear(), mDelegate.getMaxYearMonth());
         setAdapter(new WeekViewPagerAdapter());
         addOnPageChangeListener(new OnPageChangeListener() {
             @Override
@@ -78,6 +81,12 @@ public class WeekViewPager extends ViewPager {
 
             }
         });
+    }
+
+    void notifyDataSetChanged(){
+        mWeekCount = Util.getWeekCountBetweenYearAndYear(mDelegate.getMinYear(), mDelegate.getMinYearMonth(),
+                mDelegate.getMaxYear(), mDelegate.getMaxYearMonth());
+        getAdapter().notifyDataSetChanged();
     }
 
     /**
@@ -151,16 +160,9 @@ public class WeekViewPager extends ViewPager {
      */
     private class WeekViewPagerAdapter extends PagerAdapter {
 
-        private int count;
-
-        private WeekViewPagerAdapter() {
-            count = Util.getWeekCountBetweenYearAndYear(mDelegate.getMinYear(), mDelegate.getMinYearMonth(),
-                    mDelegate.getMaxYear(), mDelegate.getMaxYearMonth());
-        }
-
         @Override
         public int getCount() {
-            return count;
+            return mWeekCount;
         }
 
         @Override

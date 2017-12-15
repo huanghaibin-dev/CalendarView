@@ -29,10 +29,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 日历卡基础控件
+ * 月视图基础控件,请使用 MonthView替换，没有任何不同，只是规范命名
+ * pleased using MonthView replace BaseCalendarCardView
  * Created by huanghaibin on 2017/11/15.
  */
-
+@Deprecated
 public abstract class BaseCalendarCardView extends View implements View.OnClickListener {
 
     private CustomCalendarViewDelegate mDelegate;

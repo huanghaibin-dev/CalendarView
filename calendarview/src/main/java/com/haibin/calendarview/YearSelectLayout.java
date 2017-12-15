@@ -22,41 +22,31 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.List;
-
 /**
- * 月份选择布局
+ * 年份+月份选择布局
  * ViewPager + RecyclerView
  */
-public class MonthSelectLayout extends ViewPager {
+public class YearSelectLayout extends ViewPager {
+    private int mYearCount;
     private CustomCalendarViewDelegate mDelegate;
-    private boolean isInit;
-    private int mSchemeColor;
-    private MonthRecyclerView.OnMonthSelectedListener mListener;
-    private List<Calendar> mSchemes;
+    private YearRecyclerView.OnMonthSelectedListener mListener;
 
-    public MonthSelectLayout(Context context) {
+    public YearSelectLayout(Context context) {
         this(context, null);
     }
 
-    public MonthSelectLayout(Context context, AttributeSet attrs) {
+    public YearSelectLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
 
     void setup(CustomCalendarViewDelegate delegate) {
         this.mDelegate = delegate;
-    }
-
-    void init(int year) {
-        if (isInit) {
-            setCurrentItem(year - mDelegate.getMinYear());
-            return;
-        }
+        this.mYearCount = mDelegate.getMaxYear() - mDelegate.getMinYear() + 1;
         setAdapter(new PagerAdapter() {
             @Override
             public int getCount() {
-                return mDelegate.getMaxYear() - mDelegate.getMinYear() + 1;
+                return mYearCount;
             }
 
             @Override
@@ -66,47 +56,42 @@ public class MonthSelectLayout extends ViewPager {
 
             @Override
             public Object instantiateItem(ViewGroup container, int position) {
-                MonthRecyclerView view = new MonthRecyclerView(getContext());
+                YearRecyclerView view = new YearRecyclerView(getContext());
                 container.addView(view);
                 view.setup(mDelegate);
                 view.setOnMonthSelectedListener(mListener);
-                view.setSchemeColor(mSchemeColor);
+                view.setup(mDelegate);
                 view.init(position + mDelegate.getMinYear());
-                view.setSchemes(mSchemes);
                 return view;
             }
 
             @Override
             public void destroyItem(ViewGroup container, int position, Object object) {
-                if (object instanceof MonthRecyclerView)
-                    container.removeView((MonthRecyclerView) object);
+                if (object instanceof YearRecyclerView)
+                    container.removeView((YearRecyclerView) object);
             }
         });
-        isInit = true;
-        setCurrentItem(year - mDelegate.getMinYear());
+        setCurrentItem(mDelegate.getCurrentDay().getYear() - mDelegate.getMinYear());
+    }
+
+    void notifyDataSetChanged() {
+        this.mYearCount = mDelegate.getMaxYear() - mDelegate.getMinYear() + 1;
+        getAdapter().notifyDataSetChanged();
     }
 
     void scrollToYear(int year) {
         setCurrentItem(year - mDelegate.getMinYear());
     }
 
-    void setSchemes(List<Calendar> mSchemes) {
-        this.mSchemes = mSchemes;
-    }
-
-    void setSchemeColor(int schemeColor) {
-        this.mSchemeColor = schemeColor;
-    }
 
     void update() {
         for (int i = 0; i < getChildCount(); i++) {
-            MonthRecyclerView view = (MonthRecyclerView) getChildAt(i);
-            view.setSchemeColor(mSchemeColor);
+            YearRecyclerView view = (YearRecyclerView) getChildAt(i);
             view.getAdapter().notifyDataSetChanged();
         }
     }
 
-    public void setOnMonthSelectedListener(MonthRecyclerView.OnMonthSelectedListener listener) {
+    public void setOnMonthSelectedListener(YearRecyclerView.OnMonthSelectedListener listener) {
         this.mListener = listener;
     }
 }

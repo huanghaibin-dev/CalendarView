@@ -2,18 +2,16 @@ package com.haibin.calendarviewproject.colorful;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 
-import com.haibin.calendarview.BaseCalendarCardView;
 import com.haibin.calendarview.Calendar;
+import com.haibin.calendarview.MonthView;
 
 /**
  * 高仿魅族日历布局
  * Created by huanghaibin on 2017/11/15.
  */
 
-public class ColorfulCalendarCardView extends BaseCalendarCardView {
+public class ColorfulCalendarCardView extends MonthView {
 
     private int mRadius;
 

@@ -4,15 +4,15 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-import com.haibin.calendarview.BaseCalendarCardView;
 import com.haibin.calendarview.Calendar;
+import com.haibin.calendarview.MonthView;
 
 /**
  * 下标标记的日历控件
  * Created by huanghaibin on 2017/11/15.
  */
 
-public class IndexCalendarCardView extends BaseCalendarCardView {
+public class IndexCalendarCardView extends MonthView {
     private Paint mSchemeBasicPaint = new Paint();
     private int mPadding;
     private int mH, mW;

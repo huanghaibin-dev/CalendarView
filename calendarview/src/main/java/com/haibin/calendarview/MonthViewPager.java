@@ -27,10 +27,12 @@ import java.lang.reflect.Constructor;
 
 
 /**
- * 这是一个自适应高度的View
+ * 月份切换ViewPager，自定义适应高度
  */
 @SuppressWarnings("deprecation")
 public class MonthViewPager extends ViewPager {
+
+    private int mMonthCount;
     private CustomCalendarViewDelegate mDelegate;
     CalendarLayout mParentLayout;
     WeekViewPager mWeekPager;
@@ -54,8 +56,10 @@ public class MonthViewPager extends ViewPager {
     }
 
     private void init() {
+        mMonthCount = 12 * (mDelegate.getMaxYear() - mDelegate.getMinYear())
+                - mDelegate.getMinYearMonth() + 1 +
+                mDelegate.getMaxYearMonth();
         setAdapter(new MonthViewPagerAdapter());
-
         addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -65,8 +69,8 @@ public class MonthViewPager extends ViewPager {
             @Override
             public void onPageSelected(int position) {
                 Calendar calendar = new Calendar();
-                calendar.setYear((position + mDelegate.getMinYearMonth() -1) / 12 + mDelegate.getMinYear());
-                calendar.setMonth((position + mDelegate.getMinYearMonth() -1 ) % 12 + 1);
+                calendar.setYear((position + mDelegate.getMinYearMonth() - 1) / 12 + mDelegate.getMinYear());
+                calendar.setMonth((position + mDelegate.getMinYearMonth() - 1) % 12 + 1);
                 calendar.setDay(1);
                 calendar.setCurrentMonth(calendar.getYear() == mDelegate.getCurrentDay().getYear() &&
                         calendar.getMonth() == mDelegate.getCurrentDay().getMonth());
@@ -112,6 +116,14 @@ public class MonthViewPager extends ViewPager {
         });
     }
 
+
+    void notifyDataSetChanged() {
+        mMonthCount = 12 * (mDelegate.getMaxYear() - mDelegate.getMinYear())
+                - mDelegate.getMinYearMonth() + 1 +
+                mDelegate.getMaxYearMonth();
+        getAdapter().notifyDataSetChanged();
+    }
+
     /**
      * 滚动到指定日期
      *
@@ -128,13 +140,23 @@ public class MonthViewPager extends ViewPager {
         mDelegate.mSelectedCalendar = calendar;
 
         int y = calendar.getYear() - mDelegate.getMinYear();
-        int position = 12 * y + calendar.getMonth() - 1;
+        int position = 12 * y + calendar.getMonth() - mDelegate.getMinYearMonth();
         setCurrentItem(position);
 
+        BaseCalendarCardView view = (BaseCalendarCardView) findViewWithTag(position);
+        if (view != null) {
+            view.setSelectedCalendar(mDelegate.mSelectedCalendar);
+            view.invalidate();
+            if (mParentLayout != null) {
+                mParentLayout.setSelectPosition(view.getSelectedIndex(mDelegate.mSelectedCalendar));
+            }
+        }
         if (mParentLayout != null) {
             int i = Util.getWeekFromDayInMonth(calendar);
             mParentLayout.setSelectWeek(i);
         }
+
+
 
         if (mDelegate.mInnerListener != null) {
             mDelegate.mInnerListener.onDateSelected(calendar);
@@ -201,17 +223,9 @@ public class MonthViewPager extends ViewPager {
      */
     private class MonthViewPagerAdapter extends PagerAdapter {
 
-        private int count;
-
-        private MonthViewPagerAdapter() {
-            count = 12 * (mDelegate.getMaxYear() - mDelegate.getMinYear())
-                    - mDelegate.getMinYearMonth() + 1 +
-                    mDelegate.getMaxYearMonth();
-        }
-
         @Override
         public int getCount() {
-            return count;
+            return mMonthCount;
         }
 
         @Override
@@ -221,11 +235,11 @@ public class MonthViewPager extends ViewPager {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            int year = (position + mDelegate.getMinYearMonth() -1) / 12 + mDelegate.getMinYear();
-            int month = (position + mDelegate.getMinYearMonth() -1) % 12 + 1;
+            int year = (position + mDelegate.getMinYearMonth() - 1) / 12 + mDelegate.getMinYear();
+            int month = (position + mDelegate.getMinYearMonth() - 1) % 12 + 1;
             BaseCalendarCardView view;
             if (TextUtils.isEmpty(mDelegate.getCalendarCardViewClass())) {
-                view = new DefaultCalendarCardView(getContext());
+                view = new DefaultMonthView(getContext());
             } else {
                 try {
                     Class cls = Class.forName(mDelegate.getCalendarCardViewClass());

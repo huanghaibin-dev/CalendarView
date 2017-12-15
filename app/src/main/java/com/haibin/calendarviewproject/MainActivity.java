@@ -1,7 +1,6 @@
 package com.haibin.calendarviewproject;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -130,7 +129,6 @@ public class MainActivity extends BaseActivity implements
     @SuppressLint("SetTextI18n")
     @Override
     public void onDateSelected(Calendar calendar) {
-        Log.e("onDateSelected", "  --  " + calendar.toString() + "  -   " + calendar.isCurrentDay());
         mTextLunar.setVisibility(View.VISIBLE);
         mTextYear.setVisibility(View.VISIBLE);
         mTextMonthDay.setText(calendar.getMonth() + "月" + calendar.getDay() + "日");

@@ -17,51 +17,58 @@ package com.haibin.calendarview;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+class YearAdapter extends BaseRecyclerAdapter<Month> {
+    private CustomCalendarViewDelegate mDelegate;
+    private int mItemHeight;
+    private int mTextHeight;
 
-import java.util.List;
-
-class MonthAdapter extends BaseRecyclerAdapter<Month> {
-    private List<Calendar> mSchemes;
-    private int mSchemeColor;
-
-    MonthAdapter(Context context) {
+    YearAdapter(Context context) {
         super(context);
+        mTextHeight = Util.dipToPx(context,56);
     }
 
-    void setSchemes(List<Calendar> mSchemes) {
-        this.mSchemes = mSchemes;
+    void setup(CustomCalendarViewDelegate delegate) {
+        this.mDelegate = delegate;
     }
 
-    void setSchemeColor(int mSchemeColor) {
-        this.mSchemeColor = mSchemeColor;
+    void setItemHeight(int itemHeight) {
+        this.mItemHeight = itemHeight;
     }
 
     @Override
     RecyclerView.ViewHolder onCreateDefaultViewHolder(ViewGroup parent, int type) {
-        return new MonthViewHolder(mInflater.inflate(R.layout.cv_item_list_month, parent, false));
+        return new YearViewHolder(mInflater.inflate(R.layout.cv_item_list_year, parent, false), mDelegate);
     }
 
     @Override
     void onBindViewHolder(RecyclerView.ViewHolder holder, Month item, int position) {
-        MonthViewHolder h = (MonthViewHolder) holder;
-        MonthView view = h.mMonthView;
-        view.setSchemes(mSchemes);
-        view.setSchemeColor(mSchemeColor);
+        YearViewHolder h = (YearViewHolder) holder;
+        YearView view = h.mYearView;
+        view.setSchemes(mDelegate.mSchemeDate);
+        view.setSchemeColor(mDelegate.getYearViewSchemeTextColor());
+        view.setTextStyle(mDelegate.getYearViewDayTextSize(),
+                mDelegate.getYearViewDayTextColor());
         view.init(item.getDiff(), item.getCount(), item.getYear(), item.getMonth());
+        view.getLayoutParams().height = mItemHeight - mTextHeight;
         h.mTextMonth.setText(String.format("%s月", item.getMonth()));
+        h.mTextMonth.setTextSize(TypedValue.COMPLEX_UNIT_PX, mDelegate.getYearViewMonthTextSize());
+        h.mTextMonth.setTextColor(mDelegate.getYearViewMonthTextColor());
     }
 
-    private static class MonthViewHolder extends RecyclerView.ViewHolder {
-        MonthView mMonthView;
+    private static class YearViewHolder extends RecyclerView.ViewHolder {
+        YearView mYearView;
         TextView mTextMonth;
 
-        MonthViewHolder(View itemView) {
+        YearViewHolder(View itemView, CustomCalendarViewDelegate delegate) {
             super(itemView);
-            mMonthView = (MonthView) itemView.findViewById(R.id.selectView);
+            mYearView = (YearView) itemView.findViewById(R.id.selectView);
+            mYearView.setup(delegate);
             mTextMonth = (TextView) itemView.findViewById(R.id.tv_month);
         }
     }

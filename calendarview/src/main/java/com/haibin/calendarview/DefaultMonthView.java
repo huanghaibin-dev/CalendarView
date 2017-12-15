@@ -10,7 +10,7 @@ import android.graphics.Paint;
  * Created by huanghaibin on 2017/11/15.
  */
 
-public class DefaultCalendarCardView extends BaseCalendarCardView {
+public class DefaultMonthView extends MonthView {
 
     private Paint mTextPaint = new Paint();
     private Paint mSchemeBasicPaint = new Paint();
@@ -18,7 +18,7 @@ public class DefaultCalendarCardView extends BaseCalendarCardView {
     private int mPadding;
     private float mSchemeBaseLine;
 
-    public DefaultCalendarCardView(Context context) {
+    public DefaultMonthView(Context context) {
         super(context);
 
         mTextPaint.setTextSize(Util.dipToPx(context, 8));

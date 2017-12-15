@@ -4,13 +4,13 @@ Android上一个优雅、高度自定义、性能高效的日历控件，完美�
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.0.9'
+compile 'com.haibin:calendarview:3.1.0'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.0.9</version>
+  <version>3.1.0</version>
   <type>pom</type>
 </dependency>
 ```
@@ -96,6 +96,13 @@ compile 'com.haibin:calendarview:3.0.9'
 
         <attr name="current_month_lunar_text_color" format="color" /> <!--当前月份农历节假日颜色-->
         <attr name="other_month_lunar_text_color" format="color" /> <!--其它月份农历节假日颜色-->
+
+        <!-- 年视图相关 -->
+        <attr name="year_view_month_text_size" format="dimension" /> <!-- 年视图月份字体大小 -->
+        <attr name="year_view_day_text_size" format="dimension" /> <!-- 年视图月份日期字体大小 -->
+        <attr name="year_view_month_text_color" format="color" /> <!-- 年视图月份字体颜色 -->
+        <attr name="year_view_day_text_color" format="color" /> <!-- 年视图日期字体颜色 -->
+        <attr name="year_view_scheme_color" format="color" /> <!-- 年视图标记颜色 -->
 
         <attr name="min_year" format="integer" />  <!--最小年份1900-->
         <attr name="max_year" format="integer" /> <!--最大年份2099-->
@@ -190,7 +197,7 @@ public void shrink(); //收缩
 ### 如果你需要完全定制UI，参考demo，简单几步即可绘制你需要的效果，月视图和周视图需要同时更换，达到UI一致
 #### 首先绘制月视图
 ```java
-public class SimpleCalendarCardView extends BaseCalendarCardView {
+public class SimpleCalendarCardView extends MonthView {
 
     private int mRadius;
 

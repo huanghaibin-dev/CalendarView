@@ -21,22 +21,21 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
-
-import java.util.List;
-
-@SuppressWarnings("all")
-public class MonthRecyclerView extends RecyclerView {
+/**
+ * 年份布局选择View
+ */
+public class YearRecyclerView extends RecyclerView {
     private CustomCalendarViewDelegate mDelegate;
-    private MonthAdapter mAdapter;
+    private YearAdapter mAdapter;
     private OnMonthSelectedListener mListener;
 
-    public MonthRecyclerView(Context context) {
+    public YearRecyclerView(Context context) {
         this(context, null);
     }
 
-    public MonthRecyclerView(Context context, @Nullable AttributeSet attrs) {
+    public YearRecyclerView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        mAdapter = new MonthAdapter(context);
+        mAdapter = new YearAdapter(context);
         setLayoutManager(new GridLayoutManager(context, 3));
         setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
@@ -44,6 +43,9 @@ public class MonthRecyclerView extends RecyclerView {
             public void onItemClick(int position, long itemId) {
                 if (mListener != null && mDelegate != null) {
                     Month month = mAdapter.getItem(position);
+                    if (month == null) {
+                        return;
+                    }
                     if (!Util.isMonthInRange(month.getYear(), month.getMonth(),
                             mDelegate.getMinYear(), mDelegate.getMinYearMonth(),
                             mDelegate.getMaxYear(), mDelegate.getMaxYearMonth())) {
@@ -57,6 +59,7 @@ public class MonthRecyclerView extends RecyclerView {
 
     void setup(CustomCalendarViewDelegate delegate) {
         this.mDelegate = delegate;
+        this.mAdapter.setup(delegate);
     }
 
     void init(int year) {
@@ -74,16 +77,16 @@ public class MonthRecyclerView extends RecyclerView {
         }
     }
 
-    void setSchemes(List<Calendar> mSchemes) {
-        mAdapter.setSchemes(mSchemes);
-    }
-
-    void setSchemeColor(int schemeColor) {
-        mAdapter.setSchemeColor(schemeColor);
-    }
-
     void setOnMonthSelectedListener(OnMonthSelectedListener listener) {
         this.mListener = listener;
+    }
+
+
+    @Override
+    protected void onMeasure(int widthSpec, int heightSpec) {
+        super.onMeasure(widthSpec, heightSpec);
+        int h = MeasureSpec.getSize(heightSpec);
+        mAdapter.setItemHeight(h / 4);
     }
 
     interface OnMonthSelectedListener {

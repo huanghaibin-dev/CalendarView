@@ -5,15 +5,15 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import com.haibin.calendarview.BaseCalendarCardView;
 import com.haibin.calendarview.Calendar;
+import com.haibin.calendarview.MonthView;
 
 /**
  * 高仿魅族日历布局
  * Created by huanghaibin on 2017/11/15.
  */
 
-public class MeiZuCalendarCardView extends BaseCalendarCardView {
+public class MeiZuCalendarCardView extends MonthView {
 
     private Paint mTextPaint = new Paint();
     private Paint mSchemeBasicPaint = new Paint();
