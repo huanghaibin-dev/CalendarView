@@ -2,8 +2,6 @@ package com.haibin.calendarview;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
  * 农历测试
  * Created by huanghaibin on 2017/12/12.

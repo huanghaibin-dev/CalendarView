@@ -21,7 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
- * 星期栏
+ * 星期栏，如果你要使用星期栏自定义，切记XML使用 merge，不要使用LinearLayout
  * Created by huanghaibin on 2017/11/30.
  */
 public class WeekBar extends LinearLayout {
@@ -30,7 +30,6 @@ public class WeekBar extends LinearLayout {
         if ("com.haibin.calendarview.WeekBar".equals(getClass().getName())) {
             LayoutInflater.from(context).inflate(R.layout.cv_week_bar, this, true);
         }
-
     }
 
     /**
@@ -49,7 +48,8 @@ public class WeekBar extends LinearLayout {
     }
 
     /**
-     * 设置文本颜色
+     * 设置文本颜色，
+     * 如果这里报错了，请确定你自定义XML文件跟布局是不是使用merge，而不是LinearLayout
      *
      * @param color color
      */

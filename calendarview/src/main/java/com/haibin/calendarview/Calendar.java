@@ -23,6 +23,7 @@ import java.io.Serializable;
  */
 @SuppressWarnings("all")
 public class Calendar implements Serializable {
+    private static final long serialVersionUID = 141315161718191143L;
 
     /**年*/
     private int year;

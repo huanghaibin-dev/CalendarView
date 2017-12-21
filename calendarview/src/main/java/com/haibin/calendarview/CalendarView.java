@@ -268,6 +268,54 @@ public class CalendarView extends FrameLayout {
     }
 
     /**
+     * 关闭日历布局，同时会滚动到指定的位置
+     *
+     * @param position 某一年
+     */
+    private void closeSelectLayout(final int position) {
+        mSelectLayout.setVisibility(GONE);
+        mWeekBar.setVisibility(VISIBLE);
+        mMonthPager.setVisibility(VISIBLE);
+        if (position == mMonthPager.getCurrentItem()) {
+            if (mDelegate.mDateChangeListener != null) {
+                mDelegate.mDateChangeListener.onDateChange(mDelegate.mSelectedCalendar);
+            }
+            if (mDelegate.mDateSelectedListener != null) {
+                mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar);
+            }
+        } else {
+            mMonthPager.setCurrentItem(position, true);
+        }
+        mWeekBar.animate()
+                .translationY(0)
+                .setInterpolator(new LinearInterpolator())
+                .setDuration(180)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        mWeekBar.setVisibility(VISIBLE);
+                        if (mParentLayout != null && mParentLayout.mContentView != null) {
+                            mParentLayout.mContentView.setVisibility(VISIBLE);
+                        }
+                    }
+                });
+        mMonthPager.animate()
+                .scaleX(1)
+                .scaleY(1)
+                .setDuration(180)
+                .setInterpolator(new LinearInterpolator())
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        mMonthPager.setVisibility(VISIBLE);
+
+                    }
+                });
+    }
+
+    /**
      * 滚动到当前
      */
     public void scrollToCurrent() {
@@ -336,63 +384,6 @@ public class CalendarView extends FrameLayout {
         mSelectLayout.scrollToYear(year);
     }
 
-    /**
-     * 关闭日历布局，同时会滚动到指定的位置
-     *
-     * @param position 某一年
-     */
-    public void closeSelectLayout(final int position) {
-        mSelectLayout.setVisibility(GONE);
-        mWeekBar.setVisibility(VISIBLE);
-        mMonthPager.setVisibility(VISIBLE);
-        if (position == mMonthPager.getCurrentItem()) {
-            Calendar calendar = new Calendar();
-            calendar.setYear((position + mDelegate.getMinYearMonth() - 1) / 12 + mDelegate.getMinYear());
-            calendar.setMonth((position + mDelegate.getMinYearMonth() - 1) % 12 + 1);
-
-            calendar.setCurrentMonth(calendar.getYear() == mDelegate.getCurrentDay().getYear() &&
-                    calendar.getMonth() == mDelegate.getCurrentDay().getMonth());
-            calendar.setLunar(LunarCalendar.getLunarText(calendar));
-            calendar.setDay(calendar.isCurrentMonth() ? getCurDay() : 1);
-            calendar.setCurrentDay(calendar.equals(mDelegate.getCurrentDay()));
-            mDelegate.mSelectedCalendar = calendar;
-            if (mDelegate.mDateChangeListener != null) {
-                mDelegate.mDateChangeListener.onDateChange(calendar);
-            }
-            if (mDelegate.mDateSelectedListener != null) {
-                mDelegate.mDateSelectedListener.onDateSelected(calendar);
-            }
-        } else {
-            mMonthPager.setCurrentItem(position, true);
-        }
-        mWeekBar.animate()
-                .translationY(0)
-                .setInterpolator(new LinearInterpolator())
-                .setDuration(180)
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        super.onAnimationEnd(animation);
-                        mWeekBar.setVisibility(VISIBLE);
-                        if (mParentLayout != null && mParentLayout.mContentView != null) {
-                            mParentLayout.mContentView.setVisibility(VISIBLE);
-                        }
-                    }
-                });
-        mMonthPager.animate()
-                .scaleX(1)
-                .scaleY(1)
-                .setDuration(180)
-                .setInterpolator(new LinearInterpolator())
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        super.onAnimationEnd(animation);
-                        mMonthPager.setVisibility(VISIBLE);
-
-                    }
-                });
-    }
 
     /**
      * 日期改变监听器
@@ -620,10 +611,21 @@ public class CalendarView extends FrameLayout {
 
     /**
      * 内部日期选择，不暴露外部使用
+     * 主要是用于更新日历CalendarLayout位置
      */
     interface OnInnerDateSelectedListener {
+        /**
+         * 月视图点击
+         *
+         * @param calendar calendar
+         */
         void onDateSelected(Calendar calendar);
 
+        /**
+         * 周视图点击
+         *
+         * @param calendar calendar
+         */
         void onWeekSelected(Calendar calendar);
     }
 

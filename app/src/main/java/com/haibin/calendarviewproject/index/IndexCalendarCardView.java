@@ -41,11 +41,6 @@ public class IndexCalendarCardView extends MonthView {
     }
 
     @Override
-    protected void onLoopStart(int x, int y) {
-
-    }
-
-    @Override
     protected void onDrawSelected(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme) {
         mSelectedPaint.setStyle(Paint.Style.FILL);
         mSelectedPaint.setColor(0x80cfcfcf);

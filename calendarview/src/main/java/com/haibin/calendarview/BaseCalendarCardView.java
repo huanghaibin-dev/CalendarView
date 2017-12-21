@@ -58,7 +58,7 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
     protected Paint mOtherMonthLunarTextPaint = new Paint();
 
     /**
-     * 标记的日期问爸爸颜色
+     * 标记的日期背景颜色
      */
     protected Paint mSchemePaint = new Paint();
 

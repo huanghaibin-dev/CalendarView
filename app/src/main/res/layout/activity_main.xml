@@ -98,7 +98,7 @@
         android:background="#fff"
         android:orientation="vertical"
         app:calendar_content_view_id="@+id/linearView"
-        app:default_status="expand">
+        app:default_status="shrink">
 
         <com.haibin.calendarview.CalendarView
             android:id="@+id/calendarView"

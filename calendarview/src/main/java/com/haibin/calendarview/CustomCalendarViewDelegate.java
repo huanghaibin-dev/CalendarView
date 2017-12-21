@@ -119,6 +119,7 @@ class CustomCalendarViewDelegate {
     /**
      * 当前月份和周视图的item位置
      */
+    @SuppressWarnings("all")
     int mCurrentMonthViewItem, mCurrentWeekViewItem;
 
     /**
@@ -211,7 +212,7 @@ class CustomCalendarViewDelegate {
     void setRange(int minYear, int minYearMonth,
                   int maxYear, int maxYearMonth) {
         this.mMinYear = minYear;
-        this.mMaxYearMonth = minYearMonth;
+        this.mMinYearMonth = minYearMonth;
         this.mMaxYear = maxYear;
         this.mMaxYearMonth = maxYearMonth;
         if (this.mMaxYear < mCurrentDate.getYear()) {

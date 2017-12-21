@@ -92,7 +92,7 @@ public class CalendarLayout extends LinearLayout {
         setOrientation(LinearLayout.VERTICAL);
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CalendarLayout);
         mContentViewId = array.getResourceId(R.styleable.CalendarLayout_calendar_content_view_id, 0);
-        mDefaultStatus = array.getInt(R.styleable.CalendarLayout_default_status,STATUS_EXPAND);
+        mDefaultStatus = array.getInt(R.styleable.CalendarLayout_default_status, STATUS_EXPAND);
         array.recycle();
         //setSelectPosition(6);
         mVelocityTracker = VelocityTracker.obtain();
@@ -348,7 +348,10 @@ public class CalendarLayout extends LinearLayout {
     }
 
     void initStatus() {
-        if(mDefaultStatus == STATUS_SHRINK){
+        if (mContentView == null) {
+            return;
+        }
+        if (mDefaultStatus == STATUS_SHRINK) {
             post(new Runnable() {
                 @Override
                 public void run() {
