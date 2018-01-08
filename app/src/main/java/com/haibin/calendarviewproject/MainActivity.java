@@ -54,6 +54,10 @@ public class MainActivity extends BaseActivity implements
         mTextMonthDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!mCalendarLayout.isExpand()) {
+                    mCalendarView.showSelectLayout(mYear);
+                    return;
+                }
                 mCalendarView.showSelectLayout(mYear);
                 mTextLunar.setVisibility(View.GONE);
                 mTextYear.setVisibility(View.GONE);
@@ -128,7 +132,7 @@ public class MainActivity extends BaseActivity implements
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onDateSelected(Calendar calendar) {
+    public void onDateSelected(Calendar calendar, boolean isClick) {
         mTextLunar.setVisibility(View.VISIBLE);
         mTextYear.setVisibility(View.VISIBLE);
         mTextMonthDay.setText(calendar.getMonth() + "月" + calendar.getDay() + "日");

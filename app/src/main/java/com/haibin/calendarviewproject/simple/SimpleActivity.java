@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.haibin.calendarview.Calendar;
+import com.haibin.calendarview.CalendarLayout;
 import com.haibin.calendarview.CalendarView;
 import com.haibin.calendarviewproject.Article;
 import com.haibin.calendarviewproject.ArticleAdapter;
@@ -43,6 +44,7 @@ public class SimpleActivity extends BaseActivity implements
 
     GroupRecyclerView mRecyclerView;
     private int mYear;
+    CalendarLayout mCalendarLayout;
 
     public static void show(Context context) {
         context.startActivity(new Intent(context, SimpleActivity.class));
@@ -67,6 +69,10 @@ public class SimpleActivity extends BaseActivity implements
         mTextMonthDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!mCalendarLayout.isExpand()) {
+                    mCalendarView.showSelectLayout(mYear);
+                    return;
+                }
                 mCalendarView.showSelectLayout(mYear);
                 mTextLunar.setVisibility(View.GONE);
                 mTextYear.setVisibility(View.GONE);
@@ -80,6 +86,7 @@ public class SimpleActivity extends BaseActivity implements
             }
         });
 
+        mCalendarLayout = (CalendarLayout) findViewById(R.id.calendarLayout);
         mCalendarView.setOnYearChangeListener(this);
         mCalendarView.setOnDateSelectedListener(this);
         mTextYear.setText(String.valueOf(mCalendarView.getCurYear()));
@@ -147,7 +154,7 @@ public class SimpleActivity extends BaseActivity implements
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onDateSelected(Calendar calendar) {
+    public void onDateSelected(Calendar calendar, boolean isClick) {
         mTextLunar.setVisibility(View.VISIBLE);
         mTextYear.setVisibility(View.VISIBLE);
         mTextMonthDay.setText(calendar.getMonth() + "月" + calendar.getDay() + "日");

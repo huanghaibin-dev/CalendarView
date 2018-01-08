@@ -94,10 +94,10 @@ public class MonthViewPager extends ViewPager {
                 }
 
                 if (mDelegate.mDateSelectedListener != null) {
-                    mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar);
+                    mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar, false);
                 }
 
-                BaseCalendarCardView view = (BaseCalendarCardView) findViewWithTag(position);
+                MonthView view = (MonthView) findViewWithTag(position);
                 if (view != null) {
                     int index = view.getSelectedIndex(mDelegate.mSelectedCalendar);
                     view.mCurrentItem = index;
@@ -143,7 +143,7 @@ public class MonthViewPager extends ViewPager {
         int position = 12 * y + calendar.getMonth() - mDelegate.getMinYearMonth();
         setCurrentItem(position);
 
-        BaseCalendarCardView view = (BaseCalendarCardView) findViewWithTag(position);
+        MonthView view = (MonthView) findViewWithTag(position);
         if (view != null) {
             view.setSelectedCalendar(mDelegate.mSelectedCalendar);
             view.invalidate();
@@ -157,13 +157,12 @@ public class MonthViewPager extends ViewPager {
         }
 
 
-
         if (mDelegate.mInnerListener != null) {
             mDelegate.mInnerListener.onDateSelected(calendar);
         }
 
         if (mDelegate.mDateSelectedListener != null) {
-            mDelegate.mDateSelectedListener.onDateSelected(calendar);
+            mDelegate.mDateSelectedListener.onDateSelected(calendar, false);
         }
         if (mDelegate.mDateChangeListener != null) {
             mDelegate.mDateChangeListener.onDateChange(calendar);
@@ -179,7 +178,7 @@ public class MonthViewPager extends ViewPager {
         int position = 12 * (mDelegate.getCurrentDay().getYear() - mDelegate.getMinYear()) +
                 mDelegate.getCurrentDay().getMonth() - mDelegate.getMinYearMonth();
         setCurrentItem(position);
-        BaseCalendarCardView view = (BaseCalendarCardView) findViewWithTag(position);
+        MonthView view = (MonthView) findViewWithTag(position);
         if (view != null) {
             view.setSelectedCalendar(mDelegate.getCurrentDay());
             view.invalidate();
@@ -195,7 +194,7 @@ public class MonthViewPager extends ViewPager {
      */
     void updateSelected() {
         for (int i = 0; i < getChildCount(); i++) {
-            BaseCalendarCardView view = (BaseCalendarCardView) getChildAt(i);
+            MonthView view = (MonthView) getChildAt(i);
             view.setSelectedCalendar(mDelegate.mSelectedCalendar);
             view.invalidate();
         }
@@ -206,7 +205,7 @@ public class MonthViewPager extends ViewPager {
      */
     void updateScheme() {
         for (int i = 0; i < getChildCount(); i++) {
-            BaseCalendarCardView view = (BaseCalendarCardView) getChildAt(i);
+            MonthView view = (MonthView) getChildAt(i);
             view.update();
         }
     }
@@ -237,7 +236,7 @@ public class MonthViewPager extends ViewPager {
         public Object instantiateItem(ViewGroup container, int position) {
             int year = (position + mDelegate.getMinYearMonth() - 1) / 12 + mDelegate.getMinYear();
             int month = (position + mDelegate.getMinYearMonth() - 1) % 12 + 1;
-            BaseCalendarCardView view;
+            MonthView view;
             if (TextUtils.isEmpty(mDelegate.getCalendarCardViewClass())) {
                 view = new DefaultMonthView(getContext());
             } else {
@@ -245,7 +244,7 @@ public class MonthViewPager extends ViewPager {
                     Class cls = Class.forName(mDelegate.getCalendarCardViewClass());
                     @SuppressWarnings("unchecked")
                     Constructor constructor = cls.getConstructor(Context.class);
-                    view = (BaseCalendarCardView) constructor.newInstance(getContext());
+                    view = (MonthView) constructor.newInstance(getContext());
                 } catch (Exception e) {
                     e.printStackTrace();
                     return null;

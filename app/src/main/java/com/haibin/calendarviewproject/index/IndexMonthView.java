@@ -12,12 +12,12 @@ import com.haibin.calendarview.MonthView;
  * Created by huanghaibin on 2017/11/15.
  */
 
-public class IndexCalendarCardView extends MonthView {
+public class IndexMonthView extends MonthView {
     private Paint mSchemeBasicPaint = new Paint();
     private int mPadding;
     private int mH, mW;
 
-    public IndexCalendarCardView(Context context) {
+    public IndexMonthView(Context context) {
         super(context);
 
         mSchemeBasicPaint.setAntiAlias(true);

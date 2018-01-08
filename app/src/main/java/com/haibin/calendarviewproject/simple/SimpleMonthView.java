@@ -12,11 +12,11 @@ import com.haibin.calendarview.MonthView;
  * Created by huanghaibin on 2017/11/15.
  */
 
-public class SimpleCalendarCardView extends MonthView {
+public class SimpleMonthView extends MonthView {
 
     private int mRadius;
 
-    public SimpleCalendarCardView(Context context) {
+    public SimpleMonthView(Context context) {
         super(context);
     }
 

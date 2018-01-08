@@ -13,7 +13,7 @@ import com.haibin.calendarview.MonthView;
  * Created by huanghaibin on 2017/11/15.
  */
 
-public class MeiZuCalendarCardView extends MonthView {
+public class MeiZuMonthView extends MonthView {
 
     private Paint mTextPaint = new Paint();
     private Paint mSchemeBasicPaint = new Paint();
@@ -21,7 +21,7 @@ public class MeiZuCalendarCardView extends MonthView {
     private int mPadding;
     private float mSchemeBaseLine;
 
-    public MeiZuCalendarCardView(Context context) {
+    public MeiZuMonthView(Context context) {
         super(context);
 
         mTextPaint.setTextSize(dipToPx(context, 8));

@@ -91,6 +91,7 @@
     </RelativeLayout>
 
     <com.haibin.calendarview.CalendarLayout
+        android:id="@+id/calendarLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#fff"
@@ -102,7 +103,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#fff"
-            app:calendar_card_view="com.haibin.calendarviewproject.simple.SimpleCalendarCardView"
+            app:calendar_card_view="com.haibin.calendarviewproject.simple.SimpleMonthView"
             app:calendar_height="46dp"
             app:current_month_lunar_text_color="#CFCFCF"
             app:current_month_text_color="#333333"
@@ -115,7 +116,12 @@
             app:selected_theme_color="#333"
             app:week_background="#fff"
             app:week_text_color="#111"
-            app:week_view="com.haibin.calendarviewproject.simple.SimpleWeekView" />
+            app:week_view="com.haibin.calendarviewproject.simple.SimpleWeekView"
+            app:year_view_day_text_color="#333333"
+            app:year_view_day_text_size="9sp"
+            app:year_view_month_text_color="#ff0000"
+            app:year_view_month_text_size="20sp"
+            app:year_view_scheme_color="#f17706"/>
 
         <com.haibin.calendarviewproject.group.GroupRecyclerView
             android:id="@+id/recyclerView"

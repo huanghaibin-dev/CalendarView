@@ -25,7 +25,8 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Google规范化的属性委托
+ * Google规范化的属性委托,
+ * 这里基本是没有逻辑的，代码量多，但是不影响阅读性
  */
 class CustomCalendarViewDelegate {
 
@@ -64,16 +65,18 @@ class CustomCalendarViewDelegate {
             mYearViewDayTextColor,
             mYearViewSchemeTextColor;
 
+    /**
+     * 星期栏的背景、线的背景、年份背景
+     */
+    private int mWeekLineBackground,
+            mYearViewBackground,
+            mWeekBackground;
+
 
     /**
      * 标记的主题色和选中的主题色
      */
     private int mSchemeThemeColor, mSelectedThemeColor;
-
-    /**
-     * 星期栏的背景
-     */
-    private int mWeekBackground;
 
     /**
      * 自定义的日历路径
@@ -163,6 +166,8 @@ class CustomCalendarViewDelegate {
         mWeekViewClass = array.getString(R.styleable.CalendarView_week_view);
         mWeekBarClass = array.getString(R.styleable.CalendarView_week_bar_view);
         mWeekBackground = array.getColor(R.styleable.CalendarView_week_background, Color.WHITE);
+        mWeekLineBackground = array.getColor(R.styleable.CalendarView_week_line_background, Color.WHITE);
+        mYearViewBackground = array.getColor(R.styleable.CalendarView_year_view_background, Color.WHITE);
         mWeekTextColor = array.getColor(R.styleable.CalendarView_week_text_color, Color.BLACK);
 
         mSelectedThemeColor = array.getColor(R.styleable.CalendarView_selected_theme_color, 0x50CFCFCF);
@@ -275,6 +280,14 @@ class CustomCalendarViewDelegate {
 
     int getWeekBackground() {
         return mWeekBackground;
+    }
+
+    int getYearViewBackground() {
+        return mYearViewBackground;
+    }
+
+    int getWeekLineBackground() {
+        return mWeekLineBackground;
     }
 
     String getCalendarCardViewClass() {

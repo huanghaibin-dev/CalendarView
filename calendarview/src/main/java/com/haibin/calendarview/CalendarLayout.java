@@ -61,6 +61,9 @@ public class CalendarLayout extends LinearLayout {
     MonthViewPager mMonthView;
 
     WeekViewPager mWeekPager;
+
+    YearSelectLayout mYearView;
+
     /**
      * ContentView
      */
@@ -157,6 +160,7 @@ public class CalendarLayout extends LinearLayout {
         mMonthView = (MonthViewPager) findViewById(R.id.vp_calendar).findViewById(R.id.vp_calendar);
         mWeekPager = (WeekViewPager) findViewById(R.id.vp_week).findViewById(R.id.vp_week);
         mContentView = (ViewGroup) findViewById(mContentViewId);
+        mYearView = (YearSelectLayout) findViewById(R.id.selectLayout);
         if (mContentView != null) {
             mContentView.setOverScrollMode(View.OVER_SCROLL_NEVER);
         }
@@ -168,7 +172,12 @@ public class CalendarLayout extends LinearLayout {
         if (isAnimating) {
             return true;
         }
-        if (mContentView == null || mContentView.getVisibility() != VISIBLE) {
+        if (mYearView == null ||
+                mContentView == null ||
+                mContentView.getVisibility() != VISIBLE) {
+            return super.onInterceptTouchEvent(ev);
+        }
+        if (mYearView.getVisibility() == VISIBLE) {
             return super.onInterceptTouchEvent(ev);
         }
         final int action = ev.getAction();
@@ -284,13 +293,20 @@ public class CalendarLayout extends LinearLayout {
     }
 
 
+    public boolean isExpand() {
+        return mContentView == null || mMonthView.getVisibility() == VISIBLE;
+    }
+
     /**
      * 展开
      */
-    public void expand() {
-
+    public boolean expand() {
         if (isAnimating)
-            return;
+            return false;
+        if (mMonthView.getVisibility() != VISIBLE) {
+            mWeekPager.setVisibility(GONE);
+            mMonthView.setVisibility(VISIBLE);
+        }
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(mContentView,
                 "translationY", mContentView.getTranslationY(), 0f);
         objectAnimator.setDuration(240);
@@ -313,16 +329,17 @@ public class CalendarLayout extends LinearLayout {
             }
         });
         objectAnimator.start();
+        return true;
     }
 
 
     /**
      * 收缩
      */
-    public void shrink() {
-
-        if (isAnimating)
-            return;
+    public boolean shrink() {
+        if (isAnimating) {
+            return false;
+        }
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(mContentView,
                 "translationY", mContentView.getTranslationY(), -mContentViewTranslateY);
         objectAnimator.setDuration(240);
@@ -345,6 +362,7 @@ public class CalendarLayout extends LinearLayout {
             }
         });
         objectAnimator.start();
+        return true;
     }
 
     void initStatus() {

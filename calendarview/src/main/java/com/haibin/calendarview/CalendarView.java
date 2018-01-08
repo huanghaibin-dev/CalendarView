@@ -24,6 +24,7 @@ import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 
@@ -51,6 +52,11 @@ public class CalendarView extends FrameLayout {
      * 日历周视图
      */
     private WeekViewPager mWeekPager;
+
+    /**
+     * 星期栏的线
+     */
+    private View mWeekLine;
 
     /**
      * 月份快速选取
@@ -102,13 +108,16 @@ public class CalendarView extends FrameLayout {
             }
         }
         frameContent.addView(mWeekBar, 2);
-
         mWeekBar.setup(mDelegate);
+
+        this.mWeekLine = findViewById(R.id.line);
+        this.mWeekLine.setBackgroundColor(mDelegate.getWeekLineBackground());
 
         this.mMonthPager = (MonthViewPager) findViewById(R.id.vp_calendar);
         this.mMonthPager.mWeekPager = mWeekPager;
 
         mSelectLayout = (YearSelectLayout) findViewById(R.id.selectLayout);
+        mSelectLayout.setBackgroundColor(mDelegate.getYearViewBackground());
         mSelectLayout.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -171,7 +180,6 @@ public class CalendarView extends FrameLayout {
         });
         mSelectLayout.setup(mDelegate);
         mWeekPager.updateSelected(mDelegate.mSelectedCalendar);
-
     }
 
     /**
@@ -234,8 +242,10 @@ public class CalendarView extends FrameLayout {
      */
     public void showSelectLayout(final int year) {
         if (mParentLayout != null && mParentLayout.mContentView != null) {
-            mParentLayout.expand();
-            mParentLayout.mContentView.setVisibility(GONE);
+            if (!mParentLayout.isExpand()) {
+                mParentLayout.expand();
+                return;
+            }
         }
         mWeekPager.setVisibility(GONE);
 
@@ -250,6 +260,9 @@ public class CalendarView extends FrameLayout {
                         mWeekBar.setVisibility(GONE);
                         mSelectLayout.setVisibility(VISIBLE);
                         mSelectLayout.scrollToYear(year);
+                        if (mParentLayout != null && mParentLayout.mContentView != null) {
+                            mParentLayout.expand();
+                        }
                     }
                 });
 
@@ -262,7 +275,7 @@ public class CalendarView extends FrameLayout {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         super.onAnimationEnd(animation);
-                        mMonthPager.setVisibility(GONE);
+                        //mMonthPager.setVisibility(GONE);
                     }
                 });
     }
@@ -281,7 +294,7 @@ public class CalendarView extends FrameLayout {
                 mDelegate.mDateChangeListener.onDateChange(mDelegate.mSelectedCalendar);
             }
             if (mDelegate.mDateSelectedListener != null) {
-                mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar);
+                mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar, false);
             }
         } else {
             mMonthPager.setCurrentItem(position, true);
@@ -329,7 +342,7 @@ public class CalendarView extends FrameLayout {
             mDelegate.mDateChangeListener.onDateChange(mDelegate.createCurrentDate());
         }
         if (mDelegate.mDateSelectedListener != null) {
-            mDelegate.mDateSelectedListener.onDateSelected(mDelegate.createCurrentDate());
+            mDelegate.mDateSelectedListener.onDateSelected(mDelegate.createCurrentDate(), false);
         }
         mSelectLayout.scrollToYear(mDelegate.getCurrentDay().getYear());
     }
@@ -421,7 +434,7 @@ public class CalendarView extends FrameLayout {
             if (!Util.isCalendarInRange(mDelegate.mSelectedCalendar, mDelegate)) {
                 return;
             }
-            mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar);
+            mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar, false);
         }
     }
 
@@ -456,32 +469,15 @@ public class CalendarView extends FrameLayout {
     /**
      * 设置背景色
      *
-     * @param monthLayoutBackground 月份卡片的背景色
-     * @param weekBackground        星期栏背景色
-     * @param lineBg                线的颜色
+     * @param yearViewBackground 年份卡片的背景色
+     * @param weekBackground     星期栏背景色
+     * @param lineBg             线的颜色
      */
     @SuppressWarnings("unused")
-    public void setBackground(int monthLayoutBackground, int weekBackground, int lineBg) {
+    public void setBackground(int yearViewBackground, int weekBackground, int lineBg) {
         mWeekBar.setBackgroundColor(weekBackground);
-        mSelectLayout.setBackgroundColor(monthLayoutBackground);
-        findViewById(R.id.line).setBackgroundColor(lineBg);
-    }
-
-
-    /**
-     * 设置文本颜色
-     *
-     * @param curMonthTextColor        当前月份字体颜色
-     * @param otherMonthColor          其它月份字体颜色
-     * @param curMonthLunarTextColor   当前月份农历字体颜色
-     * @param otherMonthLunarTextColor 其它农历字体颜色
-     */
-    @Deprecated
-    public void setTextColor(int curMonthTextColor,
-                             int otherMonthColor,
-                             int curMonthLunarTextColor,
-                             int otherMonthLunarTextColor) {
-        mDelegate.setTextColor(mDelegate.getCurDayTextColor(), curMonthTextColor, otherMonthColor, curMonthLunarTextColor, otherMonthLunarTextColor);
+        mSelectLayout.setBackgroundColor(yearViewBackground);
+        mWeekLine.setBackgroundColor(lineBg);
     }
 
 
@@ -494,7 +490,6 @@ public class CalendarView extends FrameLayout {
      * @param curMonthLunarTextColor   当前月份农历字体颜色
      * @param otherMonthLunarTextColor 其它农历字体颜色
      */
-    @SuppressWarnings("unused")
     public void setTextColor(
             int currentDayTextColor,
             int curMonthTextColor,
@@ -507,23 +502,10 @@ public class CalendarView extends FrameLayout {
     /**
      * 设置选择的效果
      *
-     * @param selectedThemeColor 选中的标记颜色
-     * @param selectedTextColor  选中的字体颜色
-     */
-    @Deprecated
-    public void setSelectedColor(int selectedThemeColor, int selectedTextColor) {
-        mDelegate.setSelectColor(selectedThemeColor, selectedTextColor, mDelegate.getSelectedLunarTextColor());
-    }
-
-
-    /**
-     * 设置选择的效果
-     *
      * @param selectedThemeColor     选中的标记颜色
      * @param selectedTextColor      选中的字体颜色
      * @param selectedLunarTextColor 选中的农历字体颜色
      */
-    @Deprecated
     public void setSelectedColor(int selectedThemeColor, int selectedTextColor, int selectedLunarTextColor) {
         mDelegate.setSelectColor(selectedThemeColor, selectedTextColor, selectedLunarTextColor);
     }
@@ -540,16 +522,6 @@ public class CalendarView extends FrameLayout {
         mDelegate.setSchemeColor(schemeColor, schemeTextColor, mDelegate.getSchemeLunarTextColor());
     }
 
-    /**
-     * 设置标记的色
-     *
-     * @param schemeColor     标记背景色
-     * @param schemeTextColor 标记字体颜色
-     */
-    @Deprecated
-    public void setSchemeColor(int schemeColor, int schemeTextColor, int schemeLunarTextColor) {
-        mDelegate.setSchemeColor(schemeColor, schemeTextColor, schemeLunarTextColor);
-    }
 
     /**
      * 设置星期栏的背景和字体颜色
@@ -633,6 +605,6 @@ public class CalendarView extends FrameLayout {
      * 外部日期选择事件
      */
     public interface OnDateSelectedListener {
-        void onDateSelected(Calendar calendar);
+        void onDateSelected(Calendar calendar, boolean isClick);
     }
 }

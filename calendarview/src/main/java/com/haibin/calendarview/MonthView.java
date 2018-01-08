@@ -33,8 +33,8 @@ import java.util.List;
  * pleased using MonthView replace BaseCalendarCardView
  * Created by huanghaibin on 2017/11/15.
  */
-@Deprecated
-public abstract class BaseCalendarCardView extends View implements View.OnClickListener {
+@SuppressWarnings("unused")
+public abstract class MonthView extends View implements View.OnClickListener {
 
     private CustomCalendarViewDelegate mDelegate;
     /**
@@ -182,11 +182,11 @@ public abstract class BaseCalendarCardView extends View implements View.OnClickL
      */
     protected int mOtherMonthLunarTextColor;
 
-    public BaseCalendarCardView(Context context) {
+    public MonthView(Context context) {
         this(context, null);
     }
 
-    public BaseCalendarCardView(Context context, @Nullable AttributeSet attrs) {
+    public MonthView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         initPaint(context);
     }

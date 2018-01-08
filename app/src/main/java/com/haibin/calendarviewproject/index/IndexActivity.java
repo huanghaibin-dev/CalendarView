@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.haibin.calendarview.Calendar;
+import com.haibin.calendarview.CalendarLayout;
 import com.haibin.calendarview.CalendarView;
 import com.haibin.calendarviewproject.Article;
 import com.haibin.calendarviewproject.ArticleAdapter;
@@ -40,7 +41,7 @@ public class IndexActivity extends BaseActivity implements
 
     RelativeLayout mRelativeTool;
     private int mYear;
-
+    CalendarLayout mCalendarLayout;
     GroupRecyclerView mRecyclerView;
 
     public static void show(Context context) {
@@ -65,6 +66,10 @@ public class IndexActivity extends BaseActivity implements
         mTextMonthDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!mCalendarLayout.isExpand()) {
+                    mCalendarView.showSelectLayout(mYear);
+                    return;
+                }
                 mCalendarView.showSelectLayout(mYear);
                 mTextLunar.setVisibility(View.GONE);
                 mTextYear.setVisibility(View.GONE);
@@ -77,7 +82,7 @@ public class IndexActivity extends BaseActivity implements
                 mCalendarView.scrollToCurrent();
             }
         });
-
+        mCalendarLayout = (CalendarLayout) findViewById(R.id.calendarLayout);
         mCalendarView.setOnDateChangeListener(this);
         mCalendarView.setOnDateSelectedListener(this);
         mTextYear.setText(String.valueOf(mCalendarView.getCurYear()));
@@ -151,7 +156,7 @@ public class IndexActivity extends BaseActivity implements
     }
 
     @Override
-    public void onDateSelected(Calendar calendar) {
+    public void onDateSelected(Calendar calendar, boolean isClick) {
         onDateChange(calendar);
     }
 
