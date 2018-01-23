@@ -26,6 +26,7 @@ public class GroupItemDecoration<Group, Child> extends RecyclerView.ItemDecorati
     protected int mPaddingLeft, mPaddingRight;
     protected boolean isCenter;
     protected boolean isHasHeader;
+    protected int mChildItemOffset;
     @SuppressLint("UseSparseArrays")
     protected Map<Integer, Group> mGroup = new HashMap<>();
 
@@ -176,9 +177,9 @@ public class GroupItemDecoration<Group, Child> extends RecyclerView.ItemDecorati
      */
     protected void getItemOffsets(Rect outRect, View view, RecyclerView parent, int adapterPosition) {
         if (mGroup.containsKey(adapterPosition)) {
-            outRect.set(0, mGroupHeight, 0, mGroup.containsKey(adapterPosition + 1) ? 0 : 20);
+            outRect.set(0, mGroupHeight, 0, mGroup.containsKey(adapterPosition + 1) ? 0 : mChildItemOffset);
         } else {
-            outRect.set(0, 0, 0, mGroup.containsKey(adapterPosition + 1) ? 0 : 20);
+            outRect.set(0, 0, 0, mGroup.containsKey(adapterPosition + 1) ? 0 : mChildItemOffset);
         }
     }
 
@@ -217,6 +218,10 @@ public class GroupItemDecoration<Group, Child> extends RecyclerView.ItemDecorati
                 key += adapter.getChildCount(i);
             }
         }
+    }
+
+    public void setChildItemOffset(int childItemOffset){
+        this.mChildItemOffset = childItemOffset;
     }
 
     public void setBackground(int groupBackground) {

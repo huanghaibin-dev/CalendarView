@@ -83,7 +83,7 @@ final class Util {
      * @param year year
      * @return return
      */
-    private static boolean isLeapYear(int year) {
+    static boolean isLeapYear(int year) {
         return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
     }
 
@@ -193,7 +193,6 @@ final class Util {
         }
         return 0;
     }
-
 
 
     /**

@@ -78,9 +78,6 @@ public class MonthViewPager extends ViewPager {
 
 
                 if (mParentLayout == null || getVisibility() == INVISIBLE || mWeekPager.getVisibility() == VISIBLE) {
-                    if (mDelegate.mDateChangeListener != null) {
-                        mDelegate.mDateChangeListener.onDateChange(calendar);
-                    }
                     return;
                 }
 
@@ -88,9 +85,6 @@ public class MonthViewPager extends ViewPager {
                     mDelegate.mSelectedCalendar = calendar;
                 } else {
                     mDelegate.mSelectedCalendar = mDelegate.createCurrentDate();
-                }
-                if (mDelegate.mDateChangeListener != null) {
-                    mDelegate.mDateChangeListener.onDateChange(mDelegate.mSelectedCalendar);
                 }
 
                 if (mDelegate.mDateSelectedListener != null) {
@@ -164,9 +158,6 @@ public class MonthViewPager extends ViewPager {
         if (mDelegate.mDateSelectedListener != null) {
             mDelegate.mDateSelectedListener.onDateSelected(calendar, false);
         }
-        if (mDelegate.mDateChangeListener != null) {
-            mDelegate.mDateChangeListener.onDateChange(calendar);
-        }
 
         updateSelected();
     }
@@ -237,11 +228,11 @@ public class MonthViewPager extends ViewPager {
             int year = (position + mDelegate.getMinYearMonth() - 1) / 12 + mDelegate.getMinYear();
             int month = (position + mDelegate.getMinYearMonth() - 1) % 12 + 1;
             MonthView view;
-            if (TextUtils.isEmpty(mDelegate.getCalendarCardViewClass())) {
+            if (TextUtils.isEmpty(mDelegate.getMonthViewClass())) {
                 view = new DefaultMonthView(getContext());
             } else {
                 try {
-                    Class cls = Class.forName(mDelegate.getCalendarCardViewClass());
+                    Class cls = Class.forName(mDelegate.getMonthViewClass());
                     @SuppressWarnings("unchecked")
                     Constructor constructor = cls.getConstructor(Context.class);
                     view = (MonthView) constructor.newInstance(getContext());

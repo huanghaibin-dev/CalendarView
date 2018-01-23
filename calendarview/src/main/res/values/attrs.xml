@@ -6,7 +6,12 @@
         <attr name="week_line_background" format="color" />
         <attr name="week_text_color" format="color" />
 
+        <!--
+             {@deprecated This attribute is deprecated. Use month_view instead to change
+             the ui of CalendarView. } -->
         <attr name="calendar_card_view" format="string" /><!--完全自定义月视图-->
+        <attr name="month_view" format="string" /><!--完全自定义月视图-->
+
         <attr name="week_view" format="string" /><!--完全自定义周视图-->
         <attr name="week_bar_view" format="string" /><!--如果需要的话使用自定义星期栏-->
 
@@ -24,6 +29,7 @@
         <attr name="selected_lunar_text_color" format="color" />
 
         <attr name="current_day_text_color" format="color" />
+        <attr name="current_day_lunar_text_color" format="color" />
         <attr name="current_month_text_color" format="color" />
         <attr name="other_month_text_color" format="color" />
         <attr name="current_month_lunar_text_color" format="color" />
@@ -52,6 +58,7 @@
             <enum name="expand" value="0" />
             <enum name="shrink" value="1" />
         </attr>
+        <attr name="only_week_view" format="boolean" />
         <attr name="calendar_content_view_id" format="integer" />
     </declare-styleable>
 

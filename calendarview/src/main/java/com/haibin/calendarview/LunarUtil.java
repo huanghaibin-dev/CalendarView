@@ -71,9 +71,14 @@ class LunarUtil {
         return 365 * y + y / 4 - y / 100 + y / 400 + (m * 306 + 5) / 10 + (d - 1);
     }
 
+
     /**
-     * 公历转农历
-     * Solar To Lunar
+     * 公历转农历 Solar To Lunar
+     *
+     * @param year  公历年
+     * @param month 公历月
+     * @param day   公历日
+     * @return [0]农历年 [1]农历月 [2]农历日 [3]是否闰月 0 false : 1 true
      */
     static int[] solarToLunar(int year, int month, int day) {
         int[] lunarInt = new int[4];

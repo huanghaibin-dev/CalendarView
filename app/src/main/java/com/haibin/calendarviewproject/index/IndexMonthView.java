@@ -41,15 +41,27 @@ public class IndexMonthView extends MonthView {
     }
 
     @Override
-    protected void onDrawSelected(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme) {
+    protected boolean onDrawSelected(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme) {
         mSelectedPaint.setStyle(Paint.Style.FILL);
         mSelectedPaint.setColor(0x80cfcfcf);
         canvas.drawRect(x + mPadding, y + mPadding, x + mItemWidth - mPadding, y + mItemHeight - mPadding, mSelectedPaint);
+        return true;
     }
 
+    /**
+     * onDrawSelected
+     * @param canvas   canvas
+     * @param calendar 日历calendar
+     * @param x        日历Card x起点坐标
+     * @param y        日历Card y起点坐标
+     */
     @Override
     protected void onDrawScheme(Canvas canvas, Calendar calendar, int x, int y) {
-
+        mSchemeBasicPaint.setColor(calendar.getSchemeColor());
+        canvas.drawRect(x + mItemWidth / 2 - mW / 2,
+                y + mItemHeight - mH * 2 - mPadding,
+                x + mItemWidth / 2 + mW / 2,
+                y + mItemHeight - mH - mPadding, mSchemeBasicPaint);
     }
 
     @Override
@@ -57,16 +69,12 @@ public class IndexMonthView extends MonthView {
         int cx = x + mItemWidth / 2;
         int top = y - mItemHeight / 6;
         if (hasScheme) {
-            mCurMonthLunarTextPaint.setColor(mCurMonthLunarTextColor);
             canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
                     calendar.isCurrentDay() ? mCurDayTextPaint :
                             calendar.isCurrentMonth() ? mSchemeTextPaint : mOtherMonthTextPaint);
-            mSchemeBasicPaint.setColor(calendar.getSchemeColor());
+
             canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + y + mItemHeight / 10, mCurMonthLunarTextPaint);
-            canvas.drawRect(x + mItemWidth / 2 - mW / 2,
-                    y + mItemHeight - mH * 2 - mPadding,
-                    x + mItemWidth / 2 + mW / 2,
-                    y + mItemHeight - mH - mPadding, mSchemeBasicPaint);
+
         } else {
             canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
                     calendar.isCurrentDay() ? mCurDayTextPaint :

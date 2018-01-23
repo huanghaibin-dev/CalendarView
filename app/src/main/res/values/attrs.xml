@@ -2,6 +2,7 @@
 <resources>
     <declare-styleable name="GroupRecyclerView">
         <attr name="group_height" format="dimension" />
+        <attr name="group_child_offset" format="dimension" />
         <attr name="group_background" format="color" />
         <attr name="group_text_color" format="color" />
         <attr name="group_text_size" format="dimension" />

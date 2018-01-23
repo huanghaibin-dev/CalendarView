@@ -129,9 +129,6 @@ public class CalendarView extends FrameLayout {
                 if (mWeekPager.getVisibility() == VISIBLE) {
                     return;
                 }
-                if (mDelegate.mDateChangeListener != null) {
-                    mDelegate.mDateChangeListener.onYearChange(position + mDelegate.getMinYear());
-                }
                 if (mDelegate.mYearChangeListener != null) {
                     mDelegate.mYearChangeListener.onYearChange(position + mDelegate.getMinYear());
                 }
@@ -175,6 +172,9 @@ public class CalendarView extends FrameLayout {
             @Override
             public void onMonthSelected(int year, int month) {
                 int position = 12 * (year - mDelegate.getMinYear()) + month - mDelegate.getMinYearMonth();
+                if (mParentLayout != null) {
+                    mParentLayout.isShowSelectedLayout = false;
+                }
                 closeSelectLayout(position);
             }
         });
@@ -236,7 +236,7 @@ public class CalendarView extends FrameLayout {
     }
 
     /**
-     * 打开日历月份快速选择
+     * 打开日历年月份快速选择
      *
      * @param year 年
      */
@@ -248,7 +248,9 @@ public class CalendarView extends FrameLayout {
             }
         }
         mWeekPager.setVisibility(GONE);
-
+        if (mParentLayout != null) {
+            mParentLayout.isShowSelectedLayout = true;
+        }
         mWeekBar.animate()
                 .translationY(-mWeekBar.getHeight())
                 .setInterpolator(new LinearInterpolator())
@@ -290,9 +292,6 @@ public class CalendarView extends FrameLayout {
         mWeekBar.setVisibility(VISIBLE);
         mMonthPager.setVisibility(VISIBLE);
         if (position == mMonthPager.getCurrentItem()) {
-            if (mDelegate.mDateChangeListener != null) {
-                mDelegate.mDateChangeListener.onDateChange(mDelegate.mSelectedCalendar);
-            }
             if (mDelegate.mDateSelectedListener != null) {
                 mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar, false);
             }
@@ -338,9 +337,7 @@ public class CalendarView extends FrameLayout {
         mDelegate.mSelectedCalendar = mDelegate.createCurrentDate();
         mWeekPager.scrollToCurrent();
         mMonthPager.scrollToCurrent();
-        if (mDelegate.mDateChangeListener != null) {
-            mDelegate.mDateChangeListener.onDateChange(mDelegate.createCurrentDate());
-        }
+
         if (mDelegate.mDateSelectedListener != null) {
             mDelegate.mDateSelectedListener.onDateSelected(mDelegate.createCurrentDate(), false);
         }
@@ -398,19 +395,7 @@ public class CalendarView extends FrameLayout {
     }
 
 
-    /**
-     * 日期改变监听器
-     *
-     * @param listener 监听
-     */
-    @Deprecated
-    public void setOnDateChangeListener(OnDateChangeListener listener) {
-        this.mDelegate.mDateChangeListener = listener;
-        if (mDelegate.mDateChangeListener != null) {
-            mDelegate.mDateChangeListener.onDateChange(mDelegate.mSelectedCalendar);
-        }
 
-    }
 
 
     /**
@@ -517,9 +502,8 @@ public class CalendarView extends FrameLayout {
      * @param schemeColor     标记背景色
      * @param schemeTextColor 标记字体颜色
      */
-    @Deprecated
-    public void setSchemeColor(int schemeColor, int schemeTextColor) {
-        mDelegate.setSchemeColor(schemeColor, schemeTextColor, mDelegate.getSchemeLunarTextColor());
+    public void setSchemeColor(int schemeColor, int schemeTextColor,int schemeLunarTextColor) {
+        mDelegate.setSchemeColor(schemeColor, schemeTextColor, schemeLunarTextColor);
     }
 
 
@@ -562,24 +546,6 @@ public class CalendarView extends FrameLayout {
     public interface OnYearChangeListener {
         void onYearChange(int year);
     }
-
-    /**
-     * 日期改变、左右切换、快速年份、月份切换
-     */
-    @SuppressWarnings("DeprecatedIsStillUsed")
-    @Deprecated
-    public interface OnDateChangeListener {
-        /**
-         * 这个方法是准确传递的，但和onDateSelected一样会跟新日历选中状态，造成误区，故新版本建议弃用，
-         * 统一使用onDateSelected
-         */
-        @Deprecated
-        void onDateChange(Calendar calendar);
-
-        @Deprecated
-        void onYearChange(int year);
-    }
-
 
     /**
      * 内部日期选择，不暴露外部使用

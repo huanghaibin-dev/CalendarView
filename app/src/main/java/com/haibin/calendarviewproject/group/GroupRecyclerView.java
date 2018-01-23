@@ -21,6 +21,7 @@ public class GroupRecyclerView extends RecyclerView {
     private int mTextSize;
     private int mPaddingLeft, mPaddingRight;
     private boolean isCenter;
+    protected int mChildItemOffset;
     private boolean isHasHeader;
     private OnGroupChangeListener mListener;
 
@@ -33,6 +34,7 @@ public class GroupRecyclerView extends RecyclerView {
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.GroupRecyclerView);
         mTextSize = array.getDimensionPixelSize(R.styleable.GroupRecyclerView_group_text_size, 16);
         mGroupHeight = (int) array.getDimension(R.styleable.GroupRecyclerView_group_height, 52);
+        mChildItemOffset = (int) array.getDimension(R.styleable.GroupRecyclerView_group_child_offset, 20);
         mTextColor = array.getColor(R.styleable.GroupRecyclerView_group_text_color, 0xFFFFFFFF);
         mGroutBackground = array.getColor(R.styleable.GroupRecyclerView_group_background, 0x80000000);
         isCenter = array.getBoolean(R.styleable.GroupRecyclerView_group_center, false);
@@ -68,6 +70,7 @@ public class GroupRecyclerView extends RecyclerView {
         mItemDecoration.setPadding(mPaddingLeft, mPaddingRight);
         mItemDecoration.setCenter(isCenter);
         mItemDecoration.setHasHeader(isHasHeader);
+        mItemDecoration.setChildItemOffset(mChildItemOffset);
         //mItemDecoration.notifyDataSetChanged((GroupRecyclerAdapter) getAdapter());
     }
 

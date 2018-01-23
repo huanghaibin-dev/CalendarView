@@ -12,7 +12,7 @@ import com.haibin.calendarview.WeekView;
  * Created by huanghaibin on 2017/11/29.
  */
 
-public class SimpleWeekView extends WeekView{
+public class SimpleWeekView extends WeekView {
     private int mRadius;
 
 
@@ -27,10 +27,11 @@ public class SimpleWeekView extends WeekView{
     }
 
     @Override
-    protected void onDrawSelected(Canvas canvas, Calendar calendar, int x, boolean hasScheme) {
+    protected boolean onDrawSelected(Canvas canvas, Calendar calendar, int x, boolean hasScheme) {
         int cx = x + mItemWidth / 2;
-        int cy =  mItemHeight / 2;
+        int cy = mItemHeight / 2;
         canvas.drawCircle(cx, cy, mRadius, mSelectedPaint);
+        return false;
     }
 
     @Override
@@ -42,9 +43,14 @@ public class SimpleWeekView extends WeekView{
 
     @Override
     protected void onDrawText(Canvas canvas, Calendar calendar, int x, boolean hasScheme, boolean isSelected) {
-        float baselineY = mTextBaseLine ;
+        float baselineY = mTextBaseLine;
         int cx = x + mItemWidth / 2;
-        if (hasScheme) {
+        if (isSelected) {
+            canvas.drawText(String.valueOf(calendar.getDay()),
+                    cx,
+                    baselineY,
+                    mSelectTextPaint);
+        } else if (hasScheme) {
             canvas.drawText(String.valueOf(calendar.getDay()),
                     cx,
                     baselineY,

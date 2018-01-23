@@ -77,6 +77,9 @@ public class CalendarLayout extends LinearLayout {
     private float mLastY;
     private boolean isAnimating = false;
 
+    boolean isShowSelectedLayout;
+
+    private boolean mIsOnlyWeekView;
     /**
      * 内容布局id
      */
@@ -96,6 +99,8 @@ public class CalendarLayout extends LinearLayout {
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CalendarLayout);
         mContentViewId = array.getResourceId(R.styleable.CalendarLayout_calendar_content_view_id, 0);
         mDefaultStatus = array.getInt(R.styleable.CalendarLayout_default_status, STATUS_EXPAND);
+        mIsOnlyWeekView = array.getBoolean(R.styleable.CalendarLayout_only_week_view, false);
+
         array.recycle();
         //setSelectPosition(6);
         mVelocityTracker = VelocityTracker.obtain();
@@ -177,7 +182,7 @@ public class CalendarLayout extends LinearLayout {
                 mContentView.getVisibility() != VISIBLE) {
             return super.onInterceptTouchEvent(ev);
         }
-        if (mYearView.getVisibility() == VISIBLE) {
+        if (mYearView.getVisibility() == VISIBLE || isShowSelectedLayout) {
             return super.onInterceptTouchEvent(ev);
         }
         final int action = ev.getAction();
@@ -227,6 +232,8 @@ public class CalendarLayout extends LinearLayout {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (mIsOnlyWeekView)
+            return false;
         if (mContentView == null)
             return false;
         int action = event.getAction();
@@ -301,7 +308,7 @@ public class CalendarLayout extends LinearLayout {
      * 展开
      */
     public boolean expand() {
-        if (isAnimating)
+        if (isAnimating || mIsOnlyWeekView)
             return false;
         if (mMonthView.getVisibility() != VISIBLE) {
             mWeekPager.setVisibility(GONE);
@@ -369,7 +376,7 @@ public class CalendarLayout extends LinearLayout {
         if (mContentView == null) {
             return;
         }
-        if (mDefaultStatus == STATUS_SHRINK) {
+        if (mDefaultStatus == STATUS_SHRINK || mIsOnlyWeekView) {
             post(new Runnable() {
                 @Override
                 public void run() {

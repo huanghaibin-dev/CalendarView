@@ -32,10 +32,11 @@ public class SimpleMonthView extends MonthView {
     }
 
     @Override
-    protected void onDrawSelected(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme) {
+    protected boolean onDrawSelected(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme) {
         int cx = x + mItemWidth / 2;
         int cy = y + mItemHeight / 2;
         canvas.drawCircle(cx, cy, mRadius, mSelectedPaint);
+        return false;
     }
 
     @Override
@@ -49,7 +50,13 @@ public class SimpleMonthView extends MonthView {
     protected void onDrawText(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme, boolean isSelected) {
         float baselineY = mTextBaseLine + y;
         int cx = x + mItemWidth / 2;
-        if (hasScheme) {
+
+        if (isSelected) {
+            canvas.drawText(String.valueOf(calendar.getDay()),
+                    cx,
+                    baselineY,
+                    mSelectTextPaint);
+        }else if (hasScheme) {
             canvas.drawText(String.valueOf(calendar.getDay()),
                     cx,
                     baselineY,

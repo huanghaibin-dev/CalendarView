@@ -26,7 +26,7 @@ import java.util.List;
 
 public class IndexActivity extends BaseActivity implements
         CalendarView.OnDateSelectedListener,
-        CalendarView.OnDateChangeListener,
+        CalendarView.OnYearChangeListener,
         View.OnClickListener{
 
     TextView mTextMonthDay;
@@ -83,7 +83,6 @@ public class IndexActivity extends BaseActivity implements
             }
         });
         mCalendarLayout = (CalendarLayout) findViewById(R.id.calendarLayout);
-        mCalendarView.setOnDateChangeListener(this);
         mCalendarView.setOnDateSelectedListener(this);
         mTextYear.setText(String.valueOf(mCalendarView.getCurYear()));
         mYear = mCalendarView.getCurYear();
@@ -144,20 +143,14 @@ public class IndexActivity extends BaseActivity implements
         return calendar;
     }
 
-    @SuppressLint("SetTextI18n")
     @Override
-    public void onDateChange(Calendar calendar) {
+    public void onDateSelected(Calendar calendar, boolean isClick) {
         mTextLunar.setVisibility(View.VISIBLE);
         mTextYear.setVisibility(View.VISIBLE);
         mTextMonthDay.setText(calendar.getMonth() + "月" + calendar.getDay() + "日");
         mTextYear.setText(String.valueOf(calendar.getYear()));
         mTextLunar.setText(calendar.getLunar());
         mYear = calendar.getYear();
-    }
-
-    @Override
-    public void onDateSelected(Calendar calendar, boolean isClick) {
-        onDateChange(calendar);
     }
 
 

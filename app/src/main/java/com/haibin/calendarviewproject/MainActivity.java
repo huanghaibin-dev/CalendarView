@@ -1,9 +1,11 @@
 package com.haibin.calendarviewproject;
 
 import android.annotation.SuppressLint;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarLayout;
@@ -139,6 +141,19 @@ public class MainActivity extends BaseActivity implements
         mTextYear.setText(String.valueOf(calendar.getYear()));
         mTextLunar.setText(calendar.getLunar());
         mYear = calendar.getYear();
+        if (isClick) {
+            Toast.makeText(this, getCalendarText(calendar), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private static String getCalendarText(Calendar calendar) {
+        return String.format("新历%s \n 农历%s \n 公历节日：%s \n 农历节日：%s \n 节气：%s \n 是否闰月：%s",
+                calendar.getMonth() + "月" + calendar.getDay() + "日",
+                calendar.getLunarCakendar().getMonth() + "月" + calendar.getLunarCakendar().getDay() + "日",
+                TextUtils.isEmpty(calendar.getGregorianFestival()) ? "无" : calendar.getGregorianFestival(),
+                TextUtils.isEmpty(calendar.getTraditionFestival()) ? "无" : calendar.getTraditionFestival(),
+                TextUtils.isEmpty(calendar.getSolarTerm()) ? "无" : calendar.getSolarTerm(),
+                calendar.getLeapMonth() == 0 ? "否" : String.format("润%s月", calendar.getLeapMonth()));
     }
 
     @Override

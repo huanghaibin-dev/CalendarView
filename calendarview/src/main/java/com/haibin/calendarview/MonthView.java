@@ -18,15 +18,12 @@ package com.haibin.calendarview;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.support.annotation.Nullable;
-import android.util.AttributeSet;
-import android.view.MotionEvent;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 月视图基础控件,请使用 MonthView替换，没有任何不同，只是规范命名
@@ -34,48 +31,8 @@ import java.util.List;
  * Created by huanghaibin on 2017/11/15.
  */
 @SuppressWarnings("unused")
-public abstract class MonthView extends View implements View.OnClickListener {
+public abstract class MonthView extends BaseView {
 
-    private CustomCalendarViewDelegate mDelegate;
-    /**
-     * 当前月份日期的笔
-     */
-    protected Paint mCurMonthTextPaint = new Paint();
-
-    /**
-     * 其它月份日期颜色
-     */
-    protected Paint mOtherMonthTextPaint = new Paint();
-
-    /**
-     * 当前月份农历文本颜色
-     */
-    protected Paint mCurMonthLunarTextPaint = new Paint();
-
-    /**
-     * 其它月份农历文本颜色
-     */
-    protected Paint mOtherMonthLunarTextPaint = new Paint();
-
-    /**
-     * 标记的日期背景颜色
-     */
-    protected Paint mSchemePaint = new Paint();
-
-    /**
-     * 标记的文本颜色
-     */
-    protected Paint mSchemeTextPaint = new Paint();
-
-    /**
-     * 当前日期文本颜色
-     */
-    protected Paint mCurDayTextPaint = new Paint();
-
-    /**
-     * 被选择的日期背景色
-     */
-    protected Paint mSelectedPaint = new Paint();
 
     /**
      * 当前日历卡年份
@@ -87,272 +44,59 @@ public abstract class MonthView extends View implements View.OnClickListener {
      */
     private int mMonth;
 
-    /**
-     * 日历布局，需要在日历下方放自己的布局
-     */
-    CalendarLayout mParentLayout;
-
-    /**
-     * 日历项
-     */
-    private List<Calendar> mItems;
 
     /**
      * 日历的行数
      */
     private int mLineCount;
 
-    /**
-     * 每一项的高度
-     */
-    protected int mItemHeight;
-
-    /**
-     * 每一项的宽度
-     */
-    protected int mItemWidth;
-
-    /**
-     * Text的基线
-     */
-    protected float mTextBaseLine;
-
-    /**
-     * 点击的x、y坐标
-     */
-    private float mX, mY;
-
-    /**
-     * 是否点击
-     */
-    private boolean isClick = true;
-
-    /**
-     * 字体大小
-     */
-    static final int TEXT_SIZE = 14;
-
-    /**
-     * 是否有padding
-     */
-    private int mPaddingLeft, mPaddingRight;
-
-    /**
-     * 当前点击项
-     */
-    int mCurrentItem = -1;
-
-    /**
-     * 标记的字体颜色
-     */
-    protected int mSchemeTextColor;
-
-    /**
-     * 标记的农历字体颜色
-     */
-    protected int mSchemeLunarTextColor;
-
-    /**
-     * 当前月份字体颜色
-     */
-    protected int mCurMonthTextColor;
-
-    /**
-     * 选中的字体颜色
-     */
-    protected int mSelectedTextColor;
-
-    /**
-     * 选中农历颜色
-     */
-    protected int mSelectedLunarTextColor;
-
-    /**
-     * 标记颜色
-     */
-    protected int mSchemeColor;
-
-    /**
-     * 当前月份农历颜色
-     */
-    protected int mCurMonthLunarTextColor;
-
-    /**
-     * 其它月份农历颜色
-     */
-    protected int mOtherMonthLunarTextColor;
-
     public MonthView(Context context) {
-        this(context, null);
-    }
-
-    public MonthView(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        initPaint(context);
-    }
-
-    /**
-     * 初始化配置
-     *
-     * @param context context
-     */
-    private void initPaint(Context context) {
-        mCurMonthTextPaint.setAntiAlias(true);
-        mCurMonthTextPaint.setTextAlign(Paint.Align.CENTER);
-        mCurMonthTextPaint.setColor(0xFF111111);
-        mCurMonthTextPaint.setFakeBoldText(true);
-        mCurMonthTextPaint.setTextSize(Util.dipToPx(context, TEXT_SIZE));
-
-        mOtherMonthTextPaint.setAntiAlias(true);
-        mOtherMonthTextPaint.setTextAlign(Paint.Align.CENTER);
-        mOtherMonthTextPaint.setColor(0xFFe1e1e1);
-        mOtherMonthTextPaint.setFakeBoldText(true);
-        mOtherMonthTextPaint.setTextSize(Util.dipToPx(context, TEXT_SIZE));
-
-        mCurMonthLunarTextPaint.setAntiAlias(true);
-        mCurMonthLunarTextPaint.setTextAlign(Paint.Align.CENTER);
-
-        mOtherMonthLunarTextPaint.setAntiAlias(true);
-        mOtherMonthLunarTextPaint.setTextAlign(Paint.Align.CENTER);
-
-        mSchemeTextPaint.setAntiAlias(true);
-        mSchemeTextPaint.setStyle(Paint.Style.FILL);
-        mSchemeTextPaint.setTextAlign(Paint.Align.CENTER);
-        mSchemeTextPaint.setColor(0xffed5353);
-        mSchemeTextPaint.setFakeBoldText(true);
-        mSchemeTextPaint.setTextSize(Util.dipToPx(context, TEXT_SIZE));
-
-        mSchemePaint.setAntiAlias(true);
-        mSchemePaint.setStyle(Paint.Style.FILL);
-        mSchemePaint.setStrokeWidth(2);
-        mSchemePaint.setColor(0xffefefef);
-
-        mCurDayTextPaint.setAntiAlias(true);
-        mCurDayTextPaint.setTextAlign(Paint.Align.CENTER);
-        mCurDayTextPaint.setColor(Color.RED);
-        mCurDayTextPaint.setFakeBoldText(true);
-        mCurDayTextPaint.setTextSize(Util.dipToPx(context, TEXT_SIZE));
-
-        mSelectedPaint.setAntiAlias(true);
-        mSelectedPaint.setStyle(Paint.Style.FILL);
-        mSelectedPaint.setStrokeWidth(2);
-
-        mPaddingLeft = Util.dipToPx(context, 8);
-        mPaddingRight = Util.dipToPx(context, 8);
-
-        setOnClickListener(this);
-    }
-
-    void setup(CustomCalendarViewDelegate delegate) {
-        this.mDelegate = delegate;
-        mCurMonthTextColor = delegate.getCurrentMonthTextColor();
-        mCurMonthLunarTextColor = delegate.getCurrentMonthLunarTextColor();
-        mCurDayTextPaint.setColor(delegate.getCurDayTextColor());
-        mCurMonthTextPaint.setColor(delegate.getCurrentMonthTextColor());
-        mOtherMonthTextPaint.setColor(delegate.getOtherMonthTextColor());
-        mCurMonthLunarTextPaint.setColor(delegate.getCurrentMonthLunarTextColor());
-        mOtherMonthLunarTextColor = delegate.getOtherMonthLunarTextColor();
-        mOtherMonthLunarTextPaint.setColor(mOtherMonthLunarTextColor);
-
-
-        this.mSchemeColor = delegate.getSchemeThemeColor();
-        this.mSchemePaint.setColor(mSchemeColor);
-        this.mSchemeTextColor = delegate.getSchemeTextColor();
-        this.mSchemeTextPaint.setColor(mSchemeTextColor);
-        this.mSchemeLunarTextColor = delegate.getSchemeLunarTextColor();
-
-
-        mCurMonthTextPaint.setTextSize(delegate.getDayTextSize());
-        mOtherMonthTextPaint.setTextSize(mCurMonthTextPaint.getTextSize());
-        mCurDayTextPaint.setTextSize(mCurMonthTextPaint.getTextSize());
-        mSchemeTextPaint.setTextSize(mCurMonthTextPaint.getTextSize());
-        mCurMonthLunarTextPaint.setTextSize(delegate.getLunarTextSize());
-
-        mSelectedPaint.setStyle(Paint.Style.FILL);
-        this.mSelectedPaint.setColor(delegate.getSelectedThemeColor());
-        this.mSelectedTextColor = delegate.getSelectedTextColor();
-        this.mSelectedLunarTextColor = delegate.getSelectedLunarTextColor();
-        setItemHeight(delegate.getCalendarItemHeight());
+        super(context);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
         if (mLineCount == 0)
             return;
-        mItemWidth = (getWidth() - mPaddingLeft - mPaddingRight) / 7;
+        Log.e("onDraw", "onDraw");
+        mItemWidth = getWidth() / 7;
         onPreviewHook();
         int d = 0;
         for (int i = 0; i < mLineCount; i++) {
             for (int j = 0; j < 7; j++) {
-                int x = j * mItemWidth + mPaddingLeft;
+                int x = j * mItemWidth;
                 int y = i * mItemHeight;
                 onLoopStart(x, y);
                 Calendar calendar = mItems.get(d);
-                mCurMonthLunarTextPaint.setColor(mCurMonthLunarTextColor);
-                mOtherMonthLunarTextPaint.setColor(mOtherMonthLunarTextColor);
                 boolean isSelected = d == mCurrentItem;
-                if (mDelegate.mSchemeDate != null && mDelegate.mSchemeDate.contains(calendar)) {
+                boolean hasScheme = mDelegate.mSchemeDate != null && mDelegate.mSchemeDate.contains(calendar);
+
+                if (hasScheme) {
                     //标记的日子
                     Calendar scheme = mDelegate.mSchemeDate.get(mDelegate.mSchemeDate.indexOf(calendar));
-                    calendar.setScheme(scheme.getScheme());
+                    calendar.setScheme(TextUtils.isEmpty(scheme.getScheme()) ? mDelegate.getSchemeText() : scheme.getScheme());
                     calendar.setSchemeColor(scheme.getSchemeColor());
 
-                    //if判断规范必须要else，避免错位
+                    boolean isDrawSelected = false;//是否继续绘制选中的onDrawScheme
                     if (isSelected) {
-                        //将画笔设置为选中颜色
-                        mSchemeTextPaint.setColor(mSelectedTextColor);
-                        mCurMonthLunarTextPaint.setColor(mSelectedLunarTextColor);
-                        onDrawSelected(canvas, calendar, x, y, true);
-                    } else {
+                        isDrawSelected = onDrawSelected(canvas, calendar, x, y, true);
+                    }
+                    if (isDrawSelected || !isSelected) {
                         //将画笔设置为标记颜色
-                        mSchemePaint.setColor(calendar.getSchemeColor() != 0 ? calendar.getSchemeColor() : mSchemeColor);
-                        mSchemeTextPaint.setColor(mSchemeTextColor);
-                        mCurMonthLunarTextPaint.setColor(mSchemeLunarTextColor);
+                        mSchemePaint.setColor(calendar.getSchemeColor() != 0 ? calendar.getSchemeColor() : mDelegate.getSchemeThemeColor());
                         onDrawScheme(canvas, scheme, x, y);
                     }
-                    onDrawText(canvas, calendar, x, y, true, isSelected);
                 } else {
-                    mCurMonthTextPaint.setColor(mCurMonthTextColor);
                     if (isSelected) {
-                        //将画笔设置为选中颜色
-                        mCurMonthTextPaint.setColor(mSelectedTextColor);
-                        mCurMonthLunarTextPaint.setColor(mSelectedLunarTextColor);
                         onDrawSelected(canvas, calendar, x, y, false);
                     }
-                    onDrawText(canvas, calendar, x, y, false, isSelected);
                 }
+                onDrawText(canvas, calendar, x, y, hasScheme, isSelected);
                 ++d;
             }
         }
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (event.getPointerCount() > 1)
-            return false;
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                mX = event.getX();
-                mY = event.getY();
-                isClick = true;
-                break;
-            case MotionEvent.ACTION_MOVE:
-                float mDY;
-                if (isClick) {
-                    mDY = event.getY() - mY;
-                    isClick = Math.abs(mDY) <= 50;
-
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-                mX = event.getX();
-                mY = event.getY();
-                break;
-        }
-        return super.onTouchEvent(event);
-    }
 
     @SuppressWarnings("deprecation")
     @Override
@@ -386,10 +130,7 @@ public abstract class MonthView extends View implements View.OnClickListener {
                 }
 
                 if (mDelegate.mDateSelectedListener != null) {
-                    mDelegate.mDateSelectedListener.onDateSelected(calendar,true);
-                }
-                if (mDelegate.mDateChangeListener != null) {
-                    mDelegate.mDateChangeListener.onDateChange(calendar);
+                    mDelegate.mDateSelectedListener.onDateSelected(calendar, true);
                 }
                 invalidate();
             }
@@ -397,7 +138,7 @@ public abstract class MonthView extends View implements View.OnClickListener {
     }
 
     private Calendar getIndex() {
-        int width = (getWidth() - mPaddingLeft - mPaddingRight) / 7;
+        int width = getWidth() / 7;
         int indexX = (int) mX / width;
         if (indexX >= 7) {
             indexX = 6;
@@ -496,9 +237,7 @@ public abstract class MonthView extends View implements View.OnClickListener {
                 calendarDate.setCurrentDay(true);
                 mCurrentItem = i;
             }
-            calendarDate.setWeekend(Util.isWeekend(calendarDate));
-            calendarDate.setWeek(Util.getWeekFormCalendar(calendarDate));
-            calendarDate.setLunar(LunarCalendar.getLunarText(calendarDate.getYear(), calendarDate.getMonth(), calendarDate.getDay()));
+            LunarCalendar.setupLunarCalendar(calendarDate);
             mItems.add(calendarDate);
         }
         mLineCount = mItems.size() / 7;
@@ -514,6 +253,8 @@ public abstract class MonthView extends View implements View.OnClickListener {
         invalidate();
     }
 
+
+    @Override
     void update() {
         if (mDelegate.mSchemeDate != null) {
             for (Calendar a : mItems) {
@@ -528,6 +269,7 @@ public abstract class MonthView extends View implements View.OnClickListener {
         }
     }
 
+
     int getSelectedIndex(Calendar calendar) {
         return mItems.indexOf(calendar);
     }
@@ -540,7 +282,7 @@ public abstract class MonthView extends View implements View.OnClickListener {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
-    public void setItemHeight(int itemHeight) {
+    private void setItemHeight(int itemHeight) {
         this.mItemHeight = itemHeight;
         Paint.FontMetrics metrics = mCurMonthTextPaint.getFontMetrics();
         mTextBaseLine = mItemHeight / 2 - metrics.descent + (metrics.bottom - metrics.top) / 2;
@@ -577,11 +319,12 @@ public abstract class MonthView extends View implements View.OnClickListener {
      * @param x         日历Card x起点坐标
      * @param y         日历Card y起点坐标
      * @param hasScheme hasScheme 非标记的日期
+     * @return 是否绘制onDrawScheme，true or false
      */
-    protected abstract void onDrawSelected(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme);
+    protected abstract boolean onDrawSelected(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme);
 
     /**
-     * 绘制标记的日期
+     * 绘制标记的日期,这里可以是背景色，标记色什么的
      *
      * @param canvas   canvas
      * @param calendar 日历calendar

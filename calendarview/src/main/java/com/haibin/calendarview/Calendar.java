@@ -25,35 +25,89 @@ import java.io.Serializable;
 public class Calendar implements Serializable {
     private static final long serialVersionUID = 141315161718191143L;
 
-    /**年*/
+    /**
+     * 年
+     */
     private int year;
 
-    /**月*/
+    /**
+     * 月
+     */
     private int month;
 
-    /**日*/
+    /**
+     * 如果是闰月，则返回闰月
+     */
+    private int leapMonth;
+
+    /**
+     * 日
+     */
     private int day;
 
-    /**是否是本月*/
+    /**
+     * 是否是闰年
+     */
+    private boolean isLeapYear;
+
+    /**
+     * 是否是本月,这里对应的是月视图的本月，而非当前月份，请注意
+     */
     private boolean isCurrentMonth;
 
-    /**是否是今天*/
-    private boolean isCurrentDay;//
+    /**
+     * 是否是今天
+     */
+    private boolean isCurrentDay;
 
-    /**农历*/
+    /**
+     * 农历字符串，没有特别大的意义，用来做简单的农历或者节日标记
+     * 建议通过lunarCakendar获取完整的农历日期
+     */
     private String lunar;
 
-    /**计划，可以用来标记当天是否有任务*/
+
+    /**
+     * 24节气
+     */
+    private String solarTerm;
+
+
+    /**
+     * 公历节日
+     */
+    private String gregorianFestival;
+
+    /**
+     * 传统农历节日
+     */
+    private String traditionFestival;
+
+    /**
+     * 计划，可以用来标记当天是否有任务
+     */
     private String scheme;
 
-    /**各种自定义标记颜色、没有则选择默认颜色*/
+    /**
+     * 各种自定义标记颜色、没有则选择默认颜色
+     */
     private int schemeColor;
 
-    /**是否是周末*/
+    /**
+     * 是否是周末
+     */
     private boolean isWeekend;
 
-    /**星期*/
+    /**
+     * 星期
+     */
     private int week;
+
+    /**
+     * 获取完整的农历日期
+     */
+    private Calendar lunarCakendar;
+
 
     public int getYear() {
         return year;
@@ -135,6 +189,55 @@ public class Calendar implements Serializable {
 
     public void setWeek(int week) {
         this.week = week;
+    }
+
+    public Calendar getLunarCakendar() {
+        return lunarCakendar;
+    }
+
+    public void setLunarCakendar(Calendar lunarCakendar) {
+        this.lunarCakendar = lunarCakendar;
+    }
+
+    public String getSolarTerm() {
+        return solarTerm;
+    }
+
+    public void setSolarTerm(String solarTerm) {
+        this.solarTerm = solarTerm;
+    }
+
+    public String getGregorianFestival() {
+        return gregorianFestival;
+    }
+
+    public void setGregorianFestival(String gregorianFestival) {
+        this.gregorianFestival = gregorianFestival;
+    }
+
+
+    public int getLeapMonth() {
+        return leapMonth;
+    }
+
+    public void setLeapMonth(int leapMonth) {
+        this.leapMonth = leapMonth;
+    }
+
+    public boolean isLeapYear() {
+        return isLeapYear;
+    }
+
+    public void setLeapYear(boolean leapYear) {
+        isLeapYear = leapYear;
+    }
+
+    public String getTraditionFestival() {
+        return traditionFestival;
+    }
+
+    public void setTraditionFestival(String traditionFestival) {
+        this.traditionFestival = traditionFestival;
     }
 
     @Override

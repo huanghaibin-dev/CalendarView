@@ -2,7 +2,6 @@ package com.haibin.calendarviewproject.meizu;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.haibin.calendarview.Calendar;
@@ -25,7 +24,7 @@ public class MeiZuMonthView extends MonthView {
         super(context);
 
         mTextPaint.setTextSize(dipToPx(context, 8));
-        mTextPaint.setColor(0xff111111);
+        mTextPaint.setColor(0xffffffff);
         mTextPaint.setAntiAlias(true);
         mTextPaint.setFakeBoldText(true);
 
@@ -41,43 +40,53 @@ public class MeiZuMonthView extends MonthView {
 
     }
 
+    /**
+     *
+     * @param canvas    canvas
+     * @param calendar  日历日历calendar
+     * @param x         日历Card x起点坐标
+     * @param y         日历Card y起点坐标
+     * @param hasScheme hasScheme 非标记的日期
+     * @return true 则绘制onDrawScheme，因为这里背景色不是是互斥的
+     */
     @Override
-    protected void onDrawSelected(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme) {
+    protected boolean onDrawSelected(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme) {
         mSelectedPaint.setStyle(Paint.Style.FILL);
         mSelectedPaint.setColor(0x80cfcfcf);
         canvas.drawRect(x + mPadding, y + mPadding, x + mItemWidth - mPadding, y + mItemHeight - mPadding, mSelectedPaint);
+        return true;
     }
 
     @Override
     protected void onDrawScheme(Canvas canvas, Calendar calendar, int x, int y) {
+        mSchemeBasicPaint.setColor(calendar.getSchemeColor());
 
+        canvas.drawCircle(x + mItemWidth - mPadding - mRadio / 2, y + mPadding + mRadio, mRadio, mSchemeBasicPaint);
+
+        canvas.drawText(calendar.getScheme(), x + mItemWidth - mPadding - mRadio, y + mPadding + mSchemeBaseLine, mTextPaint);
     }
 
     @Override
     protected void onDrawText(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme, boolean isSelected) {
         int cx = x + mItemWidth / 2;
         int top = y - mItemHeight / 6;
-        if (hasScheme) {
-            //mSchemeTextPaint.setColor(calendar.getSchemeColor());
-            //mCurMonthLunarTextPaint.setColor(mCurMonthLunarTextColor);
+
+        if (isSelected) {
             canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
-                    calendar.isCurrentDay() ? mCurDayTextPaint :
-                            calendar.isCurrentMonth() ? mSchemeTextPaint : mOtherMonthTextPaint);
+                    mSelectTextPaint);
+            canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + y + mItemHeight / 10, mSelectedLunarTextPaint);
+        } else if (hasScheme) {
+            canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
+                    calendar.isCurrentMonth() ? mSchemeTextPaint : mOtherMonthTextPaint);
 
             canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + y + mItemHeight / 10, mCurMonthLunarTextPaint);
-
-            mTextPaint.setColor(Color.WHITE);
-            mSchemeBasicPaint.setColor(calendar.getSchemeColor());
-
-            canvas.drawCircle(x + mItemWidth - mPadding - mRadio / 2, y + mPadding + mRadio, mRadio, mSchemeBasicPaint);
-
-            canvas.drawText(calendar.getScheme(), x + mItemWidth - mPadding - mRadio, y + mPadding + mSchemeBaseLine, mTextPaint);
-
         } else {
             canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
                     calendar.isCurrentDay() ? mCurDayTextPaint :
                             calendar.isCurrentMonth() ? mCurMonthTextPaint : mOtherMonthTextPaint);
-            canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + y + mItemHeight / 10, mCurMonthLunarTextPaint);
+            canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + y + mItemHeight / 10,
+                    calendar.isCurrentDay() ? mCurDayLunarTextPaint :
+                            calendar.isCurrentMonth() ? mCurMonthLunarTextPaint : mOtherMonthLunarTextPaint);
         }
     }
 

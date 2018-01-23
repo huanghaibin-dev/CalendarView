@@ -46,7 +46,7 @@ class LunarCalendar {
      * 公历节日
      */
     private static final String[] SOLAR_CALENDAR = {
-            "0101元旦", "0214情人节", "0315消权日", "0401愚人节", "0501劳动节", "0504青年节",
+            "0101元旦", "0214情人节", "0308妇女节", "0315消权日", "0401愚人节", "0501劳动节", "0504青年节",
             "0601儿童节", "0701建党节", "0801建军节", "0910教师节", "1001国庆节", "1224平安夜",
             "1225圣诞节"
     };
@@ -65,7 +65,7 @@ class LunarCalendar {
      * @param day   农历日
      * @return 返回传统农历节日
      */
-    private static String getTraditionFestivalText(int year, int month, int day) {
+    private static String getTraditionFestival(int year, int month, int day) {
         if (month == 12) {
             int count = daysInLunarMonth(year, month);
             if (day == count) {
@@ -169,7 +169,7 @@ class LunarCalendar {
      * @param day   公历日期
      * @return 公历节日
      */
-    private static String getSolarCalendar(int month, int day) {
+    private static String gregorianFestival(int month, int day) {
         String text = getString(month, day);
         String solar = "";
         for (String aMSolarCalendar : SOLAR_CALENDAR) {
@@ -194,7 +194,7 @@ class LunarCalendar {
      * @param day   日
      * @return 返回24节气
      */
-    private static String getTermString(int year, int month, int day) {
+    private static String getSolarTerm(int year, int month, int day) {
         if (!SOLAR_TERMS.containsKey(year)) {
             SOLAR_TERMS.put(year, SolarTermUtil.getSolarTerms(year));
         }
@@ -220,19 +220,61 @@ class LunarCalendar {
      * @return 农历节日
      */
     static String getLunarText(int year, int month, int day) {
-        String termText = LunarCalendar.getTermString(year, month, day);
-        String solar = LunarCalendar.getSolarCalendar(month, day);
+        String termText = LunarCalendar.getSolarTerm(year, month, day);
+        String solar = LunarCalendar.gregorianFestival(month, day);
         if (!TextUtils.isEmpty(solar))
             return solar;
         if (!TextUtils.isEmpty(termText))
             return termText;
         int[] lunar = LunarUtil.solarToLunar(year, month, day);
-        String festival = getTraditionFestivalText(lunar[0], lunar[1], lunar[2]);
+        String festival = getTraditionFestival(lunar[0], lunar[1], lunar[2]);
         if (!TextUtils.isEmpty(festival))
             return festival;
         return LunarCalendar.numToChinese(lunar[1], lunar[2], lunar[3]);
     }
 
+    /**
+     * 初始化各种农历、节日
+     *
+     * @param calendar calendar
+     */
+    static void setupLunarCalendar(Calendar calendar) {
+        int year = calendar.getYear();
+        int month = calendar.getMonth();
+        int day = calendar.getDay();
+        calendar.setWeekend(Util.isWeekend(calendar));
+        calendar.setWeek(Util.getWeekFormCalendar(calendar));
+
+        Calendar lunarCalendar = new Calendar();
+        calendar.setLunarCakendar(lunarCalendar);
+        int[] lunar = LunarUtil.solarToLunar(year, month, day);
+        lunarCalendar.setYear(lunar[0]);
+        lunarCalendar.setMonth(lunar[1]);
+        lunarCalendar.setDay(lunar[2]);
+        calendar.setLeapYear(Util.isLeapYear(year));
+        if (lunar[3] == 1) {//如果是闰月
+            calendar.setLeapMonth(lunar[1]);
+            lunarCalendar.setLeapMonth(lunar[1]);
+        }
+        String solarTerm = LunarCalendar.getSolarTerm(year, month, day);
+        String gregorian = LunarCalendar.gregorianFestival(month, day);
+        String festival = getTraditionFestival(lunar[0], lunar[1], lunar[2]);
+        calendar.setSolarTerm(solarTerm);
+        calendar.setGregorianFestival(gregorian);
+        calendar.setTraditionFestival(festival);
+        lunarCalendar.setTraditionFestival(festival);
+        lunarCalendar.setSolarTerm(solarTerm);
+        if (!TextUtils.isEmpty(solarTerm)) {
+            calendar.setLunar(solarTerm);
+        } else if (!TextUtils.isEmpty(gregorian)) {
+            calendar.setLunar(gregorian);
+        } else if (!TextUtils.isEmpty(festival)) {
+            calendar.setLunar(festival);
+        } else {
+            calendar.setLunar(LunarCalendar.numToChinese(lunar[1], lunar[2], lunar[3]));
+        }
+        lunarCalendar.setLunar(calendar.getLunar());
+    }
 
     /**
      * 获取农历节日
