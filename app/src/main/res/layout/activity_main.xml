@@ -123,7 +123,7 @@
             app:scheme_theme_color="#128c4b"
             app:selected_lunar_text_color="#128c4b"
             app:selected_text_color="#128c4b"
-            app:selected_theme_color="#108cd4"
+            app:selected_theme_color="#80cfcfcf"
             app:week_background="#fff"
             app:week_bar_view="com.haibin.calendarviewproject.EnglishWeekBar"
             app:week_line_background="#00000000"

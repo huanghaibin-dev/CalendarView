@@ -115,7 +115,7 @@
             app:month_view="com.haibin.calendarviewproject.index.IndexMonthView"
             app:week_view="com.haibin.calendarviewproject.index.IndexWeekView"
             app:selected_text_color="#333"
-            app:selected_theme_color="#108cd4"
+            app:selected_theme_color="#80cfcfcf"
             app:week_background="#fff"
             app:week_text_color="#111"
             app:year_view_day_text_color="#333333"
