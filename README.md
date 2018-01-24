@@ -16,7 +16,7 @@ compile 'com.haibin:calendarview:3.1.3'
 ```
 
 ### 完整用法教程请参照博客教程
-[**http://blog.csdn.net/huanghaibin_dev/article/details/79040147**](http://blog.csdn.net/huanghaibin_dev/article/details/79040147)
+[**https://juejin.im/post/5a6743836fb9a01caa20aefc**](https://juejin.im/post/5a6743836fb9a01caa20aefc)
 
 ### 如果你需要完全定制UI，参考demo，简单几步即可绘制你需要的效果，一般只需要实现三个回调函数绘制你需要的特效即可，自定义日历UI需要同时自定义周视图，真正做到热插拔效果，方便大众定制UI需求
 
