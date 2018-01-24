@@ -35,7 +35,7 @@ import java.util.List;
  * 日历布局
  * 各个类使用包权限，避免不必要的public
  */
-@SuppressWarnings("deprecation,unused")
+@SuppressWarnings("unused")
 public class CalendarView extends FrameLayout {
 
     /**
@@ -387,7 +387,6 @@ public class CalendarView extends FrameLayout {
      *
      * @param year 快速滚动的年份
      */
-    @SuppressWarnings("unused")
     public void scrollToYear(int year) {
         mMonthPager.setCurrentItem(12 * (year - mDelegate.getMinYear()) +
                 mDelegate.getCurrentDay().getMonth() - mDelegate.getMinYearMonth());
@@ -403,7 +402,6 @@ public class CalendarView extends FrameLayout {
      *
      * @param listener listener
      */
-    @SuppressWarnings("unused")
     public void setOnYearChangeListener(OnYearChangeListener listener) {
         this.mDelegate.mYearChangeListener = listener;
     }
@@ -458,7 +456,6 @@ public class CalendarView extends FrameLayout {
      * @param weekBackground     星期栏背景色
      * @param lineBg             线的颜色
      */
-    @SuppressWarnings("unused")
     public void setBackground(int yearViewBackground, int weekBackground, int lineBg) {
         mWeekBar.setBackgroundColor(weekBackground);
         mSelectLayout.setBackgroundColor(yearViewBackground);
@@ -513,7 +510,6 @@ public class CalendarView extends FrameLayout {
      * @param weekBackground 背景色
      * @param weekTextColor  字体颜色
      */
-    @SuppressWarnings("unused")
     public void setWeeColor(int weekBackground, int weekTextColor) {
         mWeekBar.setBackgroundColor(weekBackground);
         mWeekBar.setTextColor(weekTextColor);

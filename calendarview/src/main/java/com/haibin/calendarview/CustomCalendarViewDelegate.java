@@ -253,7 +253,6 @@ class CustomCalendarViewDelegate {
         return mCurDayLunarTextColor;
     }
 
-    @SuppressWarnings("unused")
     int getWeekTextColor() {
         return mWeekTextColor;
     }
@@ -392,12 +391,6 @@ class CustomCalendarViewDelegate {
         this.mSelectedLunarTextColor = selectedLunarTextColor;
     }
 
-    @SuppressWarnings("unused")
-    @Deprecated
-    void setDayTextSize(float calendarTextSize, float lunarTextSize) {
-        mDayTextSize = (int) calendarTextSize;
-        mLunarTextSize = (int) lunarTextSize;
-    }
 
     Calendar getCurrentDay() {
         return mCurrentDate;

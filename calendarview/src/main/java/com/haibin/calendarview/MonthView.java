@@ -18,7 +18,6 @@ package com.haibin.calendarview;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -29,7 +28,6 @@ import java.util.ArrayList;
  * pleased using MonthView replace BaseCalendarCardView
  * Created by huanghaibin on 2017/11/15.
  */
-@SuppressWarnings("unused")
 public abstract class MonthView extends BaseView {
 
 
@@ -278,12 +276,6 @@ public abstract class MonthView extends BaseView {
             heightMeasureSpec = MeasureSpec.makeMeasureSpec(mItemHeight * mLineCount, MeasureSpec.EXACTLY);
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
-
-    private void setItemHeight(int itemHeight) {
-        this.mItemHeight = itemHeight;
-        Paint.FontMetrics metrics = mCurMonthTextPaint.getFontMetrics();
-        mTextBaseLine = mItemHeight / 2 - metrics.descent + (metrics.bottom - metrics.top) / 2;
     }
 
     /**

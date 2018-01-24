@@ -39,6 +39,7 @@ public class WeekBar extends LinearLayout {
      */
     void setup(CustomCalendarViewDelegate delegate) {
         setBackgroundColor(delegate.getWeekBackground());
+        setTextColor(delegate.getWeekTextColor());
     }
 
     @Override
