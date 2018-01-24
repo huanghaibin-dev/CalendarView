@@ -20,7 +20,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -58,7 +57,6 @@ public abstract class MonthView extends BaseView {
     protected void onDraw(Canvas canvas) {
         if (mLineCount == 0)
             return;
-        Log.e("onDraw", "onDraw");
         mItemWidth = getWidth() / 7;
         onPreviewHook();
         int d = 0;

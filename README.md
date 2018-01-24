@@ -14,15 +14,21 @@ compile 'com.haibin:calendarview:3.1.3'
   <type>pom</type>
 </dependency>
 ```
+
+### 完整用法教程请参照博客教程
+```
+http://blog.csdn.net/huanghaibin_dev/article/details/79040147
+```
+
 ### 如果你需要完全定制UI，参考demo，简单几步即可绘制你需要的效果，一般只需要实现三个回调函数绘制你需要的特效即可，自定义日历UI需要同时自定义周视图，真正做到热插拔效果，方便大众定制UI需求
 
 ### 效果预览
 ### 收缩展开的魅族风格效果
-<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/meizu.jpeg" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/shrink.jpeg" height="650"/>
+<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/meizu_expand.jpeg" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/meizu_shrink.jpeg" height="650"/>
 ### 下标和多彩风格
-<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/index.jpeg" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/colorful.jpeg" height="650"/>
+<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/index_expand.jpeg" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/color_expand.jpeg" height="650"/>
 ### 快速年份月份切换
-<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/month.jpeg" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/simple.jpeg" height="650"/>
+<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/year_view.jpeg" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/simple_expand.jpeg" height="650"/>
 
 
 ### 使用方法
@@ -217,10 +223,11 @@ public class SimpleCalendarCardView extends MonthView {
     }
 
     @Override
-    protected void onDrawSelected(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme) {
+    protected boolean onDrawSelected(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme) {
         int cx = x + mItemWidth / 2;
         int cy = y + mItemHeight / 2;
         canvas.drawCircle(cx, cy, mRadius, mSelectedPaint);
+        return false;
     }
 
     @Override
@@ -251,6 +258,7 @@ public class SimpleCalendarCardView extends MonthView {
 ```
 
 #### 其次绘制周视图，周视图回调几乎一样，唯一的区别是不需要y，只有一行，所以可以直接拷贝代码，把y=0即可
+```java
 public class SimpleWeekView extends WeekView{
     private int mRadius;
 
@@ -266,10 +274,11 @@ public class SimpleWeekView extends WeekView{
     }
 
     @Override
-    protected void onDrawSelected(Canvas canvas, Calendar calendar, int x, boolean hasScheme) {
+    protected boolean onDrawSelected(Canvas canvas, Calendar calendar, int x, boolean hasScheme) {
         int cx = x + mItemWidth / 2;
         int cy =  mItemHeight / 2;
         canvas.drawCircle(cx, cy, mRadius, mSelectedPaint);
+        return false
     }
 
     @Override
@@ -297,7 +306,7 @@ public class SimpleWeekView extends WeekView{
         }
     }
 }
-
+```
 
 ## Licenses
 - Copyright (C) 2013 huanghaibin_dev <huanghaibin_dev@163.com>

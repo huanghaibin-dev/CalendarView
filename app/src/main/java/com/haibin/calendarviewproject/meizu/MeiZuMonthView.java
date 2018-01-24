@@ -14,7 +14,14 @@ import com.haibin.calendarview.MonthView;
 
 public class MeiZuMonthView extends MonthView {
 
+    /**
+     * 自定义魅族标记的文本画笔
+     */
     private Paint mTextPaint = new Paint();
+
+    /**
+     * 自定义魅族标记的圆形背景
+     */
     private Paint mSchemeBasicPaint = new Paint();
     private float mRadio;
     private int mPadding;
@@ -31,7 +38,6 @@ public class MeiZuMonthView extends MonthView {
         mSchemeBasicPaint.setAntiAlias(true);
         mSchemeBasicPaint.setStyle(Paint.Style.FILL);
         mSchemeBasicPaint.setTextAlign(Paint.Align.CENTER);
-        mSchemeBasicPaint.setColor(0xffed5353);
         mSchemeBasicPaint.setFakeBoldText(true);
         mRadio = dipToPx(getContext(), 7);
         mPadding = dipToPx(getContext(), 4);
@@ -41,7 +47,7 @@ public class MeiZuMonthView extends MonthView {
     }
 
     /**
-     *
+     * 绘制选中的日子
      * @param canvas    canvas
      * @param calendar  日历日历calendar
      * @param x         日历Card x起点坐标
@@ -57,6 +63,13 @@ public class MeiZuMonthView extends MonthView {
         return true;
     }
 
+    /**
+     * 绘制标记的事件日子
+     * @param canvas   canvas
+     * @param calendar 日历calendar
+     * @param x        日历Card x起点坐标
+     * @param y        日历Card y起点坐标
+     */
     @Override
     protected void onDrawScheme(Canvas canvas, Calendar calendar, int x, int y) {
         mSchemeBasicPaint.setColor(calendar.getSchemeColor());
@@ -66,6 +79,15 @@ public class MeiZuMonthView extends MonthView {
         canvas.drawText(calendar.getScheme(), x + mItemWidth - mPadding - mRadio, y + mPadding + mSchemeBaseLine, mTextPaint);
     }
 
+    /**
+     * 绘制文本
+     * @param canvas     canvas
+     * @param calendar   日历calendar
+     * @param x          日历Card x起点坐标
+     * @param y          日历Card y起点坐标
+     * @param hasScheme  是否是标记的日期
+     * @param isSelected 是否选中
+     */
     @Override
     protected void onDrawText(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme, boolean isSelected) {
         int cx = x + mItemWidth / 2;
