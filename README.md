@@ -1,5 +1,5 @@
 # CalenderView
-Android上一个优雅、高度自定义、性能高效的日历控件，完美支持周视图，支持标记、自定义颜色、农历等。Canvas绘制，速度快、占用内存低，3.0.0版本全新重构，支持简单重新即可实现任意自定义布局、自定义UI，支持收缩展开、性能非常高效，
+Android上一个优雅、高度自定义、性能高效的日历控件，完美支持周视图，支持标记、自定义颜色、农历等，任意控制月视图显示。Canvas绘制，速度快、占用内存低，，支持简单定制即可实现任意自定义布局、自定义UI，支持收缩展开、性能非常高效，
 这个控件内存和效率优势相当明显，而且真正做到收缩+展开，适配多种场景，支持同时多种颜色标记日历事务，更多参考用法请移步Demo，Demo实现了4个精美的自定义效果。
 
 ### Gradle
@@ -18,7 +18,7 @@ compile 'com.haibin:calendarview:3.1.6'
 ### 完整用法教程请参照博客教程
 [**https://juejin.im/post/5a6743836fb9a01caa20aefc**](https://juejin.im/post/5a6743836fb9a01caa20aefc)
 
-### 如果你需要完全定制UI，参考demo，简单几步即可绘制你需要的效果，一般只需要实现三个回调函数绘制你需要的特效即可，自定义日历UI需要同时自定义周视图，真正做到热插拔效果，方便大众定制UI需求
+### 如果你需要完全定制UI，参考demo，简单几步即可绘制你需要的效果，一般只需要实现三个回调函数绘制你需要的特效即可，自定义日历UI需要同时自定义周视图，真正做到热插拔效果，方便大众定制各种UI需求
 
 ### 效果预览
 ### 收缩展开的魅族风格效果
@@ -72,14 +72,16 @@ compile 'com.haibin:calendarview:3.1.6'
 ```xml
 <declare-styleable name="CalendarView">
 
-        <attr name="calendar_card_view" format="color" /> <!--热插拔自定义类日历月视图路径-->
+        <attr name="month_view" format="color" /> <!--热插拔自定义类日历月视图路径-->
         <attr name="week_view" format="color" /> <!--热插拔自定义类周视图路径-->
         <attr name="week_bar_view" format="color" /> <!--自定义类周栏路径-->
 
+        <attr name="week_line_background" format="color" /><!--线条颜色-->
         <attr name="week_background" format="color" /> <!--星期栏的背景-->
         <attr name="week_text_color" format="color" /> <!--星期栏文本颜色-->
 
         <attr name="current_day_text_color" format="color" /> <!--今天的文本颜色-->
+        <attr name="current_day_lunar_text_color" format="color" /><!--今天的农历文本颜色-->
   
         <attr name="calendar_height" format="string" /> <!--日历每项的高度，56dp-->
         <attr name="day_text_size" format="string" /> <!--天数文本大小-->
