@@ -50,6 +50,12 @@
         <attr name="min_year_month" format="integer" />
         <attr name="max_year_month" format="integer" />
 
+        <attr name="month_view_show_mode">
+            <enum name="mode_all" value="0" />
+            <enum name="mode_only_current" value="1" />
+            <enum name="mode_fix" value="2" />
+        </attr>
+
     </declare-styleable>
 
 

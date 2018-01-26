@@ -134,6 +134,7 @@ public abstract class WeekView extends BaseView  {
         if (mDelegate.mDateSelectedListener != null && isNotice) {
             mDelegate.mDateSelectedListener.onDateSelected(currentCalendar, false);
         }
+        mParentLayout.updateContentViewTranslateY();
         invalidate();
     }
 

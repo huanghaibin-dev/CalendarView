@@ -47,6 +47,17 @@ public abstract class MonthView extends BaseView {
      */
     private int mLineCount;
 
+    /**
+     * 日历高度
+     */
+    private int mHeight;
+
+
+    /**
+     * 下个月偏移的数量
+     */
+    private int mNextDiff;
+
     public MonthView(Context context) {
         super(context);
     }
@@ -57,40 +68,70 @@ public abstract class MonthView extends BaseView {
             return;
         mItemWidth = getWidth() / 7;
         onPreviewHook();
+        int count = mLineCount * 7;
         int d = 0;
         for (int i = 0; i < mLineCount; i++) {
             for (int j = 0; j < 7; j++) {
-                int x = j * mItemWidth;
-                int y = i * mItemHeight;
-                onLoopStart(x, y);
                 Calendar calendar = mItems.get(d);
-                boolean isSelected = d == mCurrentItem;
-                boolean hasScheme = mDelegate.mSchemeDate != null && mDelegate.mSchemeDate.contains(calendar);
-
-                if (hasScheme) {
-                    //标记的日子
-                    Calendar scheme = mDelegate.mSchemeDate.get(mDelegate.mSchemeDate.indexOf(calendar));
-                    calendar.setScheme(TextUtils.isEmpty(scheme.getScheme()) ? mDelegate.getSchemeText() : scheme.getScheme());
-                    calendar.setSchemeColor(scheme.getSchemeColor());
-
-                    boolean isDrawSelected = false;//是否继续绘制选中的onDrawScheme
-                    if (isSelected) {
-                        isDrawSelected = onDrawSelected(canvas, calendar, x, y, true);
+                if (mDelegate.getMonthViewShowMode() == CustomCalendarViewDelegate.MODE_ONLY_CURRENT_MONTH) {
+                    if (d > mItems.size() - mNextDiff) {
+                        return;
                     }
-                    if (isDrawSelected || !isSelected) {
-                        //将画笔设置为标记颜色
-                        mSchemePaint.setColor(calendar.getSchemeColor() != 0 ? calendar.getSchemeColor() : mDelegate.getSchemeThemeColor());
-                        onDrawScheme(canvas, scheme, x, y);
+                    if (!calendar.isCurrentMonth()) {
+                        ++d;
+                        continue;
                     }
-                } else {
-                    if (isSelected) {
-                        onDrawSelected(canvas, calendar, x, y, false);
+                } else if (mDelegate.getMonthViewShowMode() == CustomCalendarViewDelegate.MODE_ONLY_CURRENT_MONTH) {
+                    if (d >= count) {
+                        return;
                     }
                 }
-                onDrawText(canvas, calendar, x, y, hasScheme, isSelected);
+                draw(canvas, calendar, i, j, d);
                 ++d;
             }
         }
+
+
+    }
+
+
+    /**
+     * 开始绘制
+     *
+     * @param canvas   canvas
+     * @param calendar 对应日历
+     * @param i        i
+     * @param j        j
+     * @param d        d
+     */
+    private void draw(Canvas canvas, Calendar calendar, int i, int j, int d) {
+        int x = j * mItemWidth;
+        int y = i * mItemHeight;
+        onLoopStart(x, y);
+        boolean isSelected = d == mCurrentItem;
+        boolean hasScheme = mDelegate.mSchemeDate != null && mDelegate.mSchemeDate.contains(calendar);
+
+        if (hasScheme) {
+            //标记的日子
+            Calendar scheme = mDelegate.mSchemeDate.get(mDelegate.mSchemeDate.indexOf(calendar));
+            calendar.setScheme(TextUtils.isEmpty(scheme.getScheme()) ? mDelegate.getSchemeText() : scheme.getScheme());
+            calendar.setSchemeColor(scheme.getSchemeColor());
+
+            boolean isDrawSelected = false;//是否继续绘制选中的onDrawScheme
+            if (isSelected) {
+                isDrawSelected = onDrawSelected(canvas, calendar, x, y, true);
+            }
+            if (isDrawSelected || !isSelected) {
+                //将画笔设置为标记颜色
+                mSchemePaint.setColor(calendar.getSchemeColor() != 0 ? calendar.getSchemeColor() : mDelegate.getSchemeThemeColor());
+                onDrawScheme(canvas, scheme, x, y);
+            }
+        } else {
+            if (isSelected) {
+                onDrawSelected(canvas, calendar, x, y, false);
+            }
+        }
+        onDrawText(canvas, calendar, x, y, hasScheme, isSelected);
     }
 
 
@@ -166,6 +207,12 @@ public abstract class MonthView extends BaseView {
         mYear = year;
         mMonth = month;
         initCalendar();
+        if (mDelegate.getMonthViewShowMode() == CustomCalendarViewDelegate.MODE_ALL_MONTH) {
+            mHeight = mItemHeight * mLineCount;
+        } else {
+            mHeight = Util.getMonthViewHeight(year, month, mItemHeight);
+        }
+
     }
 
     /**
@@ -176,12 +223,12 @@ public abstract class MonthView extends BaseView {
         java.util.Calendar date = java.util.Calendar.getInstance();
 
         date.set(mYear, mMonth - 1, 1);
-        int firstDayOfWeek = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;//月第一天为星期几,星期天 == 0
-        int mDaysCount = Util.getMonthDaysCount(mYear, mMonth);
-        date.set(mYear, mMonth - 1, mDaysCount);
+        int mPreDiff = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;
+        int mDayCount = Util.getMonthDaysCount(mYear, mMonth);
+        date.set(mYear, mMonth - 1, mDayCount);
 
-//        int mLastCount = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;
-//        int nextMonthDaysOffset = 6 - mLastCount;//下个月的日偏移天数
+        int mLastCount = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;
+        mNextDiff = 6 - mLastCount;//下个月的日偏移天数
 
         int preYear, preMonth;
         int nextYear, nextMonth;
@@ -194,19 +241,19 @@ public abstract class MonthView extends BaseView {
             preMonth = 12;
             nextYear = mYear;
             nextMonth = mMonth + 1;
-            preMonthDaysCount = firstDayOfWeek == 0 ? 0 : Util.getMonthDaysCount(preYear, preMonth);
+            preMonthDaysCount = mPreDiff == 0 ? 0 : Util.getMonthDaysCount(preYear, preMonth);
         } else if (mMonth == 12) {//如果是12月
             preYear = mYear;
             preMonth = mMonth - 1;
             nextYear = mYear + 1;
             nextMonth = 1;
-            preMonthDaysCount = firstDayOfWeek == 0 ? 0 : Util.getMonthDaysCount(preYear, preMonth);
+            preMonthDaysCount = mPreDiff == 0 ? 0 : Util.getMonthDaysCount(preYear, preMonth);
         } else {//平常
             preYear = mYear;
             preMonth = mMonth - 1;
             nextYear = mYear;
             nextMonth = mMonth + 1;
-            preMonthDaysCount = firstDayOfWeek == 0 ? 0 : Util.getMonthDaysCount(preYear, preMonth);
+            preMonthDaysCount = mPreDiff == 0 ? 0 : Util.getMonthDaysCount(preYear, preMonth);
         }
         int nextDay = 1;
         if (mItems == null)
@@ -214,11 +261,11 @@ public abstract class MonthView extends BaseView {
         mItems.clear();
         for (int i = 0; i < size; i++) {
             Calendar calendarDate = new Calendar();
-            if (i < firstDayOfWeek) {
+            if (i < mPreDiff) {
                 calendarDate.setYear(preYear);
                 calendarDate.setMonth(preMonth);
-                calendarDate.setDay(preMonthDaysCount - firstDayOfWeek + i + 1);
-            } else if (i >= mDaysCount + firstDayOfWeek) {
+                calendarDate.setDay(preMonthDaysCount - mPreDiff + i + 1);
+            } else if (i >= mDayCount + mPreDiff) {
                 calendarDate.setYear(nextYear);
                 calendarDate.setMonth(nextMonth);
                 calendarDate.setDay(nextDay);
@@ -227,7 +274,7 @@ public abstract class MonthView extends BaseView {
                 calendarDate.setYear(mYear);
                 calendarDate.setMonth(mMonth);
                 calendarDate.setCurrentMonth(true);
-                calendarDate.setDay(i - firstDayOfWeek + 1);
+                calendarDate.setDay(i - mPreDiff + 1);
             }
             if (calendarDate.equals(mDelegate.getCurrentDay())) {
                 calendarDate.setCurrentDay(true);
@@ -236,7 +283,11 @@ public abstract class MonthView extends BaseView {
             LunarCalendar.setupLunarCalendar(calendarDate);
             mItems.add(calendarDate);
         }
-        mLineCount = mItems.size() / 7;
+        if (mDelegate.getMonthViewShowMode() == CustomCalendarViewDelegate.MODE_ALL_MONTH) {
+            mLineCount = 6;
+        } else {
+            mLineCount = (mPreDiff + mDayCount + mNextDiff) / 7;
+        }
         if (mDelegate.mSchemeDate != null) {
             for (Calendar a : mItems) {
                 for (Calendar d : mDelegate.mSchemeDate) {
@@ -273,7 +324,7 @@ public abstract class MonthView extends BaseView {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         if (mLineCount != 0) {
-            heightMeasureSpec = MeasureSpec.makeMeasureSpec(mItemHeight * mLineCount, MeasureSpec.EXACTLY);
+            heightMeasureSpec = MeasureSpec.makeMeasureSpec(mHeight, MeasureSpec.EXACTLY);
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }

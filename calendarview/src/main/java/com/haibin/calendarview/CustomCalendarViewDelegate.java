@@ -29,7 +29,27 @@ import java.util.List;
  * Google规范化的属性委托,
  * 这里基本是没有逻辑的，代码量多，但是不影响阅读性
  */
-class CustomCalendarViewDelegate {
+final class CustomCalendarViewDelegate {
+
+
+    /**
+     * 全部显示
+     */
+    static final int MODE_ALL_MONTH = 0;
+    /**
+     * 仅显示当前月份
+     */
+    static final int MODE_ONLY_CURRENT_MONTH = 1;
+    /**
+     * 自适应显示，不会多出一行，但是会自动填充
+     */
+    static final int MODE_FIT_MONTH = 2;
+
+
+    /**
+     * 月份显示模式
+     */
+    private int mMonthViewShowMode;
 
     /**
      * 支持转换的最小农历年份
@@ -174,6 +194,8 @@ class CustomCalendarViewDelegate {
         if (TextUtils.isEmpty(mSchemeText)) {
             mSchemeText = "记";
         }
+        mMonthViewShowMode = array.getInt(R.styleable.CalendarView_month_view_show_mode, MODE_ALL_MONTH);
+
         mWeekBackground = array.getColor(R.styleable.CalendarView_week_background, Color.WHITE);
         mWeekLineBackground = array.getColor(R.styleable.CalendarView_week_line_background, Color.WHITE);
         mYearViewBackground = array.getColor(R.styleable.CalendarView_year_view_background, Color.WHITE);
@@ -371,6 +393,11 @@ class CustomCalendarViewDelegate {
         return mYearViewSchemeTextColor;
     }
 
+
+    int getMonthViewShowMode() {
+        return mMonthViewShowMode;
+    }
+
     void setTextColor(int curDayTextColor, int curMonthTextColor, int otherMonthTextColor, int curMonthLunarTextColor, int otherMonthLunarTextColor) {
         mCurDayTextColor = curDayTextColor;
         mOtherMonthTextColor = otherMonthTextColor;
@@ -395,6 +422,7 @@ class CustomCalendarViewDelegate {
     Calendar getCurrentDay() {
         return mCurrentDate;
     }
+
 
     Calendar createCurrentDate() {
         Calendar calendar = new Calendar();

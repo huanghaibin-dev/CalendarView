@@ -10,6 +10,11 @@ import static org.junit.Assert.*;
  */
 public class UtilTest {
     @Test
+    public void getMonthViewHeight() throws Exception {
+        assertEquals(50,Util.getMonthViewHeight(2018,2,10));
+    }
+
+    @Test
     public void getFirstCalendarFromWeekCount() throws Exception {
         Calendar calendar = new Calendar();
         calendar.setYear(2017);

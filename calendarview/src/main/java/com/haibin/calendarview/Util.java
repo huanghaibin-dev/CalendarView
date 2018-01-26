@@ -98,10 +98,16 @@ final class Util {
         return isLeapYear(year) ? 366 : 365;
     }
 
-    @SuppressWarnings("unused")
-    @SuppressLint("WrongConstant")
-    @Deprecated
-    static int getCardHeight(int year, int month) {
+
+    /**
+     * 获取月视图的确切高度
+     *
+     * @param year       年
+     * @param month      月
+     * @param itemHeight 每项的高度
+     * @return 不需要多余行的高度
+     */
+    static int getMonthViewHeight(int year, int month, int itemHeight) {
         java.util.Calendar date = java.util.Calendar.getInstance();
         date.set(year, month - 1, 1);
         int firstDayOfWeek = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;//月第一天为星期几,星期天 == 0
@@ -109,9 +115,7 @@ final class Util {
         date.set(year, month - 1, mDaysCount);
         int mLastCount = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;//月最后一天为星期几,星期天 == 0
         int nextMonthDaysOffset = 6 - mLastCount;//下个月的日偏移天数
-        //return 6 * BaseCalendarCardView.mItemHeight;
-        return 0;
-        //return (firstDayOfWeek + mDaysCount + nextMonthDaysOffset) / 7 * CalendarCardViewV2.mItemHeight;
+        return (firstDayOfWeek + mDaysCount + nextMonthDaysOffset) / 7 * itemHeight;
     }
 
     /**

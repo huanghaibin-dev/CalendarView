@@ -432,7 +432,7 @@ public class CalendarView extends FrameLayout {
             mParentLayout.mItemHeight = mDelegate.getCalendarItemHeight();
             mMonthPager.mParentLayout = mParentLayout;
             mWeekPager.mParentLayout = mParentLayout;
-            mParentLayout.initCalendarPosition(mDelegate.mSelectedCalendar);
+            mParentLayout.setup(mDelegate);
             mParentLayout.initStatus();
         }
     }

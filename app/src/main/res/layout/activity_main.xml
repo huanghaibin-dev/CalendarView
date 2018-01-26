@@ -98,7 +98,7 @@
         android:background="#fff"
         android:orientation="vertical"
         app:calendar_content_view_id="@+id/linearView"
-        app:default_status="shrink"
+        app:default_status="expand"
         app:only_week_view="false">
 
         <com.haibin.calendarview.CalendarView
@@ -133,6 +133,7 @@
             app:year_view_day_text_size="9sp"
             app:year_view_month_text_color="#ff0000"
             app:year_view_month_text_size="20sp"
+            app:month_view_show_mode="mode_only_current"
             app:year_view_scheme_color="#f17706" />
 
         <LinearLayout

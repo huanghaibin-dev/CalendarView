@@ -122,6 +122,7 @@
             app:year_view_day_text_size="9sp"
             app:year_view_month_text_color="#ff0000"
             app:year_view_month_text_size="20sp"
+            app:month_view_show_mode="mode_fix"
             app:year_view_scheme_color="#f17706"/>
 
         <com.haibin.calendarviewproject.group.GroupRecyclerView

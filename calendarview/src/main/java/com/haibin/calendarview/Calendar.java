@@ -31,7 +31,7 @@ public class Calendar implements Serializable {
     private int year;
 
     /**
-     * 月
+     * 月1-12
      */
     private int month;
 
@@ -41,7 +41,7 @@ public class Calendar implements Serializable {
     private int leapMonth;
 
     /**
-     * 日
+     * 日1-31
      */
     private int day;
 

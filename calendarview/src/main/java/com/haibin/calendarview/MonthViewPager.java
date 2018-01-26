@@ -34,8 +34,10 @@ public class MonthViewPager extends ViewPager {
 
     private int mMonthCount;
     private CustomCalendarViewDelegate mDelegate;
+    private int mNextViewHeight, mPreViewHeight, mCurrentViewHeight;
     CalendarLayout mParentLayout;
     WeekViewPager mWeekPager;
+
 
     public MonthViewPager(Context context) {
         this(context, null);
@@ -52,6 +54,13 @@ public class MonthViewPager extends ViewPager {
      */
     void setup(CustomCalendarViewDelegate delegate) {
         this.mDelegate = delegate;
+
+        updateMonthViewHeight(mDelegate.getCurrentDay().getYear(),
+                mDelegate.getCurrentDay().getMonth());
+
+        ViewGroup.LayoutParams params = getLayoutParams();
+        params.height = mCurrentViewHeight;
+        setLayoutParams(params);
         init();
     }
 
@@ -63,7 +72,24 @@ public class MonthViewPager extends ViewPager {
         addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
+                if (mDelegate.getMonthViewShowMode() == CustomCalendarViewDelegate.MODE_ALL_MONTH) {
+                    return;
+                }
+                int height;
+                if (position < getCurrentItem()) {//右滑-1
+                    height = (int) ((mPreViewHeight)
+                            * (1 - positionOffset) +
+                            mCurrentViewHeight
+                                    * positionOffset);
+                } else {//左滑+！
+                    height = (int) ((mCurrentViewHeight)
+                            * (1 - positionOffset) +
+                            (mNextViewHeight)
+                                    * positionOffset);
+                }
+                ViewGroup.LayoutParams params = getLayoutParams();
+                params.height = height;
+                setLayoutParams(params);
             }
 
             @Override
@@ -76,8 +102,11 @@ public class MonthViewPager extends ViewPager {
                         calendar.getMonth() == mDelegate.getCurrentDay().getMonth());
                 calendar.setLunar(LunarCalendar.getLunarText(calendar));
 
-
-                if (mParentLayout == null || getVisibility() == INVISIBLE || mWeekPager.getVisibility() == VISIBLE) {
+                if (mDelegate.getMonthViewShowMode() != CustomCalendarViewDelegate.MODE_ALL_MONTH
+                        && getVisibility() != VISIBLE) {
+                    updateMonthViewHeight(calendar.getYear(), calendar.getMonth());
+                }
+                if (mParentLayout == null || mWeekPager.getVisibility() == VISIBLE) {
                     return;
                 }
 
@@ -101,6 +130,8 @@ public class MonthViewPager extends ViewPager {
                     view.invalidate();
                 }
                 mWeekPager.updateSelected(mDelegate.mSelectedCalendar);
+
+                updateMonthViewHeight(calendar.getYear(), calendar.getMonth());
             }
 
             @Override
@@ -110,6 +141,29 @@ public class MonthViewPager extends ViewPager {
         });
     }
 
+    private void updateMonthViewHeight(int year, int month) {
+
+        if (mDelegate.getMonthViewShowMode() == CustomCalendarViewDelegate.MODE_ALL_MONTH) {
+            mCurrentViewHeight = 6 * mDelegate.getCalendarItemHeight();
+            return;
+        }
+
+        if (mParentLayout != null) {
+            mParentLayout.updateContentViewTranslateY();
+        }
+        mCurrentViewHeight = Util.getMonthViewHeight(year, month, mDelegate.getCalendarItemHeight());
+        if (month == 1) {
+            mPreViewHeight = Util.getMonthViewHeight(year - 1, 12, mDelegate.getCalendarItemHeight());
+            mNextViewHeight = Util.getMonthViewHeight(year, 2, mDelegate.getCalendarItemHeight());
+        } else {
+            mPreViewHeight = Util.getMonthViewHeight(year, month - 1, mDelegate.getCalendarItemHeight());
+            if (month == 12) {
+                mNextViewHeight = Util.getMonthViewHeight(year + 1, 1, mDelegate.getCalendarItemHeight());
+            } else {
+                mNextViewHeight = Util.getMonthViewHeight(year, month + 1, mDelegate.getCalendarItemHeight());
+            }
+        }
+    }
 
     void notifyDataSetChanged() {
         mMonthCount = 12 * (mDelegate.getMaxYear() - mDelegate.getMinYear())
@@ -203,7 +257,7 @@ public class MonthViewPager extends ViewPager {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        heightMeasureSpec = MeasureSpec.makeMeasureSpec(getCardHeight(), MeasureSpec.EXACTLY);
+        // heightMeasureSpec = MeasureSpec.makeMeasureSpec(mCurrentViewHeight, MeasureSpec.EXACTLY);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
@@ -255,15 +309,6 @@ public class MonthViewPager extends ViewPager {
         public void destroyItem(ViewGroup container, int position, Object object) {
             container.removeView((View) object);
         }
-    }
-
-    /**
-     * 获取日历卡高度
-     *
-     * @return 获取日历卡高度
-     */
-    private int getCardHeight() {
-        return 6 * mDelegate.getCalendarItemHeight();
     }
 
 }
