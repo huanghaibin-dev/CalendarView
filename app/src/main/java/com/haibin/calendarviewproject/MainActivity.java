@@ -2,6 +2,7 @@ package com.haibin.calendarviewproject;
 
 import android.annotation.SuppressLint;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity implements
         CalendarView.OnDateSelectedListener,
+        CalendarView.OnMonthChangeListener,
         CalendarView.OnYearChangeListener,
         View.OnClickListener {
 
@@ -76,6 +78,7 @@ public class MainActivity extends BaseActivity implements
         mCalendarLayout = (CalendarLayout) findViewById(R.id.calendarLayout);
         mCalendarView.setOnYearChangeListener(this);
         mCalendarView.setOnDateSelectedListener(this);
+        mCalendarView.setOnMonthChangeListener(this);
         mTextYear.setText(String.valueOf(mCalendarView.getCurYear()));
         mYear = mCalendarView.getCurYear();
         mTextMonthDay.setText(mCalendarView.getCurMonth() + "月" + mCalendarView.getCurDay() + "日");
@@ -153,7 +156,12 @@ public class MainActivity extends BaseActivity implements
                 TextUtils.isEmpty(calendar.getGregorianFestival()) ? "无" : calendar.getGregorianFestival(),
                 TextUtils.isEmpty(calendar.getTraditionFestival()) ? "无" : calendar.getTraditionFestival(),
                 TextUtils.isEmpty(calendar.getSolarTerm()) ? "无" : calendar.getSolarTerm(),
-                calendar.getLeapMonth() == 0 ? "否" : String.format("润%s月", calendar.getLeapMonth()));
+                calendar.getLeapMonth() == 0 ? "否" : String.format("闰%s月", calendar.getLeapMonth()));
+    }
+
+    @Override
+    public void onMonthChange(int year, int month) {
+        Log.e("onMonthChange", "  -- " + year + "  --  " + month);
     }
 
     @Override

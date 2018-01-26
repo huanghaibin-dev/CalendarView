@@ -403,6 +403,14 @@ public class CalendarView extends FrameLayout {
     }
 
     /**
+     * 月份改变事件
+     * @param listener listener
+     */
+    public void setOnMonthChangeListener(OnMonthChangeListener listener){
+        this.mDelegate.mMonthChangeListener = listener;
+    }
+
+    /**
      * 设置日期选中事件
      *
      * @param listener 日期选中事件
@@ -537,6 +545,13 @@ public class CalendarView extends FrameLayout {
      */
     public interface OnYearChangeListener {
         void onYearChange(int year);
+    }
+
+    /**
+     * 月份切换事件
+     */
+    public interface OnMonthChangeListener{
+        void onMonthChange(int year,int month);
     }
 
     /**

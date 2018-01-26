@@ -178,6 +178,12 @@ final class CustomCalendarViewDelegate {
      */
     CalendarView.OnYearChangeListener mYearChangeListener;
 
+
+    /**
+     * 月份切换事件
+     */
+    CalendarView.OnMonthChangeListener mMonthChangeListener;
+
     /**
      * 保存选中的日期
      */

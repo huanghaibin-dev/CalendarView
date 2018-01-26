@@ -141,6 +141,12 @@ public abstract class MonthView extends BaseView {
         if (isClick) {
             Calendar calendar = getIndex();
             if (calendar != null) {
+
+                if(mDelegate.getMonthViewShowMode() == CustomCalendarViewDelegate.MODE_ONLY_CURRENT_MONTH&&
+                        !calendar.isCurrentMonth()){
+                    return;
+                }
+
                 if (!Util.isCalendarInRange(calendar, mDelegate.getMinYear(),
                         mDelegate.getMinYearMonth(), mDelegate.getMaxYear(), mDelegate.getMaxYearMonth())) {
                     mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);

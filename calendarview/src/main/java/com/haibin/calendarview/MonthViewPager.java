@@ -102,6 +102,10 @@ public class MonthViewPager extends ViewPager {
                         calendar.getMonth() == mDelegate.getCurrentDay().getMonth());
                 calendar.setLunar(LunarCalendar.getLunarText(calendar));
 
+                if(mDelegate.mMonthChangeListener != null){
+                    mDelegate.mMonthChangeListener.onMonthChange(calendar.getYear(),calendar.getMonth());
+                }
+
                 if (mDelegate.getMonthViewShowMode() != CustomCalendarViewDelegate.MODE_ALL_MONTH
                         && getVisibility() != VISIBLE) {
                     updateMonthViewHeight(calendar.getYear(), calendar.getMonth());

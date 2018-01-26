@@ -4,13 +4,13 @@ Android上一个优雅、高度自定义、性能高效的日历控件，完美�
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.1.6'
+compile 'com.haibin:calendarview:3.1.7'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.1.6</version>
+  <version>3.1.7</version>
   <type>pom</type>
 </dependency>
 ```
@@ -72,8 +72,8 @@ compile 'com.haibin:calendarview:3.1.6'
 ```xml
 <declare-styleable name="CalendarView">
 
-        <attr name="month_view" format="color" /> <!--热插拔自定义类日历月视图路径-->
-        <attr name="week_view" format="color" /> <!--热插拔自定义类周视图路径-->
+        <attr name="month_view" format="color" /> <!--自定义类日历月视图路径-->
+        <attr name="week_view" format="color" /> <!--自定义类周视图路径-->
         <attr name="week_bar_view" format="color" /> <!--自定义类周栏路径-->
 
         <attr name="week_line_background" format="color" /><!--线条颜色-->
@@ -131,12 +131,13 @@ public int getCurMonth(); //当前的月份
 public int getCurYear(); //今年
 public void showSelectLayout(final int year); //快速弹出年份选择月份
 public void closeSelectLayout(final int position); //关闭选择年份并跳转日期
-@Deprecated
-public void setOnDateChangeListener(OnDateChangeListener listener);//添加事件
+
+public void setOnMonthChangeListener(OnMonthChangeListener listener);//月份改变事件
 
 public void setOnYearChangeListener(OnYearChangeListener listener);//年份切换事件
 
 public void setOnDateSelectedListener(OnDateSelectedListener listener);//日期选择事件
+
 public void setSchemeDate(List<Calendar> mSchemeDate);//标记日期
 public void update();//动态更新
 public Calendar getSelectedCalendar(); //获取选择的日期

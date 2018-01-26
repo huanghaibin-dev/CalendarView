@@ -484,6 +484,9 @@ public class CalendarLayout extends LinearLayout {
     }
 
 
+    /**
+     * 隐藏内容布局
+     */
     void hideContentView() {
         if (mContentView == null)
             return;
@@ -501,6 +504,9 @@ public class CalendarLayout extends LinearLayout {
                 });
     }
 
+    /**
+     * 显示内容布局
+     */
     void showContentView() {
         if (mContentView == null)
             return;
