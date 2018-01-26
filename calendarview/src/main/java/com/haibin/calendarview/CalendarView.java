@@ -250,11 +250,12 @@ public class CalendarView extends FrameLayout {
         mWeekPager.setVisibility(GONE);
         if (mParentLayout != null) {
             mParentLayout.isShowSelectedLayout = true;
+            mParentLayout.hideContentView();
         }
         mWeekBar.animate()
                 .translationY(-mWeekBar.getHeight())
                 .setInterpolator(new LinearInterpolator())
-                .setDuration(180)
+                .setDuration(260)
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
@@ -271,13 +272,12 @@ public class CalendarView extends FrameLayout {
         mMonthPager.animate()
                 .scaleX(0)
                 .scaleY(0)
-                .setDuration(180)
+                .setDuration(260)
                 .setInterpolator(new LinearInterpolator())
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         super.onAnimationEnd(animation);
-                        //mMonthPager.setVisibility(GONE);
                     }
                 });
     }
@@ -290,26 +290,22 @@ public class CalendarView extends FrameLayout {
     private void closeSelectLayout(final int position) {
         mSelectLayout.setVisibility(GONE);
         mWeekBar.setVisibility(VISIBLE);
-        mMonthPager.setVisibility(VISIBLE);
         if (position == mMonthPager.getCurrentItem()) {
             if (mDelegate.mDateSelectedListener != null) {
                 mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar, false);
             }
         } else {
-            mMonthPager.setCurrentItem(position, true);
+            mMonthPager.setCurrentItem(position, false);
         }
         mWeekBar.animate()
                 .translationY(0)
                 .setInterpolator(new LinearInterpolator())
-                .setDuration(180)
+                .setDuration(280)
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         super.onAnimationEnd(animation);
                         mWeekBar.setVisibility(VISIBLE);
-                        if (mParentLayout != null && mParentLayout.mContentView != null) {
-                            mParentLayout.mContentView.setVisibility(VISIBLE);
-                        }
                     }
                 });
         mMonthPager.animate()
@@ -322,7 +318,10 @@ public class CalendarView extends FrameLayout {
                     public void onAnimationEnd(Animator animation) {
                         super.onAnimationEnd(animation);
                         mMonthPager.setVisibility(VISIBLE);
-
+                        mMonthPager.clearAnimation();
+                        if (mParentLayout != null) {
+                            mParentLayout.showContentView();
+                        }
                     }
                 });
     }
@@ -392,9 +391,6 @@ public class CalendarView extends FrameLayout {
                 mDelegate.getCurrentDay().getMonth() - mDelegate.getMinYearMonth());
         mSelectLayout.scrollToYear(year);
     }
-
-
-
 
 
     /**
@@ -499,7 +495,7 @@ public class CalendarView extends FrameLayout {
      * @param schemeColor     标记背景色
      * @param schemeTextColor 标记字体颜色
      */
-    public void setSchemeColor(int schemeColor, int schemeTextColor,int schemeLunarTextColor) {
+    public void setSchemeColor(int schemeColor, int schemeTextColor, int schemeLunarTextColor) {
         mDelegate.setSchemeColor(schemeColor, schemeTextColor, schemeLunarTextColor);
     }
 

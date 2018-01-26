@@ -31,6 +31,7 @@ import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
 import android.widget.AbsListView;
 import android.widget.LinearLayout;
 
@@ -480,5 +481,40 @@ public class CalendarLayout extends LinearLayout {
             return result;
         }
         return mContentView.getScrollY() == 0;
+    }
+
+
+    void hideContentView() {
+        if (mContentView == null)
+            return;
+        mContentView.animate()
+                .translationY(getHeight() - mMonthView.getHeight())
+                .setDuration(220)
+                .setInterpolator(new LinearInterpolator())
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        mContentView.setVisibility(INVISIBLE);
+                        mContentView.clearAnimation();
+                    }
+                });
+    }
+
+    void showContentView() {
+        if (mContentView == null)
+            return;
+        mContentView.setTranslationY(getHeight() - mMonthView.getHeight());
+        mContentView.setVisibility(VISIBLE);
+        mContentView.animate()
+                .translationY(0)
+                .setDuration(180)
+                .setInterpolator(new LinearInterpolator())
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                    }
+                });
     }
 }

@@ -40,9 +40,11 @@ final class CustomCalendarViewDelegate {
      * 仅显示当前月份
      */
     static final int MODE_ONLY_CURRENT_MONTH = 1;
+
     /**
      * 自适应显示，不会多出一行，但是会自动填充
      */
+    @SuppressWarnings("unused")
     static final int MODE_FIT_MONTH = 2;
 
 

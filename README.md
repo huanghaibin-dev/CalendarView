@@ -4,13 +4,13 @@ Android上一个优雅、高度自定义、性能高效的日历控件，完美�
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.1.5'
+compile 'com.haibin:calendarview:3.1.6'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.1.5</version>
+  <version>3.1.6</version>
   <type>pom</type>
 </dependency>
 ```
@@ -43,7 +43,7 @@ compile 'com.haibin:calendarview:3.1.5'
              android:layout_width="match_parent"
              android:layout_height="wrap_content"
              android:background="#fff"
-             app:calendar_card_view="com.haibin.calendarviewproject.simple.SimpleCalendarCardView"
+             app:month_view="com.haibin.calendarviewproject.simple.SimpleCalendarCardView"
              app:week_view="com.haibin.calendarviewproject.simple.SimpleWeekView"
              app:week_bar_view="com.haibin.calendarviewproject.EnglishWeekBar"
              app:calendar_height="50dp"
@@ -57,6 +57,7 @@ compile 'com.haibin:calendarview:3.1.5'
              app:selected_text_color="#fff"
              app:selected_theme_color="#333"
              app:week_background="#fff"
+             app:month_view_show_mode="mode_only_current"
              app:week_text_color="#111" />
 
         <android.support.v7.widget.RecyclerView
@@ -113,6 +114,12 @@ compile 'com.haibin:calendarview:3.1.5'
         <attr name="min_year_month" format="integer" /> <!--最小年份对应月份-->
         <attr name="max_year_month" format="integer" /> <!--最大年份对应月份-->
         
+        <!--配置你喜欢的月视图显示模式模式-->
+        <attr name="month_view_show_mode">
+             <enum name="mode_all" value="0" /> <!--全部显示-->
+             <enum name="mode_only_current" value="1" /> <!--仅显示当前月份-->
+             <enum name="mode_fix" value="2" /> <!--自适应显示，不会多出一行，但是会自动填充-->
+        </attr>
 </declare-styleable>
 ```
 ### CalendarView api
