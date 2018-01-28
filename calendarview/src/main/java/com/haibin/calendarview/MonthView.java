@@ -144,6 +144,7 @@ public abstract class MonthView extends BaseView {
 
                 if(mDelegate.getMonthViewShowMode() == CustomCalendarViewDelegate.MODE_ONLY_CURRENT_MONTH&&
                         !calendar.isCurrentMonth()){
+                    mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);
                     return;
                 }
 
