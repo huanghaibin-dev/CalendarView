@@ -30,6 +30,7 @@ import java.util.ArrayList;
  */
 public abstract class MonthView extends BaseView {
 
+    MonthViewPager mMonthViewPager;
 
     /**
      * 当前日历卡年份
@@ -154,10 +155,10 @@ public abstract class MonthView extends BaseView {
                     return;
                 }
 
-                if (!calendar.isCurrentMonth() && mParentLayout != null) {
-                    int cur = mParentLayout.mMonthView.getCurrentItem();
+                if (!calendar.isCurrentMonth() && mMonthViewPager != null) {
+                    int cur = mMonthViewPager.getCurrentItem();
                     int position = mCurrentItem < 7 ? cur - 1 : cur + 1;
-                    mParentLayout.mMonthView.setCurrentItem(position);
+                    mMonthViewPager.setCurrentItem(position);
                 }
 
                 if (mDelegate.mInnerListener != null) {

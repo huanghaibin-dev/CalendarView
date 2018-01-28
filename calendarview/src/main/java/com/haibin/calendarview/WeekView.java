@@ -106,7 +106,7 @@ public abstract class WeekView extends BaseView  {
      * @param calendar calendar
      */
     void performClickCalendar(Calendar calendar, boolean isNotice) {
-        if (mItems == null || mDelegate.mInnerListener == null || mParentLayout == null || mItems.size() == 0) {
+        if (mParentLayout == null || mDelegate.mInnerListener == null || mItems == null || mItems.size() == 0) {
             return;
         }
 

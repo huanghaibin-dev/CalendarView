@@ -29,7 +29,6 @@ import java.lang.reflect.Constructor;
 /**
  * 月份切换ViewPager，自定义适应高度
  */
-@SuppressWarnings("deprecation")
 public class MonthViewPager extends ViewPager {
 
     private int mMonthCount;
@@ -110,9 +109,6 @@ public class MonthViewPager extends ViewPager {
                         && getVisibility() != VISIBLE) {
                     updateMonthViewHeight(calendar.getYear(), calendar.getMonth());
                 }
-                if (mParentLayout == null || mWeekPager.getVisibility() == VISIBLE) {
-                    return;
-                }
 
                 if (!calendar.isCurrentMonth()) {
                     mDelegate.mSelectedCalendar = calendar;
@@ -124,11 +120,15 @@ public class MonthViewPager extends ViewPager {
                     mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar, false);
                 }
 
+                if (mWeekPager.getVisibility() == VISIBLE) {
+                    return;
+                }
+
                 MonthView view = (MonthView) findViewWithTag(position);
                 if (view != null) {
                     int index = view.getSelectedIndex(mDelegate.mSelectedCalendar);
                     view.mCurrentItem = index;
-                    if (index >= 0) {
+                    if (index >= 0 && mParentLayout!= null) {
                         mParentLayout.setSelectPosition(index);
                     }
                     view.invalidate();
@@ -300,7 +300,7 @@ public class MonthViewPager extends ViewPager {
                 }
             }
             view.mParentLayout = mParentLayout;
-
+            view.mMonthViewPager = MonthViewPager.this;
             view.setup(mDelegate);
             view.setTag(position);
             view.setCurrentDate(year, month);
