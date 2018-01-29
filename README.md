@@ -36,6 +36,7 @@ compile 'com.haibin:calendarview:3.1.9'
         android:layout_height="match_parent"
         android:orientation="vertical"
         app:default_status="shrink"
+        app:only_week_view="false"
         app:calendar_content_view_id="@+id/recyclerView">
 
         <com.haibin.calendarview.CalendarView
@@ -68,7 +69,7 @@ compile 'com.haibin:calendarview:3.1.9'
     </com.haibin.calendarview.CalendarLayout>
 ```
 
-### attrs
+### CalendarView attrs
 ```xml
 <declare-styleable name="CalendarView">
 
@@ -198,6 +199,16 @@ public void setWeeColor(int weekBackground, int weekTextColor)
 public void expand(); //展开
 
 public void shrink(); //收缩
+```
+
+### CalendarLayout attrs
+```xml
+<attr name="default_status">
+      <enum name="expand" value="0" /> <!--默认展开-->
+      <enum name="shrink" value="1" /><!--默认搜索-->
+</attr>
+<attr name="only_week_view" format="boolean" /><!--仅周视图-->
+<attr name="calendar_content_view_id" format="integer" /><!--内容布局id-->
 ```
 
 ### 混淆proguard-rules
