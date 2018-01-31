@@ -143,8 +143,8 @@ public abstract class MonthView extends BaseView {
             Calendar calendar = getIndex();
             if (calendar != null) {
 
-                if(mDelegate.getMonthViewShowMode() == CustomCalendarViewDelegate.MODE_ONLY_CURRENT_MONTH&&
-                        !calendar.isCurrentMonth()){
+                if (mDelegate.getMonthViewShowMode() == CustomCalendarViewDelegate.MODE_ONLY_CURRENT_MONTH &&
+                        !calendar.isCurrentMonth()) {
                     mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);
                     return;
                 }
@@ -162,7 +162,7 @@ public abstract class MonthView extends BaseView {
                 }
 
                 if (mDelegate.mInnerListener != null) {
-                    mDelegate.mInnerListener.onDateSelected(calendar);
+                    mDelegate.mInnerListener.onMonthDateSelected(calendar, true);
                 }
 
                 if (mParentLayout != null) {
@@ -180,6 +180,55 @@ public abstract class MonthView extends BaseView {
                 invalidate();
             }
         }
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        if (mDelegate.mDateLongClickListener == null)
+            return false;
+        if (isClick) {
+            Calendar calendar = getIndex();
+            if (calendar != null) {
+                if (mDelegate.getMonthViewShowMode() == CustomCalendarViewDelegate.MODE_ONLY_CURRENT_MONTH &&
+                        !calendar.isCurrentMonth()) {
+                    mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);
+                    return false;
+                }
+
+                if (!Util.isCalendarInRange(calendar, mDelegate.getMinYear(),
+                        mDelegate.getMinYearMonth(), mDelegate.getMaxYear(), mDelegate.getMaxYearMonth())) {
+                    mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);
+                    return false;
+                }
+
+                if (!calendar.isCurrentMonth() && mMonthViewPager != null) {
+                    int cur = mMonthViewPager.getCurrentItem();
+                    int position = mCurrentItem < 7 ? cur - 1 : cur + 1;
+                    mMonthViewPager.setCurrentItem(position);
+                }
+
+                if (mDelegate.mInnerListener != null) {
+                    mDelegate.mInnerListener.onMonthDateSelected(calendar, true);
+                }
+
+                if (mParentLayout != null) {
+                    if (calendar.isCurrentMonth()) {
+                        mParentLayout.setSelectPosition(mItems.indexOf(calendar));
+                    } else {
+                        mParentLayout.setSelectWeek(Util.getWeekFromDayInMonth(calendar));
+                    }
+
+                }
+
+                if (mDelegate.mDateSelectedListener != null) {
+                    mDelegate.mDateSelectedListener.onDateSelected(calendar, true);
+                }
+
+                mDelegate.mDateLongClickListener.onDateLongClick(calendar);
+                invalidate();
+            }
+        }
+        return false;
     }
 
     private Calendar getIndex() {

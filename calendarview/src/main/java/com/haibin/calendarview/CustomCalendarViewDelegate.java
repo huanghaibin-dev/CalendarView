@@ -121,6 +121,11 @@ final class CustomCalendarViewDelegate {
 
 
     /**
+     * 年月视图是否打开
+     */
+    boolean isShowYearSelectedLayout;
+
+    /**
      * 标记文本
      */
     private String mSchemeText;
@@ -147,6 +152,11 @@ final class CustomCalendarViewDelegate {
     private int mCalendarItemHeight;
 
     /**
+     * 星期栏的高度
+     */
+    private int mWeekBarHeight;
+
+    /**
      * 今天的日子
      */
     private Calendar mCurrentDate;
@@ -167,6 +177,11 @@ final class CustomCalendarViewDelegate {
      * 日期被选中监听
      */
     CalendarView.OnDateSelectedListener mDateSelectedListener;
+
+    /**
+     * 外部日期长按事件
+     */
+    CalendarView.OnDateLongClickListener mDateLongClickListener;
 
     /**
      * 内部日期切换监听，用于内部更新计算
@@ -198,6 +213,7 @@ final class CustomCalendarViewDelegate {
         mMonthViewClass = array.getString(R.styleable.CalendarView_month_view);
         mWeekViewClass = array.getString(R.styleable.CalendarView_week_view);
         mWeekBarClass = array.getString(R.styleable.CalendarView_week_bar_view);
+        mWeekBarHeight = (int) array.getDimension(R.styleable.CalendarView_week_bar_height, Util.dipToPx(context, 40));
         mSchemeText = array.getString(R.styleable.CalendarView_scheme_text);
         if (TextUtils.isEmpty(mSchemeText)) {
             mSchemeText = "记";
@@ -207,7 +223,7 @@ final class CustomCalendarViewDelegate {
         mWeekBackground = array.getColor(R.styleable.CalendarView_week_background, Color.WHITE);
         mWeekLineBackground = array.getColor(R.styleable.CalendarView_week_line_background, Color.WHITE);
         mYearViewBackground = array.getColor(R.styleable.CalendarView_year_view_background, Color.WHITE);
-        mWeekTextColor = array.getColor(R.styleable.CalendarView_week_text_color, Color.BLACK);
+        mWeekTextColor = array.getColor(R.styleable.CalendarView_week_text_color, 0xFF333333);
 
         mCurDayTextColor = array.getColor(R.styleable.CalendarView_current_day_text_color, Color.RED);
         mCurDayLunarTextColor = array.getColor(R.styleable.CalendarView_current_day_lunar_text_color, Color.RED);
@@ -233,8 +249,8 @@ final class CustomCalendarViewDelegate {
         //年视图相关
         mYearViewMonthTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_year_view_month_text_size, Util.dipToPx(context, 18));
         mYearViewDayTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_year_view_day_text_size, Util.dipToPx(context, 8));
-        mYearViewMonthTextColor = array.getColor(R.styleable.CalendarView_year_view_month_text_color, 0x11111111);
-        mYearViewDayTextColor = array.getColor(R.styleable.CalendarView_year_view_day_text_color, 0x11111111);
+        mYearViewMonthTextColor = array.getColor(R.styleable.CalendarView_year_view_month_text_color, 0xFF111111);
+        mYearViewDayTextColor = array.getColor(R.styleable.CalendarView_year_view_day_text_color, 0xFF111111);
         mYearViewSchemeTextColor = array.getColor(R.styleable.CalendarView_year_view_scheme_color, mSchemeThemeColor);
 
         if (mMinYear <= MIN_YEAR) mMaxYear = 1971;
@@ -350,6 +366,10 @@ final class CustomCalendarViewDelegate {
 
     String getWeekBarClass() {
         return mWeekBarClass;
+    }
+
+    int getWeekBarHeight() {
+        return mWeekBarHeight;
     }
 
     int getMinYear() {

@@ -27,7 +27,7 @@ import java.util.ArrayList;
  * Created by huanghaibin on 2017/11/21.
  */
 
-public abstract class WeekView extends BaseView  {
+public abstract class WeekView extends BaseView {
 
     public WeekView(Context context) {
         super(context);
@@ -84,7 +84,7 @@ public abstract class WeekView extends BaseView  {
                     return;
                 }
                 if (mDelegate.mInnerListener != null) {
-                    mDelegate.mInnerListener.onWeekSelected(calendar);
+                    mDelegate.mInnerListener.onWeekDateSelected(calendar, true);
                 }
                 if (mParentLayout != null) {
                     int i = Util.getWeekFromDayInMonth(calendar);
@@ -98,6 +98,39 @@ public abstract class WeekView extends BaseView  {
                 invalidate();
             }
         }
+    }
+
+
+    @Override
+    public boolean onLongClick(View v) {
+        if (mDelegate.mDateLongClickListener == null)
+            return false;
+        if (isClick) {
+            Calendar calendar = getIndex();
+            if (calendar != null) {
+                if (!Util.isCalendarInRange(calendar, mDelegate.getMinYear(),
+                        mDelegate.getMinYearMonth(), mDelegate.getMaxYear(), mDelegate.getMaxYearMonth())) {
+                    mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);
+                    return false;
+                }
+                if (mDelegate.mInnerListener != null) {
+                    mDelegate.mInnerListener.onWeekDateSelected(calendar, true);
+                }
+                if (mParentLayout != null) {
+                    int i = Util.getWeekFromDayInMonth(calendar);
+                    mParentLayout.setSelectWeek(i);
+                }
+
+                if (mDelegate.mDateSelectedListener != null) {
+                    mDelegate.mDateSelectedListener.onDateSelected(calendar, true);
+                }
+
+                mDelegate.mDateLongClickListener.onDateLongClick(calendar);
+
+                invalidate();
+            }
+        }
+        return false;
     }
 
     /**
@@ -126,7 +159,7 @@ public abstract class WeekView extends BaseView  {
         }
 
         currentCalendar.setCurrentDay(currentCalendar.equals(mDelegate.getCurrentDay()));
-        mDelegate.mInnerListener.onWeekSelected(currentCalendar);
+        mDelegate.mInnerListener.onWeekDateSelected(currentCalendar, false);
 
         int i = Util.getWeekFromDayInMonth(currentCalendar);
         mParentLayout.setSelectWeek(i);

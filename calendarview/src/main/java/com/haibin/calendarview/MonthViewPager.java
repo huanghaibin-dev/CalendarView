@@ -110,6 +110,10 @@ public class MonthViewPager extends ViewPager {
                     updateMonthViewHeight(calendar.getYear(), calendar.getMonth());
                 }
 
+                if (mWeekPager.getVisibility() == VISIBLE) {
+                    return;
+                }
+
                 if (!calendar.isCurrentMonth()) {
                     mDelegate.mSelectedCalendar = calendar;
                 } else {
@@ -120,9 +124,6 @@ public class MonthViewPager extends ViewPager {
                     mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar, false);
                 }
 
-                if (mWeekPager.getVisibility() == VISIBLE) {
-                    return;
-                }
 
                 MonthView view = (MonthView) findViewWithTag(position);
                 if (view != null) {
@@ -210,7 +211,7 @@ public class MonthViewPager extends ViewPager {
 
 
         if (mDelegate.mInnerListener != null) {
-            mDelegate.mInnerListener.onDateSelected(calendar);
+            mDelegate.mInnerListener.onMonthDateSelected(calendar,false);
         }
 
         if (mDelegate.mDateSelectedListener != null) {
@@ -258,13 +259,6 @@ public class MonthViewPager extends ViewPager {
             view.update();
         }
     }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        // heightMeasureSpec = MeasureSpec.makeMeasureSpec(mCurrentViewHeight, MeasureSpec.EXACTLY);
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
-
 
     /**
      * 日历卡月份Adapter

@@ -19,8 +19,10 @@ import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 /**
  * 年份+月份选择布局
@@ -60,7 +62,6 @@ public class YearSelectLayout extends ViewPager {
                 container.addView(view);
                 view.setup(mDelegate);
                 view.setOnMonthSelectedListener(mListener);
-                view.setup(mDelegate);
                 view.init(position + mDelegate.getMinYear());
                 return view;
             }
@@ -93,5 +94,28 @@ public class YearSelectLayout extends ViewPager {
 
     public void setOnMonthSelectedListener(YearRecyclerView.OnMonthSelectedListener listener) {
         this.mListener = listener;
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        heightMeasureSpec = MeasureSpec.makeMeasureSpec(getHeight(getContext(),this),MeasureSpec.EXACTLY);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
+    /**
+     * 计算相对高度
+     * @param context context
+     * @param view view
+     * @return 月视图选择器最适合的高度
+     */
+    private static int getHeight(Context context,View view) {
+        WindowManager manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        assert manager != null;
+        Display display = manager.getDefaultDisplay();
+        int h = display.getHeight();
+        int[] location = new  int[2] ;
+        view.getLocationInWindow(location);
+        view.getLocationOnScreen(location);
+        return h - location[1];
     }
 }

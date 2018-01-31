@@ -70,10 +70,10 @@ public class SimpleActivity extends BaseActivity implements
             @Override
             public void onClick(View v) {
                 if (!mCalendarLayout.isExpand()) {
-                    mCalendarView.showSelectLayout(mYear);
+                    mCalendarView.showYearSelectLayout(mYear);
                     return;
                 }
-                mCalendarView.showSelectLayout(mYear);
+                mCalendarView.showYearSelectLayout(mYear);
                 mTextLunar.setVisibility(View.GONE);
                 mTextYear.setVisibility(View.GONE);
                 mTextMonthDay.setText(String.valueOf(mYear));

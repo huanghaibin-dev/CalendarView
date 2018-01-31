@@ -68,10 +68,10 @@ public class MeiZuActivity extends BaseActivity implements
             @Override
             public void onClick(View v) {
                 if (!mCalendarLayout.isExpand()) {
-                    mCalendarView.showSelectLayout(mYear);
+                    mCalendarView.showYearSelectLayout(mYear);
                     return;
                 }
-                mCalendarView.showSelectLayout(mYear);
+                mCalendarView.showYearSelectLayout(mYear);
                 mTextLunar.setVisibility(View.GONE);
                 mTextYear.setVisibility(View.GONE);
                 mTextMonthDay.setText(String.valueOf(mYear));
@@ -145,6 +145,7 @@ public class MeiZuActivity extends BaseActivity implements
     }
 
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onDateSelected(Calendar calendar, boolean isClick) {
         mTextLunar.setVisibility(View.VISIBLE);

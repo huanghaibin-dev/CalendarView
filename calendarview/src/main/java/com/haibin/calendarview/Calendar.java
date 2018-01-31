@@ -99,7 +99,7 @@ public class Calendar implements Serializable {
     private boolean isWeekend;
 
     /**
-     * 星期
+     * 星期,0-6 对应周日到周一
      */
     private int week;
 

@@ -62,6 +62,10 @@ public class YearRecyclerView extends RecyclerView {
         this.mAdapter.setup(delegate);
     }
 
+    /**
+     * 初始化年视图
+     * @param year year
+     */
     void init(int year) {
         java.util.Calendar date = java.util.Calendar.getInstance();
         for (int i = 1; i <= 12; i++) {
@@ -77,6 +81,10 @@ public class YearRecyclerView extends RecyclerView {
         }
     }
 
+    /**
+     * 月份选择事件
+     * @param listener listener
+     */
     void setOnMonthSelectedListener(OnMonthSelectedListener listener) {
         this.mListener = listener;
     }

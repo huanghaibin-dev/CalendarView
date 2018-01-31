@@ -24,6 +24,7 @@ public class MainActivity extends BaseActivity implements
         CalendarView.OnDateSelectedListener,
         CalendarView.OnMonthChangeListener,
         CalendarView.OnYearChangeListener,
+        CalendarView.OnDateLongClickListener,
         View.OnClickListener {
 
     TextView mTextMonthDay;
@@ -59,10 +60,10 @@ public class MainActivity extends BaseActivity implements
             @Override
             public void onClick(View v) {
                 if (!mCalendarLayout.isExpand()) {
-                    mCalendarView.showSelectLayout(mYear);
+                    mCalendarView.showYearSelectLayout(mYear);
                     return;
                 }
-                mCalendarView.showSelectLayout(mYear);
+                mCalendarView.showYearSelectLayout(mYear);
                 mTextLunar.setVisibility(View.GONE);
                 mTextYear.setVisibility(View.GONE);
                 mTextMonthDay.setText(String.valueOf(mYear));
@@ -79,6 +80,7 @@ public class MainActivity extends BaseActivity implements
         mCalendarView.setOnYearChangeListener(this);
         mCalendarView.setOnDateSelectedListener(this);
         mCalendarView.setOnMonthChangeListener(this);
+        mCalendarView.setOnDateLongClickListener(this);
         mTextYear.setText(String.valueOf(mCalendarView.getCurYear()));
         mYear = mCalendarView.getCurYear();
         mTextMonthDay.setText(mCalendarView.getCurMonth() + "月" + mCalendarView.getCurDay() + "日");
@@ -149,6 +151,11 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
+    @Override
+    public void onDateLongClick(Calendar calendar) {
+        Log.e("onDateLongClick", "  -- " + calendar.getDay() + "  --  " + calendar.getMonth());
+    }
+
     private static String getCalendarText(Calendar calendar) {
         return String.format("新历%s \n 农历%s \n 公历节日：%s \n 农历节日：%s \n 节气：%s \n 是否闰月：%s",
                 calendar.getMonth() + "月" + calendar.getDay() + "日",
@@ -170,3 +177,5 @@ public class MainActivity extends BaseActivity implements
     }
 
 }
+
+

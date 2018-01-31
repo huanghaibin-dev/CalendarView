@@ -25,6 +25,8 @@ import android.widget.TextView;
  * Created by huanghaibin on 2017/11/30.
  */
 public class WeekBar extends LinearLayout {
+    private CustomCalendarViewDelegate mDelegate;
+
     public WeekBar(Context context) {
         super(context);
         if ("com.haibin.calendarview.WeekBar".equals(getClass().getName())) {
@@ -38,14 +40,11 @@ public class WeekBar extends LinearLayout {
      * @param delegate delegate
      */
     void setup(CustomCalendarViewDelegate delegate) {
-        setBackgroundColor(delegate.getWeekBackground());
-        setTextColor(delegate.getWeekTextColor());
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        heightMeasureSpec = MeasureSpec.makeMeasureSpec(Util.dipToPx(getContext(), 40), MeasureSpec.EXACTLY);
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        this.mDelegate = delegate;
+        if ("com.haibin.calendarview.WeekBar".equalsIgnoreCase(getClass().getName())) {
+            setTextColor(delegate.getWeekTextColor());
+            setBackgroundColor(delegate.getWeekBackground());
+        }
     }
 
     /**
@@ -59,4 +58,28 @@ public class WeekBar extends LinearLayout {
             ((TextView) getChildAt(i)).setTextColor(color);
         }
     }
+
+
+    /**
+     * 日期选择事件，这里提供这个回调，可以方便定制WeekBar需要
+     *
+     * @param calendar calendar 选择的日期
+     * @param isClick  isClick 点击
+     */
+    @SuppressWarnings("unused")
+    protected void onDateSelected(Calendar calendar, boolean isClick) {
+
+    }
+
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        if (mDelegate != null) {
+            heightMeasureSpec = MeasureSpec.makeMeasureSpec(mDelegate.getWeekBarHeight(), MeasureSpec.EXACTLY);
+        } else {
+            heightMeasureSpec = MeasureSpec.makeMeasureSpec(Util.dipToPx(getContext(), 40), MeasureSpec.EXACTLY);
+        }
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
 }

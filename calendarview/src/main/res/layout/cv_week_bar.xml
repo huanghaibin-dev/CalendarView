@@ -4,6 +4,7 @@
     android:id="@+id/ll_week"
     android:layout_width="match_parent"
     android:layout_height="40dp"
+    android:background="#FFFFFF"
     android:minHeight="40dp"
     android:orientation="horizontal"
     android:paddingBottom="8dp"
@@ -16,6 +17,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="日"
+        android:textColor="#333333"
         android:textSize="12sp" />
 
     <TextView
@@ -24,6 +26,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="一"
+        android:textColor="#333333"
         android:textSize="12sp" />
 
     <TextView
@@ -32,6 +35,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="二"
+        android:textColor="#333333"
         android:textSize="12sp" />
 
     <TextView
@@ -48,6 +52,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="四"
+        android:textColor="#333333"
         android:textSize="12sp" />
 
     <TextView
@@ -56,6 +61,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="五"
+        android:textColor="#333333"
         android:textSize="12sp" />
 
     <TextView
@@ -64,5 +70,6 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="六"
+        android:textColor="#333333"
         android:textSize="12sp" />
 </merge>

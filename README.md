@@ -1,18 +1,35 @@
 # CalenderView
 Android上一个优雅、高度自定义、性能高效的日历控件，完美支持周视图，支持标记、自定义颜色、农历等，任意控制月视图显示。Canvas绘制，速度快、占用内存低，，支持简单定制即可实现任意自定义布局、自定义UI，支持收缩展开、性能非常高效，
-这个控件内存和效率优势相当明显，而且真正做到收缩+展开，适配多种场景，支持同时多种颜色标记日历事务，更多参考用法请移步Demo，Demo实现了4个精美的自定义效果。
+这个控件内存和效率优势相当明显，而且真正做到收缩+展开，适配多种场景，支持同时多种颜色标记日历事务，你真的想不到日历还可以如此优雅！更多参考用法请移步Demo，Demo实现了4个精美的自定义效果。
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.1.9'
+compile 'com.haibin:calendarview:3.2.0'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.1.9</version>
+  <version>3.2.0</version>
   <type>pom</type>
 </dependency>
+```
+
+#### 列举一些常用的是否支持的问题
+> * 是否支持周末等颜色单独？支持的，需要你自定义MonthView，WeekView，Calendar.isWeekend()可以自行判断是否周末，使用对应的画笔即可
+> * 是否支持与其他控件联动？支持的，假如你喜欢小米的日历日期快速跳转，那么你也可以使用类似的控件通过调用各种 CalendarView.scrollToCalendar(); 函数即可
+> * 是否支持日期长按？支持的，长按回调你可以做一些诸如声音、震动效果，框架比不提供，不利于解耦
+> * 是否支持用图片作为点击效果？支持的，但你需要会drawBitmap
+> * 是否支持网格显示？当然是支持的，看你怎么绘制
+> * 是否支持WeekBar星期栏与日期联动？支持的，你需要自定义WeekBar，实现 onDateSelected(Calendar calendar, boolean isClick)；函数即可
+> * 因此，只要在MonthView、WeekView里面出现的UI，什么五角星、贝塞尔曲线、图片等等，都是支持的，只要你会绘制，UI美不美，真的就看你了
+
+
+### 混淆proguard-rules
+```java
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context);
+}
 ```
 
 ### 完整用法教程请参照博客教程
@@ -75,7 +92,8 @@ compile 'com.haibin:calendarview:3.1.9'
 
         <attr name="month_view" format="color" /> <!--自定义类日历月视图路径-->
         <attr name="week_view" format="color" /> <!--自定义类周视图路径-->
-        <attr name="week_bar_view" format="color" /> <!--自定义类周栏路径-->
+        <attr name="week_bar_height" format="dimension" /> <!--星期栏的高度-->
+        <attr name="week_bar_view" format="color" /> <!--自定义类周栏路径，通过自定义则 week_text_color week_background xml设置无效，当仍可java api设置-->
 
         <attr name="week_line_background" format="color" /><!--线条颜色-->
         <attr name="week_background" format="color" /> <!--星期栏的背景-->
@@ -127,11 +145,16 @@ compile 'com.haibin:calendarview:3.1.9'
 ```
 ### CalendarView api
 ```java
+
+public void setRange(int minYear, int minYearMonth, int maxYear, int maxYearMonth);//置日期范围
+
 public int getCurDay(); //今天
 public int getCurMonth(); //当前的月份
 public int getCurYear(); //今年
-public void showSelectLayout(final int year); //快速弹出年份选择月份
-public void closeSelectLayout(final int position); //关闭选择年份并跳转日期
+
+public boolean isYearSelectLayoutVisible();//年月份选择视图是否打开
+public void closeYearSelectLayout();//关闭年月视图选择布局
+public void showYearSelectLayout(final int year); //快速弹出年份选择月份
 
 public void setOnMonthChangeListener(OnMonthChangeListener listener);//月份改变事件
 
@@ -139,9 +162,20 @@ public void setOnYearChangeListener(OnYearChangeListener listener);//年份切�
 
 public void setOnDateSelectedListener(OnDateSelectedListener listener);//日期选择事件
 
+public void setOnDateLongClickListener(OnDateLongClickListener listener);//日期长按事件
+
 public void setSchemeDate(List<Calendar> mSchemeDate);//标记日期
+
 public void update();//动态更新
+
 public Calendar getSelectedCalendar(); //获取选择的日期
+
+/**
+ * 特别的，如果你需要自定义或者使用其它选择器，可以用以下方法进行和日历联动
+ */
+public void scrollToCurrent();//滚动到当前日期
+
+public void scrollToYear(int year);//滚动到某一年
 
 public void scrollToPre();//滚动到上一个月
 
@@ -195,13 +229,17 @@ public void setSchemeColor(int style, int schemeColor, int schemeTextColor)
 public void setWeeColor(int weekBackground, int weekTextColor)
 ```
 ### CalendarLayout api
+
 ```java
 public void expand(); //展开
 
 public void shrink(); //收缩
+
+public boolean isExpand();//是否展开了
 ```
 
 ### CalendarLayout attrs
+
 ```xml
 <attr name="default_status">
       <enum name="expand" value="0" /> <!--默认展开-->
@@ -210,14 +248,6 @@ public void shrink(); //收缩
 <attr name="only_week_view" format="boolean" /><!--仅周视图-->
 <attr name="calendar_content_view_id" format="integer" /><!--内容布局id-->
 ```
-
-### 混淆proguard-rules
-```java
--keepclasseswithmembers class * {
-    public <init>(android.content.Context);
-}
-```
-
 
 ### 如果你需要完全定制UI，参考demo，简单几步即可绘制你需要的效果，月视图和周视图需要同时更换，达到UI一致
 #### 首先绘制月视图
@@ -326,6 +356,10 @@ public class SimpleWeekView extends WeekView{
     }
 }
 ```
+
+#### 写在结尾：这个控件。只需要懂得一点anvas的知识即可，如果你是新手，那么你可以通过此控件获得提升，此项目代码注释完善，
+结构也很简单，逻辑没那么复杂。这个项目是十分解耦合的，自定义WeekBar，MonthView、WeekView都是可以的。
+
 
 ## Licenses
 - Copyright (C) 2013 huanghaibin_dev <huanghaibin_dev@163.com>

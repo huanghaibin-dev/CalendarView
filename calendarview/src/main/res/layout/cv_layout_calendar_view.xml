@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:ignore="HardcodedText">
 
     <FrameLayout
@@ -39,9 +39,9 @@
     <com.haibin.calendarview.YearSelectLayout
         android:id="@+id/selectLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="#ffffff"
         android:paddingLeft="12dp"
         android:paddingRight="12dp"
         android:visibility="gone" />
-</FrameLayout>
+</merge>

@@ -4,6 +4,7 @@
     android:id="@+id/ll_week"
     android:layout_width="match_parent"
     android:layout_height="40dp"
+    android:background="#FFFFFF"
     android:minHeight="40dp"
     android:orientation="horizontal"
     android:paddingBottom="8dp"
@@ -16,7 +17,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="Sun"
-        android:textColor="#A3A3A3"
+        android:textColor="@color/week_bar_color"
         android:textSize="12sp"
         android:textStyle="bold" />
 
@@ -25,8 +26,8 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:textColor="#A3A3A3"
         android:text="Mon"
+        android:textColor="@color/week_bar_color"
         android:textSize="12sp"
         android:textStyle="bold" />
 
@@ -36,7 +37,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="Tue"
-        android:textColor="#A3A3A3"
+        android:textColor="@color/week_bar_color"
         android:textSize="12sp"
         android:textStyle="bold" />
 
@@ -46,7 +47,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="Wed"
-        android:textColor="#A3A3A3"
+        android:textColor="@color/week_bar_color"
         android:textSize="12sp"
         android:textStyle="bold" />
 
@@ -56,7 +57,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="Thu"
-        android:textColor="#A3A3A3"
+        android:textColor="@color/week_bar_color"
         android:textSize="12sp"
         android:textStyle="bold" />
 
@@ -65,8 +66,8 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:textColor="#A3A3A3"
         android:text="Fri"
+        android:textColor="@color/week_bar_color"
         android:textSize="12sp"
         android:textStyle="bold" />
 
@@ -75,8 +76,8 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:textColor="#A3A3A3"
         android:text="Sat"
+        android:textColor="@color/week_bar_color"
         android:textSize="12sp"
         android:textStyle="bold" />
 </merge>

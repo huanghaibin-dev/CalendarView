@@ -57,6 +57,11 @@ public class CalendarLayout extends LinearLayout {
     private int mDefaultStatus;
 
     /**
+     * 星期栏
+     */
+    WeekBar mWeekBar;
+
+    /**
      * 自定义ViewPager，月视图
      */
     MonthViewPager mMonthView;
@@ -83,8 +88,6 @@ public class CalendarLayout extends LinearLayout {
     private float downY;
     private float mLastY;
     private boolean isAnimating = false;
-
-    boolean isShowSelectedLayout;
 
     private boolean mIsOnlyWeekView;
     /**
@@ -175,18 +178,13 @@ public class CalendarLayout extends LinearLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         if (mContentView != null && mMonthView != null) {
             int h = getHeight() - mItemHeight
-                    - Util.dipToPx(getContext(), 41);
+                    - (mDelegate != null ? mDelegate.getWeekBarHeight() :
+                    Util.dipToPx(getContext(), 40))
+                    - Util.dipToPx(getContext(), 1);
             int heightSpec = MeasureSpec.makeMeasureSpec(h,
                     MeasureSpec.EXACTLY);
             mContentView.measure(widthMeasureSpec, heightSpec);
         }
-    }
-
-
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        //mContentViewTranslateY = mMonthView.getMeasuredHeight() - mItemHeight;
     }
 
     @Override
@@ -212,7 +210,7 @@ public class CalendarLayout extends LinearLayout {
                 mContentView.getVisibility() != VISIBLE) {
             return super.onInterceptTouchEvent(ev);
         }
-        if (mYearView.getVisibility() == VISIBLE || isShowSelectedLayout) {
+        if (mYearView.getVisibility() == VISIBLE || mDelegate.isShowYearSelectedLayout) {
             return super.onInterceptTouchEvent(ev);
         }
         final int action = ev.getAction();
@@ -262,6 +260,9 @@ public class CalendarLayout extends LinearLayout {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (mDelegate.isShowYearSelectedLayout) {
+            return false;
+        }
         if (mIsOnlyWeekView)
             return false;
         if (mContentView == null)

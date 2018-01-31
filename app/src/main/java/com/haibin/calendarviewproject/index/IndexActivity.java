@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -26,8 +27,9 @@ import java.util.List;
 
 public class IndexActivity extends BaseActivity implements
         CalendarView.OnDateSelectedListener,
+        CalendarView.OnDateLongClickListener,
         CalendarView.OnYearChangeListener,
-        View.OnClickListener{
+        View.OnClickListener {
 
     TextView mTextMonthDay;
 
@@ -67,10 +69,10 @@ public class IndexActivity extends BaseActivity implements
             @Override
             public void onClick(View v) {
                 if (!mCalendarLayout.isExpand()) {
-                    mCalendarView.showSelectLayout(mYear);
+                    mCalendarView.showYearSelectLayout(mYear);
                     return;
                 }
-                mCalendarView.showSelectLayout(mYear);
+                mCalendarView.showYearSelectLayout(mYear);
                 mTextLunar.setVisibility(View.GONE);
                 mTextYear.setVisibility(View.GONE);
                 mTextMonthDay.setText(String.valueOf(mYear));
@@ -84,6 +86,7 @@ public class IndexActivity extends BaseActivity implements
         });
         mCalendarLayout = (CalendarLayout) findViewById(R.id.calendarLayout);
         mCalendarView.setOnDateSelectedListener(this);
+        mCalendarView.setOnDateLongClickListener(this);
         mTextYear.setText(String.valueOf(mCalendarView.getCurYear()));
         mYear = mCalendarView.getCurYear();
         mTextMonthDay.setText(mCalendarView.getCurMonth() + "月" + mCalendarView.getCurDay() + "日");
@@ -109,7 +112,7 @@ public class IndexActivity extends BaseActivity implements
 
         mRecyclerView = (GroupRecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.addItemDecoration(new GroupItemDecoration<String,Article>());
+        mRecyclerView.addItemDecoration(new GroupItemDecoration<String, Article>());
         mRecyclerView.setAdapter(new ArticleAdapter(this));
         mRecyclerView.notifyDataSetChanged();
     }
@@ -117,7 +120,7 @@ public class IndexActivity extends BaseActivity implements
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.ll_flyme:
                 MeiZuActivity.show(this);
                 break;
@@ -143,6 +146,12 @@ public class IndexActivity extends BaseActivity implements
         return calendar;
     }
 
+    @Override
+    public void onDateLongClick(Calendar calendar) {
+        Log.e("onDateLongClick", "  -- " + calendar.getDay() + "  --  " + calendar.getMonth());
+    }
+
+    @SuppressLint("SetTextI18n")
     @Override
     public void onDateSelected(Calendar calendar, boolean isClick) {
         mTextLunar.setVisibility(View.VISIBLE);

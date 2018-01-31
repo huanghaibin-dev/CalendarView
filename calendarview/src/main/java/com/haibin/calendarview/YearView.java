@@ -27,8 +27,7 @@ import java.util.List;
 
 /**
  * 年份视图
- * Created by haibin
- * on 2017/3/6.
+ * Created by haibin on 2017/3/6.
  */
 
 public class YearView extends View {
