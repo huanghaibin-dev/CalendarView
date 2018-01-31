@@ -15,13 +15,19 @@ compile 'com.haibin:calendarview:3.2.0'
 </dependency>
 ```
 
-#### 列举一些常用的是否支持的问题
+### 列举一些常用的是否支持的问题
 > * 是否支持周末等颜色单独？支持的，需要你自定义MonthView，WeekView，Calendar.isWeekend()可以自行判断是否周末，使用对应的画笔即可
+
 > * 是否支持与其他控件联动？支持的，假如你喜欢小米的日历日期快速跳转，那么你也可以使用类似的控件通过调用各种 CalendarView.scrollToCalendar(); 函数即可
+
 > * 是否支持日期长按？支持的，长按回调你可以做一些诸如声音、震动效果，框架比不提供，不利于解耦
+
 > * 是否支持用图片作为点击效果？支持的，但你需要会drawBitmap
+
 > * 是否支持网格显示？当然是支持的，看你怎么绘制
+
 > * 是否支持WeekBar星期栏与日期联动？支持的，你需要自定义WeekBar，实现 onDateSelected(Calendar calendar, boolean isClick)；函数即可
+
 > * 因此，只要在MonthView、WeekView里面出现的UI，什么五角星、贝塞尔曲线、图片等等，都是支持的，只要你会绘制，UI美不美，真的就看你了
 
 
@@ -357,7 +363,7 @@ public class SimpleWeekView extends WeekView{
 }
 ```
 
-#### 写在结尾：这个控件。只需要懂得一点anvas的知识即可，如果你是新手，那么你可以通过此控件获得提升，此项目代码注释完善，
+### 写在结尾：这个控件。只需要懂得一点anvas的知识即可，如果你是新手，那么你可以通过此控件获得提升，此项目代码注释完善，
 结构也很简单，逻辑没那么复杂。这个项目是十分解耦合的，自定义WeekBar，MonthView、WeekView都是可以的。
 
 
