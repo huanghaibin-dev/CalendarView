@@ -29,7 +29,7 @@ import java.lang.reflect.Constructor;
 /**
  * 月份切换ViewPager，自定义适应高度
  */
-public class MonthViewPager extends ViewPager {
+public final class MonthViewPager extends ViewPager {
 
     private int mMonthCount;
     private CustomCalendarViewDelegate mDelegate;
@@ -134,7 +134,7 @@ public class MonthViewPager extends ViewPager {
                     }
                     view.invalidate();
                 }
-                mWeekPager.updateSelected(mDelegate.mSelectedCalendar);
+                mWeekPager.updateSelected(mDelegate.mSelectedCalendar,false);
 
                 updateMonthViewHeight(calendar.getYear(), calendar.getMonth());
             }
@@ -184,7 +184,7 @@ public class MonthViewPager extends ViewPager {
      * @param month 月
      * @param day   日
      */
-    void scrollToCalendar(int year, int month, int day) {
+    void scrollToCalendar(int year, int month, int day,boolean smoothScroll) {
         Calendar calendar = new Calendar();
         calendar.setYear(year);
         calendar.setMonth(month);
@@ -194,7 +194,7 @@ public class MonthViewPager extends ViewPager {
 
         int y = calendar.getYear() - mDelegate.getMinYear();
         int position = 12 * y + calendar.getMonth() - mDelegate.getMinYearMonth();
-        setCurrentItem(position);
+        setCurrentItem(position,smoothScroll);
 
         MonthView view = (MonthView) findViewWithTag(position);
         if (view != null) {
@@ -224,10 +224,10 @@ public class MonthViewPager extends ViewPager {
     /**
      * 滚动到当前日期
      */
-    void scrollToCurrent() {
+    void scrollToCurrent(boolean smoothScroll) {
         int position = 12 * (mDelegate.getCurrentDay().getYear() - mDelegate.getMinYear()) +
                 mDelegate.getCurrentDay().getMonth() - mDelegate.getMinYearMonth();
-        setCurrentItem(position);
+        setCurrentItem(position,smoothScroll);
         MonthView view = (MonthView) findViewWithTag(position);
         if (view != null) {
             view.setSelectedCalendar(mDelegate.getCurrentDay());

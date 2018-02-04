@@ -82,7 +82,7 @@ public abstract class MonthView extends BaseView {
                         ++d;
                         continue;
                     }
-                } else if (mDelegate.getMonthViewShowMode() == CustomCalendarViewDelegate.MODE_ONLY_CURRENT_MONTH) {
+                } else if (mDelegate.getMonthViewShowMode() == CustomCalendarViewDelegate.MODE_FIT_MONTH) {
                     if (d >= count) {
                         return;
                     }
@@ -110,14 +110,10 @@ public abstract class MonthView extends BaseView {
         int y = i * mItemHeight;
         onLoopStart(x, y);
         boolean isSelected = d == mCurrentItem;
-        boolean hasScheme = mDelegate.mSchemeDate != null && mDelegate.mSchemeDate.contains(calendar);
+        boolean hasScheme = calendar.hasScheme();
 
         if (hasScheme) {
             //标记的日子
-            Calendar scheme = mDelegate.mSchemeDate.get(mDelegate.mSchemeDate.indexOf(calendar));
-            calendar.setScheme(TextUtils.isEmpty(scheme.getScheme()) ? mDelegate.getSchemeText() : scheme.getScheme());
-            calendar.setSchemeColor(scheme.getSchemeColor());
-
             boolean isDrawSelected = false;//是否继续绘制选中的onDrawScheme
             if (isSelected) {
                 isDrawSelected = onDrawSelected(canvas, calendar, x, y, true);
@@ -125,7 +121,7 @@ public abstract class MonthView extends BaseView {
             if (isDrawSelected || !isSelected) {
                 //将画笔设置为标记颜色
                 mSchemePaint.setColor(calendar.getSchemeColor() != 0 ? calendar.getSchemeColor() : mDelegate.getSchemeThemeColor());
-                onDrawScheme(canvas, scheme, x, y);
+                onDrawScheme(canvas, calendar, x, y);
             }
         } else {
             if (isSelected) {
@@ -349,7 +345,9 @@ public abstract class MonthView extends BaseView {
             for (Calendar a : mItems) {
                 for (Calendar d : mDelegate.mSchemeDate) {
                     if (d.equals(a)) {
-                        a.setScheme(d.getScheme());
+                        a.setScheme(TextUtils.isEmpty(d.getScheme()) ? mDelegate.getSchemeText() : d.getScheme());
+                        a.setSchemeColor(d.getSchemeColor());
+                        a.setSchemes(d.getSchemes());
                     }
                 }
             }

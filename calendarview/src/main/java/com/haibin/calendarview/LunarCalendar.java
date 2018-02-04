@@ -16,40 +16,45 @@
 package com.haibin.calendarview;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.text.TextUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 
-class LunarCalendar {
+final class LunarCalendar {
 
+
+    static void init(Context context) {
+        if (MONTH_STR != null) {
+            return;
+        }
+        SolarTermUtil.init(context);
+        MONTH_STR = context.getResources().getStringArray(R.array.lunar_first_of_month);
+        TRADITION_FESTIVAL_STR = context.getResources().getStringArray(R.array.tradition_festival);
+        DAY_STR = context.getResources().getStringArray(R.array.lunar_str);
+        SOLAR_CALENDAR = context.getResources().getStringArray(R.array.solar_festival);
+    }
 
     /**
      * 农历月份第一天转写
      */
-    private static final String[] MONTH_STR = {"春节", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "冬月", "腊月"};
+    private static String[] MONTH_STR = null;
 
     /**
      * 传统农历节日
      */
-    private static final String[] TRADITION_FESTIVAL_STR = {"除夕", "0101春节", "0115元宵", "0505端午", "0707七夕", "0815中秋", "0909重阳"};
+    private static String[] TRADITION_FESTIVAL_STR = null;
 
     /**
      * 农历大写
      */
-    private static final String DAY_STR[] = {"初一", "初二", "初三", "初四", "初五", "初六",
-            "初七", "初八", "初九", "初十", "十一", "十二", "十三", "十四", "十五", "十六", "十七",
-            "十八", "十九", "二十", "廿一", "廿二", "廿三", "廿四", "廿五", "廿六", "廿七", "廿八",
-            "廿九", "三十"};
+    private static String DAY_STR[] = null;
 
     /**
      * 公历节日
      */
-    private static final String[] SOLAR_CALENDAR = {
-            "0101元旦", "0214情人节", "0308妇女节", "0315消权日", "0401愚人节", "0501劳动节", "0504青年节",
-            "0601儿童节", "0701建党节", "0801建军节", "0910教师节", "1001国庆节", "1224平安夜",
-            "1225圣诞节"
-    };
+    private static String[] SOLAR_CALENDAR = null;
 
     /**
      * 保存每年24节气

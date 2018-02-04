@@ -24,7 +24,7 @@ import android.util.AttributeSet;
 /**
  * 年份布局选择View
  */
-public class YearRecyclerView extends RecyclerView {
+public final class YearRecyclerView extends RecyclerView {
     private CustomCalendarViewDelegate mDelegate;
     private YearAdapter mAdapter;
     private OnMonthSelectedListener mListener;

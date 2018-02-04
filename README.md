@@ -2,15 +2,18 @@
 Android上一个优雅、高度自定义、性能高效的日历控件，完美支持周视图，支持标记、自定义颜色、农历等，任意控制月视图显示。Canvas绘制，速度快、占用内存低，，支持简单定制即可实现任意自定义布局、自定义UI，支持收缩展开、性能非常高效，
 这个控件内存和效率优势相当明显，而且真正做到收缩+展开，适配多种场景，支持同时多种颜色标记日历事务，你真的想不到日历还可以如此优雅！更多参考用法请移步Demo，Demo实现了4个精美的自定义效果。
 
+### English Version
+[**English Version**](https://github.com/huanghaibin-dev/CalendarView/blob/master/README.md)
+
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.2.0'
+compile 'com.haibin:calendarview:3.2.1'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.2.0</version>
+  <version>3.2.1</version>
   <type>pom</type>
 </dependency>
 ```
@@ -20,7 +23,7 @@ compile 'com.haibin:calendarview:3.2.0'
 
 > * 是否支持与其他控件联动？支持的，假如你喜欢小米的日历日期快速跳转，那么你也可以使用类似的控件通过调用各种 CalendarView.scrollToCalendar(); 函数即可
 
-> * 是否支持日期长按？支持的，长按回调你可以做一些诸如声音、震动效果，框架比不提供，不利于解耦
+> * 是否支持日期长按？支持的，长按回调你可以做一些诸如声音、震动效果，框架并不提供，不利于解耦
 
 > * 是否支持用图片作为点击效果？支持的，但你需要会drawBitmap
 
@@ -180,6 +183,8 @@ public Calendar getSelectedCalendar(); //获取选择的日期
  * 特别的，如果你需要自定义或者使用其它选择器，可以用以下方法进行和日历联动
  */
 public void scrollToCurrent();//滚动到当前日期
+
+public void scrollToCurrent(boolean smoothScroll);//滚动到当前日期
 
 public void scrollToYear(int year);//滚动到某一年
 

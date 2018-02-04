@@ -50,11 +50,8 @@ public abstract class WeekView extends BaseView {
             onLoopStart(x);
             Calendar calendar = mItems.get(i);
             boolean isSelected = i == mCurrentItem;
-            boolean hasScheme = mDelegate.mSchemeDate != null && mDelegate.mSchemeDate.contains(calendar);
+            boolean hasScheme = calendar.hasScheme();
             if (hasScheme) {
-                Calendar scheme = mDelegate.mSchemeDate.get(mDelegate.mSchemeDate.indexOf(calendar));
-                calendar.setScheme(TextUtils.isEmpty(scheme.getScheme()) ? mDelegate.getSchemeText() : scheme.getScheme());
-                calendar.setSchemeColor(scheme.getSchemeColor());
                 boolean isDrawSelected = false;//是否继续绘制选中的onDrawScheme
                 if (isSelected) {
                     isDrawSelected = onDrawSelected(canvas, calendar, x, true);
@@ -62,7 +59,7 @@ public abstract class WeekView extends BaseView {
                 if (isDrawSelected || !isSelected) {
                     //将画笔设置为标记颜色
                     mSchemePaint.setColor(calendar.getSchemeColor() != 0 ? calendar.getSchemeColor() : mDelegate.getSchemeThemeColor());
-                    onDrawScheme(canvas, scheme, x);
+                    onDrawScheme(canvas, calendar, x);
                 }
             } else {
                 if (isSelected) {
@@ -289,6 +286,17 @@ public abstract class WeekView extends BaseView {
             LunarCalendar.setupLunarCalendar(calendarDate);
             calendarDate.setCurrentMonth(true);
             mItems.add(calendarDate);
+        }
+        if (mDelegate.mSchemeDate != null) {
+            for (Calendar a : mItems) {
+                for (Calendar d : mDelegate.mSchemeDate) {
+                    if (d.equals(a)) {
+                        a.setScheme(TextUtils.isEmpty(d.getScheme()) ? mDelegate.getSchemeText() : d.getScheme());
+                        a.setSchemeColor(d.getSchemeColor());
+                        a.setSchemes(d.getSchemes());
+                    }
+                }
+            }
         }
         invalidate();
     }

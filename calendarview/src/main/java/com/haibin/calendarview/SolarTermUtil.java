@@ -15,18 +15,23 @@
  */
 package com.haibin.calendarview;
 
+import android.content.Context;
+
 /**
  * http://www.cnblogs.com/moodlxs/archive/2010/12/18/2345392.html
  * 24节气计算公式，参考该博客实现
  */
 final class SolarTermUtil {
 
+
+    static void init(Context context) {
+        SOLAR_TERMS = context.getResources().getStringArray(R.array.solar_term);
+    }
+
     /**
      * 24节气
      */
-    private static final String SOLAR_TERMS[] = {
-            "春分", "清明", "谷雨", "立夏", "小满", "芒种", "夏至", "小暑", "大暑", "立秋", "处暑", "白露",
-            "秋分", "寒露", "霜降", "立冬", "小雪", "大雪", "冬至", "小寒", "大寒", "立春", "雨水", "惊蛰"};
+    private static String SOLAR_TERMS[] = null;
 
 
     /**

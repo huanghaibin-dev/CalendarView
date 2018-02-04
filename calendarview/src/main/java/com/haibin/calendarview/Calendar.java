@@ -16,13 +16,17 @@
 package com.haibin.calendarview;
 
 
+import android.text.TextUtils;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 日历对象、
  */
 @SuppressWarnings("all")
-public class Calendar implements Serializable {
+public final class Calendar implements Serializable {
     private static final long serialVersionUID = 141315161718191143L;
 
     /**
@@ -84,14 +88,23 @@ public class Calendar implements Serializable {
     private String traditionFestival;
 
     /**
-     * 计划，可以用来标记当天是否有任务
+     * 计划，可以用来标记当天是否有任务,这里是默认的，如果使用多标记，请使用下面API
+     * using addScheme(int schemeColor,String scheme); multi scheme
      */
     private String scheme;
 
     /**
-     * 各种自定义标记颜色、没有则选择默认颜色
+     * 各种自定义标记颜色、没有则选择默认颜色，如果使用多标记，请使用下面API
+     * using addScheme(int schemeColor,String scheme); multi scheme
      */
     private int schemeColor;
+
+
+    /**
+     * 多标记
+     * multi scheme,using addScheme();
+     */
+    private List<Scheme> schemes;
 
     /**
      * 是否是周末
@@ -159,13 +172,16 @@ public class Calendar implements Serializable {
         this.lunar = lunar;
     }
 
+
     public String getScheme() {
         return scheme;
     }
 
+
     public void setScheme(String scheme) {
         this.scheme = scheme;
     }
+
 
     public int getSchemeColor() {
         return schemeColor;
@@ -173,6 +189,51 @@ public class Calendar implements Serializable {
 
     public void setSchemeColor(int schemeColor) {
         this.schemeColor = schemeColor;
+    }
+
+
+    public List<Scheme> getSchemes() {
+        return schemes;
+    }
+
+    public void setSchemes(List<Scheme> schemes) {
+        this.schemes = schemes;
+    }
+
+
+    public void addScheme(Scheme scheme) {
+        if (schemes == null) {
+            schemes = new ArrayList<>();
+        }
+        schemes.add(scheme);
+    }
+
+    public void addScheme(int schemeColor, String scheme) {
+        if (schemes == null) {
+            schemes = new ArrayList<>();
+        }
+        schemes.add(new Scheme(schemeColor, scheme));
+    }
+
+    public void addScheme(int type, int schemeColor, String scheme) {
+        if (schemes == null) {
+            schemes = new ArrayList<>();
+        }
+        schemes.add(new Scheme(type, schemeColor, scheme));
+    }
+
+    public void addScheme(int type, int schemeColor, String scheme, String other) {
+        if (schemes == null) {
+            schemes = new ArrayList<>();
+        }
+        schemes.add(new Scheme(type, schemeColor, scheme, other));
+    }
+
+    public void addScheme(int schemeColor, String scheme, String other) {
+        if (schemes == null) {
+            schemes = new ArrayList<>();
+        }
+        schemes.add(new Scheme(schemeColor, scheme, other));
     }
 
     public boolean isWeekend() {
@@ -240,6 +301,16 @@ public class Calendar implements Serializable {
         this.traditionFestival = traditionFestival;
     }
 
+    public boolean hasScheme() {
+        if (schemes != null && schemes.size() != 0) {
+            return true;
+        }
+        if (!TextUtils.isEmpty(scheme)) {
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o != null && o instanceof Calendar) {
@@ -252,5 +323,66 @@ public class Calendar implements Serializable {
     @Override
     public String toString() {
         return year + "" + (month < 10 ? "0" + month : month) + "" + (day < 10 ? "0" + day : day);
+    }
+
+    /**
+     * 事件标记服务，现在建议
+     */
+    public final static class Scheme implements Serializable {
+        private int type;
+        private int shcemeColor;
+        private String scheme;
+        private String other;
+
+        public Scheme() {
+        }
+
+        public Scheme(int type, int shcemeColor, String scheme, String other) {
+            this.type = type;
+            this.shcemeColor = shcemeColor;
+            this.scheme = scheme;
+            this.other = other;
+        }
+
+        public Scheme(int type, int shcemeColor, String scheme) {
+            this.type = type;
+            this.shcemeColor = shcemeColor;
+            this.scheme = scheme;
+        }
+
+        public Scheme(int shcemeColor, String scheme) {
+            this.shcemeColor = shcemeColor;
+            this.scheme = scheme;
+        }
+
+        public Scheme(int shcemeColor, String scheme, String other) {
+            this.shcemeColor = shcemeColor;
+            this.scheme = scheme;
+            this.other = other;
+        }
+
+        public String getOther() {
+            return other;
+        }
+
+        public void setOther(String other) {
+            this.other = other;
+        }
+
+        public int getShcemeColor() {
+            return shcemeColor;
+        }
+
+        public void setShcemeColor(int shcemeColor) {
+            this.shcemeColor = shcemeColor;
+        }
+
+        public String getScheme() {
+            return scheme;
+        }
+
+        public void setScheme(String scheme) {
+            this.scheme = scheme;
+        }
     }
 }

@@ -152,7 +152,7 @@ public class CalendarView extends FrameLayout {
                     return;
                 }
                 mDelegate.mSelectedCalendar = calendar;
-                mWeekPager.updateSelected(mDelegate.mSelectedCalendar);
+                mWeekPager.updateSelected(mDelegate.mSelectedCalendar, false);
                 mMonthPager.updateSelected();
                 if (mWeekBar != null) {
                     mWeekBar.onDateSelected(calendar, isClick);
@@ -187,7 +187,7 @@ public class CalendarView extends FrameLayout {
             }
         });
         mSelectLayout.setup(mDelegate);
-        mWeekPager.updateSelected(mDelegate.mSelectedCalendar);
+        mWeekPager.updateSelected(mDelegate.mSelectedCalendar, false);
     }
 
     /**
@@ -284,7 +284,7 @@ public class CalendarView extends FrameLayout {
                         super.onAnimationEnd(animation);
                         mWeekBar.setVisibility(GONE);
                         mSelectLayout.setVisibility(VISIBLE);
-                        mSelectLayout.scrollToYear(year);
+                        mSelectLayout.scrollToYear(year, true);
                         if (mParentLayout != null && mParentLayout.mContentView != null) {
                             mParentLayout.expand();
                         }
@@ -371,27 +371,48 @@ public class CalendarView extends FrameLayout {
      * 滚动到当前
      */
     public void scrollToCurrent() {
+        scrollToCurrent(false);
+    }
+
+    /**
+     * 滚动到当前
+     *
+     * @param smoothScroll smoothScroll
+     */
+    @SuppressWarnings("all")
+    public void scrollToCurrent(boolean smoothScroll) {
         if (!Util.isCalendarInRange(mDelegate.getCurrentDay(), mDelegate)) {
             return;
         }
         mDelegate.mSelectedCalendar = mDelegate.createCurrentDate();
-        mWeekPager.scrollToCurrent();
-        mMonthPager.scrollToCurrent();
+        mWeekPager.scrollToCurrent(smoothScroll);
+        mMonthPager.scrollToCurrent(smoothScroll);
 
         if (mDelegate.mDateSelectedListener != null) {
             mDelegate.mDateSelectedListener.onDateSelected(mDelegate.createCurrentDate(), false);
         }
-        mSelectLayout.scrollToYear(mDelegate.getCurrentDay().getYear());
+        mSelectLayout.scrollToYear(mDelegate.getCurrentDay().getYear(), smoothScroll);
     }
+
 
     /**
      * 滚动到下一个月
      */
     public void scrollToNext() {
+        scrollToNext(false);
+    }
+
+    /**
+     * 滚动到下一个月
+     *
+     * @param smoothScroll smoothScroll
+     */
+    @SuppressWarnings("all")
+    public void scrollToNext(boolean smoothScroll) {
         if (mWeekPager.getVisibility() == VISIBLE) {
-            mWeekPager.setCurrentItem(mWeekPager.getCurrentItem() + 1);
+            mWeekPager.setCurrentItem(mWeekPager.getCurrentItem() + 1, smoothScroll);
         } else {
-            mMonthPager.setCurrentItem(mMonthPager.getCurrentItem() + 1);
+            mMonthPager.setCurrentItem(mMonthPager.getCurrentItem() + 1, smoothScroll);
         }
 
     }
@@ -400,10 +421,20 @@ public class CalendarView extends FrameLayout {
      * 滚动到上一个月
      */
     public void scrollToPre() {
+        scrollToPre(false);
+    }
+
+    /**
+     * 滚动到上一个月
+     *
+     * @param smoothScroll smoothScroll
+     */
+    @SuppressWarnings("all")
+    public void scrollToPre(boolean smoothScroll) {
         if (mWeekPager.getVisibility() == VISIBLE) {
-            mWeekPager.setCurrentItem(mWeekPager.getCurrentItem() - 1);
+            mWeekPager.setCurrentItem(mWeekPager.getCurrentItem() - 1, smoothScroll);
         } else {
-            mMonthPager.setCurrentItem(mMonthPager.getCurrentItem() - 1);
+            mMonthPager.setCurrentItem(mMonthPager.getCurrentItem() - 1, smoothScroll);
         }
     }
 
@@ -415,22 +446,46 @@ public class CalendarView extends FrameLayout {
      * @param day   day
      */
     public void scrollToCalendar(int year, int month, int day) {
+        scrollToCalendar(year, month, day, false);
+    }
+
+    /**
+     * 滚动到指定日期
+     *
+     * @param year         year
+     * @param month        month
+     * @param day          day
+     * @param smoothScroll smoothScroll
+     */
+    @SuppressWarnings("all")
+    public void scrollToCalendar(int year, int month, int day, boolean smoothScroll) {
         if (mWeekPager.getVisibility() == VISIBLE) {
-            mWeekPager.scrollToCalendar(year, month, day);
+            mWeekPager.scrollToCalendar(year, month, day, smoothScroll);
         } else {
-            mMonthPager.scrollToCalendar(year, month, day);
+            mMonthPager.scrollToCalendar(year, month, day, smoothScroll);
         }
     }
 
     /**
      * 滚动到某一年
      *
-     * @param year 快速滚动的年份
+     * @param year         快速滚动的年份
      */
     public void scrollToYear(int year) {
+        scrollToYear(year,false);
+    }
+
+    /**
+     * 滚动到某一年
+     *
+     * @param year         快速滚动的年份
+     * @param smoothScroll smoothScroll
+     */
+    @SuppressWarnings("all")
+    public void scrollToYear(int year, boolean smoothScroll) {
         mMonthPager.setCurrentItem(12 * (year - mDelegate.getMinYear()) +
-                mDelegate.getCurrentDay().getMonth() - mDelegate.getMinYearMonth());
-        mSelectLayout.scrollToYear(year);
+                mDelegate.getCurrentDay().getMonth() - mDelegate.getMinYearMonth(), smoothScroll);
+        mSelectLayout.scrollToYear(year, smoothScroll);
     }
 
 
@@ -469,6 +524,7 @@ public class CalendarView extends FrameLayout {
 
     /**
      * 日期长按事件
+     *
      * @param listener listener
      */
     public void setOnDateLongClickListener(OnDateLongClickListener listener) {

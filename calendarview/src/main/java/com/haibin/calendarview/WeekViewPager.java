@@ -31,7 +31,7 @@ import java.lang.reflect.Constructor;
  * WeekViewPager需要和CalendarView关联:
  */
 
-public class WeekViewPager extends ViewPager {
+public final class WeekViewPager extends ViewPager {
 
     private int mWeekCount;
     private CustomCalendarViewDelegate mDelegate;
@@ -96,24 +96,24 @@ public class WeekViewPager extends ViewPager {
      * @param month 月
      * @param day   日
      */
-    void scrollToCalendar(int year, int month, int day) {
+    void scrollToCalendar(int year, int month, int day,boolean smoothScroll) {
         Calendar calendar = new Calendar();
         calendar.setYear(year);
         calendar.setMonth(month);
         calendar.setDay(day);
         calendar.setCurrentDay(calendar.equals(mDelegate.getCurrentDay()));
         mDelegate.mSelectedCalendar = calendar;
-        updateSelected(calendar);
+        updateSelected(calendar,smoothScroll);
     }
 
     /**
      * 滚动到当前
      */
-    void scrollToCurrent() {
+    void scrollToCurrent(boolean smoothScroll) {
         int position = Util.getWeekFromCalendarBetweenYearAndYear(mDelegate.getCurrentDay(),
                 mDelegate.getMinYear(),
                 mDelegate.getMinYearMonth()) - 1;
-        setCurrentItem(position);
+        setCurrentItem(position,smoothScroll);
         WeekView view = (WeekView) findViewWithTag(position);
         if (view != null) {
             view.performClickCalendar(mDelegate.getCurrentDay(), false);
@@ -125,9 +125,9 @@ public class WeekViewPager extends ViewPager {
     /**
      * 更新任意一个选择的日期
      */
-    void updateSelected(Calendar calendar) {
+    void updateSelected(Calendar calendar,boolean smoothScroll) {
         int position = Util.getWeekFromCalendarBetweenYearAndYear(calendar, mDelegate.getMinYear(), mDelegate.getMinYearMonth()) - 1;
-        setCurrentItem(position);
+        setCurrentItem(position,smoothScroll);
         WeekView view = (WeekView) findViewWithTag(position);
         if (view != null) {
             view.setSelectedCalendar(calendar);

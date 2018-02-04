@@ -39,7 +39,7 @@ import android.widget.LinearLayout;
 /**
  * 日历布局
  */
-public class CalendarLayout extends LinearLayout {
+public final class CalendarLayout extends LinearLayout {
 
     /**
      * 默认展开

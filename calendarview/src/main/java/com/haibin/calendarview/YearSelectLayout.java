@@ -28,7 +28,7 @@ import android.view.WindowManager;
  * 年份+月份选择布局
  * ViewPager + RecyclerView
  */
-public class YearSelectLayout extends ViewPager {
+public final class YearSelectLayout extends ViewPager {
     private int mYearCount;
     private CustomCalendarViewDelegate mDelegate;
     private YearRecyclerView.OnMonthSelectedListener mListener;
@@ -80,8 +80,8 @@ public class YearSelectLayout extends ViewPager {
         getAdapter().notifyDataSetChanged();
     }
 
-    void scrollToYear(int year) {
-        setCurrentItem(year - mDelegate.getMinYear());
+    void scrollToYear(int year,boolean smoothScroll) {
+        setCurrentItem(year - mDelegate.getMinYear(),smoothScroll);
     }
 
 

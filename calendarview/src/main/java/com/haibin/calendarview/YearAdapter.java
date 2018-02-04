@@ -22,7 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-class YearAdapter extends BaseRecyclerAdapter<Month> {
+final class YearAdapter extends BaseRecyclerAdapter<Month> {
     private CustomCalendarViewDelegate mDelegate;
     private int mItemHeight;
     private int mTextHeight;

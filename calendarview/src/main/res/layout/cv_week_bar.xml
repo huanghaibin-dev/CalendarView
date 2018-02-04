@@ -16,7 +16,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="日"
+        android:text="@string/sun"
         android:textColor="#333333"
         android:textSize="12sp" />
 
@@ -25,7 +25,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="一"
+        android:text="@string/mon"
         android:textColor="#333333"
         android:textSize="12sp" />
 
@@ -34,7 +34,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="二"
+        android:text="@string/tue"
         android:textColor="#333333"
         android:textSize="12sp" />
 
@@ -43,7 +43,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="三"
+        android:text="@string/wed"
         android:textSize="12sp" />
 
     <TextView
@@ -51,7 +51,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="四"
+        android:text="@string/thu"
         android:textColor="#333333"
         android:textSize="12sp" />
 
@@ -60,7 +60,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="五"
+        android:text="@string/fri"
         android:textColor="#333333"
         android:textSize="12sp" />
 
@@ -69,7 +69,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="六"
+        android:text="@string/sat"
         android:textColor="#333333"
         android:textSize="12sp" />
 </merge>

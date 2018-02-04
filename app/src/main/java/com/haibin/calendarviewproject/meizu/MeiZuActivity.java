@@ -85,6 +85,7 @@ public class MeiZuActivity extends BaseActivity implements
         });
         mCalendarLayout = (CalendarLayout) findViewById(R.id.calendarLayout);
         mCalendarView.setOnDateSelectedListener(this);
+        mCalendarView.setOnYearChangeListener(this);
         mTextYear.setText(String.valueOf(mCalendarView.getCurYear()));
         mYear = mCalendarView.getCurYear();
         mTextMonthDay.setText(mCalendarView.getCurMonth() + "月" + mCalendarView.getCurDay() + "日");
@@ -106,6 +107,7 @@ public class MeiZuActivity extends BaseActivity implements
         schemes.add(getSchemeCalendar(year, month, 15, 0xFFaacc44,"假"));
         schemes.add(getSchemeCalendar(year, month, 18, 0xFFbc13f0,"记"));
         schemes.add(getSchemeCalendar(year, month, 25, 0xFF13acf0,"假"));
+        schemes.add(getSchemeCalendar(year, month, 27, 0xFF13acf0,"多"));
         mCalendarView.setSchemeDate(schemes);
 
         mRecyclerView = (GroupRecyclerView) findViewById(R.id.recyclerView);
@@ -141,6 +143,9 @@ public class MeiZuActivity extends BaseActivity implements
         calendar.setDay(day);
         calendar.setSchemeColor(color);//如果单独标记颜色、则会使用这个颜色
         calendar.setScheme(text);
+        calendar.addScheme(new Calendar.Scheme());
+        calendar.addScheme(0xFF008800,"假");
+        calendar.addScheme(0xFF008800,"节");
         return calendar;
     }
 
