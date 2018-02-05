@@ -27,7 +27,7 @@ dependencies {
     })
     //noinspection GradleDependency
     compile 'com.android.support:appcompat-v7:25.2.0'
-    //compile 'com.haibin:calendarview:1.0.3'
+    //compile 'com.haibin:calendarview:3.2.1'
     //noinspection GradleDependency
     compile 'com.github.bumptech.glide:glide:3.7.0'
     testCompile 'junit:junit:4.12'

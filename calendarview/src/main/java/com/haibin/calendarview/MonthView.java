@@ -360,10 +360,11 @@ public abstract class MonthView extends BaseView {
     void update() {
         if (mDelegate.mSchemeDate != null) {
             for (Calendar a : mItems) {
-                a.setScheme("");
                 for (Calendar d : mDelegate.mSchemeDate) {
                     if (d.equals(a)) {
-                        a.setScheme(d.getScheme());
+                        a.setScheme(TextUtils.isEmpty(d.getScheme()) ? mDelegate.getSchemeText() : d.getScheme());
+                        a.setSchemeColor(d.getSchemeColor());
+                        a.setSchemes(d.getSchemes());
                     }
                 }
             }

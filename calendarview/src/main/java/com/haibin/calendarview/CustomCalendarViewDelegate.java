@@ -448,6 +448,11 @@ final class CustomCalendarViewDelegate {
         this.mSelectedLunarTextColor = selectedLunarTextColor;
     }
 
+    void setThemeColor(int selectedThemeColor, int schemeColor) {
+        this.mSelectedThemeColor = selectedThemeColor;
+        this.mSchemeThemeColor = schemeColor;
+    }
+
 
     Calendar getCurrentDay() {
         return mCurrentDate;

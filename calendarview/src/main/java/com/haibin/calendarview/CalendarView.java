@@ -469,10 +469,10 @@ public class CalendarView extends FrameLayout {
     /**
      * 滚动到某一年
      *
-     * @param year         快速滚动的年份
+     * @param year 快速滚动的年份
      */
     public void scrollToYear(int year) {
-        scrollToYear(year,false);
+        scrollToYear(year, false);
     }
 
     /**
@@ -603,6 +603,15 @@ public class CalendarView extends FrameLayout {
         mDelegate.setSelectColor(selectedThemeColor, selectedTextColor, selectedLunarTextColor);
     }
 
+    /**
+     * 定制颜色
+     *
+     * @param selectedThemeColor 选中的标记颜色
+     * @param schemeColor        标记背景色
+     */
+    public void setThemeColor(int selectedThemeColor, int schemeColor) {
+        mDelegate.setThemeColor(selectedThemeColor, schemeColor);
+    }
 
     /**
      * 设置标记的色
