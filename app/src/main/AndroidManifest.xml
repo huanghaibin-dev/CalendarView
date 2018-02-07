@@ -24,6 +24,7 @@
         <activity android:name=".index.IndexActivity" />
         <activity android:name=".simple.SimpleActivity" />
         <activity android:name=".colorful.ColorfulActivity" />
+        <activity android:name=".my.MultiActivity" />
     </application>
 
 </manifest>

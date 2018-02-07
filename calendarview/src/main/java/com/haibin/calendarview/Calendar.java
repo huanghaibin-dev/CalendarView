@@ -361,6 +361,14 @@ public final class Calendar implements Serializable {
             this.other = other;
         }
 
+        public int getType() {
+            return type;
+        }
+
+        public void setType(int type) {
+            this.type = type;
+        }
+
         public String getOther() {
             return other;
         }
