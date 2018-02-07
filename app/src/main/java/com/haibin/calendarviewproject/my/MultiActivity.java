@@ -1,32 +1,35 @@
-package com.haibin.calendarviewproject;
+package com.haibin.calendarviewproject.my;
 
 import android.annotation.SuppressLint;
-import android.text.TextUtils;
+import android.content.Context;
+import android.content.Intent;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarLayout;
 import com.haibin.calendarview.CalendarView;
+import com.haibin.calendarviewproject.Article;
+import com.haibin.calendarviewproject.ArticleAdapter;
+import com.haibin.calendarviewproject.R;
 import com.haibin.calendarviewproject.base.activity.BaseActivity;
+import com.haibin.calendarviewproject.base.type.SchemeType;
 import com.haibin.calendarviewproject.colorful.ColorfulActivity;
+import com.haibin.calendarviewproject.group.GroupItemDecoration;
+import com.haibin.calendarviewproject.group.GroupRecyclerView;
 import com.haibin.calendarviewproject.index.IndexActivity;
-import com.haibin.calendarviewproject.meizu.MeiZuActivity;
-import com.haibin.calendarviewproject.my.MultiActivity;
 import com.haibin.calendarviewproject.simple.SimpleActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseActivity implements
+public class MultiActivity extends BaseActivity implements
         CalendarView.OnDateSelectedListener,
-        CalendarView.OnMonthChangeListener,
         CalendarView.OnYearChangeListener,
-        CalendarView.OnDateLongClickListener,
-        View.OnClickListener {
+        View.OnClickListener{
 
     TextView mTextMonthDay;
 
@@ -41,10 +44,16 @@ public class MainActivity extends BaseActivity implements
     RelativeLayout mRelativeTool;
     private int mYear;
     CalendarLayout mCalendarLayout;
+    GroupRecyclerView mRecyclerView;
+
+    public static void show(Context context) {
+        context.startActivity(new Intent(context, MultiActivity.class));
+    }
+
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_main;
+        return R.layout.activity_multi;
     }
 
     @SuppressLint("SetTextI18n")
@@ -76,12 +85,9 @@ public class MainActivity extends BaseActivity implements
                 mCalendarView.scrollToCurrent();
             }
         });
-
         mCalendarLayout = (CalendarLayout) findViewById(R.id.calendarLayout);
-        mCalendarView.setOnYearChangeListener(this);
         mCalendarView.setOnDateSelectedListener(this);
-        mCalendarView.setOnMonthChangeListener(this);
-        mCalendarView.setOnDateLongClickListener(this);
+        mCalendarView.setOnYearChangeListener(this);
         mTextYear.setText(String.valueOf(mCalendarView.getCurYear()));
         mYear = mCalendarView.getCurYear();
         mTextMonthDay.setText(mCalendarView.getCurMonth() + "月" + mCalendarView.getCurDay() + "日");
@@ -91,31 +97,49 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     protected void initData() {
-        final List<Calendar> schemes = new ArrayList<>();
-        final int year = mCalendarView.getCurYear();
-        final int month = mCalendarView.getCurMonth();
-        schemes.add(getSchemeCalendar(year, month, 3, 0xFF40db25, "假"));
-        schemes.add(getSchemeCalendar(year, month, 6, 0xFFe69138, "事"));
-        schemes.add(getSchemeCalendar(year, month, 9, 0xFFdf1356, "议"));
-        schemes.add(getSchemeCalendar(year, month, 13, 0xFFedc56d, "记"));
-        schemes.add(getSchemeCalendar(year, month, 14, 0xFFedc56d, "记"));
-        schemes.add(getSchemeCalendar(year, month, 15, 0xFFaacc44, "假"));
-        schemes.add(getSchemeCalendar(year, month, 18, 0xFFbc13f0, "记"));
-        schemes.add(getSchemeCalendar(year, month, 25, 0xFF13acf0, "假"));
-        mCalendarView.setSchemeDate(schemes);
-        findViewById(R.id.ll_flyme).setOnClickListener(this);
-        findViewById(R.id.ll_simple).setOnClickListener(this);
-        findViewById(R.id.ll_colorful).setOnClickListener(this);
-        findViewById(R.id.ll_index).setOnClickListener(this);
-        findViewById(R.id.ll_multi).setOnClickListener(this);
+        List<Calendar> calendarList = new ArrayList<>();
+        int year = mCalendarView.getCurYear();
+        int month = mCalendarView.getCurMonth();
+
+        //设置所有的scheme,请注意背景必须先设置，不然会出现覆盖的情况
+        Calendar calendar = getCalendar(year, month, 5);
+        setScheme(calendar,0xFFff0000,"",SchemeType.BACKGROUND);
+        setScheme(calendar,0xFFe69138,"事",SchemeType.TRIGLE);
+        setScheme(calendar,0xFFe69138,"",SchemeType.INDEX);
+        calendarList.add(calendar);
+
+        //设置今天
+        java.util.Calendar c = java.util.Calendar.getInstance();//可以对每个时间域单独修改
+        int yearNow = c.get(java.util.Calendar.YEAR);
+        int monthNow = c.get(java.util.Calendar.MONTH) + 1;
+        int dateNow = c.get(java.util.Calendar.DATE);
+        int hourNow = c.get(java.util.Calendar.HOUR_OF_DAY);
+        int minuteNow = c.get(java.util.Calendar.MINUTE);
+        int secondNow = c.get(java.util.Calendar.SECOND);
+        Log.e("pwh",yearNow + "/" + monthNow + "/" + dateNow + " " +hourNow + ":" +minuteNow + ":" + secondNow);
+        calendar = getCalendar(yearNow, monthNow, dateNow);
+        setScheme(calendar,0xFFff0000,"今",SchemeType.TRIGLE);
+        calendarList.add(calendar);
+
+        calendar = getCalendar(year, month, 19);
+        setScheme(calendar,0xFFff0000,"",SchemeType.INDEX);
+        calendarList.add(calendar);
+
+        mCalendarView.setSchemeDate(calendarList);
+
+        mRecyclerView = (GroupRecyclerView) findViewById(R.id.recyclerView);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.addItemDecoration(new GroupItemDecoration<String,Article>());
+        mRecyclerView.setAdapter(new ArticleAdapter(this));
+        mRecyclerView.notifyDataSetChanged();
     }
 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
+        switch (v.getId()){
             case R.id.ll_flyme:
-                MeiZuActivity.show(this);
+                MultiActivity.show(this);
                 break;
             case R.id.ll_simple:
                 SimpleActivity.show(this);
@@ -126,21 +150,24 @@ public class MainActivity extends BaseActivity implements
             case R.id.ll_index:
                 IndexActivity.show(this);
                 break;
-            case R.id.ll_multi:
-                MultiActivity.show(this);
-                break;
         }
     }
 
-    private Calendar getSchemeCalendar(int year, int month, int day, int color, String text) {
+    private Calendar getCalendar(int year, int month, int day) {
         Calendar calendar = new Calendar();
         calendar.setYear(year);
         calendar.setMonth(month);
         calendar.setDay(day);
-        calendar.setSchemeColor(color);//如果单独标记颜色、则会使用这个颜色
-        calendar.setScheme(text);
+
         return calendar;
     }
+
+    private Calendar setScheme(Calendar calendar,int color, String text, SchemeType schemeType){
+        Calendar.Scheme scheme = new Calendar.Scheme(schemeType.ordinal(),color,text);
+        calendar.addScheme(scheme);
+        return calendar;
+    }
+
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -151,36 +178,13 @@ public class MainActivity extends BaseActivity implements
         mTextYear.setText(String.valueOf(calendar.getYear()));
         mTextLunar.setText(calendar.getLunar());
         mYear = calendar.getYear();
-        if (isClick) {
-            Toast.makeText(this, getCalendarText(calendar), Toast.LENGTH_SHORT).show();
-        }
     }
 
-    @Override
-    public void onDateLongClick(Calendar calendar) {
-        Log.e("onDateLongClick", "  -- " + calendar.getDay() + "  --  " + calendar.getMonth());
-    }
-
-    private static String getCalendarText(Calendar calendar) {
-        return String.format("新历%s \n 农历%s \n 公历节日：%s \n 农历节日：%s \n 节气：%s \n 是否闰月：%s",
-                calendar.getMonth() + "月" + calendar.getDay() + "日",
-                calendar.getLunarCakendar().getMonth() + "月" + calendar.getLunarCakendar().getDay() + "日",
-                TextUtils.isEmpty(calendar.getGregorianFestival()) ? "无" : calendar.getGregorianFestival(),
-                TextUtils.isEmpty(calendar.getTraditionFestival()) ? "无" : calendar.getTraditionFestival(),
-                TextUtils.isEmpty(calendar.getSolarTerm()) ? "无" : calendar.getSolarTerm(),
-                calendar.getLeapMonth() == 0 ? "否" : String.format("闰%s月", calendar.getLeapMonth()));
-    }
-
-    @Override
-    public void onMonthChange(int year, int month) {
-        Log.e("onMonthChange", "  -- " + year + "  --  " + month);
-    }
 
     @Override
     public void onYearChange(int year) {
         mTextMonthDay.setText(String.valueOf(year));
     }
 
+
 }
-
-
