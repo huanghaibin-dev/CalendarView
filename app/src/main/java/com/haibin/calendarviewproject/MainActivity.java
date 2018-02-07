@@ -15,7 +15,6 @@ import com.haibin.calendarviewproject.base.activity.BaseActivity;
 import com.haibin.calendarviewproject.colorful.ColorfulActivity;
 import com.haibin.calendarviewproject.index.IndexActivity;
 import com.haibin.calendarviewproject.meizu.MeiZuActivity;
-import com.haibin.calendarviewproject.my.MultiActivity;
 import com.haibin.calendarviewproject.simple.SimpleActivity;
 
 import java.util.ArrayList;
@@ -107,7 +106,6 @@ public class MainActivity extends BaseActivity implements
         findViewById(R.id.ll_simple).setOnClickListener(this);
         findViewById(R.id.ll_colorful).setOnClickListener(this);
         findViewById(R.id.ll_index).setOnClickListener(this);
-        findViewById(R.id.ll_multi).setOnClickListener(this);
     }
 
 
@@ -125,9 +123,6 @@ public class MainActivity extends BaseActivity implements
                 break;
             case R.id.ll_index:
                 IndexActivity.show(this);
-                break;
-            case R.id.ll_multi:
-                MultiActivity.show(this);
                 break;
         }
     }
