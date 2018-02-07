@@ -30,6 +30,9 @@ import java.util.ArrayList;
  */
 public abstract class MonthView extends BaseView {
 
+    /**
+     * 月视图ViewPager
+     */
     MonthViewPager mMonthViewPager;
 
     /**

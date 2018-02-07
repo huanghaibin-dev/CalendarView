@@ -623,6 +623,15 @@ public class CalendarView extends FrameLayout {
         mDelegate.setSchemeColor(schemeColor, schemeTextColor, schemeLunarTextColor);
     }
 
+    /**
+     * 设置年视图的颜色
+     * @param yearViewMonthTextColor 年视图月份颜色
+     * @param yearViewDayTextColor 年视图天的颜色
+     * @param yarViewSchemeTextColor 年视图标记颜色
+     */
+    public void setYearViewTextColor(int yearViewMonthTextColor, int yearViewDayTextColor, int yarViewSchemeTextColor){
+        mDelegate.setYearViewTextColor(yearViewMonthTextColor,yearViewDayTextColor,yarViewSchemeTextColor);
+    }
 
     /**
      * 设置星期栏的背景和字体颜色
@@ -705,4 +714,6 @@ public class CalendarView extends FrameLayout {
     public interface OnDateLongClickListener {
         void onDateLongClick(Calendar calendar);
     }
+
+
 }

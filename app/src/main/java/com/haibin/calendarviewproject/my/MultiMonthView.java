@@ -14,7 +14,8 @@ import java.util.List;
 
 /**
  * 多层级日历布局
- * Created by huanghaibin on 2017/11/15.
+ * Created by wenhua on 2017/11/15.
+ * https://github.com/peterforme 感谢 @peterforme 提供PR
  */
 
 public class MultiMonthView extends MonthView {

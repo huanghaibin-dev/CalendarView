@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--suppress ALL -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -336,7 +337,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="多层级风格"
+                        android:text="peterforme提供多层级风格"
                         android:textColor="#333333"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -345,7 +346,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="点击查看多层级风格的日历控件"
+                        android:text="点击查看peterforme提供多层级风格的日历控件"
                         android:textColor="#666666"
                         android:textSize="14sp" />
                 </LinearLayout>

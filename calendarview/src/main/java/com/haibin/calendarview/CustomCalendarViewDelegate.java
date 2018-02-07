@@ -223,7 +223,7 @@ final class CustomCalendarViewDelegate {
         mMonthViewShowMode = array.getInt(R.styleable.CalendarView_month_view_show_mode, MODE_ALL_MONTH);
 
         mWeekBackground = array.getColor(R.styleable.CalendarView_week_background, Color.WHITE);
-        mWeekLineBackground = array.getColor(R.styleable.CalendarView_week_line_background, Color.WHITE);
+        mWeekLineBackground = array.getColor(R.styleable.CalendarView_week_line_background, Color.TRANSPARENT);
         mYearViewBackground = array.getColor(R.styleable.CalendarView_year_view_background, Color.WHITE);
         mWeekTextColor = array.getColor(R.styleable.CalendarView_week_text_color, 0xFF333333);
 
@@ -440,6 +440,12 @@ final class CustomCalendarViewDelegate {
         this.mSchemeThemeColor = schemeColor;
         this.mSchemeTextColor = schemeTextColor;
         this.mSchemeLunarTextColor = schemeLunarTextColor;
+    }
+
+    void setYearViewTextColor(int yearViewMonthTextColor, int yearViewDayTextColor, int yarViewSchemeTextColor) {
+        this.mYearViewMonthTextColor = yearViewMonthTextColor;
+        this.mYearViewDayTextColor = yearViewDayTextColor;
+        this.mYearViewSchemeTextColor = yarViewSchemeTextColor;
     }
 
     void setSelectColor(int selectedColor, int selectedTextColor, int selectedLunarTextColor) {

@@ -3,13 +3,19 @@ package com.haibin.calendarviewproject.my;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Path;
+import android.util.Log;
 
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.WeekView;
+import com.haibin.calendarviewproject.base.type.SchemeType;
+
+import java.util.List;
 
 /**
  * 多层次视图
- * Created by huanghaibin on 2017/11/29.
+ * Created by wenhua on 2017/11/29.
+ * https://github.com/peterforme 感谢 @peterforme 提供PR
  */
 
 public class MultiWeekView extends WeekView {
@@ -33,14 +39,13 @@ public class MultiWeekView extends WeekView {
         mSchemeBasicPaint.setColor(0xffed5353);
         mSchemeBasicPaint.setFakeBoldText(true);
         mRadio = dipToPx(getContext(), 7);
-        mPadding = dipToPx(getContext(), 4);
+        mPadding = dipToPx(getContext(), 0);
         Paint.FontMetrics metrics = mSchemeBasicPaint.getFontMetrics();
         mSchemeBaseLine = mRadio - metrics.descent + (metrics.bottom - metrics.top) / 2 + dipToPx(getContext(), 1);
 
     }
 
     /**
-     *
      * @param canvas    canvas
      * @param calendar  日历日历calendar
      * @param x         日历Card x起点坐标
@@ -56,11 +61,33 @@ public class MultiWeekView extends WeekView {
 
     @Override
     protected void onDrawScheme(Canvas canvas, Calendar calendar, int x) {
-        mSchemeBasicPaint.setColor(calendar.getSchemeColor());
+        List<Calendar.Scheme> schemes = calendar.getSchemes();
+        for (Calendar.Scheme scheme : schemes) {
+            if (scheme.getType() == SchemeType.TRIGLE.ordinal()) {
+                Log.e("pwh", "画三角形");
+                Path path = new Path();
+                path.moveTo(x + mItemWidth - 4 * mRadio, 0);
+                path.lineTo(x + mItemWidth, 0 + 4 * mRadio);
+                path.lineTo(x + mItemWidth, 0);
+                path.moveTo(x + mItemWidth - 4 * mRadio, 0);
+                path.close();
+                mSchemeBasicPaint.setColor(scheme.getShcemeColor());
+                canvas.drawPath(path, mSchemeBasicPaint);
+                canvas.drawText(scheme.getScheme(), x + mItemWidth - mPadding - 2 * mRadio, mPadding + mSchemeBaseLine, mTextPaint);
+            } else if (scheme.getType() == SchemeType.INDEX.ordinal()) {
+                Log.e("pwh", "画下标");
+                mSchemeBasicPaint.setColor(scheme.getShcemeColor());
+                float radius = dipToPx(getContext(), 4);
+                canvas.drawCircle(x + mItemWidth / 2, mItemHeight - radius - mPadding, radius, mSchemeBasicPaint);
+            } else if (scheme.getType() == SchemeType.BACKGROUND.ordinal()) {
+                Log.e("pwh", "画背景色");
+                mSchemeBasicPaint.setColor(scheme.getShcemeColor());
+                canvas.drawRect(x, 0, x + mItemWidth, mItemHeight, mSchemePaint);
+            }
 
-        canvas.drawCircle(x + mItemWidth - mPadding - mRadio / 2, mPadding + mRadio, mRadio, mSchemeBasicPaint);
 
-        canvas.drawText(calendar.getScheme(), x + mItemWidth - mPadding - mRadio, mPadding + mSchemeBaseLine, mTextPaint);
+        }
+
     }
 
     @Override

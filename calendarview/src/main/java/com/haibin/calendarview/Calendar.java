@@ -361,22 +361,6 @@ public final class Calendar implements Serializable {
             this.other = other;
         }
 
-        public int getType() {
-            return type;
-        }
-
-        public void setType(int type) {
-            this.type = type;
-        }
-
-        public String getOther() {
-            return other;
-        }
-
-        public void setOther(String other) {
-            this.other = other;
-        }
-
         public int getShcemeColor() {
             return shcemeColor;
         }
@@ -392,5 +376,22 @@ public final class Calendar implements Serializable {
         public void setScheme(String scheme) {
             this.scheme = scheme;
         }
+
+        public String getOther() {
+            return other;
+        }
+
+        public void setOther(String other) {
+            this.other = other;
+        }
+
+        public int getType() {
+            return type;
+        }
+
+        public void setType(int type) {
+            this.type = type;
+        }
+
     }
 }
