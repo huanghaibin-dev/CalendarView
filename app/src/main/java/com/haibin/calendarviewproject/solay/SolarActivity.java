@@ -1,10 +1,11 @@
-package com.haibin.calendarviewproject.my;
+package com.haibin.calendarviewproject.solay;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -16,7 +17,6 @@ import com.haibin.calendarviewproject.Article;
 import com.haibin.calendarviewproject.ArticleAdapter;
 import com.haibin.calendarviewproject.R;
 import com.haibin.calendarviewproject.base.activity.BaseActivity;
-import com.haibin.calendarviewproject.base.type.SchemeType;
 import com.haibin.calendarviewproject.colorful.ColorfulActivity;
 import com.haibin.calendarviewproject.group.GroupItemDecoration;
 import com.haibin.calendarviewproject.group.GroupRecyclerView;
@@ -25,16 +25,11 @@ import com.haibin.calendarviewproject.simple.SimpleActivity;
 
 import java.util.ArrayList;
 import java.util.List;
-/**
- * 多层级日历布局
- * Created by wenhua on 2017/11/15.
- * https://github.com/peterforme 感谢 @peterforme 提供PR
- */
 
-public class MultiActivity extends BaseActivity implements
+public class SolarActivity extends BaseActivity implements
         CalendarView.OnDateSelectedListener,
         CalendarView.OnYearChangeListener,
-        View.OnClickListener{
+        View.OnClickListener {
 
     TextView mTextMonthDay;
 
@@ -52,19 +47,21 @@ public class MultiActivity extends BaseActivity implements
     GroupRecyclerView mRecyclerView;
 
     public static void show(Context context) {
-        context.startActivity(new Intent(context, MultiActivity.class));
+        context.startActivity(new Intent(context, SolarActivity.class));
     }
 
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_multi;
+        return R.layout.activity_solay;
     }
 
     @SuppressLint("SetTextI18n")
     @Override
     protected void initView() {
-        setStatusBarDarkMode();
+        if (Build.VERSION.SDK_INT >= 21) {
+            getWindow().setStatusBarColor(getResources().getColor(R.color.solar_background));
+        }
         mTextMonthDay = (TextView) findViewById(R.id.tv_month_day);
         mTextYear = (TextView) findViewById(R.id.tv_year);
         mTextLunar = (TextView) findViewById(R.id.tv_lunar);
@@ -102,39 +99,25 @@ public class MultiActivity extends BaseActivity implements
 
     @Override
     protected void initData() {
-        List<Calendar> calendarList = new ArrayList<>();
+        List<Calendar> schemes = new ArrayList<>();
         int year = mCalendarView.getCurYear();
         int month = mCalendarView.getCurMonth();
 
-        //设置所有的scheme,请注意背景必须先设置，不然会出现覆盖的情况
-        Calendar calendar = getCalendar(year, month, 5);
-        setScheme(calendar,0xFFff0000,"",SchemeType.BACKGROUND);
-        setScheme(calendar,0xFFe69138,"事",SchemeType.TRIGLE);
-        setScheme(calendar,0xFFe69138,"",SchemeType.INDEX);
-        calendarList.add(calendar);
 
-        //设置今天
-        java.util.Calendar c = java.util.Calendar.getInstance();//可以对每个时间域单独修改
-        int yearNow = c.get(java.util.Calendar.YEAR);
-        int monthNow = c.get(java.util.Calendar.MONTH) + 1;
-        int dateNow = c.get(java.util.Calendar.DATE);
-        int hourNow = c.get(java.util.Calendar.HOUR_OF_DAY);
-        int minuteNow = c.get(java.util.Calendar.MINUTE);
-        int secondNow = c.get(java.util.Calendar.SECOND);
-        Log.e("pwh",yearNow + "/" + monthNow + "/" + dateNow + " " +hourNow + ":" +minuteNow + ":" + secondNow);
-        calendar = getCalendar(yearNow, monthNow, dateNow);
-        setScheme(calendar,0xFFff0000,"今",SchemeType.TRIGLE);
-        calendarList.add(calendar);
-
-        calendar = getCalendar(year, month, 19);
-        setScheme(calendar,0xFFff0000,"",SchemeType.INDEX);
-        calendarList.add(calendar);
-
-        mCalendarView.setSchemeDate(calendarList);
+        schemes.add(getSchemeCalendar(year, month, 3, "假"));
+        schemes.add(getSchemeCalendar(year, month, 6, "事"));
+        schemes.add(getSchemeCalendar(year, month, 9, "议"));
+        schemes.add(getSchemeCalendar(year, month, 13, "记"));
+        schemes.add(getSchemeCalendar(year, month, 14, "记"));
+        schemes.add(getSchemeCalendar(year, month, 15, "假"));
+        schemes.add(getSchemeCalendar(year, month, 18, "记"));
+        schemes.add(getSchemeCalendar(year, month, 25, "假"));
+        schemes.add(getSchemeCalendar(year, month, 27, "多"));
+        mCalendarView.setSchemeDate(schemes);
 
         mRecyclerView = (GroupRecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.addItemDecoration(new GroupItemDecoration<String,Article>());
+        mRecyclerView.addItemDecoration(new GroupItemDecoration<String, Article>());
         mRecyclerView.setAdapter(new ArticleAdapter(this));
         mRecyclerView.notifyDataSetChanged();
     }
@@ -142,9 +125,9 @@ public class MultiActivity extends BaseActivity implements
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.ll_flyme:
-                MultiActivity.show(this);
+                SolarActivity.show(this);
                 break;
             case R.id.ll_simple:
                 SimpleActivity.show(this);
@@ -158,18 +141,17 @@ public class MultiActivity extends BaseActivity implements
         }
     }
 
-    private Calendar getCalendar(int year, int month, int day) {
+    private Calendar getSchemeCalendar(int year, int month, int day, String text) {
         Calendar calendar = new Calendar();
         calendar.setYear(year);
         calendar.setMonth(month);
         calendar.setDay(day);
+        calendar.setSchemeColor(Color.WHITE);
+        calendar.setScheme(text);
+        calendar.addScheme(0xFFa8b015, "rightTop");
+        calendar.addScheme(0xFF423cb0, "leftTop");
+        calendar.addScheme(0xFF643c8c, "bottom");
 
-        return calendar;
-    }
-
-    private Calendar setScheme(Calendar calendar,int color, String text, SchemeType schemeType){
-        Calendar.Scheme scheme = new Calendar.Scheme(schemeType.ordinal(),color,text);
-        calendar.addScheme(scheme);
         return calendar;
     }
 

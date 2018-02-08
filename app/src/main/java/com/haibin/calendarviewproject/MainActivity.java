@@ -17,6 +17,7 @@ import com.haibin.calendarviewproject.index.IndexActivity;
 import com.haibin.calendarviewproject.meizu.MeiZuActivity;
 import com.haibin.calendarviewproject.my.MultiActivity;
 import com.haibin.calendarviewproject.simple.SimpleActivity;
+import com.haibin.calendarviewproject.solay.SolarActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,6 +108,7 @@ public class MainActivity extends BaseActivity implements
         findViewById(R.id.ll_simple).setOnClickListener(this);
         findViewById(R.id.ll_colorful).setOnClickListener(this);
         findViewById(R.id.ll_index).setOnClickListener(this);
+        findViewById(R.id.ll_solar_system).setOnClickListener(this);
         findViewById(R.id.ll_multi).setOnClickListener(this);
     }
 
@@ -125,6 +127,9 @@ public class MainActivity extends BaseActivity implements
                 break;
             case R.id.ll_index:
                 IndexActivity.show(this);
+                break;
+            case R.id.ll_solar_system:
+                SolarActivity.show(this);
                 break;
             case R.id.ll_multi:
                 MultiActivity.show(this);
