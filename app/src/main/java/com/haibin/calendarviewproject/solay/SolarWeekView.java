@@ -29,9 +29,9 @@ public class SolarWeekView extends WeekView {
         mPointPaint.setAntiAlias(true);
         mPointPaint.setStyle(Paint.Style.FILL);
         mSchemePaint.setStyle(Paint.Style.STROKE);
-        mSchemePaint.setStrokeWidth(dipToPx(context, 2));
+        mSchemePaint.setStrokeWidth(dipToPx(context, 1.2f));
         mSchemePaint.setColor(0xFFFFFFFF);
-        mPointRadius = dipToPx(context, 4);
+        mPointRadius = dipToPx(context, 3.6f);
         mPointPaint.setColor(Color.RED);
     }
 

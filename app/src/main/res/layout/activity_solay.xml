@@ -118,6 +118,7 @@
             app:selected_text_color="@color/solar_background"
             app:selected_theme_color="#FFFFFF"
             app:week_background="@color/solar_background"
+            app:week_bar_view="com.haibin.calendarviewproject.solay.SolarWeekBar"
             app:week_text_color="#FFFFFF"
             app:week_view="com.haibin.calendarviewproject.solay.SolarWeekView"
             app:year_view_day_text_color="#333333"
