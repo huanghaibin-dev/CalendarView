@@ -3,7 +3,7 @@ Android上一个优雅、高度自定义、性能高效的日历控件，完美�
 这个控件内存和效率优势相当明显，而且真正做到收缩+展开，适配多种场景，支持同时多种颜色标记日历事务，你真的想不到日历还可以如此优雅！更多参考用法请移步Demo，Demo实现了4个精美的自定义效果。
 
 ### Support English Version
-[**English Version**](https://github.com/huanghaibin-dev/CalendarView/blob/master/README_EN.md)
+[**English Version**](https://gitee.com/huanghaibin_dev/CalendarView/edit/master/README_EN.md)
 
 ### Gradle
 ```
