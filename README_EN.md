@@ -43,18 +43,20 @@ compile 'com.haibin:calendarview:3.2.3'
 
 ### Effect preview
 
-### 
-<img src="https://gitee.com/huanghaibin_dev/CalendarView/raw/master/app/src/main/assets/custom_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://gitee.com/huanghaibin_dev/CalendarView/raw/master/app/src/main/assets/custom_shrink.png" height="650"/>
-### 
-<img src="https://gitee.com/huanghaibin_dev/CalendarView/raw/master/app/src/main/assets/meizu.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://gitee.com/huanghaibin_dev/CalendarView/raw/master/app/src/main/assets/meizu_shrink.png" height="650"/>
-### 
-<img src="https://gitee.com/huanghaibin_dev/CalendarView/raw/master/app/src/main/assets/index_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://gitee.com/huanghaibin_dev/CalendarView/raw/master/app/src/main/assets/color_expand.png" height="650"/>
-### 
-<img src="https://gitee.com/huanghaibin_dev/CalendarView/raw/master/app/src/main/assets/progress_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://gitee.com/huanghaibin_dev/CalendarView/raw/master/app/src/main/assets/progress_shrink.png" height="650"/>
-### 
-<img src="https://gitee.com/huanghaibin_dev/CalendarView/raw/master/app/src/main/assets/solar_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://gitee.com/huanghaibin_dev/CalendarView/raw/master/app/src/main/assets/solar_shrink.png" height="650"/>
-### 
-<img src="https://gitee.com/huanghaibin_dev/CalendarView/raw/master/app/src/main/assets/year_view.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://gitee.com/huanghaibin_dev/CalendarView/raw/master/app/src/main/assets/simple_expand.png" height="650"/>
+###
+<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/custom_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/custom_shrink.png" height="650"/>
+###
+<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/meizu.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/meizu_shrink.png" height="650"/>
+###
+<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/index_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/color_expand.png" height="650"/>
+###
+<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/progress_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/progress_shrink.png" height="650"/>
+###
+<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/solar_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/solar_shrink.png" height="650"/>
+###
+<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/year_view.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/simple_expand.png" height="650"/>
+
+
 
 ### usage
 ```xml
