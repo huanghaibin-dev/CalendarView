@@ -38,7 +38,7 @@ public class ColorfulWeekView extends WeekView {
         int cx = x + mItemWidth / 2;
         int cy = mItemHeight / 2;
         canvas.drawCircle(cx, cy, mRadius, mSelectedPaint);
-        return false;
+        return true;
     }
 
 

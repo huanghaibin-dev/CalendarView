@@ -42,6 +42,22 @@ import android.widget.LinearLayout;
 public final class CalendarLayout extends LinearLayout {
 
     /**
+     * 周月视图
+     */
+    private static final int CALENDAR_SHOW_MODE_BOTH_MONTH_WEEK_VIEW = 0;
+
+
+    /**
+     * 仅周视图
+     */
+    private static final int CALENDAR_SHOW_MODE_ONLY_WEEK_VIEW = 1;
+
+    /**
+     * 仅月视图
+     */
+    private static final int CALENDAR_SHOW_MODE_ONLY_MONTH_VIEW = 2;
+
+    /**
      * 默认展开
      */
     private static final int STATUS_EXPAND = 0;
@@ -81,6 +97,9 @@ public final class CalendarLayout extends LinearLayout {
      */
     ViewGroup mContentView;
 
+
+    private int mCalendarShowMode = 0;
+
     private int mTouchSlop;
     private int mContentViewTranslateY; //ContentView  可滑动的最大距离距离 , 固定
     private int mViewPagerTranslateY = 0;// ViewPager可以平移的距离
@@ -89,7 +108,6 @@ public final class CalendarLayout extends LinearLayout {
     private float mLastY;
     private boolean isAnimating = false;
 
-    private boolean mIsOnlyWeekView;
     /**
      * 内容布局id
      */
@@ -111,10 +129,9 @@ public final class CalendarLayout extends LinearLayout {
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CalendarLayout);
         mContentViewId = array.getResourceId(R.styleable.CalendarLayout_calendar_content_view_id, 0);
         mDefaultStatus = array.getInt(R.styleable.CalendarLayout_default_status, STATUS_EXPAND);
-        mIsOnlyWeekView = array.getBoolean(R.styleable.CalendarLayout_only_week_view, false);
+        mCalendarShowMode = array.getInt(R.styleable.CalendarLayout_calendar_show_mode, CALENDAR_SHOW_MODE_BOTH_MONTH_WEEK_VIEW);
 
         array.recycle();
-        //setSelectPosition(6);
         mVelocityTracker = VelocityTracker.obtain();
         final ViewConfiguration configuration = ViewConfiguration.get(context);
         mTouchSlop = configuration.getScaledTouchSlop();
@@ -263,7 +280,8 @@ public final class CalendarLayout extends LinearLayout {
         if (mDelegate.isShowYearSelectedLayout) {
             return false;
         }
-        if (mIsOnlyWeekView)
+        if (mCalendarShowMode == CALENDAR_SHOW_MODE_ONLY_MONTH_VIEW ||
+                mCalendarShowMode == CALENDAR_SHOW_MODE_ONLY_WEEK_VIEW)
             return false;
         if (mContentView == null)
             return false;
@@ -347,7 +365,7 @@ public final class CalendarLayout extends LinearLayout {
      * 展开
      */
     public boolean expand() {
-        if (isAnimating || mIsOnlyWeekView)
+        if (isAnimating || mCalendarShowMode == CALENDAR_SHOW_MODE_ONLY_WEEK_VIEW)
             return false;
         if (mMonthView.getVisibility() != VISIBLE) {
             mWeekPager.setVisibility(GONE);
@@ -418,7 +436,9 @@ public final class CalendarLayout extends LinearLayout {
         if (mContentView == null) {
             return;
         }
-        if (mDefaultStatus == STATUS_SHRINK || mIsOnlyWeekView) {
+        if ((mDefaultStatus == STATUS_SHRINK ||
+                mCalendarShowMode == CALENDAR_SHOW_MODE_ONLY_WEEK_VIEW) &&
+                mCalendarShowMode != CALENDAR_SHOW_MODE_ONLY_MONTH_VIEW) {
             post(new Runnable() {
                 @Override
                 public void run() {

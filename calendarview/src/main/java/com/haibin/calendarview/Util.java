@@ -93,7 +93,6 @@ final class Util {
      * @param year 某一年
      * @return 366 or 365
      */
-    @SuppressWarnings("unused")
     private static int getYearCount(int year) {
         return isLeapYear(year) ? 366 : 365;
     }
@@ -118,20 +117,6 @@ final class Util {
         return (firstDayOfWeek + mDaysCount + nextMonthDaysOffset) / 7 * itemHeight;
     }
 
-    /**
-     * 获取某个月有多少个星期
-     */
-    @SuppressWarnings("unused")
-    static int getWeekCount(int year, int month) {
-        java.util.Calendar date = java.util.Calendar.getInstance();
-        date.set(year, month - 1, 1);
-        int firstDayOfWeek = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;//月第一天为星期几,星期天 == 0
-        int mDaysCount = Util.getMonthDaysCount(year, month);
-        date.set(year, month - 1, mDaysCount);
-        int mLastCount = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;//月最后一天为星期几,星期天 == 0
-        int nextMonthDaysOffset = 6 - mLastCount;//下个月的日偏移天数
-        return (firstDayOfWeek + mDaysCount + nextMonthDaysOffset) / 7;
-    }
 
     /**
      * 获取某年第几天是第几个月

@@ -284,7 +284,7 @@ public class CalendarView extends FrameLayout {
                         super.onAnimationEnd(animation);
                         mWeekBar.setVisibility(GONE);
                         mSelectLayout.setVisibility(VISIBLE);
-                        mSelectLayout.scrollToYear(year, true);
+                        mSelectLayout.scrollToYear(year, false);
                         if (mParentLayout != null && mParentLayout.mContentView != null) {
                             mParentLayout.expand();
                         }
@@ -379,7 +379,6 @@ public class CalendarView extends FrameLayout {
      *
      * @param smoothScroll smoothScroll
      */
-    @SuppressWarnings("all")
     public void scrollToCurrent(boolean smoothScroll) {
         if (!Util.isCalendarInRange(mDelegate.getCurrentDay(), mDelegate)) {
             return;
@@ -387,10 +386,6 @@ public class CalendarView extends FrameLayout {
         mDelegate.mSelectedCalendar = mDelegate.createCurrentDate();
         mWeekPager.scrollToCurrent(smoothScroll);
         mMonthPager.scrollToCurrent(smoothScroll);
-
-        if (mDelegate.mDateSelectedListener != null) {
-            mDelegate.mDateSelectedListener.onDateSelected(mDelegate.createCurrentDate(), false);
-        }
         mSelectLayout.scrollToYear(mDelegate.getCurrentDay().getYear(), smoothScroll);
     }
 

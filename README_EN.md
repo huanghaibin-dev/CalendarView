@@ -5,13 +5,13 @@ This widget has obvious advantages of memory and efficiency, adapt to many scene
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.2.2'
+compile 'com.haibin:calendarview:3.2.3'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.2.2</version>
+  <version>3.2.3</version>
   <type>pom</type>
 </dependency>
 ```
@@ -42,6 +42,9 @@ compile 'com.haibin:calendarview:3.2.2'
 ### If you want to use the English version, it means you don't need to use the lunar calendar, customize MonthView and WeekView, and refer to Demo.
 
 ### Effect preview
+
+###
+<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/custom_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/custom_shrink.png" height="650"/><img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/custom_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/custom_shrink.png" height="650"/>
 ###
 <img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/meizu.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/meizu_shrink.png" height="650"/>
 ###
@@ -61,7 +64,7 @@ compile 'com.haibin:calendarview:3.2.2'
         android:layout_height="match_parent"
         android:orientation="vertical"
         app:default_status="shrink"
-        app:only_week_view="false"
+        app:calendar_show_mode="only_week_view"
         app:calendar_content_view_id="@+id/recyclerView">
 
         <com.haibin.calendarview.CalendarView
@@ -246,6 +249,12 @@ public boolean isExpand();//isExpand
 <attr name="default_status">
       <enum name="expand" value="0" /> <!--expand-->
       <enum name="shrink" value="1" /><!--shrink-->
+      <attr name="calendar_show_mode">
+             <enum name="both_month_week_view" value="0" /><!-- default -->
+             <enum name="only_week_view" value="1" /><!-- only week view -->
+             <enum name="only_month_view" value="2" /><!-- only month view -->
+      </attr>
+      <attr name="calendar_content_view_id" format="integer" /><!-- content view id -->
 </attr>
 <attr name="only_week_view" format="boolean" /><!--only month-->
 <attr name="calendar_content_view_id" format="integer" /><!--calendar_content_view_id-->

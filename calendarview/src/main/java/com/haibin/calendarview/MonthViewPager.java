@@ -32,11 +32,19 @@ import java.lang.reflect.Constructor;
 public final class MonthViewPager extends ViewPager {
 
     private int mMonthCount;
+
     private CustomCalendarViewDelegate mDelegate;
+
     private int mNextViewHeight, mPreViewHeight, mCurrentViewHeight;
+
     CalendarLayout mParentLayout;
+
     WeekViewPager mWeekPager;
 
+    /**
+     * 是否使用滚动到某一天
+     */
+    private boolean isUsingScrollToCalendar = false;
 
     public MonthViewPager(Context context) {
         this(context, null);
@@ -101,8 +109,8 @@ public final class MonthViewPager extends ViewPager {
                         calendar.getMonth() == mDelegate.getCurrentDay().getMonth());
                 calendar.setLunar(LunarCalendar.getLunarText(calendar));
 
-                if(mDelegate.mMonthChangeListener != null){
-                    mDelegate.mMonthChangeListener.onMonthChange(calendar.getYear(),calendar.getMonth());
+                if (mDelegate.mMonthChangeListener != null) {
+                    mDelegate.mMonthChangeListener.onMonthChange(calendar.getYear(), calendar.getMonth());
                 }
 
                 if (mDelegate.getMonthViewShowMode() != CustomCalendarViewDelegate.MODE_ALL_MONTH
@@ -120,23 +128,23 @@ public final class MonthViewPager extends ViewPager {
                     mDelegate.mSelectedCalendar = mDelegate.createCurrentDate();
                 }
 
-                if (mDelegate.mDateSelectedListener != null) {
+                if (mDelegate.mDateSelectedListener != null && !isUsingScrollToCalendar) {
                     mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar, false);
                 }
-
 
                 MonthView view = (MonthView) findViewWithTag(position);
                 if (view != null) {
                     int index = view.getSelectedIndex(mDelegate.mSelectedCalendar);
                     view.mCurrentItem = index;
-                    if (index >= 0 && mParentLayout!= null) {
+                    if (index >= 0 && mParentLayout != null) {
                         mParentLayout.setSelectPosition(index);
                     }
                     view.invalidate();
                 }
-                mWeekPager.updateSelected(mDelegate.mSelectedCalendar,false);
+                mWeekPager.updateSelected(mDelegate.mSelectedCalendar, false);
 
                 updateMonthViewHeight(calendar.getYear(), calendar.getMonth());
+                isUsingScrollToCalendar = false;
             }
 
             @Override
@@ -184,7 +192,8 @@ public final class MonthViewPager extends ViewPager {
      * @param month 月
      * @param day   日
      */
-    void scrollToCalendar(int year, int month, int day,boolean smoothScroll) {
+    void scrollToCalendar(int year, int month, int day, boolean smoothScroll) {
+        isUsingScrollToCalendar = true;
         Calendar calendar = new Calendar();
         calendar.setYear(year);
         calendar.setMonth(month);
@@ -194,7 +203,7 @@ public final class MonthViewPager extends ViewPager {
 
         int y = calendar.getYear() - mDelegate.getMinYear();
         int position = 12 * y + calendar.getMonth() - mDelegate.getMinYearMonth();
-        setCurrentItem(position,smoothScroll);
+        setCurrentItem(position, smoothScroll);
 
         MonthView view = (MonthView) findViewWithTag(position);
         if (view != null) {
@@ -211,13 +220,12 @@ public final class MonthViewPager extends ViewPager {
 
 
         if (mDelegate.mInnerListener != null) {
-            mDelegate.mInnerListener.onMonthDateSelected(calendar,false);
+            mDelegate.mInnerListener.onMonthDateSelected(calendar, false);
         }
 
         if (mDelegate.mDateSelectedListener != null) {
             mDelegate.mDateSelectedListener.onDateSelected(calendar, false);
         }
-
         updateSelected();
     }
 
@@ -225,9 +233,14 @@ public final class MonthViewPager extends ViewPager {
      * 滚动到当前日期
      */
     void scrollToCurrent(boolean smoothScroll) {
+        isUsingScrollToCalendar = true;
         int position = 12 * (mDelegate.getCurrentDay().getYear() - mDelegate.getMinYear()) +
                 mDelegate.getCurrentDay().getMonth() - mDelegate.getMinYearMonth();
-        setCurrentItem(position,smoothScroll);
+        int curItem = getCurrentItem();
+        if (curItem == position) {
+            isUsingScrollToCalendar = false;
+        }
+        setCurrentItem(position, smoothScroll);
         MonthView view = (MonthView) findViewWithTag(position);
         if (view != null) {
             view.setSelectedCalendar(mDelegate.getCurrentDay());
@@ -235,6 +248,9 @@ public final class MonthViewPager extends ViewPager {
             if (mParentLayout != null) {
                 mParentLayout.setSelectPosition(view.getSelectedIndex(mDelegate.getCurrentDay()));
             }
+        }
+        if(mDelegate.mDateSelectedListener != null && getVisibility() == VISIBLE){
+            mDelegate.mDateSelectedListener.onDateSelected(mDelegate.createCurrentDate(), false);
         }
     }
 

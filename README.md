@@ -7,13 +7,13 @@ Android上一个优雅、高度自定义、性能高效的日历控件，完美�
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.2.2'
+compile 'com.haibin:calendarview:3.2.3'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.2.2</version>
+  <version>3.2.3</version>
   <type>pom</type>
 </dependency>
 ```
@@ -47,6 +47,8 @@ compile 'com.haibin:calendarview:3.2.2'
 ### 如果你需要完全定制UI，参考demo，简单几步即可绘制你需要的效果，一般只需要实现三个回调函数绘制你需要的特效即可，自定义日历UI需要同时自定义周视图，真正做到热插拔效果，方便大众定制各种UI需求
 
 ### 效果预览
+### 中国式变态需求风格
+<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/custom_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/custom_shrink.png" height="650"/>
 ### 收缩展开的魅族风格效果
 <img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/meizu.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/meizu_shrink.png" height="650"/>
 ### 下标和多彩风格
@@ -66,7 +68,7 @@ compile 'com.haibin:calendarview:3.2.2'
         android:layout_height="match_parent"
         android:orientation="vertical"
         app:default_status="shrink"
-        app:only_week_view="false"
+        app:calendar_show_mode="only_week_view"
         app:calendar_content_view_id="@+id/recyclerView">
 
         <com.haibin.calendarview.CalendarView
@@ -259,6 +261,13 @@ public boolean isExpand();//是否展开了
 <attr name="default_status">
       <enum name="expand" value="0" /> <!--默认展开-->
       <enum name="shrink" value="1" /><!--默认搜索-->
+
+       <attr name="calendar_show_mode">
+             <enum name="both_month_week_view" value="0" /><!-- 默认都有 -->
+             <enum name="only_week_view" value="1" /><!-- 仅周视图 -->
+             <enum name="only_month_view" value="2" /><!-- 仅月视图 -->
+       </attr>
+       <attr name="calendar_content_view_id" format="integer" /><!-- 内容布局id -->
 </attr>
 <attr name="only_week_view" format="boolean" /><!--仅周视图-->
 <attr name="calendar_content_view_id" format="integer" /><!--内容布局id-->

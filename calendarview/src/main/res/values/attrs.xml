@@ -40,13 +40,15 @@
         <attr name="year_view_day_text_color" format="color" />
         <attr name="year_view_scheme_color" format="color" />
         <attr name="year_view_background" format="color" />
-        <!---->
 
+        <!--日期范围-->
         <attr name="min_year" format="integer" />
         <attr name="max_year" format="integer" />
         <attr name="min_year_month" format="integer" />
         <attr name="max_year_month" format="integer" />
 
+
+        <!-- 月份显示模式 -->
         <attr name="month_view_show_mode">
             <enum name="mode_all" value="0" />
             <enum name="mode_only_current" value="1" />
@@ -62,6 +64,13 @@
             <enum name="shrink" value="1" />
         </attr>
         <attr name="only_week_view" format="boolean" />
+
+        <attr name="calendar_show_mode">
+            <enum name="both_month_week_view" value="0" />
+            <enum name="only_week_view" value="1" />
+            <enum name="only_month_view" value="2" />
+        </attr>
+
         <attr name="calendar_content_view_id" format="integer" />
     </declare-styleable>
 

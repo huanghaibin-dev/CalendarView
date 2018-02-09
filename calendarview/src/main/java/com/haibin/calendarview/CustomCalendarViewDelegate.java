@@ -213,9 +213,11 @@ final class CustomCalendarViewDelegate {
         mSchemeLunarTextColor = array.getColor(R.styleable.CalendarView_scheme_lunar_text_color, 0xFFe1e1e1);
         mSchemeThemeColor = array.getColor(R.styleable.CalendarView_scheme_theme_color, 0x50CFCFCF);
         mMonthViewClass = array.getString(R.styleable.CalendarView_month_view);
+
         mWeekViewClass = array.getString(R.styleable.CalendarView_week_view);
         mWeekBarClass = array.getString(R.styleable.CalendarView_week_bar_view);
         mWeekBarHeight = (int) array.getDimension(R.styleable.CalendarView_week_bar_height, Util.dipToPx(context, 40));
+
         mSchemeText = array.getString(R.styleable.CalendarView_scheme_text);
         if (TextUtils.isEmpty(mSchemeText)) {
             mSchemeText = "记";
@@ -422,7 +424,6 @@ final class CustomCalendarViewDelegate {
     int getYearViewSchemeTextColor() {
         return mYearViewSchemeTextColor;
     }
-
 
     int getMonthViewShowMode() {
         return mMonthViewShowMode;

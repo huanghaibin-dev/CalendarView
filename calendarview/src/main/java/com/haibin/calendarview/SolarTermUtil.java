@@ -31,8 +31,7 @@ final class SolarTermUtil {
     /**
      * 24节气
      */
-    private static String SOLAR_TERMS[] = null;
-
+    private static  String SOLAR_TERMS[] = null;
 
     /**
      * 每弧度的角秒数
@@ -581,10 +580,12 @@ final class SolarTermUtil {
      */
     static String[] getSolarTerms(int year) {
         String[] solarTerms = new String[24];
-        String[] offsets = getSolarTermsOffset(year - 1);
-        System.arraycopy(offsets, 0, solarTerms, 0, offsets.length);
+        String[] preOffset = getSolarTermsPreOffset(year - 1);
+        String[] nextOffset = getSolarTermsNextOffset(year - 1);
+        System.arraycopy(preOffset, 0, solarTerms, 0, preOffset.length);
+        System.arraycopy(nextOffset, 0, solarTerms, 22, nextOffset.length);
         double jd = 365.2422 * (year - 2000), q;
-        for (int i = 0; i < 21; i++) {
+        for (int i = 0; i < 19; i++) {
             q = getTimeFromAngle(jd + i * 15.2, i * 15, 0);
             q = q + J2000 + (double) 8 / 24; // 计算第i个节气(i=0是春风),结果转为北京时
             Time time = setFromJulian(q, true);
@@ -601,7 +602,7 @@ final class SolarTermUtil {
      * @param year 要获得2018年24节气需要传入2017年
      * @return 返回 立春 雨水 惊蛰
      */
-    private static String[] getSolarTermsOffset(int year) {
+    private static String[] getSolarTermsPreOffset(int year) {
         String[] solarTerms = new String[3];
         double jd = 365.2422 * (year - 2000), q;
         for (int i = 21; i < 24; i++) {
@@ -609,6 +610,24 @@ final class SolarTermUtil {
             q = q + J2000 + (double) 8 / 24; // 计算第i个节气(i=0是春分)
             Time time = setFromJulian(q, true);
             solarTerms[i - 21] = time.toString() + SOLAR_TERMS[i];
+        }
+        return solarTerms;
+    }
+
+    /**
+     * 要获得2018年24节气需要传入2017年
+     *
+     * @param year 要获得2018年24节气需要传入2017年
+     * @return 返回 小寒大寒
+     */
+    private static String[] getSolarTermsNextOffset(int year) {
+        String[] solarTerms = new String[2];
+        double jd = 365.2422 * (year - 2000), q;
+        for (int i = 19; i < 21; i++) {
+            q = getTimeFromAngle(jd + i * 15.2, i * 15, 0);
+            q = q + J2000 + (double) 8 / 24; // 计算第i个节气(i=0是春分)
+            Time time = setFromJulian(q, true);
+            solarTerms[i - 19] = time.toString() + SOLAR_TERMS[i];
         }
         return solarTerms;
     }

@@ -31,7 +31,7 @@ import java.util.List;
  * Created by huanghaibin on 2018/1/23.
  */
 
-public abstract class BaseView extends View implements View.OnClickListener ,View.OnLongClickListener{
+public abstract class BaseView extends View implements View.OnClickListener, View.OnLongClickListener {
 
     CustomCalendarViewDelegate mDelegate;
 
@@ -310,6 +310,16 @@ public abstract class BaseView extends View implements View.OnClickListener ,Vie
         mTextBaseLine = mItemHeight / 2 - metrics.descent + (metrics.bottom - metrics.top) / 2;
     }
 
+
+    /**
+     * 是否是选中的
+     *
+     * @param calendar calendar
+     * @return true or false
+     */
+    protected boolean isSelected(Calendar calendar) {
+        return mItems != null && mItems.indexOf(calendar) == mCurrentItem;
+    }
 
     abstract void update();
 }
