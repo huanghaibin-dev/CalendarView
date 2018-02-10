@@ -177,8 +177,9 @@ public class CustomWeekView extends WeekView {
 
             canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + mItemHeight / 10,
                     calendar.isCurrentDay() ? mCurDayLunarTextPaint :
-                            calendar.isCurrentMonth() ? !TextUtils.isEmpty(calendar.getSolarTerm()) ? mSolarTermTextPaint :
-                                    mCurMonthLunarTextPaint : mOtherMonthLunarTextPaint);
+                            !TextUtils.isEmpty(calendar.getSolarTerm()) ? mSolarTermTextPaint :
+                                    calendar.isCurrentMonth() ?
+                                            mCurMonthLunarTextPaint : mOtherMonthLunarTextPaint);
         }
     }
 

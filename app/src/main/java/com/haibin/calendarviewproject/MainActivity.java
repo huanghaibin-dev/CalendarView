@@ -169,7 +169,7 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void onDateLongClick(Calendar calendar) {
-        Log.e("onDateLongClick", "  -- " + calendar.getDay() + "  --  " + calendar.getMonth());
+
     }
 
     private static String getCalendarText(Calendar calendar) {
@@ -184,7 +184,7 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void onMonthChange(int year, int month) {
-        Log.e("onMonthChange", "  -- " + year + "  --  " + month);
+        //Log.e("onMonthChange", "  -- " + year + "  --  " + month);
     }
 
     @Override

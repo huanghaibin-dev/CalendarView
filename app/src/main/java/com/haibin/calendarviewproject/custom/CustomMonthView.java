@@ -39,7 +39,6 @@ public class CustomMonthView extends MonthView {
      */
     private Paint mCurrentDayPaint = new Paint();
 
-
     /**
      * 圆点半径
      */
@@ -119,12 +118,6 @@ public class CustomMonthView extends MonthView {
             mPointPaint.setColor(Color.GRAY);
         }
 
-//        canvas.drawCircle(x + mItemWidth - mPadding - mCircleRadius / 2, y + mPadding + mCircleRadius, mCircleRadius, mSchemeBasicPaint);
-//
-//        mTextPaint.setColor(calendar.getSchemeColor());
-//
-//        canvas.drawText(calendar.getScheme(), x + mItemWidth - mPadding - mCircleRadius, y + mPadding + mSchemeBaseLine, mTextPaint);
-
         canvas.drawCircle(x + mItemWidth / 2, y + mItemHeight - 3 * mPadding, mPointRadius, mPointPaint);
     }
 
@@ -138,14 +131,13 @@ public class CustomMonthView extends MonthView {
             canvas.drawCircle(cx, cy, mRadius, mCurrentDayPaint);
         }
 
-        if(hasScheme){
+        if (hasScheme) {
             canvas.drawCircle(x + mItemWidth - mPadding - mCircleRadius / 2, y + mPadding + mCircleRadius, mCircleRadius, mSchemeBasicPaint);
-
             mTextPaint.setColor(calendar.getSchemeColor());
-
             canvas.drawText(calendar.getScheme(), x + mItemWidth - mPadding - mCircleRadius, y + mPadding + mSchemeBaseLine, mTextPaint);
         }
 
+        //当然可以换成其它对应的画笔就不麻烦，
         if (calendar.isWeekend() && calendar.isCurrentMonth()) {
             mCurMonthTextPaint.setColor(0xFF489dff);
             mCurMonthLunarTextPaint.setColor(0xFF489dff);

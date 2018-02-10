@@ -102,7 +102,7 @@ public final class CalendarLayout extends LinearLayout {
 
     private int mTouchSlop;
     private int mContentViewTranslateY; //ContentView  可滑动的最大距离距离 , 固定
-    private int mViewPagerTranslateY = 0;// ViewPager可以平移的距离
+    private int mViewPagerTranslateY = 0;// ViewPager可以平移的距离，不代表mMonthView的平移距离
 
     private float downY;
     private float mLastY;
@@ -188,6 +188,84 @@ public final class CalendarLayout extends LinearLayout {
             mContentViewTranslateY = Util.getMonthViewHeight(calendar.getYear(), calendar.getMonth(), mItemHeight)
                     - mItemHeight;
         }
+        //已经显示周视图，如果月视图高度是动态改变的，则需要动态平移contentView的高度
+        if (mWeekPager.getVisibility() == VISIBLE && mDelegate.getMonthViewShowMode() != CustomCalendarViewDelegate.MODE_ALL_MONTH) {
+            if (mContentView == null)
+                return;
+            mContentView.setTranslationY(-mContentViewTranslateY);
+        }
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (mDelegate.isShowYearSelectedLayout) {
+            return false;
+        }
+        if (mCalendarShowMode == CALENDAR_SHOW_MODE_ONLY_MONTH_VIEW ||
+                mCalendarShowMode == CALENDAR_SHOW_MODE_ONLY_WEEK_VIEW)
+            return false;
+        if (mContentView == null)
+            return false;
+        int action = event.getAction();
+        float y = event.getY();
+        mVelocityTracker.addMovement(event);
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                mLastY = downY = y;
+                return true;
+            case MotionEvent.ACTION_MOVE:
+                float dy = y - mLastY;
+                //向上滑动，并且contentView平移到最大距离，显示周视图
+                if (dy < 0 && mContentView.getTranslationY() == -mContentViewTranslateY) {
+                    mContentView.onTouchEvent(event);
+                    showWeek();
+                    return false;
+                }
+                hideWeek();
+
+                //向下滑动，并且contentView已经完全到底部
+                if (dy > 0 && mContentView.getTranslationY() + dy >= 0) {
+                    mContentView.setTranslationY(0);
+                    translationViewPager();
+                    return super.onTouchEvent(event);
+                }
+                //向上滑动，并且contentView已经平移到最大距离，则contentView平移到最大的距离
+                if (dy < 0 && mContentView.getTranslationY() + dy <= -mContentViewTranslateY) {
+                    mContentView.setTranslationY(-mContentViewTranslateY);
+                    translationViewPager();
+                    return super.onTouchEvent(event);
+                }
+                //否则按比例平移
+                mContentView.setTranslationY(mContentView.getTranslationY() + dy);
+                translationViewPager();
+                mLastY = y;
+                break;
+            case MotionEvent.ACTION_CANCEL:
+            case MotionEvent.ACTION_UP:
+                final VelocityTracker velocityTracker = mVelocityTracker;
+                velocityTracker.computeCurrentVelocity(1000, mMaximumVelocity);
+                float mYVelocity = velocityTracker.getYVelocity();
+                if (mContentView.getTranslationY() == 0
+                        || mContentView.getTranslationY() == mContentViewTranslateY) {
+                    break;
+                }
+                if (Math.abs(mYVelocity) >= 800) {
+                    if (mYVelocity < 0) {
+                        shrink();
+                    } else {
+                        expand();
+                    }
+                    return super.onTouchEvent(event);
+                }
+                if (event.getY() - downY > 0) {
+                    expand();
+                } else {
+                    shrink();
+                }
+                break;
+        }
+        return super.onTouchEvent(event);
     }
 
     @Override
@@ -274,73 +352,7 @@ public final class CalendarLayout extends LinearLayout {
         return super.onInterceptTouchEvent(ev);
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (mDelegate.isShowYearSelectedLayout) {
-            return false;
-        }
-        if (mCalendarShowMode == CALENDAR_SHOW_MODE_ONLY_MONTH_VIEW ||
-                mCalendarShowMode == CALENDAR_SHOW_MODE_ONLY_WEEK_VIEW)
-            return false;
-        if (mContentView == null)
-            return false;
-        int action = event.getAction();
-        float y = event.getY();
-        mVelocityTracker.addMovement(event);
-        switch (action) {
-            case MotionEvent.ACTION_DOWN:
-                mLastY = downY = y;
-                return true;
-            case MotionEvent.ACTION_MOVE:
-                float dy = y - mLastY;
-                if (dy < 0 && mContentView.getTranslationY() == -mContentViewTranslateY) {
-                    mContentView.onTouchEvent(event);
-                    showWeek();
-                    return false;
-                }
-                hideWeek();
 
-                if (dy > 0 && mContentView.getTranslationY() + dy >= 0) {
-                    mContentView.setTranslationY(0);
-                    translationViewPager();
-                    return super.onTouchEvent(event);
-                }
-                if (dy < 0 && mContentView.getTranslationY() + dy <= -mContentViewTranslateY) {
-                    mContentView.setTranslationY(-mContentViewTranslateY);
-                    translationViewPager();
-                    return super.onTouchEvent(event);
-                }
-                mContentView.setTranslationY(mContentView.getTranslationY() + dy);
-                translationViewPager();
-                mLastY = y;
-                break;
-            case MotionEvent.ACTION_CANCEL:
-            case MotionEvent.ACTION_UP:
-                final VelocityTracker velocityTracker = mVelocityTracker;
-                velocityTracker.computeCurrentVelocity(1000, mMaximumVelocity);
-                float mYVelocity = velocityTracker.getYVelocity();
-                if (mContentView.getTranslationY() == 0
-                        || mContentView.getTranslationY() == mContentViewTranslateY) {
-                    break;
-                }
-                if (Math.abs(mYVelocity) >= 800) {
-                    if (mYVelocity < 0) {
-                        shrink();
-                    } else {
-                        expand();
-                    }
-                    return super.onTouchEvent(event);
-                }
-                if (event.getY() - downY > 0) {
-                    expand();
-                } else {
-                    shrink();
-                }
-                break;
-        }
-        return super.onTouchEvent(event);
-    }
 
 
     /**
@@ -364,6 +376,7 @@ public final class CalendarLayout extends LinearLayout {
     /**
      * 展开
      */
+    @SuppressWarnings("all")
     public boolean expand() {
         if (isAnimating || mCalendarShowMode == CALENDAR_SHOW_MODE_ONLY_WEEK_VIEW)
             return false;
@@ -400,6 +413,7 @@ public final class CalendarLayout extends LinearLayout {
     /**
      * 收缩
      */
+    @SuppressWarnings("all")
     public boolean shrink() {
         if (isAnimating) {
             return false;

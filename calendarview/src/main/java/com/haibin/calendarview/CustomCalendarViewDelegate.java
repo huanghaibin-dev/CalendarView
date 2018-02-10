@@ -269,8 +269,6 @@ final class CustomCalendarViewDelegate {
         mCurrentDate.setYear(Util.getDate("yyyy", d));
         mCurrentDate.setMonth(Util.getDate("MM", d));
         mCurrentDate.setDay(Util.getDate("dd", d));
-        mCurrentDate.setWeekend(Util.isWeekend(mCurrentDate));
-        mCurrentDate.setWeek(Util.getWeekFormCalendar(mCurrentDate));
         mCurrentDate.setCurrentDay(true);
         LunarCalendar.setupLunarCalendar(mCurrentDate);
         setRange(mMinYear, mMinYearMonth, mMaxYear, mMaxYearMonth);
@@ -472,9 +470,7 @@ final class CustomCalendarViewDelegate {
         calendar.setWeek(mCurrentDate.getWeek());
         calendar.setMonth(mCurrentDate.getMonth());
         calendar.setDay(mCurrentDate.getDay());
-        calendar.setWeekend(mCurrentDate.isWeekend());
-        calendar.setCurrentDay(true);
-        calendar.setLunar(mCurrentDate.getLunar());
+        LunarCalendar.setupLunarCalendar(calendar);
         return calendar;
     }
 }

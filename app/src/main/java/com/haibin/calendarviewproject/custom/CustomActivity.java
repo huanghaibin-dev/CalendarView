@@ -101,8 +101,8 @@ public class CustomActivity extends BaseActivity implements
 
         schemes.add(getSchemeCalendar(year, month, 3, 0xFF40db25, "假"));
         schemes.add(getSchemeCalendar(year, month, 6, 0xFFe69138, "事"));
-        schemes.add(getSchemeCalendar(year, month, 9, 0xFFdf1356, "议"));
-        schemes.add(getSchemeCalendar(year, month, 13, 0xFFedc56d, "记"));
+        schemes.add(getSchemeCalendar(year, month, 10, 0xFFdf1356, "议"));
+        schemes.add(getSchemeCalendar(year, month, 11, 0xFFedc56d, "记"));
         schemes.add(getSchemeCalendar(year, month, 14, 0xFFedc56d, "记"));
         schemes.add(getSchemeCalendar(year, month, 15, 0xFFaacc44, "假"));
         schemes.add(getSchemeCalendar(year, month, 18, 0xFFbc13f0, "记"));

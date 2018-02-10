@@ -115,6 +115,7 @@ public class CalendarView extends FrameLayout {
 
         this.mMonthPager = (MonthViewPager) findViewById(R.id.vp_calendar);
         this.mMonthPager.mWeekPager = mWeekPager;
+        this.mMonthPager.mWeekBar = mWeekBar;
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) this.mMonthPager.getLayoutParams();
         params.setMargins(0, mDelegate.getWeekBarHeight() + Util.dipToPx(context, 1), 0, 0);
         mWeekPager.setLayoutParams(params);
@@ -384,6 +385,7 @@ public class CalendarView extends FrameLayout {
             return;
         }
         mDelegate.mSelectedCalendar = mDelegate.createCurrentDate();
+        mWeekBar.onDateSelected(mDelegate.mSelectedCalendar,false);
         mWeekPager.scrollToCurrent(smoothScroll);
         mMonthPager.scrollToCurrent(smoothScroll);
         mSelectLayout.scrollToYear(mDelegate.getCurrentDay().getYear(), smoothScroll);
