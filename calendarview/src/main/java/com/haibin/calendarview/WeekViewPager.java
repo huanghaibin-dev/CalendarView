@@ -150,6 +150,10 @@ public final class WeekViewPager extends ViewPager {
      */
     void updateSelected(Calendar calendar, boolean smoothScroll) {
         int position = Util.getWeekFromCalendarBetweenYearAndYear(calendar, mDelegate.getMinYear(), mDelegate.getMinYearMonth()) - 1;
+        int curItem = getCurrentItem();
+        if (curItem == position) {
+            isUsingScrollToCalendar = false;
+        }
         setCurrentItem(position, smoothScroll);
         WeekView view = (WeekView) findViewWithTag(position);
         if (view != null) {

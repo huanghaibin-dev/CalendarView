@@ -220,6 +220,10 @@ public final class MonthViewPager extends ViewPager {
 
         int y = calendar.getYear() - mDelegate.getMinYear();
         int position = 12 * y + calendar.getMonth() - mDelegate.getMinYearMonth();
+        int curItem = getCurrentItem();
+        if (curItem == position) {
+            isUsingScrollToCalendar = false;
+        }
         setCurrentItem(position, smoothScroll);
 
         MonthView view = (MonthView) findViewWithTag(position);
