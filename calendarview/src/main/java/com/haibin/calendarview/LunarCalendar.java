@@ -21,7 +21,6 @@ import android.text.TextUtils;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TimeZone;
 
 final class LunarCalendar {
 
@@ -30,7 +29,6 @@ final class LunarCalendar {
         if (MONTH_STR != null) {
             return;
         }
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         SolarTermUtil.init(context);
         MONTH_STR = context.getResources().getStringArray(R.array.lunar_first_of_month);
         TRADITION_FESTIVAL_STR = context.getResources().getStringArray(R.array.tradition_festival);

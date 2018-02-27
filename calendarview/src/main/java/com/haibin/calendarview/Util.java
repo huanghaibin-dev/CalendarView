@@ -242,7 +242,7 @@ final class Util {
         date.set(minYear, 0, 1);//1月1日
         long firstTime = date.getTimeInMillis();//获得起始时间戳
         int preDiff = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;//1月第一天为星期几,星期天 == 0，也就是偏移量
-        date.set(calendar.getYear(), calendar.getMonth() - 1, calendar.getDay());
+        date.set(calendar.getYear(), calendar.getMonth() - 1, calendar.getWeek() == 0? calendar.getDay() + 1 :calendar.getDay());
         long curTime = date.getTimeInMillis();//给定时间戳
         int c = (int) ((curTime - firstTime) / ONE_DAY);
         int count = preDiff + c;
@@ -368,4 +368,5 @@ final class Util {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
+
 }
