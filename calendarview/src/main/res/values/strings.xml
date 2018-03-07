@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CalendarView</string>
+    <string name="cv_app_name">CalendarView</string>
     <string-array name="lunar_first_of_month">
         <item>春节</item>
         <item>二月</item>

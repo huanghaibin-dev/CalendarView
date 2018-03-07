@@ -257,7 +257,7 @@ final class CustomCalendarViewDelegate {
         mYearViewDayTextColor = array.getColor(R.styleable.CalendarView_year_view_day_text_color, 0xFF111111);
         mYearViewSchemeTextColor = array.getColor(R.styleable.CalendarView_year_view_scheme_color, mSchemeThemeColor);
 
-        if (mMinYear <= MIN_YEAR) mMaxYear = 1971;
+        if (mMinYear <= MIN_YEAR) mMinYear = 1971;
         if (mMaxYear >= MAX_YEAR) mMaxYear = 2055;
         array.recycle();
         init();
