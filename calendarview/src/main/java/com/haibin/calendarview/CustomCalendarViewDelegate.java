@@ -47,11 +47,23 @@ final class CustomCalendarViewDelegate {
     @SuppressWarnings("unused")
     static final int MODE_FIT_MONTH = 2;
 
-
     /**
      * 月份显示模式
      */
     private int mMonthViewShowMode;
+
+
+//    /**
+//     * 默认选择模式
+//     */
+//    static final int SELECT_MODE_DEFAULT = 0;
+//
+//    /**
+//     * 单选模式
+//     */
+//    static final int SELECT_MODE_SINGLE = 1;
+//
+//    private int mSelectMode;
 
     /**
      * 支持转换的最小农历年份
@@ -204,6 +216,11 @@ final class CustomCalendarViewDelegate {
      */
     Calendar mSelectedCalendar;
 
+//    /**
+//     * 保存标记位置
+//     */
+//    Calendar mIndexCalendar;
+
     CustomCalendarViewDelegate(Context context, @Nullable AttributeSet attrs) {
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CalendarView);
 
@@ -223,6 +240,7 @@ final class CustomCalendarViewDelegate {
             mSchemeText = "记";
         }
         mMonthViewShowMode = array.getInt(R.styleable.CalendarView_month_view_show_mode, MODE_ALL_MONTH);
+        //mSelectMode = array.getInt(R.styleable.CalendarView_select_mode, SELECT_MODE_DEFAULT);
 
         mWeekBackground = array.getColor(R.styleable.CalendarView_week_background, Color.WHITE);
         mWeekLineBackground = array.getColor(R.styleable.CalendarView_week_line_background, Color.TRANSPARENT);
@@ -426,6 +444,10 @@ final class CustomCalendarViewDelegate {
     int getMonthViewShowMode() {
         return mMonthViewShowMode;
     }
+
+//    int getSelectMode() {
+//        return mSelectMode;
+//    }
 
     void setTextColor(int curDayTextColor, int curMonthTextColor, int otherMonthTextColor, int curMonthLunarTextColor, int otherMonthLunarTextColor) {
         mCurDayTextColor = curDayTextColor;

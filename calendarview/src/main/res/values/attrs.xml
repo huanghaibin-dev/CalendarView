@@ -55,6 +55,10 @@
             <enum name="mode_fix" value="2" />
         </attr>
 
+        <!--<attr name="select_mode">-->
+            <!--<enum name="default_mode" value="0"/>-->
+            <!--<enum name="single_mode" value="1"/>-->
+        <!--</attr>-->
     </declare-styleable>
 
 

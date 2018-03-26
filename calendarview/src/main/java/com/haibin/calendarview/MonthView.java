@@ -361,18 +361,28 @@ public abstract class MonthView extends BaseView {
 
     @Override
     void update() {
-        if (mDelegate.mSchemeDate != null) {
+        if (mDelegate.mSchemeDate == null || mDelegate.mSchemeDate.size() == 0) {//清空操作
             for (Calendar a : mItems) {
-                for (Calendar d : mDelegate.mSchemeDate) {
-                    if (d.equals(a)) {
-                        a.setScheme(TextUtils.isEmpty(d.getScheme()) ? mDelegate.getSchemeText() : d.getScheme());
-                        a.setSchemeColor(d.getSchemeColor());
-                        a.setSchemes(d.getSchemes());
-                    }
-                }
+                a.setScheme("");
+                a.setSchemeColor(0);
+                a.setSchemes(null);
             }
             invalidate();
+            return;
         }
+        for (Calendar a : mItems) {//添加操作
+            if(mDelegate.mSchemeDate.contains(a)){
+                Calendar d = mDelegate.mSchemeDate.get(mDelegate.mSchemeDate.indexOf(a));
+                a.setScheme(TextUtils.isEmpty(d.getScheme()) ? mDelegate.getSchemeText() : d.getScheme());
+                a.setSchemeColor(d.getSchemeColor());
+                a.setSchemes(d.getSchemes());
+            }else {
+                a.setScheme("");
+                a.setSchemeColor(0);
+                a.setSchemes(null);
+            }
+        }
+        invalidate();
     }
 
 

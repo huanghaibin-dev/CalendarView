@@ -385,7 +385,7 @@ public class CalendarView extends FrameLayout {
             return;
         }
         mDelegate.mSelectedCalendar = mDelegate.createCurrentDate();
-        mWeekBar.onDateSelected(mDelegate.mSelectedCalendar,false);
+        mWeekBar.onDateSelected(mDelegate.mSelectedCalendar, false);
         mWeekPager.scrollToCurrent(smoothScroll);
         mMonthPager.scrollToCurrent(smoothScroll);
         mSelectLayout.scrollToYear(mDelegate.getCurrentDay().getYear(), smoothScroll);
@@ -557,6 +557,35 @@ public class CalendarView extends FrameLayout {
         mWeekPager.updateScheme();
     }
 
+
+    /**
+     * 清空日期标记
+     */
+    public void clearSchemeDate() {
+        this.mDelegate.mSchemeDate = null;
+        mMonthPager.updateScheme();
+        mWeekPager.updateScheme();
+    }
+
+
+    /**
+     * 移除某天的标记
+     * 这个API是安全的，无效try cache
+     * @param calendar calendar
+     */
+    public void removeSchemeDate(Calendar calendar) {
+        if (mDelegate.mSchemeDate == null ||
+                mDelegate.mSchemeDate.size() == 0 ||
+                calendar == null) {
+            return;
+        }
+        if (mDelegate.mSchemeDate.contains(calendar)) {
+            mDelegate.mSchemeDate.remove(calendar);
+        }
+        mMonthPager.updateScheme();
+        mWeekPager.updateScheme();
+    }
+
     /**
      * 设置背景色
      *
@@ -622,12 +651,13 @@ public class CalendarView extends FrameLayout {
 
     /**
      * 设置年视图的颜色
+     *
      * @param yearViewMonthTextColor 年视图月份颜色
-     * @param yearViewDayTextColor 年视图天的颜色
+     * @param yearViewDayTextColor   年视图天的颜色
      * @param yarViewSchemeTextColor 年视图标记颜色
      */
-    public void setYearViewTextColor(int yearViewMonthTextColor, int yearViewDayTextColor, int yarViewSchemeTextColor){
-        mDelegate.setYearViewTextColor(yearViewMonthTextColor,yearViewDayTextColor,yarViewSchemeTextColor);
+    public void setYearViewTextColor(int yearViewMonthTextColor, int yearViewDayTextColor, int yarViewSchemeTextColor) {
+        mDelegate.setYearViewTextColor(yearViewMonthTextColor, yearViewDayTextColor, yarViewSchemeTextColor);
     }
 
     /**
