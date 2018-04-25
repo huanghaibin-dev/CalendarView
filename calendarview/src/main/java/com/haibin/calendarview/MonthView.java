@@ -21,8 +21,6 @@ import android.graphics.Canvas;
 import android.text.TextUtils;
 import android.view.View;
 
-import java.util.ArrayList;
-
 /**
  * 月视图基础控件,请使用 MonthView替换，没有任何不同，只是规范命名
  * pleased using MonthView replace BaseCalendarCardView
@@ -148,7 +146,7 @@ public abstract class MonthView extends BaseView {
                     return;
                 }
 
-                if (!Util.isCalendarInRange(calendar, mDelegate.getMinYear(),
+                if (!CalendarUtil.isCalendarInRange(calendar, mDelegate.getMinYear(),
                         mDelegate.getMinYearMonth(), mDelegate.getMaxYear(), mDelegate.getMaxYearMonth())) {
                     mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);
                     return;
@@ -168,7 +166,7 @@ public abstract class MonthView extends BaseView {
                     if (calendar.isCurrentMonth()) {
                         mParentLayout.setSelectPosition(mItems.indexOf(calendar));
                     } else {
-                        mParentLayout.setSelectWeek(Util.getWeekFromDayInMonth(calendar));
+                        mParentLayout.setSelectWeek(CalendarUtil.getWeekFromDayInMonth(calendar,mDelegate.getWeekStart()));
                     }
 
                 }
@@ -188,14 +186,23 @@ public abstract class MonthView extends BaseView {
         if (isClick) {
             Calendar calendar = getIndex();
             if (calendar != null) {
+
+                boolean isCalendarInRange = CalendarUtil.isCalendarInRange(calendar, mDelegate.getMinYear(),
+                        mDelegate.getMinYearMonth(), mDelegate.getMaxYear(), mDelegate.getMaxYearMonth());
+
+                if(mDelegate.isPreventLongPressedSelected() && isCalendarInRange){
+                    mDelegate.mDateLongClickListener.onDateLongClick(calendar);
+                    mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);
+                    return true;
+                }
+
                 if (mDelegate.getMonthViewShowMode() == CustomCalendarViewDelegate.MODE_ONLY_CURRENT_MONTH &&
                         !calendar.isCurrentMonth()) {
                     mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);
                     return false;
                 }
 
-                if (!Util.isCalendarInRange(calendar, mDelegate.getMinYear(),
-                        mDelegate.getMinYearMonth(), mDelegate.getMaxYear(), mDelegate.getMaxYearMonth())) {
+                if (!isCalendarInRange) {
                     mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);
                     return false;
                 }
@@ -214,7 +221,7 @@ public abstract class MonthView extends BaseView {
                     if (calendar.isCurrentMonth()) {
                         mParentLayout.setSelectPosition(mItems.indexOf(calendar));
                     } else {
-                        mParentLayout.setSelectWeek(Util.getWeekFromDayInMonth(calendar));
+                        mParentLayout.setSelectWeek(CalendarUtil.getWeekFromDayInMonth(calendar,mDelegate.getWeekStart()));
                     }
 
                 }
@@ -266,7 +273,7 @@ public abstract class MonthView extends BaseView {
         if (mDelegate.getMonthViewShowMode() == CustomCalendarViewDelegate.MODE_ALL_MONTH) {
             mHeight = mItemHeight * mLineCount;
         } else {
-            mHeight = Util.getMonthViewHeight(year, month, mItemHeight);
+            mHeight = CalendarUtil.getMonthViewHeight(year, month, mItemHeight,mDelegate.getWeekStart());
         }
 
     }
@@ -276,73 +283,21 @@ public abstract class MonthView extends BaseView {
      */
     @SuppressLint("WrongConstant")
     private void initCalendar() {
-        java.util.Calendar date = java.util.Calendar.getInstance();
 
-        date.set(mYear, mMonth - 1, 1);
-        int mPreDiff = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;
-        int mDayCount = Util.getMonthDaysCount(mYear, mMonth);
-        date.set(mYear, mMonth - 1, mDayCount);
+        mNextDiff = CalendarUtil.getMonthEndDiff(mYear, mMonth, mDelegate.getWeekStart());
+        int preDiff = CalendarUtil.getMonthViewStartDiff(mYear, mMonth, mDelegate.getWeekStart());
+        int monthDayCount = CalendarUtil.getMonthDaysCount(mYear, mMonth);
 
-        int mLastCount = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;
-        mNextDiff = 6 - mLastCount;//下个月的日偏移天数
+        mItems = CalendarUtil.initCalendarForMonthView(mYear, mMonth, mDelegate.getCurrentDay(), mDelegate.getWeekStart());
 
-        int preYear, preMonth;
-        int nextYear, nextMonth;
-
-        int size = 42;
-
-        int preMonthDaysCount;
-        if (mMonth == 1) {//如果是1月
-            preYear = mYear - 1;
-            preMonth = 12;
-            nextYear = mYear;
-            nextMonth = mMonth + 1;
-            preMonthDaysCount = mPreDiff == 0 ? 0 : Util.getMonthDaysCount(preYear, preMonth);
-        } else if (mMonth == 12) {//如果是12月
-            preYear = mYear;
-            preMonth = mMonth - 1;
-            nextYear = mYear + 1;
-            nextMonth = 1;
-            preMonthDaysCount = mPreDiff == 0 ? 0 : Util.getMonthDaysCount(preYear, preMonth);
-        } else {//平常
-            preYear = mYear;
-            preMonth = mMonth - 1;
-            nextYear = mYear;
-            nextMonth = mMonth + 1;
-            preMonthDaysCount = mPreDiff == 0 ? 0 : Util.getMonthDaysCount(preYear, preMonth);
+        if(mItems.contains(mDelegate.getCurrentDay())){
+            mCurrentItem = mItems.indexOf(mDelegate.getCurrentDay());
         }
-        int nextDay = 1;
-        if (mItems == null)
-            mItems = new ArrayList<>();
-        mItems.clear();
-        for (int i = 0; i < size; i++) {
-            Calendar calendarDate = new Calendar();
-            if (i < mPreDiff) {
-                calendarDate.setYear(preYear);
-                calendarDate.setMonth(preMonth);
-                calendarDate.setDay(preMonthDaysCount - mPreDiff + i + 1);
-            } else if (i >= mDayCount + mPreDiff) {
-                calendarDate.setYear(nextYear);
-                calendarDate.setMonth(nextMonth);
-                calendarDate.setDay(nextDay);
-                ++nextDay;
-            } else {
-                calendarDate.setYear(mYear);
-                calendarDate.setMonth(mMonth);
-                calendarDate.setCurrentMonth(true);
-                calendarDate.setDay(i - mPreDiff + 1);
-            }
-            if (calendarDate.equals(mDelegate.getCurrentDay())) {
-                calendarDate.setCurrentDay(true);
-                mCurrentItem = i;
-            }
-            LunarCalendar.setupLunarCalendar(calendarDate);
-            mItems.add(calendarDate);
-        }
+
         if (mDelegate.getMonthViewShowMode() == CustomCalendarViewDelegate.MODE_ALL_MONTH) {
             mLineCount = 6;
         } else {
-            mLineCount = (mPreDiff + mDayCount + mNextDiff) / 7;
+            mLineCount = (preDiff + monthDayCount + mNextDiff) / 7;
         }
         if (mDelegate.mSchemeDate != null) {
             for (Calendar a : mItems) {
@@ -371,12 +326,12 @@ public abstract class MonthView extends BaseView {
             return;
         }
         for (Calendar a : mItems) {//添加操作
-            if(mDelegate.mSchemeDate.contains(a)){
+            if (mDelegate.mSchemeDate.contains(a)) {
                 Calendar d = mDelegate.mSchemeDate.get(mDelegate.mSchemeDate.indexOf(a));
                 a.setScheme(TextUtils.isEmpty(d.getScheme()) ? mDelegate.getSchemeText() : d.getScheme());
                 a.setSchemeColor(d.getSchemeColor());
                 a.setSchemes(d.getSchemes());
-            }else {
+            } else {
                 a.setScheme("");
                 a.setSchemeColor(0);
                 a.setSchemes(null);

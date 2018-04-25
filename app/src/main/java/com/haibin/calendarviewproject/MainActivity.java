@@ -82,7 +82,7 @@ public class MainActivity extends BaseActivity implements
         mCalendarView.setOnYearChangeListener(this);
         mCalendarView.setOnDateSelectedListener(this);
         mCalendarView.setOnMonthChangeListener(this);
-        mCalendarView.setOnDateLongClickListener(this);
+        mCalendarView.setOnDateLongClickListener(this, true);
         mTextYear.setText(String.valueOf(mCalendarView.getCurYear()));
         mYear = mCalendarView.getCurYear();
         mTextMonthDay.setText(mCalendarView.getCurMonth() + "月" + mCalendarView.getCurDay() + "日");
@@ -168,7 +168,7 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void onDateLongClick(Calendar calendar) {
-
+        Toast.makeText(this, "长按不选择日期\n" + getCalendarText(calendar), Toast.LENGTH_SHORT).show();
     }
 
     private static String getCalendarText(Calendar calendar) {

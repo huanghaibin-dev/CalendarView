@@ -121,6 +121,7 @@
             app:selected_theme_color="#046cea"
             app:week_background="#fff"
             app:week_text_color="#e1e1e1"
+            app:week_start_with="mon"
             app:week_view="com.haibin.calendarviewproject.custom.CustomWeekView"
             app:year_view_day_text_color="#333333"
             app:year_view_day_text_size="9sp"

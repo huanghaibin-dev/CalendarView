@@ -31,6 +31,11 @@ import java.util.List;
  */
 final class CustomCalendarViewDelegate {
 
+    static final int WEEK_START_WITH_SUN = 1;
+
+    static final int WEEK_START_WITH_MON = 2;
+
+    static final int WEEK_START_WITH_SAT = 7;
 
     /**
      * 全部显示
@@ -52,6 +57,11 @@ final class CustomCalendarViewDelegate {
      */
     private int mMonthViewShowMode;
 
+
+    /**
+     * 周起始
+     */
+    private int mWeekStart;
 
 //    /**
 //     * 默认选择模式
@@ -88,6 +98,8 @@ final class CustomCalendarViewDelegate {
             mSelectedLunarTextColor,
             mCurMonthLunarTextColor,
             mOtherMonthLunarTextColor;
+
+    private boolean preventLongPressedSelected;
 
     /**
      * 年视图字体大小
@@ -233,13 +245,15 @@ final class CustomCalendarViewDelegate {
 
         mWeekViewClass = array.getString(R.styleable.CalendarView_week_view);
         mWeekBarClass = array.getString(R.styleable.CalendarView_week_bar_view);
-        mWeekBarHeight = (int) array.getDimension(R.styleable.CalendarView_week_bar_height, Util.dipToPx(context, 40));
+        mWeekBarHeight = (int) array.getDimension(R.styleable.CalendarView_week_bar_height, CalendarUtil.dipToPx(context, 40));
 
         mSchemeText = array.getString(R.styleable.CalendarView_scheme_text);
         if (TextUtils.isEmpty(mSchemeText)) {
             mSchemeText = "记";
         }
+
         mMonthViewShowMode = array.getInt(R.styleable.CalendarView_month_view_show_mode, MODE_ALL_MONTH);
+        mWeekStart = array.getInt(R.styleable.CalendarView_week_start_with, WEEK_START_WITH_SUN);
         //mSelectMode = array.getInt(R.styleable.CalendarView_select_mode, SELECT_MODE_DEFAULT);
 
         mWeekBackground = array.getColor(R.styleable.CalendarView_week_background, Color.WHITE);
@@ -264,13 +278,13 @@ final class CustomCalendarViewDelegate {
         mMinYearMonth = array.getInt(R.styleable.CalendarView_min_year_month, 1);
         mMaxYearMonth = array.getInt(R.styleable.CalendarView_max_year_month, 12);
 
-        mDayTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_day_text_size, Util.dipToPx(context, 16));
-        mLunarTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_lunar_text_size, Util.dipToPx(context, 10));
-        mCalendarItemHeight = (int) array.getDimension(R.styleable.CalendarView_calendar_height, Util.dipToPx(context, 56));
+        mDayTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_day_text_size, CalendarUtil.dipToPx(context, 16));
+        mLunarTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_lunar_text_size, CalendarUtil.dipToPx(context, 10));
+        mCalendarItemHeight = (int) array.getDimension(R.styleable.CalendarView_calendar_height, CalendarUtil.dipToPx(context, 56));
 
         //年视图相关
-        mYearViewMonthTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_year_view_month_text_size, Util.dipToPx(context, 18));
-        mYearViewDayTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_year_view_day_text_size, Util.dipToPx(context, 8));
+        mYearViewMonthTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_year_view_month_text_size, CalendarUtil.dipToPx(context, 18));
+        mYearViewDayTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_year_view_day_text_size, CalendarUtil.dipToPx(context, 8));
         mYearViewMonthTextColor = array.getColor(R.styleable.CalendarView_year_view_month_text_color, 0xFF111111);
         mYearViewDayTextColor = array.getColor(R.styleable.CalendarView_year_view_day_text_color, 0xFF111111);
         mYearViewSchemeTextColor = array.getColor(R.styleable.CalendarView_year_view_scheme_color, mSchemeThemeColor);
@@ -284,9 +298,9 @@ final class CustomCalendarViewDelegate {
     private void init() {
         mCurrentDate = new Calendar();
         Date d = new Date();
-        mCurrentDate.setYear(Util.getDate("yyyy", d));
-        mCurrentDate.setMonth(Util.getDate("MM", d));
-        mCurrentDate.setDay(Util.getDate("dd", d));
+        mCurrentDate.setYear(CalendarUtil.getDate("yyyy", d));
+        mCurrentDate.setMonth(CalendarUtil.getDate("MM", d));
+        mCurrentDate.setDay(CalendarUtil.getDate("dd", d));
         mCurrentDate.setCurrentDay(true);
         LunarCalendar.setupLunarCalendar(mCurrentDate);
         setRange(mMinYear, mMinYearMonth, mMaxYear, mMaxYearMonth);
@@ -304,7 +318,7 @@ final class CustomCalendarViewDelegate {
         }
         int y = mCurrentDate.getYear() - this.mMinYear;
         mCurrentMonthViewItem = 12 * y + mCurrentDate.getMonth() - this.mMinYearMonth;
-        mCurrentWeekViewItem = Util.getWeekFromCalendarBetweenYearAndYear(mCurrentDate, mMinYear, mMinYearMonth);
+        mCurrentWeekViewItem = CalendarUtil.getWeekFromCalendarBetweenYearAndYear(mCurrentDate, mMinYear, mMinYearMonth, mWeekStart);
     }
 
     String getSchemeText() {
@@ -480,11 +494,21 @@ final class CustomCalendarViewDelegate {
         this.mSchemeThemeColor = schemeColor;
     }
 
+    int getWeekStart() {
+        return mWeekStart;
+    }
 
     Calendar getCurrentDay() {
         return mCurrentDate;
     }
 
+    void setPreventLongPressedSelected(boolean preventLongPressedSelected) {
+        this.preventLongPressedSelected = preventLongPressedSelected;
+    }
+
+    boolean isPreventLongPressedSelected() {
+        return preventLongPressedSelected;
+    }
 
     Calendar createCurrentDate() {
         Calendar calendar = new Calendar();

@@ -60,8 +60,11 @@ public final class WeekViewPager extends ViewPager {
     }
 
     private void init() {
-        mWeekCount = Util.getWeekCountBetweenYearAndYear(mDelegate.getMinYear(), mDelegate.getMinYearMonth(),
-                mDelegate.getMaxYear(), mDelegate.getMaxYearMonth());
+        mWeekCount = CalendarUtil.getWeekCountBetweenYearAndYear(mDelegate.getMinYear(),
+                mDelegate.getMinYearMonth(),
+                mDelegate.getMaxYear(),
+                mDelegate.getMaxYearMonth(),
+                mDelegate.getWeekStart());
         setAdapter(new WeekViewPagerAdapter());
         addOnPageChangeListener(new OnPageChangeListener() {
             @Override
@@ -91,8 +94,8 @@ public final class WeekViewPager extends ViewPager {
     }
 
     void notifyDataSetChanged() {
-        mWeekCount = Util.getWeekCountBetweenYearAndYear(mDelegate.getMinYear(), mDelegate.getMinYearMonth(),
-                mDelegate.getMaxYear(), mDelegate.getMaxYearMonth());
+        mWeekCount = CalendarUtil.getWeekCountBetweenYearAndYear(mDelegate.getMinYear(), mDelegate.getMinYearMonth(),
+                mDelegate.getMaxYear(), mDelegate.getMaxYearMonth(),mDelegate.getWeekStart());
         getAdapter().notifyDataSetChanged();
     }
 
@@ -126,9 +129,10 @@ public final class WeekViewPager extends ViewPager {
      */
     void scrollToCurrent(boolean smoothScroll) {
         isUsingScrollToCalendar = true;
-        int position = Util.getWeekFromCalendarBetweenYearAndYear(mDelegate.getCurrentDay(),
+        int position = CalendarUtil.getWeekFromCalendarBetweenYearAndYear(mDelegate.getCurrentDay(),
                 mDelegate.getMinYear(),
-                mDelegate.getMinYearMonth()) - 1;
+                mDelegate.getMinYearMonth(),
+                mDelegate.getWeekStart()) - 1;
         int curItem = getCurrentItem();
         if (curItem == position) {
             isUsingScrollToCalendar = false;
@@ -149,7 +153,10 @@ public final class WeekViewPager extends ViewPager {
      * 更新任意一个选择的日期
      */
     void updateSelected(Calendar calendar, boolean smoothScroll) {
-        int position = Util.getWeekFromCalendarBetweenYearAndYear(calendar, mDelegate.getMinYear(), mDelegate.getMinYearMonth()) - 1;
+        int position = CalendarUtil.getWeekFromCalendarBetweenYearAndYear(calendar,
+                mDelegate.getMinYear(),
+                mDelegate.getMinYearMonth(),
+                mDelegate.getWeekStart()) - 1;
         int curItem = getCurrentItem();
         if (curItem == position) {
             isUsingScrollToCalendar = false;
@@ -199,14 +206,16 @@ public final class WeekViewPager extends ViewPager {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            Calendar calendar = Util.getFirstCalendarFromWeekCount(mDelegate.getMinYear(), mDelegate.getMinYearMonth(), position + 1);
+            Calendar calendar = CalendarUtil.getFirstCalendarFromWeekCount(mDelegate.getMinYear(),
+                    mDelegate.getMinYearMonth(),
+                    position + 1,
+                    mDelegate.getWeekStart());
             WeekView view;
             if (TextUtils.isEmpty(mDelegate.getWeekViewClass())) {
                 view = new DefaultWeekView(getContext());
             } else {
                 try {
-                    Class cls = Class.forName(mDelegate.getWeekViewClass());
-                    @SuppressWarnings("unchecked")
+                    Class<?> cls = Class.forName(mDelegate.getWeekViewClass());
                     Constructor constructor = cls.getConstructor(Context.class);
                     view = (WeekView) constructor.newInstance(getContext());
                 } catch (Exception e) {

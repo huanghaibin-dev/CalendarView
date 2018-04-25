@@ -150,9 +150,7 @@ public final class CalendarLayout extends LinearLayout {
      * @param cur 当前日期时间
      */
     private void initCalendarPosition(Calendar cur) {
-        java.util.Calendar date = java.util.Calendar.getInstance();
-        date.set(cur.getYear(), cur.getMonth() - 1, 1);
-        int diff = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;//月第一天为星期几,星期天 == 0,则偏移几天
+        int diff = CalendarUtil.getMonthViewStartDiff(cur,mDelegate.getWeekStart());
         int size = diff + cur.getDay() - 1;
         setSelectPosition(size);
     }
@@ -179,13 +177,13 @@ public final class CalendarLayout extends LinearLayout {
      * 更新内容ContentView可平移的最大距离
      */
     void updateContentViewTranslateY() {
-        if (mDelegate == null)
+        if (mDelegate == null || mContentView == null)
             return;
         Calendar calendar = mDelegate.mSelectedCalendar;
         if (mDelegate.getMonthViewShowMode() == CustomCalendarViewDelegate.MODE_ALL_MONTH) {
             mContentViewTranslateY = 5 * mItemHeight;
         } else {
-            mContentViewTranslateY = Util.getMonthViewHeight(calendar.getYear(), calendar.getMonth(), mItemHeight)
+            mContentViewTranslateY = CalendarUtil.getMonthViewHeight(calendar.getYear(), calendar.getMonth(), mItemHeight,mDelegate.getWeekStart())
                     - mItemHeight;
         }
         //已经显示周视图，如果月视图高度是动态改变的，则需要动态平移contentView的高度
@@ -274,8 +272,8 @@ public final class CalendarLayout extends LinearLayout {
         if (mContentView != null && mMonthView != null) {
             int h = getHeight() - mItemHeight
                     - (mDelegate != null ? mDelegate.getWeekBarHeight() :
-                    Util.dipToPx(getContext(), 40))
-                    - Util.dipToPx(getContext(), 1);
+                    CalendarUtil.dipToPx(getContext(), 40))
+                    - CalendarUtil.dipToPx(getContext(), 1);
             int heightSpec = MeasureSpec.makeMeasureSpec(h,
                     MeasureSpec.EXACTLY);
             mContentView.measure(widthMeasureSpec, heightSpec);
@@ -328,12 +326,12 @@ public final class CalendarLayout extends LinearLayout {
                   * 2、非滚动控件，直接拦截事件
                 */
                 if (dy > 0 && mContentView.getTranslationY() == -mContentViewTranslateY
-                        && y >= Util.dipToPx(getContext(), 98)) {
+                        && y >= CalendarUtil.dipToPx(getContext(), 98)) {
                     if (!isScrollTop())
                         return false;
                 }
 
-                if (dy > 0 && mContentView.getTranslationY() == 0 && y >= Util.dipToPx(getContext(), 98)) {
+                if (dy > 0 && mContentView.getTranslationY() == 0 && y >= CalendarUtil.dipToPx(getContext(), 98)) {
                     return false;
                 }
 
@@ -373,12 +371,15 @@ public final class CalendarLayout extends LinearLayout {
         return mContentView == null || mMonthView.getVisibility() == VISIBLE;
     }
 
+
     /**
      * 展开
+     * @return 展开是否成功
      */
-    @SuppressWarnings("all")
     public boolean expand() {
-        if (isAnimating || mCalendarShowMode == CALENDAR_SHOW_MODE_ONLY_WEEK_VIEW)
+        if (isAnimating ||
+                mCalendarShowMode == CALENDAR_SHOW_MODE_ONLY_WEEK_VIEW ||
+                mContentView == null)
             return false;
         if (mMonthView.getVisibility() != VISIBLE) {
             mWeekPager.setVisibility(GONE);
@@ -412,10 +413,11 @@ public final class CalendarLayout extends LinearLayout {
 
     /**
      * 收缩
+     * @return 成功或者失败
      */
     @SuppressWarnings("all")
     public boolean shrink() {
-        if (isAnimating) {
+        if (isAnimating || mContentView == null) {
             return false;
         }
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(mContentView,

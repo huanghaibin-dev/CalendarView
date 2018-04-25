@@ -20,8 +20,6 @@ import android.graphics.Canvas;
 import android.text.TextUtils;
 import android.view.View;
 
-import java.util.ArrayList;
-
 /**
  * 周视图，因为日历UI采用热插拔实现，所以这里必须继承实现，达到UI一致即可
  * Created by huanghaibin on 2017/11/21.
@@ -75,7 +73,7 @@ public abstract class WeekView extends BaseView {
         if (isClick) {
             Calendar calendar = getIndex();
             if (calendar != null) {
-                if (!Util.isCalendarInRange(calendar, mDelegate.getMinYear(),
+                if (!CalendarUtil.isCalendarInRange(calendar, mDelegate.getMinYear(),
                         mDelegate.getMinYearMonth(), mDelegate.getMaxYear(), mDelegate.getMaxYearMonth())) {
                     mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);
                     return;
@@ -84,7 +82,7 @@ public abstract class WeekView extends BaseView {
                     mDelegate.mInnerListener.onWeekDateSelected(calendar, true);
                 }
                 if (mParentLayout != null) {
-                    int i = Util.getWeekFromDayInMonth(calendar);
+                    int i = CalendarUtil.getWeekFromDayInMonth(calendar, mDelegate.getWeekStart());
                     mParentLayout.setSelectWeek(i);
                 }
 
@@ -105,16 +103,26 @@ public abstract class WeekView extends BaseView {
         if (isClick) {
             Calendar calendar = getIndex();
             if (calendar != null) {
-                if (!Util.isCalendarInRange(calendar, mDelegate.getMinYear(),
-                        mDelegate.getMinYearMonth(), mDelegate.getMaxYear(), mDelegate.getMaxYearMonth())) {
+
+                boolean isCalendarInRange = CalendarUtil.isCalendarInRange(calendar, mDelegate.getMinYear(),
+                        mDelegate.getMinYearMonth(), mDelegate.getMaxYear(), mDelegate.getMaxYearMonth());
+
+                if (mDelegate.isPreventLongPressedSelected() && isCalendarInRange) {//如果启用拦截长按事件不选择日期
+                    mDelegate.mDateLongClickListener.onDateLongClick(calendar);
+                    mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);
+                    return true;
+                }
+
+                if (!isCalendarInRange) {
                     mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);
                     return false;
                 }
+
                 if (mDelegate.mInnerListener != null) {
                     mDelegate.mInnerListener.onWeekDateSelected(calendar, true);
                 }
                 if (mParentLayout != null) {
-                    int i = Util.getWeekFromDayInMonth(calendar);
+                    int i = CalendarUtil.getWeekFromDayInMonth(calendar, mDelegate.getWeekStart());
                     mParentLayout.setSelectWeek(i);
                 }
 
@@ -140,16 +148,16 @@ public abstract class WeekView extends BaseView {
             return;
         }
 
-        int week = Util.getWeekFormCalendar(calendar);
+        int week = CalendarUtil.getWeekViewIndexFromCalendar(calendar, mDelegate.getWeekStart());
         if (mItems.contains(mDelegate.getCurrentDay())) {
-            week = Util.getWeekFormCalendar(mDelegate.getCurrentDay());
+            week = CalendarUtil.getWeekViewIndexFromCalendar(mDelegate.getCurrentDay(), mDelegate.getWeekStart());
         }
 
         mCurrentItem = week;
 
         Calendar currentCalendar = mItems.get(week);
 
-        if (!Util.isCalendarInRange(currentCalendar, mDelegate.getMinYear(),
+        if (!CalendarUtil.isCalendarInRange(currentCalendar, mDelegate.getMinYear(),
                 mDelegate.getMinYearMonth(), mDelegate.getMaxYear(), mDelegate.getMaxYearMonth())) {
             mCurrentItem = getEdgeIndex(isLeftEdge(currentCalendar));
             currentCalendar = mItems.get(mCurrentItem);
@@ -158,7 +166,7 @@ public abstract class WeekView extends BaseView {
         currentCalendar.setCurrentDay(currentCalendar.equals(mDelegate.getCurrentDay()));
         mDelegate.mInnerListener.onWeekDateSelected(currentCalendar, false);
 
-        int i = Util.getWeekFromDayInMonth(currentCalendar);
+        int i = CalendarUtil.getWeekFromDayInMonth(currentCalendar, mDelegate.getWeekStart());
         mParentLayout.setSelectWeek(i);
 
         if (mDelegate.mDateSelectedListener != null && isNotice) {
@@ -180,10 +188,10 @@ public abstract class WeekView extends BaseView {
     private int getEdgeIndex(boolean isMinEdge) {
         for (int i = 0; i < mItems.size(); i++) {
             Calendar item = mItems.get(i);
-            if (isMinEdge && Util.isCalendarInRange(item, mDelegate.getMinYear(), mDelegate.getMinYearMonth(),
+            if (isMinEdge && CalendarUtil.isCalendarInRange(item, mDelegate.getMinYear(), mDelegate.getMinYearMonth(),
                     mDelegate.getMaxYear(), mDelegate.getMaxYearMonth())) {
                 return i;
-            } else if (!isMinEdge && !Util.isCalendarInRange(item, mDelegate.getMinYear(), mDelegate.getMinYearMonth(),
+            } else if (!isMinEdge && !CalendarUtil.isCalendarInRange(item, mDelegate.getMinYear(), mDelegate.getMinYearMonth(),
                     mDelegate.getMaxYear(), mDelegate.getMaxYearMonth())) {
                 return i - 1;
             }
@@ -226,67 +234,9 @@ public abstract class WeekView extends BaseView {
      * @param calendar calendar
      */
     void setup(Calendar calendar) {
-        java.util.Calendar date = java.util.Calendar.getInstance();
-        date.set(calendar.getYear(), calendar.getMonth() - 1, calendar.getDay());
-        int week = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;//星期几,星期天 == 0，也就是前面偏差多少天
-        int dayCount = Util.getMonthDaysCount(calendar.getYear(), calendar.getMonth());//获取某个月有多少天
 
-        if (mItems == null) {
-            mItems = new ArrayList<>();
-        }
+        mItems = CalendarUtil.initCalendarForWeekView(calendar, mDelegate, mDelegate.getWeekStart());
 
-        int preDiff = 0, nextDiff = 0;
-        int preMonthDaysCount = 0;
-        int preYear = 0, preMonth = 0;
-        int nextYear = 0, nextMonth = 0;
-
-        if (calendar.getDay() - week <= 0) {//如果某月某天-星期<0，则说明前面需要上个月的补数
-            date.set(calendar.getYear(), calendar.getMonth() - 1, 1);
-            preDiff = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;//月第一天为星期几,星期天 == 0，补数量就是偏差量diff;
-            if (calendar.getMonth() == 1) {//取上一年的12月份
-                preMonthDaysCount = 31;
-                preYear = calendar.getYear() - 1;
-                preMonth = 12;
-            } else {//否则取上一个月份天数
-                preMonthDaysCount = Util.getMonthDaysCount(calendar.getYear(), calendar.getMonth() - 1);
-                preYear = calendar.getYear();
-                preMonth = calendar.getMonth() - 1;
-            }
-        } else if (calendar.getDay() + 6 - week > dayCount) {//往后偏移多少天，即当前月份的最后一天不是星期6，则需要往后取补数
-            nextDiff = calendar.getDay() + 6 - week - dayCount;//往后偏移多少天，补差diff
-            if (calendar.getMonth() == 12) {
-                nextMonth = 1;
-                nextYear = calendar.getYear() + 1;
-            } else {
-                nextMonth = calendar.getMonth() + 1;
-                nextYear = calendar.getYear();
-            }
-        }
-        int nextDay = 1;
-        int day = calendar.getDay() - week;
-        for (int i = 0; i < 7; i++) {
-            Calendar calendarDate = new Calendar();
-            if (i < preDiff) {//如果前面有补数
-                calendarDate.setYear(preYear);
-                calendarDate.setMonth(preMonth);
-                calendarDate.setDay(preMonthDaysCount - preDiff + i + 1);
-                day += 1;
-            } else if (nextDiff > 0 && i >= (7 - nextDiff)) {
-                calendarDate.setYear(nextYear);
-                calendarDate.setMonth(nextMonth);
-                calendarDate.setDay(nextDay);
-                nextDay += 1;
-            } else {
-                calendarDate.setYear(calendar.getYear());
-                calendarDate.setMonth(calendar.getMonth());
-                calendarDate.setDay(day);
-                day += 1;
-            }
-            calendarDate.setCurrentDay(calendarDate.equals(mDelegate.getCurrentDay()));
-            LunarCalendar.setupLunarCalendar(calendarDate);
-            calendarDate.setCurrentMonth(true);
-            mItems.add(calendarDate);
-        }
         if (mDelegate.mSchemeDate != null) {
             for (Calendar a : mItems) {
                 for (Calendar d : mDelegate.mSchemeDate) {
@@ -316,12 +266,12 @@ public abstract class WeekView extends BaseView {
             return;
         }
         for (Calendar a : mItems) {//添加操作
-            if(mDelegate.mSchemeDate.contains(a)){
+            if (mDelegate.mSchemeDate.contains(a)) {
                 Calendar d = mDelegate.mSchemeDate.get(mDelegate.mSchemeDate.indexOf(a));
                 a.setScheme(TextUtils.isEmpty(d.getScheme()) ? mDelegate.getSchemeText() : d.getScheme());
                 a.setSchemeColor(d.getSchemeColor());
                 a.setSchemes(d.getSchemes());
-            }else {
+            } else {
                 a.setScheme("");
                 a.setSchemeColor(0);
                 a.setSchemes(null);
@@ -366,6 +316,7 @@ public abstract class WeekView extends BaseView {
      * @param calendar  日历日历calendar
      * @param x         日历Card x起点坐标
      * @param hasScheme hasScheme 非标记的日期
+     * @return 是否绘制 onDrawScheme
      */
     protected abstract boolean onDrawSelected(Canvas canvas, Calendar calendar, int x, boolean hasScheme);
 

@@ -19,7 +19,7 @@ public class DefaultWeekView extends WeekView {
     public DefaultWeekView(Context context) {
         super(context);
 
-        mTextPaint.setTextSize(Util.dipToPx(context, 8));
+        mTextPaint.setTextSize(CalendarUtil.dipToPx(context, 8));
         mTextPaint.setColor(0xffffffff);
         mTextPaint.setAntiAlias(true);
         mTextPaint.setFakeBoldText(true);
@@ -29,10 +29,10 @@ public class DefaultWeekView extends WeekView {
         mSchemeBasicPaint.setTextAlign(Paint.Align.CENTER);
         mSchemeBasicPaint.setColor(0xffed5353);
         mSchemeBasicPaint.setFakeBoldText(true);
-        mRadio = Util.dipToPx(getContext(), 7);
-        mPadding = Util.dipToPx(getContext(), 4);
+        mRadio = CalendarUtil.dipToPx(getContext(), 7);
+        mPadding = CalendarUtil.dipToPx(getContext(), 4);
         Paint.FontMetrics metrics = mSchemeBasicPaint.getFontMetrics();
-        mSchemeBaseLine = mRadio - metrics.descent + (metrics.bottom - metrics.top) / 2 + Util.dipToPx(getContext(), 1);
+        mSchemeBaseLine = mRadio - metrics.descent + (metrics.bottom - metrics.top) / 2 + CalendarUtil.dipToPx(getContext(), 1);
 
     }
 
@@ -73,9 +73,12 @@ public class DefaultWeekView extends WeekView {
             canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + mItemHeight / 10, mSelectedLunarTextPaint);
         } else if (hasScheme) {
             canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
+                    calendar.isCurrentDay() ? mCurDayTextPaint :
                     calendar.isCurrentMonth() ? mSchemeTextPaint : mOtherMonthTextPaint);
 
-            canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + mItemHeight / 10, mSchemeLunarTextPaint);
+            canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + mItemHeight / 10,
+                    calendar.isCurrentDay() ? mCurDayLunarTextPaint :
+                            mSchemeLunarTextPaint);
         } else {
             canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
                     calendar.isCurrentDay() ? mCurDayTextPaint :

@@ -104,6 +104,7 @@
             android:id="@+id/calendarView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             android:background="#fff"
             app:current_day_lunar_text_color="#ff0000"
             app:current_day_text_color="#ff0000"
@@ -126,6 +127,7 @@
             app:selected_theme_color="#80cfcfcf"
             app:week_background="#fff"
             app:week_bar_height="46dp"
+            app:week_start_with="mon"
             app:week_bar_view="com.haibin.calendarviewproject.EnglishWeekBar"
             app:week_line_background="#00000000"
             app:year_view_background="#f6f6f6"

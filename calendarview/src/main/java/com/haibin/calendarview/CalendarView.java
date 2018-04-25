@@ -99,8 +99,7 @@ public class CalendarView extends FrameLayout {
             this.mWeekBar = new WeekBar(getContext());
         } else {
             try {
-                Class cls = Class.forName(mDelegate.getWeekBarClass());
-                @SuppressWarnings("unchecked")
+                Class<?> cls = Class.forName(mDelegate.getWeekBarClass());
                 Constructor constructor = cls.getConstructor(Context.class);
                 mWeekBar = (WeekBar) constructor.newInstance(getContext());
             } catch (Exception e) {
@@ -109,16 +108,21 @@ public class CalendarView extends FrameLayout {
         }
         frameContent.addView(mWeekBar, 2);
         mWeekBar.setup(mDelegate);
+        mWeekBar.onWeekStartChange(mDelegate.getWeekStart());
 
         this.mWeekLine = findViewById(R.id.line);
         this.mWeekLine.setBackgroundColor(mDelegate.getWeekLineBackground());
+        FrameLayout.LayoutParams lineParams = (FrameLayout.LayoutParams) this.mWeekLine.getLayoutParams();
+        lineParams.setMargins(lineParams.leftMargin, mDelegate.getWeekBarHeight(), lineParams.rightMargin, 0);
+        this.mWeekLine.setLayoutParams(lineParams);
 
         this.mMonthPager = (MonthViewPager) findViewById(R.id.vp_calendar);
         this.mMonthPager.mWeekPager = mWeekPager;
         this.mMonthPager.mWeekBar = mWeekBar;
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) this.mMonthPager.getLayoutParams();
-        params.setMargins(0, mDelegate.getWeekBarHeight() + Util.dipToPx(context, 1), 0, 0);
+        params.setMargins(0, mDelegate.getWeekBarHeight() + CalendarUtil.dipToPx(context, 1), 0, 0);
         mWeekPager.setLayoutParams(params);
+
 
         mSelectLayout = (YearSelectLayout) findViewById(R.id.selectLayout);
         mSelectLayout.setBackgroundColor(mDelegate.getYearViewBackground());
@@ -156,7 +160,7 @@ public class CalendarView extends FrameLayout {
                 mWeekPager.updateSelected(mDelegate.mSelectedCalendar, false);
                 mMonthPager.updateSelected();
                 if (mWeekBar != null) {
-                    mWeekBar.onDateSelected(calendar, isClick);
+                    mWeekBar.onDateSelected(calendar, mDelegate.getWeekStart(), isClick);
                 }
             }
 
@@ -168,13 +172,13 @@ public class CalendarView extends FrameLayout {
                 mMonthPager.setCurrentItem(position);
                 mMonthPager.updateSelected();
                 if (mWeekBar != null) {
-                    mWeekBar.onDateSelected(calendar, isClick);
+                    mWeekBar.onDateSelected(calendar, mDelegate.getWeekStart(), isClick);
                 }
             }
         };
 
         mDelegate.mSelectedCalendar = mDelegate.createCurrentDate();
-        mWeekBar.onDateSelected(mDelegate.mSelectedCalendar, false);
+        mWeekBar.onDateSelected(mDelegate.mSelectedCalendar, mDelegate.getWeekStart(), false);
 
         int mCurYear = mDelegate.mSelectedCalendar.getYear();
         mMonthPager.setup(mDelegate);
@@ -206,7 +210,7 @@ public class CalendarView extends FrameLayout {
         mWeekPager.notifyDataSetChanged();
         mSelectLayout.notifyDataSetChanged();
         mMonthPager.notifyDataSetChanged();
-        if (Util.isCalendarInRange(mDelegate.mSelectedCalendar, mDelegate)) {
+        if (CalendarUtil.isCalendarInRange(mDelegate.mSelectedCalendar, mDelegate)) {
             scrollToCalendar(mDelegate.mSelectedCalendar.getYear(),
                     mDelegate.mSelectedCalendar.getMonth(),
                     mDelegate.mSelectedCalendar.getDay());
@@ -381,11 +385,11 @@ public class CalendarView extends FrameLayout {
      * @param smoothScroll smoothScroll
      */
     public void scrollToCurrent(boolean smoothScroll) {
-        if (!Util.isCalendarInRange(mDelegate.getCurrentDay(), mDelegate)) {
+        if (!CalendarUtil.isCalendarInRange(mDelegate.getCurrentDay(), mDelegate)) {
             return;
         }
         mDelegate.mSelectedCalendar = mDelegate.createCurrentDate();
-        mWeekBar.onDateSelected(mDelegate.mSelectedCalendar, false);
+        mWeekBar.onDateSelected(mDelegate.mSelectedCalendar, mDelegate.getWeekStart(), false);
         mWeekPager.scrollToCurrent(smoothScroll);
         mMonthPager.scrollToCurrent(smoothScroll);
         mSelectLayout.scrollToYear(mDelegate.getCurrentDay().getYear(), smoothScroll);
@@ -512,7 +516,7 @@ public class CalendarView extends FrameLayout {
     public void setOnDateSelectedListener(OnDateSelectedListener listener) {
         this.mDelegate.mDateSelectedListener = listener;
         if (mDelegate.mDateSelectedListener != null) {
-            if (!Util.isCalendarInRange(mDelegate.mSelectedCalendar, mDelegate)) {
+            if (!CalendarUtil.isCalendarInRange(mDelegate.mSelectedCalendar, mDelegate)) {
                 return;
             }
             mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar, false);
@@ -526,6 +530,18 @@ public class CalendarView extends FrameLayout {
      */
     public void setOnDateLongClickListener(OnDateLongClickListener listener) {
         this.mDelegate.mDateLongClickListener = listener;
+    }
+
+
+    /**
+     * 日期长按事件
+     *
+     * @param preventLongPressedSelect 防止长按选择日期
+     * @param listener                 listener
+     */
+    public void setOnDateLongClickListener(OnDateLongClickListener listener, boolean preventLongPressedSelect) {
+        this.mDelegate.mDateLongClickListener = listener;
+        this.mDelegate.setPreventLongPressedSelected(preventLongPressedSelect);
     }
 
     /**
@@ -571,6 +587,7 @@ public class CalendarView extends FrameLayout {
     /**
      * 移除某天的标记
      * 这个API是安全的，无效try cache
+     *
      * @param calendar calendar
      */
     public void removeSchemeDate(Calendar calendar) {
@@ -642,8 +659,9 @@ public class CalendarView extends FrameLayout {
     /**
      * 设置标记的色
      *
-     * @param schemeColor     标记背景色
-     * @param schemeTextColor 标记字体颜色
+     * @param schemeLunarTextColor 标记农历颜色
+     * @param schemeColor          标记背景色
+     * @param schemeTextColor      标记字体颜色
      */
     public void setSchemeColor(int schemeColor, int schemeTextColor, int schemeLunarTextColor) {
         mDelegate.setSchemeColor(schemeColor, schemeTextColor, schemeLunarTextColor);
@@ -676,17 +694,25 @@ public class CalendarView extends FrameLayout {
      * 更新界面，
      * 重新设置颜色等都需要调用该方法
      */
-    @SuppressWarnings("unused")
     public void update() {
+        mWeekBar.onWeekStartChange(mDelegate.getWeekStart());
         mSelectLayout.update();
         mMonthPager.updateScheme();
         mWeekPager.updateScheme();
     }
 
     /**
-     * 获取选择的日期
+     * 更新周视图
      */
-    @SuppressWarnings("unused")
+    public void updateWeekBar() {
+        mWeekBar.onWeekStartChange(mDelegate.getWeekStart());
+    }
+
+    /**
+     * 获取选择的日期
+     *
+     * @return 获取选择的日期
+     */
     public Calendar getSelectedCalendar() {
         return mDelegate.mSelectedCalendar;
     }

@@ -160,13 +160,13 @@ public abstract class BaseView extends View implements View.OnClickListener, Vie
         mCurMonthTextPaint.setTextAlign(Paint.Align.CENTER);
         mCurMonthTextPaint.setColor(0xFF111111);
         mCurMonthTextPaint.setFakeBoldText(true);
-        mCurMonthTextPaint.setTextSize(Util.dipToPx(context, TEXT_SIZE));
+        mCurMonthTextPaint.setTextSize(CalendarUtil.dipToPx(context, TEXT_SIZE));
 
         mOtherMonthTextPaint.setAntiAlias(true);
         mOtherMonthTextPaint.setTextAlign(Paint.Align.CENTER);
         mOtherMonthTextPaint.setColor(0xFFe1e1e1);
         mOtherMonthTextPaint.setFakeBoldText(true);
-        mOtherMonthTextPaint.setTextSize(Util.dipToPx(context, TEXT_SIZE));
+        mOtherMonthTextPaint.setTextSize(CalendarUtil.dipToPx(context, TEXT_SIZE));
 
         mCurMonthLunarTextPaint.setAntiAlias(true);
         mCurMonthLunarTextPaint.setTextAlign(Paint.Align.CENTER);
@@ -186,14 +186,14 @@ public abstract class BaseView extends View implements View.OnClickListener, Vie
         mSchemeTextPaint.setTextAlign(Paint.Align.CENTER);
         mSchemeTextPaint.setColor(0xffed5353);
         mSchemeTextPaint.setFakeBoldText(true);
-        mSchemeTextPaint.setTextSize(Util.dipToPx(context, TEXT_SIZE));
+        mSchemeTextPaint.setTextSize(CalendarUtil.dipToPx(context, TEXT_SIZE));
 
         mSelectTextPaint.setAntiAlias(true);
         mSelectTextPaint.setStyle(Paint.Style.FILL);
         mSelectTextPaint.setTextAlign(Paint.Align.CENTER);
         mSelectTextPaint.setColor(0xffed5353);
         mSelectTextPaint.setFakeBoldText(true);
-        mSelectTextPaint.setTextSize(Util.dipToPx(context, TEXT_SIZE));
+        mSelectTextPaint.setTextSize(CalendarUtil.dipToPx(context, TEXT_SIZE));
 
         mSchemePaint.setAntiAlias(true);
         mSchemePaint.setStyle(Paint.Style.FILL);
@@ -204,13 +204,13 @@ public abstract class BaseView extends View implements View.OnClickListener, Vie
         mCurDayTextPaint.setTextAlign(Paint.Align.CENTER);
         mCurDayTextPaint.setColor(Color.RED);
         mCurDayTextPaint.setFakeBoldText(true);
-        mCurDayTextPaint.setTextSize(Util.dipToPx(context, TEXT_SIZE));
+        mCurDayTextPaint.setTextSize(CalendarUtil.dipToPx(context, TEXT_SIZE));
 
         mCurDayLunarTextPaint.setAntiAlias(true);
         mCurDayLunarTextPaint.setTextAlign(Paint.Align.CENTER);
         mCurDayLunarTextPaint.setColor(Color.RED);
         mCurDayLunarTextPaint.setFakeBoldText(true);
-        mCurDayLunarTextPaint.setTextSize(Util.dipToPx(context, TEXT_SIZE));
+        mCurDayLunarTextPaint.setTextSize(CalendarUtil.dipToPx(context, TEXT_SIZE));
 
         mSelectedPaint.setAntiAlias(true);
         mSelectedPaint.setStyle(Paint.Style.FILL);

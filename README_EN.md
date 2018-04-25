@@ -5,13 +5,13 @@ This widget has obvious advantages of memory and efficiency, adapt to many scene
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.2.8'
+compile 'com.haibin:calendarview:3.2.9'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.2.8</version>
+  <version>3.2.9</version>
   <type>pom</type>
 </dependency>
 ```
@@ -27,7 +27,9 @@ compile 'com.haibin:calendarview:3.2.8'
 
 > * Does it support grid display? Of course, it's supported. It depends on how you draw it.
 
-> * Does it support to callback WeekBar with date select? Support, you need to customize WeekBar, Override onDateSelected(Calendar calendar, Boolean isClick);
+> * Does it support custom week start？Yes，You can use mon、sun、sat for CalendarView by using week_start_with attr.
+
+> * Does it support to callback WeekBar with date select? Support, you need to customize WeekBar, Override onDateSelected(Calendar calendar,int weekStart, Boolean isClick);
 
 > * Therefore, as long as it is UI appearing in MonthView and WeekView, like pentagram, Bessel curve, picture and so on, are all supported, as long as you can draw, Weather it is beautiful or not, it depends on you.
 
@@ -153,6 +155,13 @@ compile 'com.haibin:calendarview:3.2.8'
              <enum name="mode_only_current" value="1" /> <!--show only current month-->
              <enum name="mode_fix" value="2" /> <!--auto fix,like mode_only_current,but auto filling-->
         </attr>
+
+        <!-- week_start_with -->
+        <attr name="week_start_with">
+             <enum name="sun" value="1" />
+             <enum name="mon" value="2" />
+             <enum name="sat" value="7" />
+        </attr>
 </declare-styleable>
 ```
 ### CalendarView api
@@ -247,18 +256,20 @@ public boolean isExpand();//isExpand
 ### CalendarLayout attrs
 
 ```xml
+
+<!-- calendar_show_mode -->
+<attr name="calendar_show_mode">
+      <enum name="both_month_week_view" value="0" /><!-- default -->
+      <enum name="only_week_view" value="1" /><!-- only week view -->
+      <enum name="only_month_view" value="2" /><!-- only month view -->
+</attr>
+
 <attr name="default_status">
       <enum name="expand" value="0" /> <!--expand-->
       <enum name="shrink" value="1" /><!--shrink-->
-      <attr name="calendar_show_mode">
-             <enum name="both_month_week_view" value="0" /><!-- default -->
-             <enum name="only_week_view" value="1" /><!-- only week view -->
-             <enum name="only_month_view" value="2" /><!-- only month view -->
-      </attr>
-      <attr name="calendar_content_view_id" format="integer" /><!-- content view id -->
 </attr>
-<attr name="only_week_view" format="boolean" /><!--only month-->
 <attr name="calendar_content_view_id" format="integer" /><!--calendar_content_view_id-->
+
 ```
 
 ### If you need to fully customize the UI, refer to the demo, a few steps can be done to draw the effect you need. The MonthView and WeekView need to be replaced at the same time to achieve UI consistency.

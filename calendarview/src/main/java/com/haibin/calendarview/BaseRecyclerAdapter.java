@@ -33,8 +33,10 @@ abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
     private List<T> mItems;
     private OnItemClickListener onItemClickListener;
     private OnClickListener onClickListener;
+    Context mContext;
 
     BaseRecyclerAdapter(Context context) {
+        mContext = context;
         this.mItems = new ArrayList<>();
         mInflater = LayoutInflater.from(context);
         onClickListener = new OnClickListener() {

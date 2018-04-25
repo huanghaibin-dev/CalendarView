@@ -24,8 +24,6 @@ public class SimpleMonthView extends MonthView {
     protected void onPreviewHook() {
         mRadius = Math.min(mItemWidth, mItemHeight) / 5 * 2;
         mSchemePaint.setStyle(Paint.Style.STROKE);
-        mSchemePaint.setShadowLayer(15, 1, 3, 0xAA333333);
-        setLayerType( LAYER_TYPE_SOFTWARE , null);
     }
 
     @Override

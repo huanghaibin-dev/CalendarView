@@ -31,12 +31,7 @@ public class IndexWeekView extends WeekView {
 
     @Override
     protected void onPreviewHook() {
-        mCurMonthTextPaint.setTextSize(dipToPx(getContext(), 16));
-        mOtherMonthTextPaint.setTextSize(dipToPx(getContext(), 16));
-        mSchemeTextPaint.setTextSize(dipToPx(getContext(), 16));
-        mCurDayTextPaint.setTextSize(dipToPx(getContext(), 16));
-        mCurMonthLunarTextPaint.setTextSize(dipToPx(getContext(), 12));
-        mOtherMonthLunarTextPaint.setTextSize(dipToPx(getContext(), 12));
+
     }
 
     /**
@@ -80,12 +75,16 @@ public class IndexWeekView extends WeekView {
             canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
                     calendar.isCurrentDay() ? mCurDayTextPaint :
                             calendar.isCurrentMonth() ? mSchemeTextPaint : mCurMonthTextPaint);
-            canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + mItemHeight / 10, mCurMonthLunarTextPaint);
+            canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + mItemHeight / 10,
+                    calendar.isCurrentDay() ? mCurDayLunarTextPaint :
+                            mCurMonthLunarTextPaint);
         } else {
             canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
                     calendar.isCurrentDay() ? mCurDayTextPaint :
                             calendar.isCurrentMonth() ? mCurMonthTextPaint : mCurMonthTextPaint);
-            canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + mItemHeight / 10, mCurMonthLunarTextPaint);
+            canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + mItemHeight / 10,
+                    calendar.isCurrentDay() ? mCurDayLunarTextPaint :
+                    mCurMonthLunarTextPaint);
         }
     }
 

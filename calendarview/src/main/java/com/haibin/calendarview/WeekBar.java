@@ -48,36 +48,76 @@ public class WeekBar extends LinearLayout {
     }
 
     /**
-     * 设置文本颜色，
+     * 设置文本颜色，使用自定义布局需要重写这个方法，避免出问题
      * 如果这里报错了，请确定你自定义XML文件跟布局是不是使用merge，而不是LinearLayout
      *
      * @param color color
      */
-    void setTextColor(int color) {
+    protected void setTextColor(int color) {
         for (int i = 0; i < getChildCount(); i++) {
             ((TextView) getChildAt(i)).setTextColor(color);
         }
     }
 
-
     /**
      * 日期选择事件，这里提供这个回调，可以方便定制WeekBar需要
      *
-     * @param calendar calendar 选择的日期
-     * @param isClick  isClick 点击
+     * @param calendar  calendar 选择的日期
+     * @param weekStart 周起始
+     * @param isClick   isClick 点击
      */
-    @SuppressWarnings("unused")
-    protected void onDateSelected(Calendar calendar, boolean isClick) {
+    protected void onDateSelected(Calendar calendar, int weekStart, boolean isClick) {
 
     }
 
+    /**
+     * 当周起始发生变化，使用自定义布局需要重写这个方法，避免出问题
+     *
+     * @param weekStart 周起始
+     */
+    protected void onWeekStartChange(int weekStart) {
+        for (int i = 0; i < getChildCount(); i++) {
+            ((TextView) getChildAt(i)).setText(getWeekString(i, weekStart));
+        }
+    }
+
+
+    /**
+     * 通过View的位置和周起始获取星期的对应坐标
+     *
+     * @param calendar  calendar
+     * @param weekStart weekStart
+     * @return 通过View的位置和周起始获取星期的对应坐标
+     */
+    protected int getViewIndexByCalendar(Calendar calendar, int weekStart) {
+        int week = calendar.getWeek() + 1;
+        if (weekStart == 1) {
+            return week -1;
+        }
+        if (weekStart == 2) {
+            return week == 1 ? 6 : week - 2;
+        }
+        return week == 7 ? 0 : week  ;
+    }
+
+    private String getWeekString(int index, int weekStart) {
+        String[] weeks = getContext().getResources().getStringArray(R.array.week_string_array);
+
+        if (weekStart == 1) {
+            return weeks[index];
+        }
+        if (weekStart == 2) {
+            return weeks[index == 6 ? 0 : index + 1];
+        }
+        return weeks[index == 0 ? 6 : index - 1];
+    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         if (mDelegate != null) {
             heightMeasureSpec = MeasureSpec.makeMeasureSpec(mDelegate.getWeekBarHeight(), MeasureSpec.EXACTLY);
         } else {
-            heightMeasureSpec = MeasureSpec.makeMeasureSpec(Util.dipToPx(getContext(), 40), MeasureSpec.EXACTLY);
+            heightMeasureSpec = MeasureSpec.makeMeasureSpec(CalendarUtil.dipToPx(getContext(), 40), MeasureSpec.EXACTLY);
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }

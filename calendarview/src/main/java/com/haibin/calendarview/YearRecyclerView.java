@@ -46,7 +46,7 @@ public final class YearRecyclerView extends RecyclerView {
                     if (month == null) {
                         return;
                     }
-                    if (!Util.isMonthInRange(month.getYear(), month.getMonth(),
+                    if (!CalendarUtil.isMonthInRange(month.getYear(), month.getMonth(),
                             mDelegate.getMinYear(), mDelegate.getMinYearMonth(),
                             mDelegate.getMaxYear(), mDelegate.getMaxYearMonth())) {
                         return;
@@ -70,10 +70,9 @@ public final class YearRecyclerView extends RecyclerView {
         java.util.Calendar date = java.util.Calendar.getInstance();
         for (int i = 1; i <= 12; i++) {
             date.set(year, i - 1, 1);
-            int firstDayOfWeek = date.get(java.util.Calendar.DAY_OF_WEEK) - 1;//月第一天为星期几,星期天 == 0
-            int mDaysCount = Util.getMonthDaysCount(year, i);
+            int mDaysCount = CalendarUtil.getMonthDaysCount(year, i);
             Month month = new Month();
-            month.setDiff(firstDayOfWeek);
+            month.setDiff(CalendarUtil.getMonthViewStartDiff(year,i,mDelegate.getWeekStart()));
             month.setCount(mDaysCount);
             month.setMonth(i);
             month.setYear(year);

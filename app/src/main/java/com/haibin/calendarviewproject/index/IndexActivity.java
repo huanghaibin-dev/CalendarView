@@ -87,7 +87,7 @@ public class IndexActivity extends BaseActivity implements
         mCalendarLayout = (CalendarLayout) findViewById(R.id.calendarLayout);
         mCalendarView.setOnDateSelectedListener(this);
         mCalendarView.setOnYearChangeListener(this);
-        mCalendarView.setOnDateLongClickListener(this);
+        mCalendarView.setOnDateLongClickListener(this,false);
         mTextYear.setText(String.valueOf(mCalendarView.getCurYear()));
         mYear = mCalendarView.getCurYear();
         mTextMonthDay.setText(mCalendarView.getCurMonth() + "月" + mCalendarView.getCurDay() + "日");

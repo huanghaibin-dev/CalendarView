@@ -1,5 +1,5 @@
 # CalenderView
-Android上一个优雅、高度自定义、性能高效的日历控件，完美支持周视图，支持标记、自定义颜色、农历等，任意控制月视图显示。Canvas绘制，速度快、占用内存低，，支持简单定制即可实现任意自定义布局、自定义UI，支持收缩展开、性能非常高效，
+Android上一个优雅、高度自定义、性能高效的日历控件，完美支持周视图，支持标记、自定义颜色、农历等，任意控制月视图显示、自定义周起始等。Canvas绘制，速度快、占用内存低，，支持简单定制即可实现任意自定义布局、自定义UI，支持收缩展开、性能非常高效，
 这个控件内存和效率优势相当明显，而且真正做到收缩+展开，适配多种场景，支持同时多种颜色标记日历事务，你真的想不到日历还可以如此优雅！更多参考用法请移步Demo，Demo实现了4个精美的自定义效果。
 
 ### Support English Version
@@ -7,13 +7,13 @@ Android上一个优雅、高度自定义、性能高效的日历控件，完美�
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.2.8'
+compile 'com.haibin:calendarview:3.2.9'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.2.8</version>
+  <version>3.2.9</version>
   <type>pom</type>
 </dependency>
 ```
@@ -29,7 +29,9 @@ compile 'com.haibin:calendarview:3.2.8'
 
 > * 是否支持网格显示？当然是支持的，看你怎么绘制
 
-> * 是否支持WeekBar星期栏与日期联动？支持的，你需要自定义WeekBar，实现 onDateSelected(Calendar calendar, boolean isClick)；函数即可
+> * 是否支持自定义周起始？支持的，你可以定制周一、周日、周六为视图起始时间，使用 week_start_with attr
+
+> * 是否支持WeekBar星期栏与日期联动？支持的，你需要自定义WeekBar，实现 onDateSelected(Calendar calendar,int weekStart, boolean isClick)；函数即可
 
 > * 因此，只要在MonthView、WeekView里面出现的UI，什么五角星、贝塞尔曲线、图片等等，都是支持的，只要你会绘制，UI美不美，真的就看你了
 
@@ -89,6 +91,7 @@ compile 'com.haibin:calendarview:3.2.8'
              app:scheme_theme_color="#333"
              app:selected_text_color="#fff"
              app:selected_theme_color="#333"
+             app:week_start_with="mon"
              app:week_background="#fff"
              app:month_view_show_mode="mode_only_current"
              app:week_text_color="#111" />
@@ -156,6 +159,13 @@ compile 'com.haibin:calendarview:3.2.8'
              <enum name="mode_only_current" value="1" /> <!--仅显示当前月份-->
              <enum name="mode_fix" value="2" /> <!--自适应显示，不会多出一行，但是会自动填充-->
         </attr>
+
+         <!-- 自定义周起始 -->
+         <attr name="week_start_with">
+             <enum name="sun" value="1" />
+             <enum name="mon" value="2" />
+             <enum name="sat" value="7" />
+         </attr>
 </declare-styleable>
 ```
 ### CalendarView api
@@ -258,18 +268,19 @@ public boolean isExpand();//是否展开了
 ### CalendarLayout attrs
 
 ```xml
+
+<!-- 日历显示模式 -->
+<attr name="calendar_show_mode">
+      <enum name="both_month_week_view" value="0" /><!-- 默认都有 -->
+      <enum name="only_week_view" value="1" /><!-- 仅周视图 -->
+      <enum name="only_month_view" value="2" /><!-- 仅月视图 -->
+</attr>
+
 <attr name="default_status">
       <enum name="expand" value="0" /> <!--默认展开-->
       <enum name="shrink" value="1" /><!--默认搜索-->
-
-       <attr name="calendar_show_mode">
-             <enum name="both_month_week_view" value="0" /><!-- 默认都有 -->
-             <enum name="only_week_view" value="1" /><!-- 仅周视图 -->
-             <enum name="only_month_view" value="2" /><!-- 仅月视图 -->
-       </attr>
-       <attr name="calendar_content_view_id" format="integer" /><!-- 内容布局id -->
 </attr>
-<attr name="only_week_view" format="boolean" /><!--仅周视图-->
+
 <attr name="calendar_content_view_id" format="integer" /><!--内容布局id-->
 ```
 

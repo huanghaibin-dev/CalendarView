@@ -247,8 +247,8 @@ final class LunarCalendar {
         int year = calendar.getYear();
         int month = calendar.getMonth();
         int day = calendar.getDay();
-        calendar.setWeekend(Util.isWeekend(calendar));
-        calendar.setWeek(Util.getWeekFormCalendar(calendar));
+        calendar.setWeekend(CalendarUtil.isWeekend(calendar));
+        calendar.setWeek(CalendarUtil.getWeekFormCalendar(calendar));
 
         Calendar lunarCalendar = new Calendar();
         calendar.setLunarCakendar(lunarCalendar);
@@ -256,7 +256,7 @@ final class LunarCalendar {
         lunarCalendar.setYear(lunar[0]);
         lunarCalendar.setMonth(lunar[1]);
         lunarCalendar.setDay(lunar[2]);
-        calendar.setLeapYear(Util.isLeapYear(year));
+        calendar.setLeapYear(CalendarUtil.isLeapYear(year));
         if (lunar[3] == 1) {//如果是闰月
             calendar.setLeapMonth(lunar[1]);
             lunarCalendar.setLeapMonth(lunar[1]);
