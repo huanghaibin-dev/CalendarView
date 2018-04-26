@@ -7,13 +7,13 @@ Android上一个优雅、高度自定义、性能高效的日历控件，完美�
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.2.9'
+compile 'com.haibin:calendarview:3.3.0'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.2.9</version>
+  <version>3.3.0</version>
   <type>pom</type>
 </dependency>
 ```
@@ -152,6 +152,11 @@ compile 'com.haibin:calendarview:3.2.9'
         <attr name="max_year" format="integer" /> <!--最大年份2099-->
         <attr name="min_year_month" format="integer" /> <!--最小年份对应月份-->
         <attr name="max_year_month" format="integer" /> <!--最大年份对应月份-->
+
+        <!--月视图是否可滚动-->
+        <attr name="month_view_scrollable" format="boolean" />
+        <!--周视图是否可滚动-->
+        <attr name="week_view_scrollable" format="boolean" />
         
         <!--配置你喜欢的月视图显示模式模式-->
         <attr name="month_view_show_mode">

@@ -5,13 +5,13 @@ This widget has obvious advantages of memory and efficiency, adapt to many scene
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.2.9'
+compile 'com.haibin:calendarview:3.3.0'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.2.9</version>
+  <version>3.3.0</version>
   <type>pom</type>
 </dependency>
 ```
@@ -149,6 +149,11 @@ compile 'com.haibin:calendarview:3.2.9'
         <attr name="min_year_month" format="integer" /> <!--min month of min year-->
         <attr name="max_year_month" format="integer" /> <!--max month of max year-->
         
+        <!--month_view_scrollable-->
+        <attr name="month_view_scrollable" format="boolean" />
+        <!--week_view_scrollable-->
+        <attr name="week_view_scrollable" format="boolean" />
+
         <!--month_view_show_mode-->
         <attr name="month_view_show_mode">
              <enum name="mode_all" value="0" /> <!--show all month-->

@@ -104,8 +104,9 @@
             android:id="@+id/calendarView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:background="#fff"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             app:current_day_lunar_text_color="#ff0000"
             app:current_day_text_color="#ff0000"
             app:current_month_lunar_text_color="#CFCFCF"

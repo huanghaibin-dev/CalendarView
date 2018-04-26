@@ -15,11 +15,13 @@
  */
 package com.haibin.calendarview;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -308,6 +310,18 @@ public final class MonthViewPager extends ViewPager {
             MonthView view = (MonthView) getChildAt(i);
             view.updateCurrentDate();
         }
+    }
+
+
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+        return mDelegate.isMonthViewScrollable() && super.onTouchEvent(ev);
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        return mDelegate.isMonthViewScrollable() && super.onInterceptTouchEvent(ev);
     }
 
     @Override

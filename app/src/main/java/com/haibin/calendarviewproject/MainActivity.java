@@ -74,8 +74,7 @@ public class MainActivity extends BaseActivity implements
         findViewById(R.id.fl_current).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //mCalendarView.scrollToCurrent();
-                mCalendarView.updateCurrentDate();
+                mCalendarView.scrollToCurrent();
             }
         });
 

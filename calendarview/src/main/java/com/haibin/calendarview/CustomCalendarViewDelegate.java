@@ -185,6 +185,10 @@ final class CustomCalendarViewDelegate {
      */
     private Calendar mCurrentDate;
 
+
+    private boolean mMonthViewScrollable,
+            mWeekViewScrollable;
+
     /**
      * 当前月份和周视图的item位置
      */
@@ -251,6 +255,9 @@ final class CustomCalendarViewDelegate {
         if (TextUtils.isEmpty(mSchemeText)) {
             mSchemeText = "记";
         }
+
+        mMonthViewScrollable = array.getBoolean(R.styleable.CalendarView_month_view_scrollable, true);
+        mWeekViewScrollable = array.getBoolean(R.styleable.CalendarView_week_view_scrollable, true);
 
         mMonthViewShowMode = array.getInt(R.styleable.CalendarView_month_view_show_mode, MODE_ALL_MONTH);
         mWeekStart = array.getInt(R.styleable.CalendarView_week_start_with, WEEK_START_WITH_SUN);
@@ -492,6 +499,14 @@ final class CustomCalendarViewDelegate {
     void setThemeColor(int selectedThemeColor, int schemeColor) {
         this.mSelectedThemeColor = selectedThemeColor;
         this.mSchemeThemeColor = schemeColor;
+    }
+
+    boolean isMonthViewScrollable() {
+        return mMonthViewScrollable;
+    }
+
+    boolean isWeekViewScrollable() {
+        return mWeekViewScrollable;
     }
 
     int getWeekStart() {
