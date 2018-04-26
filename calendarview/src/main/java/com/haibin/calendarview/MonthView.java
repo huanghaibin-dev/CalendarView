@@ -166,7 +166,7 @@ public abstract class MonthView extends BaseView {
                     if (calendar.isCurrentMonth()) {
                         mParentLayout.setSelectPosition(mItems.indexOf(calendar));
                     } else {
-                        mParentLayout.setSelectWeek(CalendarUtil.getWeekFromDayInMonth(calendar,mDelegate.getWeekStart()));
+                        mParentLayout.setSelectWeek(CalendarUtil.getWeekFromDayInMonth(calendar, mDelegate.getWeekStart()));
                     }
 
                 }
@@ -190,7 +190,7 @@ public abstract class MonthView extends BaseView {
                 boolean isCalendarInRange = CalendarUtil.isCalendarInRange(calendar, mDelegate.getMinYear(),
                         mDelegate.getMinYearMonth(), mDelegate.getMaxYear(), mDelegate.getMaxYearMonth());
 
-                if(mDelegate.isPreventLongPressedSelected() && isCalendarInRange){
+                if (mDelegate.isPreventLongPressedSelected() && isCalendarInRange) {
                     mDelegate.mDateLongClickListener.onDateLongClick(calendar);
                     mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);
                     return true;
@@ -221,7 +221,7 @@ public abstract class MonthView extends BaseView {
                     if (calendar.isCurrentMonth()) {
                         mParentLayout.setSelectPosition(mItems.indexOf(calendar));
                     } else {
-                        mParentLayout.setSelectWeek(CalendarUtil.getWeekFromDayInMonth(calendar,mDelegate.getWeekStart()));
+                        mParentLayout.setSelectWeek(CalendarUtil.getWeekFromDayInMonth(calendar, mDelegate.getWeekStart()));
                     }
 
                 }
@@ -273,7 +273,7 @@ public abstract class MonthView extends BaseView {
         if (mDelegate.getMonthViewShowMode() == CustomCalendarViewDelegate.MODE_ALL_MONTH) {
             mHeight = mItemHeight * mLineCount;
         } else {
-            mHeight = CalendarUtil.getMonthViewHeight(year, month, mItemHeight,mDelegate.getWeekStart());
+            mHeight = CalendarUtil.getMonthViewHeight(year, month, mItemHeight, mDelegate.getWeekStart());
         }
 
     }
@@ -290,7 +290,7 @@ public abstract class MonthView extends BaseView {
 
         mItems = CalendarUtil.initCalendarForMonthView(mYear, mMonth, mDelegate.getCurrentDay(), mDelegate.getWeekStart());
 
-        if(mItems.contains(mDelegate.getCurrentDay())){
+        if (mItems.contains(mDelegate.getCurrentDay())) {
             mCurrentItem = mItems.indexOf(mDelegate.getCurrentDay());
         }
 
@@ -313,6 +313,20 @@ public abstract class MonthView extends BaseView {
         invalidate();
     }
 
+    @Override
+    void updateCurrentDate() {
+        if (mItems == null)
+            return;
+
+        if (mItems.contains(mDelegate.getCurrentDay())) {
+            for (Calendar a : mItems) {//添加操作
+                a.setCurrentDay(false);
+            }
+            int index = mItems.indexOf(mDelegate.getCurrentDay());
+            mItems.get(index).setCurrentDay(true);
+        }
+        invalidate();
+    }
 
     @Override
     void update() {

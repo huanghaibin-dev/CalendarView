@@ -502,6 +502,14 @@ final class CustomCalendarViewDelegate {
         return mCurrentDate;
     }
 
+    void updateCurrentDay() {
+        Date d = new Date();
+        mCurrentDate.setYear(CalendarUtil.getDate("yyyy", d));
+        mCurrentDate.setMonth(CalendarUtil.getDate("MM", d));
+        mCurrentDate.setDay(CalendarUtil.getDate("dd", d));
+        LunarCalendar.setupLunarCalendar(mCurrentDate);
+    }
+
     void setPreventLongPressedSelected(boolean preventLongPressedSelected) {
         this.preventLongPressedSelected = preventLongPressedSelected;
     }

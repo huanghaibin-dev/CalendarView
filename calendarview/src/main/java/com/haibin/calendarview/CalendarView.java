@@ -169,7 +169,7 @@ public class CalendarView extends FrameLayout {
                 mDelegate.mSelectedCalendar = calendar;
                 int y = calendar.getYear() - mDelegate.getMinYear();
                 int position = 12 * y + mDelegate.mSelectedCalendar.getMonth() - mDelegate.getMinYearMonth();
-                mMonthPager.setCurrentItem(position);
+                mMonthPager.setCurrentItem(position,false);
                 mMonthPager.updateSelected();
                 if (mWeekBar != null) {
                     mWeekBar.onDateSelected(calendar, mDelegate.getWeekStart(), isClick);
@@ -391,6 +391,7 @@ public class CalendarView extends FrameLayout {
         mDelegate.mSelectedCalendar = mDelegate.createCurrentDate();
         mWeekBar.onDateSelected(mDelegate.mSelectedCalendar, mDelegate.getWeekStart(), false);
         mWeekPager.scrollToCurrent(smoothScroll);
+
         mMonthPager.scrollToCurrent(smoothScroll);
         mSelectLayout.scrollToYear(mDelegate.getCurrentDay().getYear(), smoothScroll);
     }
@@ -706,6 +707,17 @@ public class CalendarView extends FrameLayout {
      */
     public void updateWeekBar() {
         mWeekBar.onWeekStartChange(mDelegate.getWeekStart());
+    }
+
+
+    /**
+     * 更新当前日期
+     */
+    public void updateCurrentDate(){
+        mDelegate.updateCurrentDay();
+        mMonthPager.updateCurrentDate();
+        mWeekPager.updateCurrentDate();
+        //mWeekBar.onDateSelected(mDelegate.getCurrentDay(),mDelegate.getWeekStart(),false);
     }
 
     /**

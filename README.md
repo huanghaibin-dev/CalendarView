@@ -392,9 +392,9 @@ public class SimpleWeekView extends WeekView{
 }
 ```
 
-### 写在结尾：这个控件。只需要懂得一点Canvas的知识即可，如果你是新手，那么你可以通过此控件获得提升，此项目代码注释完善，
-结构也很简单，逻辑没那么复杂。这个项目是十分解耦合的，自定义WeekBar，MonthView、WeekView都是可以的。
+### 写在结尾：这个控件。只需要懂得一点Canvas的知识即可，如果你是新手，那么你可以通过此控件获得提升，此项目代码注释完善，结构也很简单，逻辑没那么复杂。这个项目是十分解耦合的，自定义WeekBar，MonthView、WeekView都是可以的，如果想和其它控件嵌套使用，外部父控件事件冲突可以自由通过CalendarLayout.isExpand();解决，内部基本没有事件冲突
 
+### 个人不做什么打赏，不搞QQ群，如果帮助你解决了问题，请给个star就好。
 
 ## Licenses
 - Copyright (C) 2013 huanghaibin_dev <huanghaibin_dev@163.com>

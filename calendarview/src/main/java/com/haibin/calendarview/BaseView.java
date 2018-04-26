@@ -322,4 +322,6 @@ public abstract class BaseView extends View implements View.OnClickListener, Vie
     }
 
     abstract void update();
+
+    abstract void updateCurrentDate();
 }

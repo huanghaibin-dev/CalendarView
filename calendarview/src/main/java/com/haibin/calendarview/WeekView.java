@@ -281,6 +281,20 @@ public abstract class WeekView extends BaseView {
     }
 
     @Override
+    void updateCurrentDate() {
+        if (mItems == null)
+            return;
+        if (mItems.contains(mDelegate.getCurrentDay())) {
+            for (Calendar a : mItems) {//添加操作
+                a.setCurrentDay(false);
+            }
+            int index = mItems.indexOf(mDelegate.getCurrentDay());
+            mItems.get(index).setCurrentDay(true);
+        }
+        invalidate();
+    }
+
+    @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         heightMeasureSpec = MeasureSpec.makeMeasureSpec(mItemHeight, MeasureSpec.EXACTLY);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);

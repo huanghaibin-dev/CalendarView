@@ -181,6 +181,17 @@ public final class WeekViewPager extends ViewPager {
     }
 
     /**
+     * 更新当前日期，夜间过度的时候调用这个函数，一般不需要调用
+     */
+    void updateCurrentDate() {
+        for (int i = 0; i < getChildCount(); i++) {
+            WeekView view = (WeekView) getChildAt(i);
+            view.updateCurrentDate();
+        }
+    }
+
+
+    /**
      * 周视图的高度应该与日历项的高度一致
      */
     @Override
