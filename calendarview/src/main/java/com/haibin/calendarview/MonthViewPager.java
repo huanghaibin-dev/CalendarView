@@ -35,7 +35,7 @@ public final class MonthViewPager extends ViewPager {
 
     private int mMonthCount;
 
-    private CustomCalendarViewDelegate mDelegate;
+    private CalendarViewDelegate mDelegate;
 
     private int mNextViewHeight, mPreViewHeight, mCurrentViewHeight;
 
@@ -63,7 +63,7 @@ public final class MonthViewPager extends ViewPager {
      *
      * @param delegate delegate
      */
-    void setup(CustomCalendarViewDelegate delegate) {
+    void setup(CalendarViewDelegate delegate) {
         this.mDelegate = delegate;
 
         updateMonthViewHeight(mDelegate.getCurrentDay().getYear(),
@@ -86,7 +86,7 @@ public final class MonthViewPager extends ViewPager {
         addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                if (mDelegate.getMonthViewShowMode() == CustomCalendarViewDelegate.MODE_ALL_MONTH) {
+                if (mDelegate.getMonthViewShowMode() == CalendarViewDelegate.MODE_ALL_MONTH) {
                     return;
                 }
                 int height;
@@ -121,7 +121,7 @@ public final class MonthViewPager extends ViewPager {
                     mDelegate.mMonthChangeListener.onMonthChange(calendar.getYear(), calendar.getMonth());
                 }
 
-                if (mDelegate.getMonthViewShowMode() != CustomCalendarViewDelegate.MODE_ALL_MONTH
+                if (mDelegate.getMonthViewShowMode() != CalendarViewDelegate.MODE_ALL_MONTH
                         && getVisibility() != VISIBLE) {
                     updateMonthViewHeight(calendar.getYear(), calendar.getMonth());
                 }
@@ -170,7 +170,7 @@ public final class MonthViewPager extends ViewPager {
      */
     private void updateMonthViewHeight(int year, int month) {
 
-        if (mDelegate.getMonthViewShowMode() == CustomCalendarViewDelegate.MODE_ALL_MONTH) {
+        if (mDelegate.getMonthViewShowMode() == CalendarViewDelegate.MODE_ALL_MONTH) {
             mCurrentViewHeight = 6 * mDelegate.getCalendarItemHeight();
             return;
         }
@@ -309,6 +309,54 @@ public final class MonthViewPager extends ViewPager {
         for (int i = 0; i < getChildCount(); i++) {
             MonthView view = (MonthView) getChildAt(i);
             view.updateCurrentDate();
+        }
+    }
+
+
+    /**
+     * 更新显示模式
+     */
+    void updateShowMode() {
+        for (int i = 0; i < getChildCount(); i++) {
+            MonthView view = (MonthView) getChildAt(i);
+            view.updateShowMode();
+            view.requestLayout();
+        }
+        if (mDelegate.getMonthViewShowMode() == CalendarViewDelegate.MODE_ALL_MONTH) {
+            mCurrentViewHeight = 6 * mDelegate.getCalendarItemHeight();
+            mNextViewHeight = mCurrentViewHeight;
+            mPreViewHeight = mCurrentViewHeight;
+        } else {
+            updateMonthViewHeight(mDelegate.mSelectedCalendar.getYear(), mDelegate.mSelectedCalendar.getMonth());
+        }
+        ViewGroup.LayoutParams params = getLayoutParams();
+        params.height = mCurrentViewHeight;
+        setLayoutParams(params);
+        if (mParentLayout != null) {
+            mParentLayout.updateContentViewTranslateY();
+        }
+    }
+
+    /**
+     * 更新周起始
+     */
+    void updateWeekStart() {
+        for (int i = 0; i < getChildCount(); i++) {
+            MonthView view = (MonthView) getChildAt(i);
+            view.updateWeekStart();
+            view.requestLayout();
+        }
+        if (mDelegate.getMonthViewShowMode() == CalendarViewDelegate.MODE_ALL_MONTH) {
+            mCurrentViewHeight = 6 * mDelegate.getCalendarItemHeight();
+            return;
+        }
+        updateMonthViewHeight(mDelegate.mSelectedCalendar.getYear(), mDelegate.mSelectedCalendar.getMonth());
+        ViewGroup.LayoutParams params = getLayoutParams();
+        params.height = mCurrentViewHeight;
+        setLayoutParams(params);
+        if (mParentLayout != null) {
+            int i = CalendarUtil.getWeekFromDayInMonth(mDelegate.mSelectedCalendar, mDelegate.getWeekStart());
+            mParentLayout.setSelectWeek(i);
         }
     }
 

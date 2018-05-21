@@ -9,7 +9,7 @@ import android.graphics.Paint;
  * Created by huanghaibin on 2017/11/29.
  */
 
-public class DefaultWeekView extends WeekView {
+public final class DefaultWeekView extends WeekView {
     private Paint mTextPaint = new Paint();
     private Paint mSchemeBasicPaint = new Paint();
     private float mRadio;
@@ -59,8 +59,20 @@ public class DefaultWeekView extends WeekView {
 
         canvas.drawCircle(x + mItemWidth - mPadding - mRadio / 2, mPadding + mRadio, mRadio, mSchemeBasicPaint);
 
-        canvas.drawText(calendar.getScheme(), x + mItemWidth - mPadding - mRadio, mPadding + mSchemeBaseLine, mTextPaint);
+        canvas.drawText(calendar.getScheme(),
+                x + mItemWidth - mPadding - mRadio / 2 - getTextWidth(calendar.getScheme()) / 2,
+                mPadding + mSchemeBaseLine, mTextPaint);
     }
+
+    /**
+     * 获取字体的宽
+     * @param text text
+     * @return return
+     */
+    private float getTextWidth(String text) {
+        return mTextPaint.measureText(text);
+    }
+
 
     @Override
     protected void onDrawText(Canvas canvas, Calendar calendar, int x, boolean hasScheme, boolean isSelected) {
@@ -74,7 +86,7 @@ public class DefaultWeekView extends WeekView {
         } else if (hasScheme) {
             canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
                     calendar.isCurrentDay() ? mCurDayTextPaint :
-                    calendar.isCurrentMonth() ? mSchemeTextPaint : mOtherMonthTextPaint);
+                            calendar.isCurrentMonth() ? mSchemeTextPaint : mOtherMonthTextPaint);
 
             canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + mItemHeight / 10,
                     calendar.isCurrentDay() ? mCurDayLunarTextPaint :

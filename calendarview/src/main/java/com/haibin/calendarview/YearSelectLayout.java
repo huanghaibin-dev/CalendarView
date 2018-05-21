@@ -30,7 +30,7 @@ import android.view.WindowManager;
  */
 public final class YearSelectLayout extends ViewPager {
     private int mYearCount;
-    private CustomCalendarViewDelegate mDelegate;
+    private CalendarViewDelegate mDelegate;
     private YearRecyclerView.OnMonthSelectedListener mListener;
 
     public YearSelectLayout(Context context) {
@@ -42,7 +42,7 @@ public final class YearSelectLayout extends ViewPager {
     }
 
 
-    void setup(CustomCalendarViewDelegate delegate) {
+    void setup(CalendarViewDelegate delegate) {
         this.mDelegate = delegate;
         this.mYearCount = mDelegate.getMaxYear() - mDelegate.getMinYear() + 1;
         setAdapter(new PagerAdapter() {

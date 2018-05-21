@@ -29,7 +29,7 @@ import java.util.List;
  * Google规范化的属性委托,
  * 这里基本是没有逻辑的，代码量多，但是不影响阅读性
  */
-final class CustomCalendarViewDelegate {
+final class CalendarViewDelegate {
 
     static final int WEEK_START_WITH_SUN = 1;
 
@@ -49,7 +49,6 @@ final class CustomCalendarViewDelegate {
     /**
      * 自适应显示，不会多出一行，但是会自动填充
      */
-    @SuppressWarnings("unused")
     static final int MODE_FIT_MONTH = 2;
 
     /**
@@ -121,6 +120,10 @@ final class CustomCalendarViewDelegate {
             mYearViewBackground,
             mWeekBackground;
 
+    /**
+     * 星期栏字体大小
+     */
+    private int mWeekTextSize;
 
     /**
      * 标记的主题色和选中的主题色
@@ -237,7 +240,7 @@ final class CustomCalendarViewDelegate {
 //     */
 //    Calendar mIndexCalendar;
 
-    CustomCalendarViewDelegate(Context context, @Nullable AttributeSet attrs) {
+    CalendarViewDelegate(Context context, @Nullable AttributeSet attrs) {
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CalendarView);
 
         LunarCalendar.init(context);
@@ -249,6 +252,7 @@ final class CustomCalendarViewDelegate {
 
         mWeekViewClass = array.getString(R.styleable.CalendarView_week_view);
         mWeekBarClass = array.getString(R.styleable.CalendarView_week_bar_view);
+        mWeekTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_week_text_size, CalendarUtil.dipToPx(context, 12));
         mWeekBarHeight = (int) array.getDimension(R.styleable.CalendarView_week_bar_height, CalendarUtil.dipToPx(context, 40));
 
         mSchemeText = array.getString(R.styleable.CalendarView_scheme_text);
@@ -466,9 +470,9 @@ final class CustomCalendarViewDelegate {
         return mMonthViewShowMode;
     }
 
-//    int getSelectMode() {
-//        return mSelectMode;
-//    }
+    void setMonthViewShowMode(int monthViewShowMode) {
+        this.mMonthViewShowMode = monthViewShowMode;
+    }
 
     void setTextColor(int curDayTextColor, int curMonthTextColor, int otherMonthTextColor, int curMonthLunarTextColor, int otherMonthLunarTextColor) {
         mCurDayTextColor = curDayTextColor;
@@ -511,6 +515,14 @@ final class CustomCalendarViewDelegate {
 
     int getWeekStart() {
         return mWeekStart;
+    }
+
+    void setWeekStart(int mWeekStart) {
+        this.mWeekStart = mWeekStart;
+    }
+
+    int getWeekTextSize() {
+        return mWeekTextSize;
     }
 
     Calendar getCurrentDay() {

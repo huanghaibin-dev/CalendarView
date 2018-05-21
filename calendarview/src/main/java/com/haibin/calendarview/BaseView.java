@@ -33,7 +33,7 @@ import java.util.List;
 
 public abstract class BaseView extends View implements View.OnClickListener, View.OnLongClickListener {
 
-    CustomCalendarViewDelegate mDelegate;
+    CalendarViewDelegate mDelegate;
 
     /**
      * 当前月份日期的笔
@@ -225,7 +225,7 @@ public abstract class BaseView extends View implements View.OnClickListener, Vie
      *
      * @param delegate delegate
      */
-    void setup(CustomCalendarViewDelegate delegate) {
+    void setup(CalendarViewDelegate delegate) {
         this.mDelegate = delegate;
 
         this.mCurDayTextPaint.setColor(delegate.getCurDayTextColor());

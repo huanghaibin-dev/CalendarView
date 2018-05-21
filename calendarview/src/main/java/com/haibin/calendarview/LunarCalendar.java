@@ -33,6 +33,7 @@ final class LunarCalendar {
         MONTH_STR = context.getResources().getStringArray(R.array.lunar_first_of_month);
         TRADITION_FESTIVAL_STR = context.getResources().getStringArray(R.array.tradition_festival);
         DAY_STR = context.getResources().getStringArray(R.array.lunar_str);
+        SPECIAL_FESTIVAL_STR = context.getResources().getStringArray(R.array.special_festivals);
         SOLAR_CALENDAR = context.getResources().getStringArray(R.array.solar_festival);
     }
 
@@ -49,7 +50,18 @@ final class LunarCalendar {
     /**
      * 农历大写
      */
-    private static String DAY_STR[] = null;
+    private static String[] DAY_STR = null;
+
+    /**
+     * 特殊节日的数组
+     */
+    private static String[] SPECIAL_FESTIVAL_STR = null;
+
+    /**
+     * 特殊节日、母亲节和父亲节
+     */
+    @SuppressLint("UseSparseArrays")
+    private static final Map<Integer, String[]> SPECIAL_FESTIVAL = new HashMap<>();
 
     /**
      * 公历节日
@@ -161,7 +173,7 @@ final class LunarCalendar {
      * @return 传回农历 year年month月的总天数
      */
     private static int daysInLunarMonth(int year, int month) {
-        if ((LUNAR_INFO[year - CustomCalendarViewDelegate.MIN_YEAR] & (0x100000 >> month)) == 0)
+        if ((LUNAR_INFO[year - CalendarViewDelegate.MIN_YEAR] & (0x100000 >> month)) == 0)
             return 29;
         else
             return 30;
@@ -224,7 +236,7 @@ final class LunarCalendar {
      * @param day   日
      * @return 农历节日
      */
-    static String getLunarText(int year, int month, int day) {
+    private static String getLunarText(int year, int month, int day) {
         String termText = LunarCalendar.getSolarTerm(year, month, day);
         String solar = LunarCalendar.gregorianFestival(month, day);
         if (!TextUtils.isEmpty(solar))
@@ -236,6 +248,66 @@ final class LunarCalendar {
         if (!TextUtils.isEmpty(festival))
             return festival;
         return LunarCalendar.numToChinese(lunar[1], lunar[2], lunar[3]);
+    }
+
+
+    /**
+     * 获取特殊计算方式的节日
+     * 如：每年五月的第二个星期日为母亲节，六月的第三个星期日为父亲节
+     *
+     * @param year  year
+     * @param month month
+     * @param day   day
+     * @return 获取西方节日
+     */
+    private static String getSpecialFestival(int year, int month, int day) {
+        if (!SPECIAL_FESTIVAL.containsKey(year)) {
+            SPECIAL_FESTIVAL.put(year, getSpecialFestivals(year));
+        }
+        String[] specialFestivals = SPECIAL_FESTIVAL.get(year);
+        String text = String.format("%s%s", year, getString(month, day));
+        String solar = "";
+        for (String special : specialFestivals) {
+            if (special.contains(text)) {
+                solar = special.replace(text, "");
+                break;
+            }
+        }
+        return solar;
+    }
+
+
+    /**
+     * 获取每年的母亲节和父亲节
+     *
+     * @param year 年
+     * @return 获取每年的母亲节和父亲节
+     */
+    private static String[] getSpecialFestivals(int year) {
+        String[] festivals = new String[2];
+        java.util.Calendar date = java.util.Calendar.getInstance();
+        date.set(year, 4, 1);
+        int week = date.get(java.util.Calendar.DAY_OF_WEEK);
+        int startDiff = 7 - week + 1;
+        if (startDiff == 7) {
+            festivals[0] = dateToString(year, 5, startDiff + 1) + SPECIAL_FESTIVAL_STR[0];
+        } else {
+            festivals[0] = dateToString(year, 5, startDiff + 7 + 1) + SPECIAL_FESTIVAL_STR[0];
+        }
+        date.set(year, 5, 1);
+        week = date.get(java.util.Calendar.DAY_OF_WEEK);
+        startDiff = 7 - week + 1;
+        if (startDiff == 7) {
+            festivals[1] = dateToString(year, 6, startDiff + 7 + 1) + SPECIAL_FESTIVAL_STR[1];
+        } else {
+            festivals[1] = dateToString(year, 6, startDiff + 7 + 7 + 1) + SPECIAL_FESTIVAL_STR[1];
+        }
+        return festivals;
+    }
+
+
+    private static String dateToString(int year, int month, int day) {
+        return String.format("%s%s", year, getString(month, day));
     }
 
     /**
@@ -264,6 +336,9 @@ final class LunarCalendar {
         String solarTerm = LunarCalendar.getSolarTerm(year, month, day);
         String gregorian = LunarCalendar.gregorianFestival(month, day);
         String festival = getTraditionFestival(lunar[0], lunar[1], lunar[2]);
+        if (TextUtils.isEmpty(gregorian)) {
+            gregorian = getSpecialFestival(year, month, day);
+        }
         calendar.setSolarTerm(solarTerm);
         calendar.setGregorianFestival(gregorian);
         calendar.setTraditionFestival(festival);

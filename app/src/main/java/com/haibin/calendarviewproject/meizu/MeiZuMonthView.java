@@ -75,7 +75,13 @@ public class MeiZuMonthView extends MonthView {
 
         canvas.drawCircle(x + mItemWidth - mPadding - mRadio / 2, y + mPadding + mRadio, mRadio, mSchemeBasicPaint);
 
-        canvas.drawText(calendar.getScheme(), x + mItemWidth - mPadding - mRadio, y + mPadding + mSchemeBaseLine, mTextPaint);
+        canvas.drawText(calendar.getScheme(),
+                x + mItemWidth - mPadding - mRadio / 2 - getTextWidth(calendar.getScheme()) / 2,
+                y + mPadding + mSchemeBaseLine, mTextPaint);
+    }
+
+    private float getTextWidth(String text) {
+        return mTextPaint.measureText(text);
     }
 
     /**

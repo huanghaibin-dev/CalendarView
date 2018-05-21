@@ -2,7 +2,6 @@ package com.haibin.calendarviewproject.meizu;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.haibin.calendarview.Calendar;
@@ -41,7 +40,6 @@ public class MeizuWeekView extends WeekView {
     }
 
     /**
-     *
      * @param canvas    canvas
      * @param calendar  日历日历calendar
      * @param x         日历Card x起点坐标
@@ -61,7 +59,13 @@ public class MeizuWeekView extends WeekView {
 
         canvas.drawCircle(x + mItemWidth - mPadding - mRadio / 2, mPadding + mRadio, mRadio, mSchemeBasicPaint);
 
-        canvas.drawText(calendar.getScheme(), x + mItemWidth - mPadding - mRadio, mPadding + mSchemeBaseLine, mTextPaint);
+        canvas.drawText(calendar.getScheme(),
+                x + mItemWidth - mPadding - mRadio / 2 - getTextWidth(calendar.getScheme()) / 2,
+                mPadding + mSchemeBaseLine, mTextPaint);
+    }
+
+    private float getTextWidth(String text) {
+        return mTextPaint.measureText(text);
     }
 
     @Override

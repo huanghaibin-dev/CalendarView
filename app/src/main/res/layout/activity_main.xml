@@ -104,9 +104,9 @@
             android:id="@+id/calendarView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#fff"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:background="#fff"
             app:current_day_lunar_text_color="#ff0000"
             app:current_day_text_color="#ff0000"
             app:current_month_lunar_text_color="#CFCFCF"
@@ -128,9 +128,10 @@
             app:selected_theme_color="#80cfcfcf"
             app:week_background="#fff"
             app:week_bar_height="46dp"
-            app:week_start_with="mon"
-            app:week_bar_view="com.haibin.calendarviewproject.EnglishWeekBar"
+
             app:week_line_background="#00000000"
+            app:week_start_with="mon"
+            app:week_text_size="10sp"
             app:year_view_background="#f6f6f6"
             app:year_view_day_text_color="#333333"
             app:year_view_day_text_size="9sp"
@@ -273,6 +274,49 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:text="点击查看下标风格的日历控件"
+                            android:textColor="#666666"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/line_color" />
+
+                <LinearLayout
+                    android:id="@+id/ll_tab"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="39dp"
+                        android:layout_height="39dp"
+                        android:layout_margin="16dp"
+                        android:contentDescription="flyme"
+                        android:src="@mipmap/ic_tab_logo" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="16dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="ViewPager风格"
+                            android:textColor="#333333"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="点击查看Tab ViewPager风格的日历控件"
                             android:textColor="#666666"
                             android:textSize="14sp" />
                     </LinearLayout>

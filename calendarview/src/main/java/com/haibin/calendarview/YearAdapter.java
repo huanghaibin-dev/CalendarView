@@ -23,7 +23,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 final class YearAdapter extends BaseRecyclerAdapter<Month> {
-    private CustomCalendarViewDelegate mDelegate;
+    private CalendarViewDelegate mDelegate;
     private int mItemHeight;
     private int mTextHeight;
 
@@ -32,7 +32,7 @@ final class YearAdapter extends BaseRecyclerAdapter<Month> {
         mTextHeight = CalendarUtil.dipToPx(context, 56);
     }
 
-    void setup(CustomCalendarViewDelegate delegate) {
+    void setup(CalendarViewDelegate delegate) {
         this.mDelegate = delegate;
     }
 
@@ -64,7 +64,7 @@ final class YearAdapter extends BaseRecyclerAdapter<Month> {
         YearView mYearView;
         TextView mTextMonth;
 
-        YearViewHolder(View itemView, CustomCalendarViewDelegate delegate) {
+        YearViewHolder(View itemView, CalendarViewDelegate delegate) {
             super(itemView);
             mYearView = (YearView) itemView.findViewById(R.id.selectView);
             mYearView.setup(delegate);

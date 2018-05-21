@@ -1,10 +1,11 @@
-package com.haibin.calendarviewproject.my;
+package com.haibin.calendarviewproject.pager;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -12,29 +13,21 @@ import android.widget.TextView;
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarLayout;
 import com.haibin.calendarview.CalendarView;
-import com.haibin.calendarviewproject.Article;
-import com.haibin.calendarviewproject.ArticleAdapter;
 import com.haibin.calendarviewproject.R;
 import com.haibin.calendarviewproject.base.activity.BaseActivity;
-import com.haibin.calendarviewproject.base.type.SchemeType;
+import com.haibin.calendarviewproject.base.fragment.FragmentAdapter;
 import com.haibin.calendarviewproject.colorful.ColorfulActivity;
-import com.haibin.calendarviewproject.group.GroupItemDecoration;
-import com.haibin.calendarviewproject.group.GroupRecyclerView;
 import com.haibin.calendarviewproject.index.IndexActivity;
+import com.haibin.calendarviewproject.meizu.MeiZuActivity;
 import com.haibin.calendarviewproject.simple.SimpleActivity;
 
 import java.util.ArrayList;
 import java.util.List;
-/**
- * 多层级日历布局
- * Created by wenhua on 2017/11/15.
- * https://github.com/peterforme 感谢 @peterforme 提供PR
- */
 
-public class MultiActivity extends BaseActivity implements
+public class ViewPagerActivity extends BaseActivity implements
+        View.OnClickListener,
         CalendarView.OnDateSelectedListener,
-        CalendarView.OnYearChangeListener,
-        View.OnClickListener{
+        CalendarView.OnYearChangeListener {
 
     TextView mTextMonthDay;
 
@@ -49,16 +42,14 @@ public class MultiActivity extends BaseActivity implements
     RelativeLayout mRelativeTool;
     private int mYear;
     CalendarLayout mCalendarLayout;
-    GroupRecyclerView mRecyclerView;
 
     public static void show(Context context) {
-        context.startActivity(new Intent(context, MultiActivity.class));
+        context.startActivity(new Intent(context, ViewPagerActivity.class));
     }
-
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_multi;
+        return R.layout.activity_view_pager;
     }
 
     @SuppressLint("SetTextI18n")
@@ -98,53 +89,59 @@ public class MultiActivity extends BaseActivity implements
         mTextMonthDay.setText(mCalendarView.getCurMonth() + "月" + mCalendarView.getCurDay() + "日");
         mTextLunar.setText("今日");
         mTextCurrentDay.setText(String.valueOf(mCalendarView.getCurDay()));
+
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager());
+        adapter.reset(new String[]{"热门", "头条", "时尚"});
+        List<Fragment> fragments = new ArrayList<>();
+        fragments.add(PagerFragment.newInstance());
+        fragments.add(PagerFragment.newInstance());
+        fragments.add(PagerFragment.newInstance());
+        adapter.reset(fragments);
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     @Override
     protected void initData() {
-        List<Calendar> calendarList = new ArrayList<>();
+        List<Calendar> schemes = new ArrayList<>();
         int year = mCalendarView.getCurYear();
         int month = mCalendarView.getCurMonth();
 
-        //设置所有的scheme,请注意背景必须先设置，不然会出现覆盖的情况
-        Calendar calendar = getCalendar(year, month, 5);
-        setScheme(calendar,0xFFff0000,"",SchemeType.BACKGROUND);
-        setScheme(calendar,0xFFe69138,"事",SchemeType.TRIGLE);
-        setScheme(calendar,0xFFe69138,"",SchemeType.INDEX);
-        calendarList.add(calendar);
+        schemes.add(getSchemeCalendar(year, month, 3, 0xFF40db25, "假"));
+        schemes.add(getSchemeCalendar(year, month, 6, 0xFFe69138, "事"));
+        schemes.add(getSchemeCalendar(year, month, 9, 0xFFdf1356, "议"));
+        schemes.add(getSchemeCalendar(year, month, 13, 0xFFedc56d, "记"));
+        schemes.add(getSchemeCalendar(year, month, 14, 0xFFedc56d, "记"));
+        schemes.add(getSchemeCalendar(year, month, 15, 0xFFaacc44, "假"));
+        schemes.add(getSchemeCalendar(year, month, 18, 0xFFbc13f0, "记"));
+        schemes.add(getSchemeCalendar(year, month, 25, 0xFF13acf0, "假"));
+        schemes.add(getSchemeCalendar(year, month, 27, 0xFF13acf0, "多"));
+        mCalendarView.setSchemeDate(schemes);
 
-        //设置今天
-        java.util.Calendar c = java.util.Calendar.getInstance();//可以对每个时间域单独修改
-        int yearNow = c.get(java.util.Calendar.YEAR);
-        int monthNow = c.get(java.util.Calendar.MONTH) + 1;
-        int dateNow = c.get(java.util.Calendar.DATE);
-        int hourNow = c.get(java.util.Calendar.HOUR_OF_DAY);
-        int minuteNow = c.get(java.util.Calendar.MINUTE);
-        int secondNow = c.get(java.util.Calendar.SECOND);
-        Log.e("pwh",yearNow + "/" + monthNow + "/" + dateNow + " " +hourNow + ":" +minuteNow + ":" + secondNow);
-        calendar = getCalendar(yearNow, monthNow, dateNow);
-        setScheme(calendar,0xFFff0000,"今",SchemeType.TRIGLE);
-        calendarList.add(calendar);
 
-        calendar = getCalendar(year, month, 19);
-        setScheme(calendar,0xFFff0000,"",SchemeType.INDEX);
-        calendarList.add(calendar);
+    }
 
-        mCalendarView.setSchemeDate(calendarList);
-
-        mRecyclerView = (GroupRecyclerView) findViewById(R.id.recyclerView);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.addItemDecoration(new GroupItemDecoration<String,Article>());
-        mRecyclerView.setAdapter(new ArticleAdapter(this));
-        mRecyclerView.notifyDataSetChanged();
+    private Calendar getSchemeCalendar(int year, int month, int day, int color, String text) {
+        Calendar calendar = new Calendar();
+        calendar.setYear(year);
+        calendar.setMonth(month);
+        calendar.setDay(day);
+        calendar.setSchemeColor(color);//如果单独标记颜色、则会使用这个颜色
+        calendar.setScheme(text);
+        calendar.addScheme(new Calendar.Scheme());
+        calendar.addScheme(0xFF008800, "假");
+        calendar.addScheme(0xFF008800, "节");
+        return calendar;
     }
 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.ll_flyme:
-                MultiActivity.show(this);
+                MeiZuActivity.show(this);
                 break;
             case R.id.ll_simple:
                 SimpleActivity.show(this);
@@ -158,21 +155,10 @@ public class MultiActivity extends BaseActivity implements
         }
     }
 
-    private Calendar getCalendar(int year, int month, int day) {
-        Calendar calendar = new Calendar();
-        calendar.setYear(year);
-        calendar.setMonth(month);
-        calendar.setDay(day);
-
-        return calendar;
+    @Override
+    public void onYearChange(int year) {
+        mTextMonthDay.setText(String.valueOf(year));
     }
-
-    private Calendar setScheme(Calendar calendar,int color, String text, SchemeType schemeType){
-        Calendar.Scheme scheme = new Calendar.Scheme(schemeType.ordinal(),color,text);
-        calendar.addScheme(scheme);
-        return calendar;
-    }
-
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -184,12 +170,4 @@ public class MultiActivity extends BaseActivity implements
         mTextLunar.setText(calendar.getLunar());
         mYear = calendar.getYear();
     }
-
-
-    @Override
-    public void onYearChange(int year) {
-        mTextMonthDay.setText(String.valueOf(year));
-    }
-
-
 }

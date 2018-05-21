@@ -139,13 +139,13 @@ final class CalendarUtil {
         java.util.Calendar date = java.util.Calendar.getInstance();
         date.set(calendar.getYear(), calendar.getMonth() - 1, 1);
         int week = date.get(java.util.Calendar.DAY_OF_WEEK);
-        if (weekStart == CustomCalendarViewDelegate.WEEK_START_WITH_SUN) {
+        if (weekStart == CalendarViewDelegate.WEEK_START_WITH_SUN) {
             return week - 1;
         }
-        if (weekStart == CustomCalendarViewDelegate.WEEK_START_WITH_MON) {
+        if (weekStart == CalendarViewDelegate.WEEK_START_WITH_MON) {
             return week == 1 ? 6 : week - weekStart;
         }
-        return week == CustomCalendarViewDelegate.WEEK_START_WITH_SAT ? 0 : week;
+        return week == CalendarViewDelegate.WEEK_START_WITH_SAT ? 0 : week;
     }
 
 
@@ -163,13 +163,13 @@ final class CalendarUtil {
         java.util.Calendar date = java.util.Calendar.getInstance();
         date.set(calendar.getYear(), calendar.getMonth() - 1, getMonthDaysCount(calendar.getYear(), calendar.getMonth()));
         int week = date.get(java.util.Calendar.DAY_OF_WEEK);
-        if (weekStart == CustomCalendarViewDelegate.WEEK_START_WITH_SUN) {
+        if (weekStart == CalendarViewDelegate.WEEK_START_WITH_SUN) {
             return 7 - week;
         }
-        if (weekStart == CustomCalendarViewDelegate.WEEK_START_WITH_MON) {
+        if (weekStart == CalendarViewDelegate.WEEK_START_WITH_MON) {
             return week == 1 ? 0 : 7 - week + 1;
         }
-        return week == CustomCalendarViewDelegate.WEEK_START_WITH_SAT ? 6 : 7 - week - 1;
+        return week == CalendarViewDelegate.WEEK_START_WITH_SAT ? 6 : 7 - week - 1;
     }
 
     /**
@@ -186,13 +186,13 @@ final class CalendarUtil {
         java.util.Calendar date = java.util.Calendar.getInstance();
         date.set(year, month - 1, 1);
         int week = date.get(java.util.Calendar.DAY_OF_WEEK);
-        if (weekStart == CustomCalendarViewDelegate.WEEK_START_WITH_SUN) {
+        if (weekStart == CalendarViewDelegate.WEEK_START_WITH_SUN) {
             return week - 1;
         }
-        if (weekStart == CustomCalendarViewDelegate.WEEK_START_WITH_MON) {
+        if (weekStart == CalendarViewDelegate.WEEK_START_WITH_MON) {
             return week == 1 ? 6 : week - weekStart;
         }
-        return week == CustomCalendarViewDelegate.WEEK_START_WITH_SAT ? 0 : week;
+        return week == CalendarViewDelegate.WEEK_START_WITH_SAT ? 0 : week;
     }
 
 
@@ -225,10 +225,10 @@ final class CalendarUtil {
         java.util.Calendar date = java.util.Calendar.getInstance();
         date.set(year, month - 1, day);
         int week = date.get(java.util.Calendar.DAY_OF_WEEK);
-        if (weekStart == CustomCalendarViewDelegate.WEEK_START_WITH_SUN) {
+        if (weekStart == CalendarViewDelegate.WEEK_START_WITH_SUN) {
             return 7 - week;
         }
-        if (weekStart == CustomCalendarViewDelegate.WEEK_START_WITH_MON) {
+        if (weekStart == CalendarViewDelegate.WEEK_START_WITH_MON) {
             return week == 1 ? 0 : 7 - week + 1;
         }
         return week == 7 ? 6 : 7 - week - 1;
@@ -259,10 +259,10 @@ final class CalendarUtil {
         java.util.Calendar date = java.util.Calendar.getInstance();
         date.set(calendar.getYear(), calendar.getMonth() - 1, calendar.getDay());
         int weekStartDiff = getWeekViewStartDiff(calendar.getYear(), calendar.getMonth(), calendar.getDay(), weekStart);
-        if (weekStart == CustomCalendarViewDelegate.WEEK_START_WITH_SUN) {
+        if (weekStart == CalendarViewDelegate.WEEK_START_WITH_SUN) {
             return weekStartDiff;
         }
-        if (weekStart == CustomCalendarViewDelegate.WEEK_START_WITH_MON) {
+        if (weekStart == CalendarViewDelegate.WEEK_START_WITH_MON) {
             return weekStartDiff == 1 ? 6 : weekStartDiff;
         }
         return weekStartDiff == 7 ? 0 : weekStartDiff;
@@ -377,7 +377,7 @@ final class CalendarUtil {
         return curTime >= minTime && curTime <= maxTime;
     }
 
-    static boolean isCalendarInRange(Calendar calendar, CustomCalendarViewDelegate delegate) {
+    static boolean isCalendarInRange(Calendar calendar, CalendarViewDelegate delegate) {
         return isCalendarInRange(calendar, delegate.getMinYear(), delegate.getMinYearMonth(),
                 delegate.getMaxYear(), delegate.getMaxYearMonth());
     }
@@ -519,7 +519,7 @@ final class CalendarUtil {
      * @param weekStart weekStart
      * @return 生成周视图的7个item
      */
-    static List<Calendar> initCalendarForWeekView(Calendar calendar, CustomCalendarViewDelegate mDelegate, int weekStart) {
+    static List<Calendar> initCalendarForWeekView(Calendar calendar, CalendarViewDelegate mDelegate, int weekStart) {
 
         java.util.Calendar date = java.util.Calendar.getInstance();//当天时间
         date.set(calendar.getYear(), calendar.getMonth() - 1, calendar.getDay());
