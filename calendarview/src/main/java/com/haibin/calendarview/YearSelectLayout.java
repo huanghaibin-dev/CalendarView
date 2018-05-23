@@ -15,11 +15,13 @@
  */
 package com.haibin.calendarview;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.Display;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -118,4 +120,24 @@ public final class YearSelectLayout extends ViewPager {
         view.getLocationOnScreen(location);
         return h - location[1];
     }
+
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+        return false;
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        return false;
+    }
+
+    public void scrollToNext() {
+        setCurrentItem(getCurrentItem() + 1, true);
+    }
+
+    public void scrollToPrevious() {
+        setCurrentItem(getCurrentItem() - 1, true);
+    }
+
 }

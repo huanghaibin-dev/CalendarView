@@ -490,6 +490,17 @@ public class CalendarView extends FrameLayout {
         mSelectLayout.scrollToYear(year, smoothScroll);
     }
 
+    public void scrollToPreviousYear() {
+        if (isYearSelectLayoutVisible()) {
+            mSelectLayout.scrollToPrevious();
+        }
+    }
+
+    public void scrollToNextYear() {
+        if (isYearSelectLayoutVisible()) {
+            mSelectLayout.scrollToNext();
+        }
+    }
 
     /**
      * 年份改变事件
