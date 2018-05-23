@@ -72,6 +72,8 @@
         <item>0801建军节</item>
         <item>0910教师节</item>
         <item>1001国庆节</item>
+        <item>1031万圣节</item>
+        <item>1111光棍节</item>
         <item>1224平安夜</item>
         <item>1225圣诞节</item>
     </string-array>
@@ -103,8 +105,9 @@
         <item>惊蛰</item>
     </string-array>
 
-    <string-array name="western_festival">
-
+    <string-array name="special_festivals">
+        <item>母亲节</item>
+        <item>父亲节</item>
     </string-array>
 
     <string name="sun">Sun</string>

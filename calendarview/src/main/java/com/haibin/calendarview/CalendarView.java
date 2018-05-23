@@ -41,7 +41,7 @@ public class CalendarView extends FrameLayout {
     /**
      * 使用google官方推荐的方式抽取自定义属性
      */
-    private CustomCalendarViewDelegate mDelegate;
+    private final CalendarViewDelegate mDelegate;
 
     /**
      * 自定义自适应高度的ViewPager
@@ -80,7 +80,7 @@ public class CalendarView extends FrameLayout {
 
     public CalendarView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        mDelegate = new CustomCalendarViewDelegate(context, attrs);
+        mDelegate = new CalendarViewDelegate(context, attrs);
         init(context);
     }
 
@@ -169,7 +169,7 @@ public class CalendarView extends FrameLayout {
                 mDelegate.mSelectedCalendar = calendar;
                 int y = calendar.getYear() - mDelegate.getMinYear();
                 int position = 12 * y + mDelegate.mSelectedCalendar.getMonth() - mDelegate.getMinYearMonth();
-                mMonthPager.setCurrentItem(position,false);
+                mMonthPager.setCurrentItem(position, false);
                 mMonthPager.updateSelected();
                 if (mWeekBar != null) {
                     mWeekBar.onDateSelected(calendar, mDelegate.getWeekStart(), isClick);
@@ -180,7 +180,6 @@ public class CalendarView extends FrameLayout {
         mDelegate.mSelectedCalendar = mDelegate.createCurrentDate();
         mWeekBar.onDateSelected(mDelegate.mSelectedCalendar, mDelegate.getWeekStart(), false);
 
-        int mCurYear = mDelegate.mSelectedCalendar.getYear();
         mMonthPager.setup(mDelegate);
         mMonthPager.setCurrentItem(mDelegate.mCurrentMonthViewItem);
         mSelectLayout.setOnMonthSelectedListener(new YearRecyclerView.OnMonthSelectedListener() {
@@ -409,7 +408,7 @@ public class CalendarView extends FrameLayout {
      *
      * @param smoothScroll smoothScroll
      */
-    @SuppressWarnings("all")
+
     public void scrollToNext(boolean smoothScroll) {
         if (mWeekPager.getVisibility() == VISIBLE) {
             mWeekPager.setCurrentItem(mWeekPager.getCurrentItem() + 1, smoothScroll);
@@ -431,7 +430,6 @@ public class CalendarView extends FrameLayout {
      *
      * @param smoothScroll smoothScroll
      */
-    @SuppressWarnings("all")
     public void scrollToPre(boolean smoothScroll) {
         if (mWeekPager.getVisibility() == VISIBLE) {
             mWeekPager.setCurrentItem(mWeekPager.getCurrentItem() - 1, smoothScroll);
@@ -459,7 +457,6 @@ public class CalendarView extends FrameLayout {
      * @param day          day
      * @param smoothScroll smoothScroll
      */
-    @SuppressWarnings("all")
     public void scrollToCalendar(int year, int month, int day, boolean smoothScroll) {
         if (mWeekPager.getVisibility() == VISIBLE) {
             mWeekPager.scrollToCalendar(year, month, day, smoothScroll);
@@ -483,7 +480,6 @@ public class CalendarView extends FrameLayout {
      * @param year         快速滚动的年份
      * @param smoothScroll smoothScroll
      */
-    @SuppressWarnings("all")
     public void scrollToYear(int year, boolean smoothScroll) {
         mMonthPager.setCurrentItem(12 * (year - mDelegate.getMinYear()) +
                 mDelegate.getCurrentDay().getMonth() - mDelegate.getMinYearMonth(), smoothScroll);
@@ -518,6 +514,15 @@ public class CalendarView extends FrameLayout {
      */
     public void setOnMonthChangeListener(OnMonthChangeListener listener) {
         this.mDelegate.mMonthChangeListener = listener;
+        if (mDelegate.mMonthChangeListener != null) {
+            post(new Runnable() {
+                @Override
+                public void run() {
+                    mDelegate.mMonthChangeListener.onMonthChange(mDelegate.mSelectedCalendar.getYear(),
+                            mDelegate.mSelectedCalendar.getMonth());
+                }
+            });
+        }
     }
 
     /**
@@ -531,7 +536,12 @@ public class CalendarView extends FrameLayout {
             if (!CalendarUtil.isCalendarInRange(mDelegate.mSelectedCalendar, mDelegate)) {
                 return;
             }
-            mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar, false);
+            post(new Runnable() {
+                @Override
+                public void run() {
+                    mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar, false);
+                }
+            });
         }
     }
 
@@ -703,6 +713,89 @@ public class CalendarView extends FrameLayout {
 
 
     /**
+     * 设置星期日周起始
+     */
+    public void setWeekStarWithSun() {
+        setWeekStart(1);
+    }
+
+    /**
+     * 设置星期一周起始
+     */
+    public void setWeekStarWithMon() {
+        setWeekStart(2);
+    }
+
+    /**
+     * 设置星期六周起始
+     */
+    public void setWeekStarWithSat() {
+        setWeekStart(7);
+    }
+
+    /**
+     * 设置周起始
+     * <enum name="sun" value="1" />
+     * <enum name="mon" value="2" />
+     * <enum name="sat" value="7" />
+     *
+     * @param weekStart 周起始
+     */
+    private void setWeekStart(int weekStart) {
+        if (weekStart != 1 && weekStart != 2 && weekStart != 7)
+            return;
+        if (weekStart == mDelegate.getWeekStart())
+            return;
+        mDelegate.setWeekStart(weekStart);
+        mWeekBar.onWeekStartChange(weekStart);
+        mWeekBar.onDateSelected(mDelegate.mSelectedCalendar, weekStart, false);
+        mWeekPager.updateWeekStart();
+        mMonthPager.updateWeekStart();
+        mWeekPager.notifyDataSetChanged();
+    }
+
+
+    /**
+     * 设置显示模式为全部
+     */
+    public void setAllMode() {
+        setShowMode(0);
+    }
+
+    /**
+     * 设置显示模式为仅当前月份
+     */
+    public void setOnlyCurrentMode() {
+        setShowMode(1);
+    }
+
+    /**
+     * 设置显示模式为填充
+     */
+    public void setFixMode() {
+        setShowMode(2);
+    }
+
+    /**
+     * 设置显示模式
+     * <enum name="mode_all" value="0" />
+     * <enum name="mode_only_current" value="1" />
+     * <enum name="mode_fix" value="2" />
+     *
+     * @param mode 月视图显示模式
+     */
+    private void setShowMode(int mode) {
+        if (mode != 0 && mode != 1 && mode != 2)
+            return;
+        if (mDelegate.getMonthViewShowMode() == mode)
+            return;
+        mDelegate.setMonthViewShowMode(mode);
+        mWeekPager.updateShowMode();
+        mMonthPager.updateShowMode();
+        mWeekPager.notifyDataSetChanged();
+    }
+
+    /**
      * 更新界面，
      * 重新设置颜色等都需要调用该方法
      */
@@ -724,11 +817,10 @@ public class CalendarView extends FrameLayout {
     /**
      * 更新当前日期
      */
-    public void updateCurrentDate(){
+    public void updateCurrentDate() {
         mDelegate.updateCurrentDay();
         mMonthPager.updateCurrentDate();
         mWeekPager.updateCurrentDate();
-        //mWeekBar.onDateSelected(mDelegate.getCurrentDay(),mDelegate.getWeekStart(),false);
     }
 
     /**

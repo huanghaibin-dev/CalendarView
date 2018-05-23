@@ -118,7 +118,7 @@ public class YearView extends View {
         this.mSchemes = mSchemes;
     }
 
-    void setup(CustomCalendarViewDelegate delegate) {
+    void setup(CalendarViewDelegate delegate) {
         mSchemePaint.setColor(delegate.getYearViewSchemeTextColor());
         mSchemePaint.setTextSize(delegate.getYearViewDayTextSize());
         mPaint.setTextSize(delegate.getYearViewDayTextSize());

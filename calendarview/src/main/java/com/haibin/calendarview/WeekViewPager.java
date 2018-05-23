@@ -36,7 +36,7 @@ import java.lang.reflect.Constructor;
 public final class WeekViewPager extends ViewPager {
 
     private int mWeekCount;
-    private CustomCalendarViewDelegate mDelegate;
+    private CalendarViewDelegate mDelegate;
 
     /**
      * 日历布局，需要在日历下方放自己的布局
@@ -56,7 +56,7 @@ public final class WeekViewPager extends ViewPager {
         super(context, attrs);
     }
 
-    void setup(CustomCalendarViewDelegate delegate) {
+    void setup(CalendarViewDelegate delegate) {
         this.mDelegate = delegate;
         init();
     }
@@ -97,7 +97,7 @@ public final class WeekViewPager extends ViewPager {
 
     void notifyDataSetChanged() {
         mWeekCount = CalendarUtil.getWeekCountBetweenYearAndYear(mDelegate.getMinYear(), mDelegate.getMinYearMonth(),
-                mDelegate.getMaxYear(), mDelegate.getMaxYearMonth(),mDelegate.getWeekStart());
+                mDelegate.getMaxYear(), mDelegate.getMaxYearMonth(), mDelegate.getWeekStart());
         getAdapter().notifyDataSetChanged();
     }
 
@@ -192,6 +192,31 @@ public final class WeekViewPager extends ViewPager {
         }
     }
 
+    /**
+     * 更新显示模式
+     */
+    void updateShowMode() {
+        for (int i = 0; i < getChildCount(); i++) {
+            WeekView view = (WeekView) getChildAt(i);
+            view.updateShowMode();
+        }
+    }
+
+    /**
+     * 更新周起始
+     */
+    void updateWeekStart() {
+        mWeekCount = CalendarUtil.getWeekCountBetweenYearAndYear(mDelegate.getMinYear(),
+                mDelegate.getMinYearMonth(),
+                mDelegate.getMaxYear(),
+                mDelegate.getMaxYearMonth(),
+                mDelegate.getWeekStart());
+        for (int i = 0; i < getChildCount(); i++) {
+            WeekView view = (WeekView) getChildAt(i);
+            view.updateWeekStart();
+        }
+        updateSelected(mDelegate.mSelectedCalendar, false);
+    }
 
 
     @SuppressLint("ClickableViewAccessibility")

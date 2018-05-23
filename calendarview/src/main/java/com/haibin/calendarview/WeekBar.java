@@ -16,6 +16,7 @@
 package com.haibin.calendarview;
 
 import android.content.Context;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -25,7 +26,7 @@ import android.widget.TextView;
  * Created by huanghaibin on 2017/11/30.
  */
 public class WeekBar extends LinearLayout {
-    private CustomCalendarViewDelegate mDelegate;
+    private CalendarViewDelegate mDelegate;
 
     public WeekBar(Context context) {
         super(context);
@@ -39,9 +40,10 @@ public class WeekBar extends LinearLayout {
      *
      * @param delegate delegate
      */
-    void setup(CustomCalendarViewDelegate delegate) {
+    void setup(CalendarViewDelegate delegate) {
         this.mDelegate = delegate;
         if ("com.haibin.calendarview.WeekBar".equalsIgnoreCase(getClass().getName())) {
+            setTextSize(mDelegate.getWeekTextSize());
             setTextColor(delegate.getWeekTextColor());
             setBackgroundColor(delegate.getWeekBackground());
         }
@@ -56,6 +58,18 @@ public class WeekBar extends LinearLayout {
     protected void setTextColor(int color) {
         for (int i = 0; i < getChildCount(); i++) {
             ((TextView) getChildAt(i)).setTextColor(color);
+        }
+    }
+
+
+    /**
+     * 设置文本大小
+     *
+     * @param size size
+     */
+    protected void setTextSize(int size) {
+        for (int i = 0; i < getChildCount(); i++) {
+            ((TextView) getChildAt(i)).setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
         }
     }
 
@@ -92,12 +106,12 @@ public class WeekBar extends LinearLayout {
     protected int getViewIndexByCalendar(Calendar calendar, int weekStart) {
         int week = calendar.getWeek() + 1;
         if (weekStart == 1) {
-            return week -1;
+            return week - 1;
         }
         if (weekStart == 2) {
             return week == 1 ? 6 : week - 2;
         }
-        return week == 7 ? 0 : week  ;
+        return week == 7 ? 0 : week;
     }
 
     private String getWeekString(int index, int weekStart) {

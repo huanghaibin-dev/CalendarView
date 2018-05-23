@@ -75,7 +75,7 @@ public abstract class MonthView extends BaseView {
         for (int i = 0; i < mLineCount; i++) {
             for (int j = 0; j < 7; j++) {
                 Calendar calendar = mItems.get(d);
-                if (mDelegate.getMonthViewShowMode() == CustomCalendarViewDelegate.MODE_ONLY_CURRENT_MONTH) {
+                if (mDelegate.getMonthViewShowMode() == CalendarViewDelegate.MODE_ONLY_CURRENT_MONTH) {
                     if (d > mItems.size() - mNextDiff) {
                         return;
                     }
@@ -83,7 +83,7 @@ public abstract class MonthView extends BaseView {
                         ++d;
                         continue;
                     }
-                } else if (mDelegate.getMonthViewShowMode() == CustomCalendarViewDelegate.MODE_FIT_MONTH) {
+                } else if (mDelegate.getMonthViewShowMode() == CalendarViewDelegate.MODE_FIT_MONTH) {
                     if (d >= count) {
                         return;
                     }
@@ -140,7 +140,7 @@ public abstract class MonthView extends BaseView {
             Calendar calendar = getIndex();
             if (calendar != null) {
 
-                if (mDelegate.getMonthViewShowMode() == CustomCalendarViewDelegate.MODE_ONLY_CURRENT_MONTH &&
+                if (mDelegate.getMonthViewShowMode() == CalendarViewDelegate.MODE_ONLY_CURRENT_MONTH &&
                         !calendar.isCurrentMonth()) {
                     mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);
                     return;
@@ -174,7 +174,7 @@ public abstract class MonthView extends BaseView {
                 if (mDelegate.mDateSelectedListener != null) {
                     mDelegate.mDateSelectedListener.onDateSelected(calendar, true);
                 }
-                invalidate();
+                //invalidate();
             }
         }
     }
@@ -196,7 +196,7 @@ public abstract class MonthView extends BaseView {
                     return true;
                 }
 
-                if (mDelegate.getMonthViewShowMode() == CustomCalendarViewDelegate.MODE_ONLY_CURRENT_MONTH &&
+                if (mDelegate.getMonthViewShowMode() == CalendarViewDelegate.MODE_ONLY_CURRENT_MONTH &&
                         !calendar.isCurrentMonth()) {
                     mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);
                     return false;
@@ -260,6 +260,32 @@ public abstract class MonthView extends BaseView {
         mCurrentItem = mItems.indexOf(calendar);
     }
 
+
+    /**
+     * 更新显示模式
+     */
+    void updateShowMode() {
+        if (mDelegate.getMonthViewShowMode() == CalendarViewDelegate.MODE_ALL_MONTH) {
+            mLineCount = 6;
+            mHeight = mItemHeight * mLineCount;
+        } else {
+            mHeight = CalendarUtil.getMonthViewHeight(mYear, mMonth, mItemHeight, mDelegate.getWeekStart());
+        }
+        invalidate();
+    }
+
+    /**
+     * 更新周起始
+     */
+    void updateWeekStart() {
+        initCalendar();
+        if (mDelegate.getMonthViewShowMode() == CalendarViewDelegate.MODE_ALL_MONTH) {
+            mHeight = mItemHeight * mLineCount;
+        } else {
+            mHeight = CalendarUtil.getMonthViewHeight(mYear, mMonth, mItemHeight, mDelegate.getWeekStart());
+        }
+    }
+
     /**
      * 初始化日期
      *
@@ -270,7 +296,7 @@ public abstract class MonthView extends BaseView {
         mYear = year;
         mMonth = month;
         initCalendar();
-        if (mDelegate.getMonthViewShowMode() == CustomCalendarViewDelegate.MODE_ALL_MONTH) {
+        if (mDelegate.getMonthViewShowMode() == CalendarViewDelegate.MODE_ALL_MONTH) {
             mHeight = mItemHeight * mLineCount;
         } else {
             mHeight = CalendarUtil.getMonthViewHeight(year, month, mItemHeight, mDelegate.getWeekStart());
@@ -292,9 +318,11 @@ public abstract class MonthView extends BaseView {
 
         if (mItems.contains(mDelegate.getCurrentDay())) {
             mCurrentItem = mItems.indexOf(mDelegate.getCurrentDay());
+        } else {
+            mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);
         }
 
-        if (mDelegate.getMonthViewShowMode() == CustomCalendarViewDelegate.MODE_ALL_MONTH) {
+        if (mDelegate.getMonthViewShowMode() == CalendarViewDelegate.MODE_ALL_MONTH) {
             mLineCount = 6;
         } else {
             mLineCount = (preDiff + monthDayCount + mNextDiff) / 7;

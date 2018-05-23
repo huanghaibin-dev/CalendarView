@@ -251,6 +251,27 @@ public abstract class WeekView extends BaseView {
         invalidate();
     }
 
+    /**
+     * 更新显示模式
+     */
+    void updateShowMode() {
+        invalidate();
+    }
+
+    /**
+     * 更新周起始
+     */
+    void updateWeekStart() {
+
+        int position = (int) getTag();
+        Calendar calendar = CalendarUtil.getFirstCalendarFromWeekCount(mDelegate.getMinYear(),
+                mDelegate.getMinYearMonth(),
+                position + 1,
+                mDelegate.getWeekStart());
+        setSelectedCalendar(mDelegate.mSelectedCalendar);
+        setup(calendar);
+    }
+
 
     /**
      * 更新界面

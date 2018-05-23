@@ -15,6 +15,7 @@ import com.haibin.calendarviewproject.colorful.ColorfulActivity;
 import com.haibin.calendarviewproject.custom.CustomActivity;
 import com.haibin.calendarviewproject.index.IndexActivity;
 import com.haibin.calendarviewproject.meizu.MeiZuActivity;
+import com.haibin.calendarviewproject.pager.ViewPagerActivity;
 import com.haibin.calendarviewproject.progress.ProgressActivity;
 import com.haibin.calendarviewproject.simple.SimpleActivity;
 import com.haibin.calendarviewproject.solay.SolarActivity;
@@ -108,11 +109,12 @@ public class MainActivity extends BaseActivity implements
         findViewById(R.id.ll_simple).setOnClickListener(this);
         findViewById(R.id.ll_colorful).setOnClickListener(this);
         findViewById(R.id.ll_index).setOnClickListener(this);
+        findViewById(R.id.ll_tab).setOnClickListener(this);
         findViewById(R.id.ll_solar_system).setOnClickListener(this);
         findViewById(R.id.ll_progress).setOnClickListener(this);
         findViewById(R.id.ll_custom).setOnClickListener(this);
-    }
 
+    }
 
     @Override
     public void onClick(View v) {
@@ -128,6 +130,9 @@ public class MainActivity extends BaseActivity implements
                 break;
             case R.id.ll_index:
                 IndexActivity.show(this);
+                break;
+            case R.id.ll_tab:
+                ViewPagerActivity.show(this);
                 break;
             case R.id.ll_solar_system:
                 SolarActivity.show(this);

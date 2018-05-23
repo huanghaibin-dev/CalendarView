@@ -27,7 +27,7 @@
         <activity android:name=".solay.SolarActivity" />
         <activity android:name=".progress.ProgressActivity" />
         <activity android:name=".custom.CustomActivity" />
-        <activity android:name=".my.MultiActivity" />
+        <activity android:name=".pager.ViewPagerActivity" />
     </application>
 
 </manifest>

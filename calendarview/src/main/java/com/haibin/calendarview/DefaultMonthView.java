@@ -9,7 +9,7 @@ import android.graphics.Paint;
  * Created by huanghaibin on 2017/11/15.
  */
 
-public class DefaultMonthView extends MonthView {
+public final class DefaultMonthView extends MonthView {
 
     private Paint mTextPaint = new Paint();
     private Paint mSchemeBasicPaint = new Paint();
@@ -38,7 +38,6 @@ public class DefaultMonthView extends MonthView {
     }
 
     /**
-     *
      * @param canvas    canvas
      * @param calendar  日历日历calendar
      * @param x         日历Card x起点坐标
@@ -59,7 +58,19 @@ public class DefaultMonthView extends MonthView {
 
         canvas.drawCircle(x + mItemWidth - mPadding - mRadio / 2, y + mPadding + mRadio, mRadio, mSchemeBasicPaint);
 
-        canvas.drawText(calendar.getScheme(), x + mItemWidth - mPadding - mRadio, y + mPadding + mSchemeBaseLine, mTextPaint);
+        canvas.drawText(calendar.getScheme(),
+                x + mItemWidth - mPadding - mRadio / 2 - getTextWidth(calendar.getScheme()) / 2,
+                y + mPadding + mSchemeBaseLine, mTextPaint);
+    }
+
+
+    /**
+     * 获取字体的宽
+     * @param text text
+     * @return return
+     */
+    private float getTextWidth(String text) {
+        return mTextPaint.measureText(text);
     }
 
     @Override
@@ -77,7 +88,7 @@ public class DefaultMonthView extends MonthView {
                             calendar.isCurrentMonth() ? mSchemeTextPaint : mOtherMonthTextPaint);
 
             canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + y + mItemHeight / 10,
-                    calendar.isCurrentDay() ? mCurDayLunarTextPaint :mSchemeLunarTextPaint);
+                    calendar.isCurrentDay() ? mCurDayLunarTextPaint : mSchemeLunarTextPaint);
         } else {
             canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
                     calendar.isCurrentDay() ? mCurDayTextPaint :

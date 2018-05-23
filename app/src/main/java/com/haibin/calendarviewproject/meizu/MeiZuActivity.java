@@ -15,11 +15,8 @@ import com.haibin.calendarviewproject.Article;
 import com.haibin.calendarviewproject.ArticleAdapter;
 import com.haibin.calendarviewproject.R;
 import com.haibin.calendarviewproject.base.activity.BaseActivity;
-import com.haibin.calendarviewproject.colorful.ColorfulActivity;
 import com.haibin.calendarviewproject.group.GroupItemDecoration;
 import com.haibin.calendarviewproject.group.GroupRecyclerView;
-import com.haibin.calendarviewproject.index.IndexActivity;
-import com.haibin.calendarviewproject.simple.SimpleActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,20 +117,7 @@ public class MeiZuActivity extends BaseActivity implements
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.ll_flyme:
-                MeiZuActivity.show(this);
-                break;
-            case R.id.ll_simple:
-                SimpleActivity.show(this);
-                break;
-            case R.id.ll_colorful:
-                ColorfulActivity.show(this);
-                break;
-            case R.id.ll_index:
-                IndexActivity.show(this);
-                break;
-        }
+
     }
 
     private Calendar getSchemeCalendar(int year, int month, int day, int color,String text) {
