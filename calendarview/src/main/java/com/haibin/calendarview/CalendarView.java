@@ -410,7 +410,9 @@ public class CalendarView extends FrameLayout {
      */
 
     public void scrollToNext(boolean smoothScroll) {
-        if (mWeekPager.getVisibility() == VISIBLE) {
+        if (isYearSelectLayoutVisible()) {
+            mSelectLayout.setCurrentItem(mSelectLayout.getCurrentItem() + 1, smoothScroll);
+        } else if (mWeekPager.getVisibility() == VISIBLE) {
             mWeekPager.setCurrentItem(mWeekPager.getCurrentItem() + 1, smoothScroll);
         } else {
             mMonthPager.setCurrentItem(mMonthPager.getCurrentItem() + 1, smoothScroll);
@@ -431,7 +433,9 @@ public class CalendarView extends FrameLayout {
      * @param smoothScroll smoothScroll
      */
     public void scrollToPre(boolean smoothScroll) {
-        if (mWeekPager.getVisibility() == VISIBLE) {
+        if (isYearSelectLayoutVisible()) {
+            mSelectLayout.setCurrentItem(mSelectLayout.getCurrentItem() - 1, smoothScroll);
+        } else if (mWeekPager.getVisibility() == VISIBLE) {
             mWeekPager.setCurrentItem(mWeekPager.getCurrentItem() - 1, smoothScroll);
         } else {
             mMonthPager.setCurrentItem(mMonthPager.getCurrentItem() - 1, smoothScroll);
@@ -485,7 +489,6 @@ public class CalendarView extends FrameLayout {
                 mDelegate.getCurrentDay().getMonth() - mDelegate.getMinYearMonth(), smoothScroll);
         mSelectLayout.scrollToYear(year, smoothScroll);
     }
-
 
     /**
      * 年份改变事件

@@ -52,6 +52,8 @@
         <attr name="month_view_scrollable" format="boolean" />
         <!--周视图是否可滚动-->
         <attr name="week_view_scrollable" format="boolean" />
+        <!--年视图是否可滚动-->
+        <attr name="year_view_scrollable" format="boolean" />
 
         <!-- 月份显示模式 -->
         <attr name="month_view_show_mode">
