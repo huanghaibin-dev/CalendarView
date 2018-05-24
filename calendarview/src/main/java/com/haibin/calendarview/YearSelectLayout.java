@@ -124,20 +124,11 @@ public final class YearSelectLayout extends ViewPager {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        return false;
+        return mDelegate.isYearViewScrollable() && super.onTouchEvent(ev);
     }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        return false;
+        return mDelegate.isYearViewScrollable() && super.onInterceptTouchEvent(ev);
     }
-
-    public void scrollToNext() {
-        setCurrentItem(getCurrentItem() + 1, true);
-    }
-
-    public void scrollToPrevious() {
-        setCurrentItem(getCurrentItem() - 1, true);
-    }
-
 }
