@@ -708,33 +708,35 @@ public class CalendarView extends FrameLayout {
      * 设置星期日周起始
      */
     public void setWeekStarWithSun() {
-        setWeekStart(1);
+        setWeekStart(CalendarViewDelegate.WEEK_START_WITH_SUN);
     }
 
     /**
      * 设置星期一周起始
      */
     public void setWeekStarWithMon() {
-        setWeekStart(2);
+        setWeekStart(CalendarViewDelegate.WEEK_START_WITH_MON);
     }
 
     /**
      * 设置星期六周起始
      */
     public void setWeekStarWithSat() {
-        setWeekStart(7);
+        setWeekStart(CalendarViewDelegate.WEEK_START_WITH_SAT);
     }
 
     /**
      * 设置周起始
-     * <enum name="sun" value="1" />
-     * <enum name="mon" value="2" />
-     * <enum name="sat" value="7" />
+     * CalendarViewDelegate.WEEK_START_WITH_SUN
+     * CalendarViewDelegate.WEEK_START_WITH_MON
+     * CalendarViewDelegate.WEEK_START_WITH_SAT
      *
      * @param weekStart 周起始
      */
     private void setWeekStart(int weekStart) {
-        if (weekStart != 1 && weekStart != 2 && weekStart != 7)
+        if (weekStart != CalendarViewDelegate.WEEK_START_WITH_SUN &&
+                weekStart != CalendarViewDelegate.WEEK_START_WITH_MON &&
+                weekStart != CalendarViewDelegate.WEEK_START_WITH_SAT)
             return;
         if (weekStart == mDelegate.getWeekStart())
             return;
@@ -751,33 +753,35 @@ public class CalendarView extends FrameLayout {
      * 设置显示模式为全部
      */
     public void setAllMode() {
-        setShowMode(0);
+        setShowMode(CalendarViewDelegate.MODE_ALL_MONTH);
     }
 
     /**
      * 设置显示模式为仅当前月份
      */
     public void setOnlyCurrentMode() {
-        setShowMode(1);
+        setShowMode(CalendarViewDelegate.MODE_ONLY_CURRENT_MONTH);
     }
 
     /**
      * 设置显示模式为填充
      */
     public void setFixMode() {
-        setShowMode(2);
+        setShowMode(CalendarViewDelegate.MODE_FIT_MONTH);
     }
 
     /**
      * 设置显示模式
-     * <enum name="mode_all" value="0" />
-     * <enum name="mode_only_current" value="1" />
-     * <enum name="mode_fix" value="2" />
+     * CalendarViewDelegate.MODE_ALL_MONTH
+     * CalendarViewDelegate.MODE_ONLY_CURRENT_MONTH
+     * CalendarViewDelegate.MODE_FIT_MONTH
      *
      * @param mode 月视图显示模式
      */
     private void setShowMode(int mode) {
-        if (mode != 0 && mode != 1 && mode != 2)
+        if (mode !=  CalendarViewDelegate.MODE_ALL_MONTH &&
+                mode != CalendarViewDelegate.MODE_ONLY_CURRENT_MONTH &&
+                mode !=  CalendarViewDelegate.MODE_FIT_MONTH)
             return;
         if (mDelegate.getMonthViewShowMode() == mode)
             return;

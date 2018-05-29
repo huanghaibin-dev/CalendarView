@@ -26,7 +26,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -512,9 +511,7 @@ public class CalendarLayout extends LinearLayout {
      */
     protected boolean isScrollTop() {
         if (mContentView instanceof CalendarScrollView) {
-            boolean s = ((CalendarScrollView) mContentView).isScrollToTop();
-            Log.e("isScrollTop","  --  " + s);
-            return s;
+            return ((CalendarScrollView) mContentView).isScrollToTop();
         }
         if (mContentView instanceof RecyclerView)
             return ((RecyclerView) mContentView).computeVerticalScrollOffset() == 0;

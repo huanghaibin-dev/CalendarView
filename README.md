@@ -109,13 +109,14 @@ compile 'com.haibin:calendarview:3.3.1'
 <declare-styleable name="CalendarView">
 
         <attr name="month_view" format="color" /> <!--自定义类日历月视图路径-->
-        <attr name="week_view" format="color" /> <!--自定义类周视图路径-->
+        <attr name="week_view" format="string" /> <!--自定义类周视图路径-->
         <attr name="week_bar_height" format="dimension" /> <!--星期栏的高度-->
         <attr name="week_bar_view" format="color" /> <!--自定义类周栏路径，通过自定义则 week_text_color week_background xml设置无效，当仍可java api设置-->
 
         <attr name="week_line_background" format="color" /><!--线条颜色-->
         <attr name="week_background" format="color" /> <!--星期栏的背景-->
         <attr name="week_text_color" format="color" /> <!--星期栏文本颜色-->
+        <attr name="week_text_size" format="dimension" /><!--星期栏文本大小-->
 
         <attr name="current_day_text_color" format="color" /> <!--今天的文本颜色-->
         <attr name="current_day_lunar_text_color" format="color" /><!--今天的农历文本颜色-->
@@ -149,7 +150,7 @@ compile 'com.haibin:calendarview:3.3.1'
         <attr name="year_view_scheme_color" format="color" /> <!-- 年视图标记颜色 -->
 
         <attr name="min_year" format="integer" />  <!--最小年份1900-->
-        <attr name="max_year" format="integer" /> <!--最大年份2099-->
+        <attr name="max_year" format="integer" />  <!--最大年份2099-->
         <attr name="min_year_month" format="integer" /> <!--最小年份对应月份-->
         <attr name="max_year_month" format="integer" /> <!--最大年份对应月份-->
 
@@ -157,6 +158,8 @@ compile 'com.haibin:calendarview:3.3.1'
         <attr name="month_view_scrollable" format="boolean" />
         <!--周视图是否可滚动-->
         <attr name="week_view_scrollable" format="boolean" />
+        <!--年视图是否可滚动-->
+        <attr name="year_view_scrollable" format="boolean" />
         
         <!--配置你喜欢的月视图显示模式模式-->
         <attr name="month_view_show_mode">
@@ -165,12 +168,12 @@ compile 'com.haibin:calendarview:3.3.1'
              <enum name="mode_fix" value="2" /> <!--自适应显示，不会多出一行，但是会自动填充-->
         </attr>
 
-         <!-- 自定义周起始 -->
-         <attr name="week_start_with">
+        <!-- 自定义周起始 -->
+        <attr name="week_start_with">
              <enum name="sun" value="1" />
              <enum name="mon" value="2" />
              <enum name="sat" value="7" />
-         </attr>
+        </attr>
 </declare-styleable>
 ```
 ### CalendarView api

@@ -105,13 +105,14 @@ compile 'com.haibin:calendarview:3.3.1'
 <declare-styleable name="CalendarView">
 
         <attr name="month_view" format="color" /> <!--Custom class MonthView path-->
-        <attr name="week_view" format="color" /> <!--Custom WeekView path-->
+        <attr name="week_view" format="string" /> <!--Custom WeekView path-->
         <attr name="week_bar_height" format="dimension" /> <!--WeekBar height-->
         <attr name="week_bar_view" format="color" /> <!--Custom class WeekBar path, invalid by custom week_text_color week_background XML settings, when still Java API settings can still be set-->
 
         <attr name="week_line_background" format="color" /><!--line color-->
         <attr name="week_background" format="color" /> <!--WeekBar background-->
         <attr name="week_text_color" format="color" /> <!--WeekBar textColor-->
+              <attr name="week_text_size" format="dimension" /><!--WeekBar textSize-->
 
         <attr name="current_day_text_color" format="color" /> <!--today textColor-->
         <attr name="current_day_lunar_text_color" format="color" /><!--today lunarTextColo-->
@@ -153,6 +154,8 @@ compile 'com.haibin:calendarview:3.3.1'
         <attr name="month_view_scrollable" format="boolean" />
         <!--week_view_scrollable-->
         <attr name="week_view_scrollable" format="boolean" />
+        <!--year_view_scrollable-->
+        <attr name="year_view_scrollable" format="boolean" />
 
         <!--month_view_show_mode-->
         <attr name="month_view_show_mode">
