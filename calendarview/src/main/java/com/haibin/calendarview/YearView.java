@@ -19,6 +19,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -40,6 +41,7 @@ public class YearView extends View {
     private Paint mSchemePaint = new Paint();
     private List<Calendar> mSchemes;
     private Calendar mCalendar;
+    private int mMinHeight;//最小高度
 
     public YearView(Context context) {
         this(context, null);
@@ -114,18 +116,37 @@ public class YearView extends View {
         invalidate();
     }
 
+    /**
+     * 设置事件
+     *
+     * @param mSchemes mSchemes
+     */
     void setSchemes(List<Calendar> mSchemes) {
         this.mSchemes = mSchemes;
     }
 
+    /**
+     * 初始化
+     *
+     * @param delegate delegate
+     */
     void setup(CalendarViewDelegate delegate) {
         mSchemePaint.setColor(delegate.getYearViewSchemeTextColor());
         mSchemePaint.setTextSize(delegate.getYearViewDayTextSize());
         mPaint.setTextSize(delegate.getYearViewDayTextSize());
         mPaint.setColor(delegate.getYearViewDayTextColor());
+        Rect rect = new Rect();
+        mPaint.getTextBounds("1",0,1, rect);
+        int textHeight = rect.height();
+        mMinHeight = 12 * textHeight;
     }
 
 
+    /**
+     * 设置标记颜色
+     *
+     * @param schemeColor schemeColor
+     */
     void setSchemeColor(int schemeColor) {
         if (schemeColor != 0)
             mSchemePaint.setColor(schemeColor);
@@ -133,10 +154,29 @@ public class YearView extends View {
             mSchemePaint.setColor(Color.RED);
     }
 
+    /**
+     * 设置字体
+     *
+     * @param textSize  textSize
+     * @param textColor textColor
+     */
     void setTextStyle(int textSize, int textColor) {
         mSchemePaint.setTextSize(textSize);
         mPaint.setTextSize(textSize);
         mPaint.setColor(textColor);
+    }
+
+    /**
+     * 测量高度
+     *
+     * @param height height
+     */
+    void measureHeight(int height) {
+        if (height <= mMinHeight) {
+            getLayoutParams().height = mMinHeight;
+        } else {
+            getLayoutParams().height = height;
+        }
     }
 
     private boolean isScheme(int day) {

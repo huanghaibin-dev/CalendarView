@@ -81,6 +81,15 @@ public final class YearRecyclerView extends RecyclerView {
     }
 
     /**
+     * 更新周起始
+     */
+    void updateWeekStart() {
+        for (Month month : mAdapter.getItems()) {
+            month.setDiff(CalendarUtil.getMonthViewStartDiff(month.getYear(),month.getMonth(),mDelegate.getWeekStart()));
+        }
+    }
+
+    /**
      * 月份选择事件
      * @param listener listener
      */

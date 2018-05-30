@@ -29,7 +29,7 @@ final class YearAdapter extends BaseRecyclerAdapter<Month> {
 
     YearAdapter(Context context) {
         super(context);
-        mTextHeight = CalendarUtil.dipToPx(context, 56);
+        mTextHeight = CalendarUtil.dipToPx(context, 52);
     }
 
     void setup(CalendarViewDelegate delegate) {
@@ -54,7 +54,7 @@ final class YearAdapter extends BaseRecyclerAdapter<Month> {
         view.setTextStyle(mDelegate.getYearViewDayTextSize(),
                 mDelegate.getYearViewDayTextColor());
         view.init(item.getDiff(), item.getCount(), item.getYear(), item.getMonth());
-        view.getLayoutParams().height = mItemHeight - mTextHeight;
+        view.measureHeight(mItemHeight - mTextHeight);
         h.mTextMonth.setText(mContext.getResources().getStringArray(R.array.month_string_array)[item.getMonth() - 1]);
         h.mTextMonth.setTextSize(TypedValue.COMPLEX_UNIT_PX, mDelegate.getYearViewMonthTextSize());
         h.mTextMonth.setTextColor(mDelegate.getYearViewMonthTextColor());

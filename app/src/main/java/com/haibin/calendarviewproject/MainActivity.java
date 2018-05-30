@@ -2,6 +2,7 @@ package com.haibin.calendarviewproject;
 
 import android.annotation.SuppressLint;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -28,6 +29,7 @@ public class MainActivity extends BaseActivity implements
         CalendarView.OnMonthChangeListener,
         CalendarView.OnYearChangeListener,
         CalendarView.OnDateLongClickListener,
+        CalendarView.OnViewChangeListener,
         View.OnClickListener {
 
     TextView mTextMonthDay;
@@ -84,6 +86,7 @@ public class MainActivity extends BaseActivity implements
         mCalendarView.setOnDateSelectedListener(this);
         mCalendarView.setOnMonthChangeListener(this);
         mCalendarView.setOnDateLongClickListener(this, true);
+        mCalendarView.setOnViewChangeListener(this);
         mTextYear.setText(String.valueOf(mCalendarView.getCurYear()));
         mYear = mCalendarView.getCurYear();
         mTextMonthDay.setText(mCalendarView.getCurMonth() + "月" + mCalendarView.getCurDay() + "日");
@@ -189,6 +192,11 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void onMonthChange(int year, int month) {
         //Log.e("onMonthChange", "  -- " + year + "  --  " + month);
+    }
+
+    @Override
+    public void onViewChange(boolean isMonthView) {
+        Log.e("onViewChange", "  ---  " + (isMonthView ? "月视图" : "周视图"));
     }
 
     @Override

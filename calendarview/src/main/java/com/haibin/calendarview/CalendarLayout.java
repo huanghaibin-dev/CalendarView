@@ -386,6 +386,7 @@ public class CalendarLayout extends LinearLayout {
             return false;
         if (mMonthView.getVisibility() != VISIBLE) {
             mWeekPager.setVisibility(GONE);
+            onShowMonthView();
             mMonthView.setVisibility(VISIBLE);
         }
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(mContentView,
@@ -485,6 +486,16 @@ public class CalendarLayout extends LinearLayout {
                     objectAnimator.start();
                 }
             });
+        }else {
+            if(mDelegate.mViewChangeListener == null){
+                return;
+            }
+            post(new Runnable() {
+                @Override
+                public void run() {
+                    mDelegate.mViewChangeListener.onViewChange(true);
+                }
+            });
         }
     }
 
@@ -492,6 +503,7 @@ public class CalendarLayout extends LinearLayout {
      * 隐藏周视图
      */
     private void hideWeek() {
+        onShowMonthView();
         mWeekPager.setVisibility(GONE);
         mMonthView.setVisibility(VISIBLE);
     }
@@ -500,9 +512,35 @@ public class CalendarLayout extends LinearLayout {
      * 显示周视图
      */
     private void showWeek() {
+        onShowWeekView();
         mWeekPager.getAdapter().notifyDataSetChanged();
         mWeekPager.setVisibility(VISIBLE);
         mMonthView.setVisibility(INVISIBLE);
+    }
+
+    /**
+     * 周视图显示事件
+     */
+    private void onShowWeekView(){
+        if(mWeekPager.getVisibility() == VISIBLE){
+            return;
+        }
+        if(mDelegate.mViewChangeListener != null){
+            mDelegate.mViewChangeListener.onViewChange(false);
+        }
+    }
+
+
+    /**
+     * 周视图显示事件
+     */
+    private void onShowMonthView(){
+        if(mMonthView.getVisibility() == VISIBLE){
+            return;
+        }
+        if(mDelegate.mViewChangeListener != null){
+            mDelegate.mViewChangeListener.onViewChange(true);
+        }
     }
 
     /**

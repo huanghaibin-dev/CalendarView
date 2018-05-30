@@ -558,6 +558,15 @@ public class CalendarView extends FrameLayout {
         this.mDelegate.setPreventLongPressedSelected(preventLongPressedSelect);
     }
 
+
+    /**
+     * 视图改变事件
+     * @param listener listener
+     */
+    public void setOnViewChangeListener(OnViewChangeListener listener){
+        this.mDelegate.mViewChangeListener = listener;
+    }
+
     /**
      * 初始化时初始化日历卡默认选择位置
      */
@@ -583,6 +592,7 @@ public class CalendarView extends FrameLayout {
      */
     public void setSchemeDate(List<Calendar> mSchemeDate) {
         this.mDelegate.mSchemeDate = mSchemeDate;
+        this.mDelegate.clearSelectedScheme();
         mSelectLayout.update();
         mMonthPager.updateScheme();
         mWeekPager.updateScheme();
@@ -594,6 +604,7 @@ public class CalendarView extends FrameLayout {
      */
     public void clearSchemeDate() {
         this.mDelegate.mSchemeDate = null;
+        this.mDelegate.clearSelectedScheme();
         mSelectLayout.update();
         mMonthPager.updateScheme();
         mWeekPager.updateScheme();
@@ -607,6 +618,9 @@ public class CalendarView extends FrameLayout {
      * @param calendar calendar
      */
     public void removeSchemeDate(Calendar calendar) {
+        if (mDelegate.mSelectedCalendar.equals(calendar)) {
+            mDelegate.clearSelectedScheme();
+        }
         if (mDelegate.mSchemeDate == null ||
                 mDelegate.mSchemeDate.size() == 0 ||
                 calendar == null) {
@@ -748,6 +762,7 @@ public class CalendarView extends FrameLayout {
         mWeekBar.onDateSelected(mDelegate.mSelectedCalendar, weekStart, false);
         mWeekPager.updateWeekStart();
         mMonthPager.updateWeekStart();
+        mSelectLayout.updateWeekStart();
         mWeekPager.notifyDataSetChanged();
     }
 
@@ -782,9 +797,9 @@ public class CalendarView extends FrameLayout {
      * @param mode 月视图显示模式
      */
     private void setShowMode(int mode) {
-        if (mode !=  CalendarViewDelegate.MODE_ALL_MONTH &&
+        if (mode != CalendarViewDelegate.MODE_ALL_MONTH &&
                 mode != CalendarViewDelegate.MODE_ONLY_CURRENT_MONTH &&
-                mode !=  CalendarViewDelegate.MODE_FIT_MONTH)
+                mode != CalendarViewDelegate.MODE_FIT_MONTH)
             return;
         if (mDelegate.getMonthViewShowMode() == mode)
             return;
@@ -882,5 +897,15 @@ public class CalendarView extends FrameLayout {
         void onDateLongClick(Calendar calendar);
     }
 
+    /**
+     * 视图改变事件
+     */
+    public interface OnViewChangeListener {
+        /**
+         * 视图改变事件
+         * @param isMonthView isMonthView是否是月视图
+         */
+        void onViewChange(boolean isMonthView);
+    }
 
 }

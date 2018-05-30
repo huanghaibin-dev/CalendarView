@@ -232,6 +232,11 @@ final class CalendarViewDelegate {
     CalendarView.OnMonthChangeListener mMonthChangeListener;
 
     /**
+     * 视图改变事件
+     */
+    CalendarView.OnViewChangeListener mViewChangeListener;
+
+    /**
      * 保存选中的日期
      */
     Calendar mSelectedCalendar;
@@ -549,6 +554,12 @@ final class CalendarViewDelegate {
 
     boolean isPreventLongPressedSelected() {
         return preventLongPressedSelected;
+    }
+
+    void clearSelectedScheme(){
+        mSelectedCalendar.setScheme(null);
+        mSelectedCalendar.setSchemeColor(0);
+        mSelectedCalendar.setSchemes(null);
     }
 
     Calendar createCurrentDate() {

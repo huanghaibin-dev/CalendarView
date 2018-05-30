@@ -7,13 +7,13 @@ Android上一个优雅、高度自定义、性能高效的日历控件，完美�
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.3.1'
+compile 'com.haibin:calendarview:3.3.2'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.3.1</version>
+  <version>3.3.2</version>
   <type>pom</type>
 </dependency>
 ```
@@ -43,6 +43,20 @@ compile 'com.haibin:calendarview:3.3.1'
 }
 ```
 
+### 或者针对性的使用混淆
+``` java
+-keep class your project path.MonthView {
+    public (android.content.Context);
+}
+-keep class your project path.WeekBar {
+    public (android.content.Context);
+}
+-keep class your project path.WeekView {
+    public (android.content.Context);
+}
+```
+
+
 ### 完整用法教程请参照博客教程
 [**https://juejin.im/post/5a6743836fb9a01caa20aefc**](https://juejin.im/post/5a6743836fb9a01caa20aefc)
 
@@ -61,6 +75,14 @@ compile 'com.haibin:calendarview:3.3.1'
 <img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/solar_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/solar_shrink.png" height="650"/>
 ### 快速年份月份切换
 <img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/year_view.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/simple_expand.png" height="650"/>
+
+### 特别的，请注意不要复制这三个路径，自行替换您自己的自定义路径
+
+```xml
+app:month_view="com.haibin.calendarviewproject.simple.SimpleCalendarCardView"
+app:week_view="com.haibin.calendarviewproject.simple.SimpleWeekView"
+app:week_bar_view="com.haibin.calendarviewproject.EnglishWeekBar"
+```
 
 
 ### 使用方法

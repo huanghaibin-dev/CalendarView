@@ -5,13 +5,13 @@ This widget has obvious advantages of memory and efficiency, adapt to many scene
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.3.1'
+compile 'com.haibin:calendarview:3.3.2'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.3.1</version>
+  <version>3.3.2</version>
   <type>pom</type>
 </dependency>
 ```
@@ -41,6 +41,20 @@ compile 'com.haibin:calendarview:3.3.1'
 }
 ```
 
+### or using this proguard-rules
+``` java
+-keep class your project path.MonthView {
+    public (android.content.Context);
+}
+-keep class your project path.WeekBar {
+    public (android.content.Context);
+}
+-keep class your project path.WeekView {
+    public (android.content.Context);
+}
+```
+
+
 ### If you want to use the English version, it means you don't need to use the lunar calendar, customize MonthView and WeekView, and refer to Demo.
 
 ### Effect preview
@@ -59,6 +73,14 @@ compile 'com.haibin:calendarview:3.3.1'
 <img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/year_view.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/simple_expand.png" height="650"/>
 
 
+
+### In particular, please replace with your custom path.
+
+```xml
+app:month_view="com.haibin.calendarviewproject.simple.SimpleCalendarCardView"
+app:week_view="com.haibin.calendarviewproject.simple.SimpleWeekView"
+app:week_bar_view="com.haibin.calendarviewproject.EnglishWeekBar"
+```
 
 ### usage
 ```xml
