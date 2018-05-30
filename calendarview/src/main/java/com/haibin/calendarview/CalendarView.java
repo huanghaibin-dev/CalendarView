@@ -583,6 +583,7 @@ public class CalendarView extends FrameLayout {
      */
     public void setSchemeDate(List<Calendar> mSchemeDate) {
         this.mDelegate.mSchemeDate = mSchemeDate;
+        mSelectLayout.update();
         mMonthPager.updateScheme();
         mWeekPager.updateScheme();
     }
@@ -593,6 +594,7 @@ public class CalendarView extends FrameLayout {
      */
     public void clearSchemeDate() {
         this.mDelegate.mSchemeDate = null;
+        mSelectLayout.update();
         mMonthPager.updateScheme();
         mWeekPager.updateScheme();
     }
@@ -613,6 +615,7 @@ public class CalendarView extends FrameLayout {
         if (mDelegate.mSchemeDate.contains(calendar)) {
             mDelegate.mSchemeDate.remove(calendar);
         }
+        mSelectLayout.update();
         mMonthPager.updateScheme();
         mWeekPager.updateScheme();
     }
