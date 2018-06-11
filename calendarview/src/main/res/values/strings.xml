@@ -119,7 +119,7 @@
     <string name="sat">Sat</string>
 
     <string-array name="week_string_array">
-        <item>sun</item>
+        <item>Sun</item>
         <item>Mon</item>
         <item>Tue</item>
         <item>Wed</item>
