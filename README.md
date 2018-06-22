@@ -7,13 +7,13 @@ Android上一个优雅、高度自定义、性能高效的日历控件，完美�
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.3.2'
+compile 'com.haibin:calendarview:3.3.3'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.3.2</version>
+  <version>3.3.3</version>
   <type>pom</type>
 </dependency>
 ```
@@ -46,13 +46,13 @@ compile 'com.haibin:calendarview:3.3.2'
 ### 或者针对性的使用混淆
 ``` java
 -keep class your project path.MonthView {
-    public (android.content.Context);
+    public <init>(android.content.Context);
 }
 -keep class your project path.WeekBar {
-    public (android.content.Context);
+    public <init>(android.content.Context);
 }
 -keep class your project path.WeekView {
-    public (android.content.Context);
+    public <init>(android.content.Context);
 }
 ```
 
@@ -66,7 +66,7 @@ compile 'com.haibin:calendarview:3.3.2'
 ### 中国式变态需求风格
 <img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/custom_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/custom_shrink.png" height="650"/>
 ### 收缩展开的魅族风格效果
-<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/meizu.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/meizu_shrink.png" height="650"/>
+<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/meizu_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/meizu_shrink.png" height="650"/>
 ### 下标和多彩风格
 <img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/index_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/color_expand.png" height="650"/>
 ### 进度条风格
@@ -129,6 +129,8 @@ app:week_bar_view="com.haibin.calendarviewproject.EnglishWeekBar"
 ### CalendarView attrs
 ```xml
 <declare-styleable name="CalendarView">
+
+        <attr name="calendar_padding" format="dimension" /><!--日历内部左右padding-->
 
         <attr name="month_view" format="color" /> <!--自定义类日历月视图路径-->
         <attr name="week_view" format="string" /> <!--自定义类周视图路径-->

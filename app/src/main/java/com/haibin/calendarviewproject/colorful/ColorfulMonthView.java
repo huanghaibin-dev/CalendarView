@@ -1,7 +1,9 @@
 package com.haibin.calendarviewproject.colorful;
 
 import android.content.Context;
+import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
+import android.view.View;
 
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.MonthView;
@@ -17,6 +19,14 @@ public class ColorfulMonthView extends MonthView {
 
     public ColorfulMonthView(Context context) {
         super(context);
+
+        //兼容硬件加速无效的代码
+        setLayerType(View.LAYER_TYPE_SOFTWARE, mSelectedPaint);
+        //4.0以上硬件加速会导致无效
+        mSelectedPaint.setMaskFilter(new BlurMaskFilter(30, BlurMaskFilter.Blur.SOLID));
+
+        setLayerType(View.LAYER_TYPE_SOFTWARE, mSchemePaint);
+        mSchemePaint.setMaskFilter(new BlurMaskFilter(30, BlurMaskFilter.Blur.SOLID));
     }
 
     @Override

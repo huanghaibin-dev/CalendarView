@@ -40,11 +40,11 @@ public abstract class WeekView extends BaseView {
     protected void onDraw(Canvas canvas) {
         if (mItems.size() == 0)
             return;
-        mItemWidth = getWidth() / 7;
+        mItemWidth = (getWidth() - 2 * mDelegate.getCalendarPadding()) / 7;
         onPreviewHook();
 
         for (int i = 0; i < 7; i++) {
-            int x = i * mItemWidth;
+            int x = i * mItemWidth + mDelegate.getCalendarPadding();
             onLoopStart(x);
             Calendar calendar = mItems.get(i);
             boolean isSelected = i == mCurrentItem;
@@ -205,8 +205,8 @@ public abstract class WeekView extends BaseView {
      * @return 获取点击的日历
      */
     private Calendar getIndex() {
-        int width = (getWidth()) / 7;
-        int indexX = (int) mX / width;
+
+        int indexX = (int) mX / mItemWidth;
         if (indexX >= 7) {
             indexX = 6;
         }

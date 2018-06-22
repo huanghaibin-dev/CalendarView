@@ -2,10 +2,12 @@
 <resources>
     <declare-styleable name="CalendarView">
 
-        <attr name="week_background" format="color" />
-        <attr name="week_line_background" format="color" />
-        <attr name="week_text_color" format="color" />
-        <attr name="week_text_size" format="dimension" />
+        <attr name="calendar_padding" format="dimension" /><!--日历内部左右padding-->
+
+        <attr name="week_background" format="color" /><!--周背景-->
+        <attr name="week_line_background" format="color" /><!--线条颜色-->
+        <attr name="week_text_color" format="color" /><!--周栏字体颜色-->
+        <attr name="week_text_size" format="dimension" /><!--周栏字体大小-->
 
         <attr name="month_view" format="string" /><!--完全自定义月视图-->
 

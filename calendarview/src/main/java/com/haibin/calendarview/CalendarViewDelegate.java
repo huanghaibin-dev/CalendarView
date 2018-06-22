@@ -101,6 +101,11 @@ final class CalendarViewDelegate {
     private boolean preventLongPressedSelected;
 
     /**
+     * 日历内部左右padding
+     */
+    private int mCalendarPadding;
+
+    /**
      * 年视图字体大小
      */
     private int mYearViewMonthTextSize,
@@ -251,6 +256,7 @@ final class CalendarViewDelegate {
 
         LunarCalendar.init(context);
 
+        mCalendarPadding = (int) array.getDimension(R.styleable.CalendarView_calendar_padding, 0);
         mSchemeTextColor = array.getColor(R.styleable.CalendarView_scheme_text_color, 0xFFFFFFFF);
         mSchemeLunarTextColor = array.getColor(R.styleable.CalendarView_scheme_lunar_text_color, 0xFFe1e1e1);
         mSchemeThemeColor = array.getColor(R.styleable.CalendarView_scheme_theme_color, 0x50CFCFCF);
@@ -548,6 +554,10 @@ final class CalendarViewDelegate {
         LunarCalendar.setupLunarCalendar(mCurrentDate);
     }
 
+    int getCalendarPadding() {
+        return mCalendarPadding;
+    }
+
     void setPreventLongPressedSelected(boolean preventLongPressedSelected) {
         this.preventLongPressedSelected = preventLongPressedSelected;
     }
@@ -556,7 +566,7 @@ final class CalendarViewDelegate {
         return preventLongPressedSelected;
     }
 
-    void clearSelectedScheme(){
+    void clearSelectedScheme() {
         mSelectedCalendar.setScheme(null);
         mSelectedCalendar.setSchemeColor(0);
         mSelectedCalendar.setSchemes(null);

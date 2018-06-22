@@ -5,13 +5,13 @@ This widget has obvious advantages of memory and efficiency, adapt to many scene
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.3.2'
+compile 'com.haibin:calendarview:3.3.3'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.3.2</version>
+  <version>3.3.3</version>
   <type>pom</type>
 </dependency>
 ```
@@ -44,13 +44,13 @@ compile 'com.haibin:calendarview:3.3.2'
 ### or using this proguard-rules
 ``` java
 -keep class your project path.MonthView {
-    public (android.content.Context);
+    public <init>(android.content.Context);
 }
 -keep class your project path.WeekBar {
-    public (android.content.Context);
+    public <init>(android.content.Context);
 }
 -keep class your project path.WeekView {
-    public (android.content.Context);
+    public <init>(android.content.Context);
 }
 ```
 
@@ -62,7 +62,7 @@ compile 'com.haibin:calendarview:3.3.2'
 ###
 <img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/custom_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/custom_shrink.png" height="650"/>
 ###
-<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/meizu.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/meizu_shrink.png" height="650"/>
+<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/meizu_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/meizu_shrink.png" height="650"/>
 ###
 <img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/index_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/color_expand.png" height="650"/>
 ###
@@ -125,6 +125,8 @@ app:week_bar_view="com.haibin.calendarviewproject.EnglishWeekBar"
 ### CalendarView attrs
 ```xml
 <declare-styleable name="CalendarView">
+
+        <attr name="calendar_padding" format="dimension" /><!--month and week view left and right padding-->
 
         <attr name="month_view" format="color" /> <!--Custom class MonthView path-->
         <attr name="week_view" format="string" /> <!--Custom WeekView path-->
