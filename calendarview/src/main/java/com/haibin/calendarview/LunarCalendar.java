@@ -58,7 +58,7 @@ final class LunarCalendar {
     private static String[] SPECIAL_FESTIVAL_STR = null;
 
     /**
-     * 特殊节日、母亲节和父亲节
+     * 特殊节日、母亲节和父亲节,感恩节等
      */
     @SuppressLint("UseSparseArrays")
     private static final Map<Integer, String[]> SPECIAL_FESTIVAL = new HashMap<>();
@@ -254,6 +254,7 @@ final class LunarCalendar {
     /**
      * 获取特殊计算方式的节日
      * 如：每年五月的第二个星期日为母亲节，六月的第三个星期日为父亲节
+     * 每年11月第四个星期四定为"感恩节"
      *
      * @param year  year
      * @param month month
@@ -278,13 +279,14 @@ final class LunarCalendar {
 
 
     /**
-     * 获取每年的母亲节和父亲节
+     * 获取每年的母亲节和父亲节和感恩节
+     * 特殊计算方式的节日
      *
      * @param year 年
-     * @return 获取每年的母亲节和父亲节
+     * @return 获取每年的母亲节和父亲节、感恩节
      */
     private static String[] getSpecialFestivals(int year) {
-        String[] festivals = new String[2];
+        String[] festivals = new String[3];
         java.util.Calendar date = java.util.Calendar.getInstance();
         date.set(year, 4, 1);
         int week = date.get(java.util.Calendar.DAY_OF_WEEK);
@@ -301,6 +303,15 @@ final class LunarCalendar {
             festivals[1] = dateToString(year, 6, startDiff + 7 + 1) + SPECIAL_FESTIVAL_STR[1];
         } else {
             festivals[1] = dateToString(year, 6, startDiff + 7 + 7 + 1) + SPECIAL_FESTIVAL_STR[1];
+        }
+
+        date.set(year, 10, 1);
+        week = date.get(java.util.Calendar.DAY_OF_WEEK);
+        startDiff = 7 - week + 1;
+        if (startDiff <= 2) {
+            festivals[2] = dateToString(year, 11, startDiff + 21 + 5) + SPECIAL_FESTIVAL_STR[2];
+        } else {
+            festivals[2] = dateToString(year, 11, startDiff + 14 + 5) + SPECIAL_FESTIVAL_STR[2];
         }
         return festivals;
     }

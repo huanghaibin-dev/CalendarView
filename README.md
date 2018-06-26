@@ -7,13 +7,13 @@ Android上一个优雅、高度自定义、性能高效的日历控件，完美�
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.3.3'
+compile 'com.haibin:calendarview:3.3.4'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.3.3</version>
+  <version>3.3.4</version>
   <type>pom</type>
 </dependency>
 ```

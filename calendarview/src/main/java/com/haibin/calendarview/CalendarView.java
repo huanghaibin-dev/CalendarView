@@ -389,9 +389,11 @@ public class CalendarView extends FrameLayout {
         }
         mDelegate.mSelectedCalendar = mDelegate.createCurrentDate();
         mWeekBar.onDateSelected(mDelegate.mSelectedCalendar, mDelegate.getWeekStart(), false);
-        mWeekPager.scrollToCurrent(smoothScroll);
-
-        mMonthPager.scrollToCurrent(smoothScroll);
+        if (mMonthPager.getVisibility() == VISIBLE) {
+            mMonthPager.scrollToCurrent(smoothScroll);
+        } else {
+            mWeekPager.scrollToCurrent(smoothScroll);
+        }
         mSelectLayout.scrollToYear(mDelegate.getCurrentDay().getYear(), smoothScroll);
     }
 
@@ -485,8 +487,9 @@ public class CalendarView extends FrameLayout {
      * @param smoothScroll smoothScroll
      */
     public void scrollToYear(int year, boolean smoothScroll) {
-        mMonthPager.setCurrentItem(12 * (year - mDelegate.getMinYear()) +
-                mDelegate.getCurrentDay().getMonth() - mDelegate.getMinYearMonth(), smoothScroll);
+        if (mSelectLayout.getVisibility() != VISIBLE) {
+            return;
+        }
         mSelectLayout.scrollToYear(year, smoothScroll);
     }
 
@@ -561,9 +564,10 @@ public class CalendarView extends FrameLayout {
 
     /**
      * 视图改变事件
+     *
      * @param listener listener
      */
-    public void setOnViewChangeListener(OnViewChangeListener listener){
+    public void setOnViewChangeListener(OnViewChangeListener listener) {
         this.mDelegate.mViewChangeListener = listener;
     }
 
@@ -903,6 +907,7 @@ public class CalendarView extends FrameLayout {
     public interface OnViewChangeListener {
         /**
          * 视图改变事件
+         *
          * @param isMonthView isMonthView是否是月视图
          */
         void onViewChange(boolean isMonthView);

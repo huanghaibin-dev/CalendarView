@@ -170,13 +170,13 @@ public final class MonthViewPager extends ViewPager {
      */
     private void updateMonthViewHeight(int year, int month) {
 
-        if (mDelegate.getMonthViewShowMode() == CalendarViewDelegate.MODE_ALL_MONTH) {
+        if (mDelegate.getMonthViewShowMode() == CalendarViewDelegate.MODE_ALL_MONTH) {//非动态高度就不需要了
             mCurrentViewHeight = 6 * mDelegate.getCalendarItemHeight();
             return;
         }
 
         if (mParentLayout != null) {
-            if (getVisibility() != VISIBLE) {//如果已经显示周视图，则需要动态改变月视图高度
+            if (getVisibility() != VISIBLE) {//如果已经显示周视图，则需要动态改变月视图高度，否则显示就有bug
                 ViewGroup.LayoutParams params = getLayoutParams();
                 params.height = CalendarUtil.getMonthViewHeight(year, month, mDelegate.getCalendarItemHeight(), mDelegate.getWeekStart());
                 setLayoutParams(params);
