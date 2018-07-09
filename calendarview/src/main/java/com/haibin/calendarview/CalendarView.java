@@ -149,6 +149,11 @@ public class CalendarView extends FrameLayout {
         });
 
         mDelegate.mInnerListener = new OnInnerDateSelectedListener() {
+            /**
+             * 月视图选择事件
+             * @param calendar calendar
+             * @param isClick  是否是点击
+             */
             @Override
             public void onMonthDateSelected(Calendar calendar, boolean isClick) {
                 if (calendar.getYear() == mDelegate.getCurrentDay().getYear() &&
@@ -156,22 +161,38 @@ public class CalendarView extends FrameLayout {
                         && mMonthPager.getCurrentItem() != mDelegate.mCurrentMonthViewItem) {
                     return;
                 }
-                mDelegate.mSelectedCalendar = calendar;
-                mWeekPager.updateSelected(mDelegate.mSelectedCalendar, false);
+                mDelegate.mIndexCalendar = calendar;
+                if (mDelegate.getSelectMode() == CalendarViewDelegate.SELECT_MODE_DEFAULT || isClick) {
+                    mDelegate.mSelectedCalendar = calendar;
+                }
+                mWeekPager.updateSelected(mDelegate.mIndexCalendar, false);
                 mMonthPager.updateSelected();
-                if (mWeekBar != null) {
+                if (mWeekBar != null &&
+                        (mDelegate.getSelectMode() == CalendarViewDelegate.SELECT_MODE_DEFAULT || isClick)) {
                     mWeekBar.onDateSelected(calendar, mDelegate.getWeekStart(), isClick);
                 }
             }
 
+            /**
+             * 周视图选择事件
+             * @param calendar calendar
+             * @param isClick 是否是点击
+             */
             @Override
             public void onWeekDateSelected(Calendar calendar, boolean isClick) {
-                mDelegate.mSelectedCalendar = calendar;
+                mDelegate.mIndexCalendar = calendar;
+                if (mDelegate.getSelectMode() == CalendarViewDelegate.SELECT_MODE_DEFAULT || isClick
+                        || mDelegate.mIndexCalendar.equals(mDelegate.mSelectedCalendar)) {
+                    mDelegate.mSelectedCalendar = calendar;
+                }
                 int y = calendar.getYear() - mDelegate.getMinYear();
-                int position = 12 * y + mDelegate.mSelectedCalendar.getMonth() - mDelegate.getMinYearMonth();
+                int position = 12 * y + mDelegate.mIndexCalendar.getMonth() - mDelegate.getMinYearMonth();
                 mMonthPager.setCurrentItem(position, false);
                 mMonthPager.updateSelected();
-                if (mWeekBar != null) {
+                if (mWeekBar != null &&
+                        (mDelegate.getSelectMode() == CalendarViewDelegate.SELECT_MODE_DEFAULT
+                                || isClick
+                                || mDelegate.mIndexCalendar.equals(mDelegate.mSelectedCalendar))) {
                     mWeekBar.onDateSelected(calendar, mDelegate.getWeekStart(), isClick);
                 }
             }
@@ -325,6 +346,7 @@ public class CalendarView extends FrameLayout {
         int position = 12 * (mDelegate.mSelectedCalendar.getYear() - mDelegate.getMinYear()) +
                 mDelegate.mSelectedCalendar.getMonth() - mDelegate.getMinYearMonth();
         closeSelectLayout(position);
+        mDelegate.isShowYearSelectedLayout = false;
     }
 
     /**
@@ -410,7 +432,7 @@ public class CalendarView extends FrameLayout {
      *
      * @param smoothScroll smoothScroll
      */
-
+    @SuppressWarnings("all")
     public void scrollToNext(boolean smoothScroll) {
         if (isYearSelectLayoutVisible()) {
             mSelectLayout.setCurrentItem(mSelectLayout.getCurrentItem() + 1, smoothScroll);
@@ -434,6 +456,7 @@ public class CalendarView extends FrameLayout {
      *
      * @param smoothScroll smoothScroll
      */
+    @SuppressWarnings("all")
     public void scrollToPre(boolean smoothScroll) {
         if (isYearSelectLayoutVisible()) {
             mSelectLayout.setCurrentItem(mSelectLayout.getCurrentItem() - 1, smoothScroll);
@@ -442,6 +465,16 @@ public class CalendarView extends FrameLayout {
         } else {
             mMonthPager.setCurrentItem(mMonthPager.getCurrentItem() - 1, smoothScroll);
         }
+    }
+
+    /**
+     * 滚动到选择的日历
+     */
+    public void scrollToSelectCalendar() {
+        scrollToCalendar(mDelegate.mSelectedCalendar.getYear(),
+                mDelegate.mSelectedCalendar.getMonth(),
+                mDelegate.mSelectedCalendar.getDay(),
+                false);
     }
 
     /**
@@ -463,6 +496,7 @@ public class CalendarView extends FrameLayout {
      * @param day          day
      * @param smoothScroll smoothScroll
      */
+    @SuppressWarnings("all")
     public void scrollToCalendar(int year, int month, int day, boolean smoothScroll) {
         if (mWeekPager.getVisibility() == VISIBLE) {
             mWeekPager.scrollToCalendar(year, month, day, smoothScroll);
@@ -486,6 +520,7 @@ public class CalendarView extends FrameLayout {
      * @param year         快速滚动的年份
      * @param smoothScroll smoothScroll
      */
+    @SuppressWarnings("all")
     public void scrollToYear(int year, boolean smoothScroll) {
         if (mSelectLayout.getVisibility() != VISIBLE) {
             return;
@@ -724,6 +759,25 @@ public class CalendarView extends FrameLayout {
         mWeekBar.setTextColor(weekTextColor);
     }
 
+    /**
+     * 默认选择模式
+     */
+    public void setSelectDefaultMode(){
+        if(mDelegate.getSelectMode() == CalendarViewDelegate.SELECT_MODE_DEFAULT){
+            return;
+        }
+        mDelegate.setSelectMode(CalendarViewDelegate.SELECT_MODE_DEFAULT);
+    }
+
+    /**
+     * 单选模式
+     */
+    public void setSelectSingleMode(){
+        if(mDelegate.getSelectMode() == CalendarViewDelegate.SELECT_MODE_SINGLE){
+            return;
+        }
+        mDelegate.setSelectMode(CalendarViewDelegate.SELECT_MODE_SINGLE);
+    }
 
     /**
      * 设置星期日周起始
@@ -882,6 +936,7 @@ public class CalendarView extends FrameLayout {
          * 周视图点击
          *
          * @param calendar calendar
+         * @param isClick  是否是点击
          */
         void onWeekDateSelected(Calendar calendar, boolean isClick);
     }
@@ -890,6 +945,12 @@ public class CalendarView extends FrameLayout {
      * 外部日期选择事件
      */
     public interface OnDateSelectedListener {
+        /**
+         * 日期选择事件
+         *
+         * @param calendar calendar
+         * @param isClick  isClick
+         */
         void onDateSelected(Calendar calendar, boolean isClick);
     }
 
@@ -898,6 +959,11 @@ public class CalendarView extends FrameLayout {
      * 外部日期长按事件
      */
     public interface OnDateLongClickListener {
+        /**
+         * 日期长按事件
+         *
+         * @param calendar calendar
+         */
         void onDateLongClick(Calendar calendar);
     }
 

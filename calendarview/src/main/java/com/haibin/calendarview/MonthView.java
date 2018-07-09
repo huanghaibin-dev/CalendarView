@@ -92,8 +92,6 @@ public abstract class MonthView extends BaseView {
                 ++d;
             }
         }
-
-
     }
 
 
@@ -164,9 +162,9 @@ public abstract class MonthView extends BaseView {
 
                 if (mParentLayout != null) {
                     if (calendar.isCurrentMonth()) {
-                        mParentLayout.setSelectPosition(mItems.indexOf(calendar));
+                        mParentLayout.updateSelectPosition(mItems.indexOf(calendar));
                     } else {
-                        mParentLayout.setSelectWeek(CalendarUtil.getWeekFromDayInMonth(calendar, mDelegate.getWeekStart()));
+                        mParentLayout.updateSelectWeek(CalendarUtil.getWeekFromDayInMonth(calendar, mDelegate.getWeekStart()));
                     }
 
                 }
@@ -219,9 +217,9 @@ public abstract class MonthView extends BaseView {
 
                 if (mParentLayout != null) {
                     if (calendar.isCurrentMonth()) {
-                        mParentLayout.setSelectPosition(mItems.indexOf(calendar));
+                        mParentLayout.updateSelectPosition(mItems.indexOf(calendar));
                     } else {
-                        mParentLayout.setSelectWeek(CalendarUtil.getWeekFromDayInMonth(calendar, mDelegate.getWeekStart()));
+                        mParentLayout.updateSelectWeek(CalendarUtil.getWeekFromDayInMonth(calendar, mDelegate.getWeekStart()));
                     }
 
                 }
@@ -326,14 +324,14 @@ public abstract class MonthView extends BaseView {
         } else {
             mLineCount = (preDiff + monthDayCount + mNextDiff) / 7;
         }
+
         if (mDelegate.mSchemeDate != null) {
             for (Calendar a : mItems) {
-                for (Calendar d : mDelegate.mSchemeDate) {
-                    if (d.equals(a)) {
-                        a.setScheme(TextUtils.isEmpty(d.getScheme()) ? mDelegate.getSchemeText() : d.getScheme());
-                        a.setSchemeColor(d.getSchemeColor());
-                        a.setSchemes(d.getSchemes());
-                    }
+                if(mDelegate.mSchemeDate.contains(a)){
+                    Calendar d = mDelegate.mSchemeDate.get(mDelegate.mSchemeDate.indexOf(a));
+                    a.setScheme(TextUtils.isEmpty(d.getScheme()) ? mDelegate.getSchemeText() : d.getScheme());
+                    a.setSchemeColor(d.getSchemeColor());
+                    a.setSchemes(d.getSchemes());
                 }
             }
         }
@@ -415,6 +413,11 @@ public abstract class MonthView extends BaseView {
      */
     protected void onLoopStart(int x, int y) {
         // TODO: 2017/11/16  
+    }
+
+    @Override
+    protected void onDestroy() {
+
     }
 
     /**

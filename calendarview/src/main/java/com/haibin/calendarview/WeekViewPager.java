@@ -83,7 +83,7 @@ public final class WeekViewPager extends ViewPager {
                 }
                 WeekView view = (WeekView) findViewWithTag(position);
                 if (view != null) {
-                    view.performClickCalendar(mDelegate.mSelectedCalendar, !isUsingScrollToCalendar);
+                    view.performClickCalendar(mDelegate.mIndexCalendar, !isUsingScrollToCalendar);
                 }
                 isUsingScrollToCalendar = false;
             }
@@ -116,6 +116,7 @@ public final class WeekViewPager extends ViewPager {
         calendar.setDay(day);
         calendar.setCurrentDay(calendar.equals(mDelegate.getCurrentDay()));
         LunarCalendar.setupLunarCalendar(calendar);
+        mDelegate.mIndexCalendar = calendar;
         mDelegate.mSelectedCalendar = calendar;
         updateSelected(calendar, smoothScroll);
         if (mDelegate.mInnerListener != null) {
@@ -125,7 +126,7 @@ public final class WeekViewPager extends ViewPager {
             mDelegate.mDateSelectedListener.onDateSelected(calendar, false);
         }
         int i = CalendarUtil.getWeekFromDayInMonth(calendar, mDelegate.getWeekStart());
-        mParentLayout.setSelectWeek(i);
+        mParentLayout.updateSelectWeek(i);
     }
 
     /**
@@ -151,11 +152,11 @@ public final class WeekViewPager extends ViewPager {
         if (mDelegate.mDateSelectedListener != null && getVisibility() == VISIBLE) {
             mDelegate.mDateSelectedListener.onDateSelected(mDelegate.createCurrentDate(), false);
         }
-        if(getVisibility() == VISIBLE){
-            mDelegate.mInnerListener.onWeekDateSelected(mDelegate.getCurrentDay(),false);
+        if (getVisibility() == VISIBLE) {
+            mDelegate.mInnerListener.onWeekDateSelected(mDelegate.getCurrentDay(), false);
         }
         int i = CalendarUtil.getWeekFromDayInMonth(mDelegate.getCurrentDay(), mDelegate.getWeekStart());
-        mParentLayout.setSelectWeek(i);
+        mParentLayout.updateSelectWeek(i);
     }
 
     /**
@@ -291,7 +292,9 @@ public final class WeekViewPager extends ViewPager {
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView((View) object);
+            BaseView view = (BaseView)object;
+            view.onDestroy();
+            container.removeView(view);
         }
 
     }

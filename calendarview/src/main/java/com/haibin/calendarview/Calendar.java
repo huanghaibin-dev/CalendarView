@@ -311,6 +311,14 @@ public final class Calendar implements Serializable {
         return false;
     }
 
+    public boolean isSameMonth(Calendar calendar) {
+        return year == calendar.getYear() && month == calendar.getMonth();
+    }
+
+    public int compareTo(Calendar calendar) {
+        return toString().compareTo(calendar.toString());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o != null && o instanceof Calendar) {
@@ -326,7 +334,7 @@ public final class Calendar implements Serializable {
     }
 
     /**
-     * 事件标记服务，现在建议
+     * 事件标记服务，现在多类型的事务标记建议使用这个
      */
     public final static class Scheme implements Serializable {
         private int type;

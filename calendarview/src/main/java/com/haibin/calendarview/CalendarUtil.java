@@ -83,7 +83,7 @@ final class CalendarUtil {
      * 是否是闰年
      *
      * @param year year
-     * @return return
+     * @return 是否是闰年
      */
     static boolean isLeapYear(int year) {
         return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
@@ -110,8 +110,8 @@ final class CalendarUtil {
 
 
     /**
-     * 获取某天在该月的第几周,换言之就是获取这一天在该月视图的第几行
-     * Test pass
+     * 获取某天在该月的第几周,换言之就是获取这一天在该月视图的第几行,第几周，根据周起始动态获取
+     * Test pass，单元测试通过
      *
      * @param calendar  calendar
      * @param weekStart 其实星期是哪一天？
@@ -120,7 +120,7 @@ final class CalendarUtil {
     static int getWeekFromDayInMonth(Calendar calendar, int weekStart) {
         java.util.Calendar date = java.util.Calendar.getInstance();
         date.set(calendar.getYear(), calendar.getMonth() - 1, 1);
-        //该月第一天为星期几,星期天 == 0，也就是偏移量
+        //该月第一天为星期几,星期天 == 0
         int diff = getMonthViewStartDiff(calendar, weekStart);
         return (calendar.getDay() + diff - 1) / 7 + 1;
     }
@@ -602,6 +602,25 @@ final class CalendarUtil {
             return week == 1 ? 0 : 7 - week + 1;
         }
         return week == 7 ? 6 : 7 - week - 1;
+    }
+
+    /**
+     * 从月视图切换获得第一天的日期
+     *
+     * @param position position
+     * @param delegate position
+     * @return 从月视图切换获得第一天的日期
+     */
+    static Calendar getCalendarFromMonthViewPager(int position, CalendarViewDelegate delegate) {
+        Calendar calendar = new Calendar();
+        calendar.setYear((position + delegate.getMinYearMonth() - 1) / 12 + delegate.getMinYear());
+        calendar.setMonth((position + delegate.getMinYearMonth() - 1) % 12 + 1);
+        calendar.setDay(1);
+        calendar.setCurrentMonth(calendar.getYear() == delegate.getCurrentDay().getYear() &&
+                calendar.getMonth() == delegate.getCurrentDay().getMonth());
+        calendar.setCurrentDay(calendar.equals(delegate.getCurrentDay()));
+        LunarCalendar.setupLunarCalendar(calendar);
+        return calendar;
     }
 
 

@@ -71,10 +71,11 @@
             <enum name="sat" value="7" />
         </attr>
 
-        <!--<attr name="select_mode">-->
-        <!--<enum name="default_mode" value="0"/>-->
-        <!--<enum name="single_mode" value="1"/>-->
-        <!--</attr>-->
+        <!-- 自定义选择模式 -->
+        <attr name="select_mode">
+            <enum name="default_mode" value="0" />
+            <enum name="single_mode" value="1" />
+        </attr>
     </declare-styleable>
 
 

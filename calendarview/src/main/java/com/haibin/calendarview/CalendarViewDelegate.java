@@ -62,17 +62,20 @@ final class CalendarViewDelegate {
      */
     private int mWeekStart;
 
-//    /**
-//     * 默认选择模式
-//     */
-//    static final int SELECT_MODE_DEFAULT = 0;
-//
-//    /**
-//     * 单选模式
-//     */
-//    static final int SELECT_MODE_SINGLE = 1;
-//
-//    private int mSelectMode;
+    /**
+     * 默认选择模式
+     */
+    static final int SELECT_MODE_DEFAULT = 0;
+
+    /**
+     * 单选模式
+     */
+    static final int SELECT_MODE_SINGLE = 1;
+
+    /**
+     * 选择模式
+     */
+    private int mSelectMode;
 
     /**
      * 支持转换的最小农历年份
@@ -246,10 +249,10 @@ final class CalendarViewDelegate {
      */
     Calendar mSelectedCalendar;
 
-//    /**
-//     * 保存标记位置
-//     */
-//    Calendar mIndexCalendar;
+    /**
+     * 保存标记位置
+     */
+    Calendar mIndexCalendar;
 
     CalendarViewDelegate(Context context, @Nullable AttributeSet attrs) {
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CalendarView);
@@ -278,7 +281,7 @@ final class CalendarViewDelegate {
 
         mMonthViewShowMode = array.getInt(R.styleable.CalendarView_month_view_show_mode, MODE_ALL_MONTH);
         mWeekStart = array.getInt(R.styleable.CalendarView_week_start_with, WEEK_START_WITH_SUN);
-        //mSelectMode = array.getInt(R.styleable.CalendarView_select_mode, SELECT_MODE_DEFAULT);
+        mSelectMode = array.getInt(R.styleable.CalendarView_select_mode, SELECT_MODE_DEFAULT);
 
         mWeekBackground = array.getColor(R.styleable.CalendarView_week_background, Color.WHITE);
         mWeekLineBackground = array.getColor(R.styleable.CalendarView_week_line_background, Color.TRANSPARENT);
@@ -540,6 +543,23 @@ final class CalendarViewDelegate {
 
     int getWeekTextSize() {
         return mWeekTextSize;
+    }
+
+    /**
+     * 选择模式
+     *
+     * @return 选择模式
+     */
+    int getSelectMode() {
+        return mSelectMode;
+    }
+
+    /**
+     * 设置选择模式
+     * @param mSelectMode mSelectMode
+     */
+    void setSelectMode(int mSelectMode) {
+        this.mSelectMode = mSelectMode;
     }
 
     Calendar getCurrentDay() {

@@ -19,6 +19,7 @@ import com.haibin.calendarviewproject.meizu.MeiZuActivity;
 import com.haibin.calendarviewproject.pager.ViewPagerActivity;
 import com.haibin.calendarviewproject.progress.ProgressActivity;
 import com.haibin.calendarviewproject.simple.SimpleActivity;
+import com.haibin.calendarviewproject.single.SingleActivity;
 import com.haibin.calendarviewproject.solay.SolarActivity;
 
 import java.util.ArrayList;
@@ -78,6 +79,8 @@ public class MainActivity extends BaseActivity implements
             @Override
             public void onClick(View v) {
                 mCalendarView.scrollToCurrent();
+                Log.e("scrollToCurrent", "   --  " + mCalendarView.getSelectedCalendar());
+
             }
         });
 
@@ -107,12 +110,46 @@ public class MainActivity extends BaseActivity implements
         schemes.add(getSchemeCalendar(year, month, 15, 0xFFaacc44, "假"));
         schemes.add(getSchemeCalendar(year, month, 18, 0xFFbc13f0, "记"));
         schemes.add(getSchemeCalendar(year, month, 25, 0xFF13acf0, "假"));
+        schemes.add(getSchemeCalendar(year, month, 27, 0xFF13acf0, "多"));
+//        for (int y = year; y < 2082; y++) {
+//            for (int m = 1; m < 12; m++) {
+//                schemes.add(getSchemeCalendar(y, m, 1, 0xFF40db25, "假"));
+//                schemes.add(getSchemeCalendar(y, m, 2, 0xFF40db25, "假"));
+//                schemes.add(getSchemeCalendar(y, m, 3, 0xFF40db25, "假"));
+//                schemes.add(getSchemeCalendar(y, m, 4, 0xFF40db25, "假"));
+//                schemes.add(getSchemeCalendar(y, m, 5, 0xFF40db25, "假"));
+//                schemes.add(getSchemeCalendar(y, m, 6, 0xFF40db25, "假"));
+//                schemes.add(getSchemeCalendar(y, m, 7, 0xFFe69138, "事"));
+//                schemes.add(getSchemeCalendar(y, m, 8, 0xFFdf1356, "议"));
+//                schemes.add(getSchemeCalendar(y, m, 9, 0xFF40db25, "假"));
+//                schemes.add(getSchemeCalendar(y, m, 10, 0xFF40db25, "假"));
+//                schemes.add(getSchemeCalendar(y, m, 11, 0xFF40db25, "假"));
+//                schemes.add(getSchemeCalendar(y, m, 12, 0xFF40db25, "假"));
+//                schemes.add(getSchemeCalendar(y, m, 13, 0xFFedc56d, "记"));
+//                schemes.add(getSchemeCalendar(y, m, 14, 0xFFedc56d, "记"));
+//                schemes.add(getSchemeCalendar(y, m, 15, 0xFFaacc44, "假"));
+//                schemes.add(getSchemeCalendar(y, m, 16, 0xFF40db25, "假"));
+//                schemes.add(getSchemeCalendar(y, m, 17, 0xFF40db25, "假"));
+//                schemes.add(getSchemeCalendar(y, m, 18, 0xFFbc13f0, "记"));
+//                schemes.add(getSchemeCalendar(y, m, 19, 0xFF40db25, "假"));
+//                schemes.add(getSchemeCalendar(y, m, 20, 0xFF40db25, "假"));
+//                schemes.add(getSchemeCalendar(y, m, 21, 0xFF40db25, "假"));
+//                schemes.add(getSchemeCalendar(y, m, 22, 0xFF40db25, "假"));
+//                schemes.add(getSchemeCalendar(y, m, 23, 0xFF40db25, "假"));
+//                schemes.add(getSchemeCalendar(y, m, 24, 0xFF40db25, "假"));
+//                schemes.add(getSchemeCalendar(y, m, 25, 0xFF40db25, "假"));
+//                schemes.add(getSchemeCalendar(y, m, 26, 0xFF13acf0, "假"));
+//                schemes.add(getSchemeCalendar(y, m, 37, 0xFF40db25, "假"));
+//                schemes.add(getSchemeCalendar(y, m, 38, 0xFF40db25, "假"));
+//            }
+//        }
         mCalendarView.setSchemeDate(schemes);
         findViewById(R.id.ll_flyme).setOnClickListener(this);
         findViewById(R.id.ll_simple).setOnClickListener(this);
         findViewById(R.id.ll_colorful).setOnClickListener(this);
         findViewById(R.id.ll_index).setOnClickListener(this);
         findViewById(R.id.ll_tab).setOnClickListener(this);
+        findViewById(R.id.ll_single).setOnClickListener(this);
         findViewById(R.id.ll_solar_system).setOnClickListener(this);
         findViewById(R.id.ll_progress).setOnClickListener(this);
         findViewById(R.id.ll_custom).setOnClickListener(this);
@@ -136,6 +173,9 @@ public class MainActivity extends BaseActivity implements
                 break;
             case R.id.ll_tab:
                 ViewPagerActivity.show(this);
+                break;
+            case R.id.ll_single:
+                SingleActivity.show(this);
                 break;
             case R.id.ll_solar_system:
                 SolarActivity.show(this);
@@ -189,9 +229,17 @@ public class MainActivity extends BaseActivity implements
                 calendar.getLeapMonth() == 0 ? "否" : String.format("闰%s月", calendar.getLeapMonth()));
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onMonthChange(int year, int month) {
         //Log.e("onMonthChange", "  -- " + year + "  --  " + month);
+        Calendar calendar = mCalendarView.getSelectedCalendar();
+        mTextLunar.setVisibility(View.VISIBLE);
+        mTextYear.setVisibility(View.VISIBLE);
+        mTextMonthDay.setText(calendar.getMonth() + "月" + calendar.getDay() + "日");
+        mTextYear.setText(String.valueOf(calendar.getYear()));
+        mTextLunar.setText(calendar.getLunar());
+        mYear = calendar.getYear();
     }
 
     @Override

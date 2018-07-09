@@ -5,13 +5,13 @@ This widget has obvious advantages of memory and efficiency, adapt to many scene
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.3.4'
+compile 'com.haibin:calendarview:3.3.5'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.3.4</version>
+  <version>3.3.5</version>
   <type>pom</type>
 </dependency>
 ```
@@ -193,6 +193,12 @@ app:week_bar_view="com.haibin.calendarviewproject.EnglishWeekBar"
              <enum name="sun" value="1" />
              <enum name="mon" value="2" />
              <enum name="sat" value="7" />
+        </attr>
+
+        <!-- select_mode -->
+        <attr name="select_mode">
+              <enum name="default_mode" value="0" />
+              <enum name="single_mode" value="1" />
         </attr>
 </declare-styleable>
 ```
