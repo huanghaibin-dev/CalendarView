@@ -163,6 +163,8 @@ public abstract class WeekView extends BaseView {
         if (mDelegate.getSelectMode() == CalendarViewDelegate.SELECT_MODE_SINGLE) {
             if (mItems.contains(mDelegate.mSelectedCalendar)) {
                 currentCalendar = mDelegate.mSelectedCalendar;
+            } else {
+                mCurrentItem = -1;
             }
         }
 
@@ -288,6 +290,15 @@ public abstract class WeekView extends BaseView {
         setup(calendar);
     }
 
+    /**
+     * 更新当选模式
+     */
+    void updateSingleSelect() {
+        if (!mItems.contains(mDelegate.mSelectedCalendar)) {
+            mCurrentItem = -1;
+            invalidate();
+        }
+    }
 
     /**
      * 更新界面

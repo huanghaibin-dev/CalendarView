@@ -98,6 +98,27 @@ public class CalendarLayout extends LinearLayout {
     ViewGroup mContentView;
 
 
+    /**
+     * 默认手势
+     */
+    private static final int GESTURE_MODE_DEFAULT = 0;
+
+//       /**
+    //     * 仅日历有效
+    //     */
+//    private static final int GESTURE_MODE_ONLY_CALENDAR = 1;
+
+    /**
+     * 禁用手势
+     */
+    private static final int GESTURE_MODE_DISABLED = 2;
+
+    /**
+     * 手势模式
+     */
+    private int mGestureMode;
+
+
     private int mCalendarShowMode;
 
     private int mTouchSlop;
@@ -130,6 +151,7 @@ public class CalendarLayout extends LinearLayout {
         mContentViewId = array.getResourceId(R.styleable.CalendarLayout_calendar_content_view_id, 0);
         mDefaultStatus = array.getInt(R.styleable.CalendarLayout_default_status, STATUS_EXPAND);
         mCalendarShowMode = array.getInt(R.styleable.CalendarLayout_calendar_show_mode, CALENDAR_SHOW_MODE_BOTH_MONTH_WEEK_VIEW);
+        mGestureMode = array.getInt(R.styleable.CalendarLayout_gesture_mode, GESTURE_MODE_DEFAULT);
         array.recycle();
         mVelocityTracker = VelocityTracker.obtain();
         final ViewConfiguration configuration = ViewConfiguration.get(context);
@@ -203,14 +225,15 @@ public class CalendarLayout extends LinearLayout {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+
         if (mDelegate.isShowYearSelectedLayout) {
             return false;
         }
-        if (mCalendarShowMode == CALENDAR_SHOW_MODE_ONLY_MONTH_VIEW ||
-                mCalendarShowMode == CALENDAR_SHOW_MODE_ONLY_WEEK_VIEW)
+
+        if (mContentView == null) {
             return false;
-        if (mContentView == null)
-            return false;
+        }
+
         int action = event.getAction();
         float y = event.getY();
         mVelocityTracker.addMovement(event);
@@ -219,6 +242,12 @@ public class CalendarLayout extends LinearLayout {
                 mLastY = downY = y;
                 return true;
             case MotionEvent.ACTION_MOVE:
+                if (mGestureMode == GESTURE_MODE_DISABLED ||
+                        mCalendarShowMode == CALENDAR_SHOW_MODE_ONLY_MONTH_VIEW ||
+                        mCalendarShowMode == CALENDAR_SHOW_MODE_ONLY_WEEK_VIEW) {//禁用手势，或者只显示某种视图
+                    return false;
+                }
+
                 float dy = y - mLastY;
                 //向上滑动，并且contentView平移到最大距离，显示周视图
                 if (dy < 0 && mContentView.getTranslationY() == -mContentViewTranslateY) {
@@ -234,6 +263,7 @@ public class CalendarLayout extends LinearLayout {
                     translationViewPager();
                     return super.onTouchEvent(event);
                 }
+
                 //向上滑动，并且contentView已经平移到最大距离，则contentView平移到最大的距离
                 if (dy < 0 && mContentView.getTranslationY() + dy <= -mContentViewTranslateY) {
                     mContentView.setTranslationY(-mContentViewTranslateY);
@@ -247,6 +277,9 @@ public class CalendarLayout extends LinearLayout {
                 break;
             case MotionEvent.ACTION_CANCEL:
             case MotionEvent.ACTION_UP:
+                if (mGestureMode == GESTURE_MODE_DISABLED) {
+                    break;
+                }
                 final VelocityTracker velocityTracker = mVelocityTracker;
                 velocityTracker.computeCurrentVelocity(1000, mMaximumVelocity);
                 float mYVelocity = velocityTracker.getYVelocity();
@@ -304,11 +337,20 @@ public class CalendarLayout extends LinearLayout {
         if (isAnimating) {
             return true;
         }
+        if (mGestureMode == GESTURE_MODE_DISABLED) {
+            return false;
+        }
         if (mYearView == null ||
                 mContentView == null ||
                 mContentView.getVisibility() != VISIBLE) {
             return super.onInterceptTouchEvent(ev);
         }
+
+        if (mCalendarShowMode == CALENDAR_SHOW_MODE_ONLY_MONTH_VIEW ||
+                mCalendarShowMode == CALENDAR_SHOW_MODE_ONLY_WEEK_VIEW) {
+            return false;
+        }
+
         if (mYearView.getVisibility() == VISIBLE || mDelegate.isShowYearSelectedLayout) {
             return super.onInterceptTouchEvent(ev);
         }
@@ -333,8 +375,9 @@ public class CalendarLayout extends LinearLayout {
                  */
                 if (dy > 0 && mContentView.getTranslationY() == -mContentViewTranslateY
                         && y >= CalendarUtil.dipToPx(getContext(), 98)) {
-                    if (!isScrollTop())
+                    if (!isScrollTop()) {
                         return false;
+                    }
                 }
 
                 if (dy > 0 && mContentView.getTranslationY() == 0 && y >= CalendarUtil.dipToPx(getContext(), 98)) {
@@ -607,6 +650,13 @@ public class CalendarLayout extends LinearLayout {
                         super.onAnimationEnd(animation);
                     }
                 });
+    }
+
+
+    @SuppressWarnings("unused")
+    private int getCalendarViewHeight() {
+        return mMonthView.getVisibility() == VISIBLE ? mDelegate.getWeekBarHeight() + mMonthView.getHeight() :
+                mDelegate.getWeekBarHeight() + mDelegate.getCalendarItemHeight();
     }
 
 

@@ -180,6 +180,17 @@ public final class WeekViewPager extends ViewPager {
     }
 
 
+    void updateSingleSelect() {
+        if (mDelegate.getSelectMode() == CalendarViewDelegate.SELECT_MODE_DEFAULT) {
+            return;
+        }
+        for (int i = 0; i < getChildCount(); i++) {
+            WeekView view = (WeekView) getChildAt(i);
+            view.updateSingleSelect();
+        }
+    }
+
+
     /**
      * 更新标记日期
      */
@@ -292,7 +303,7 @@ public final class WeekViewPager extends ViewPager {
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            BaseView view = (BaseView)object;
+            BaseView view = (BaseView) object;
             view.onDestroy();
             container.removeView(view);
         }

@@ -77,6 +77,8 @@ final class CalendarViewDelegate {
      */
     private int mSelectMode;
 
+
+
     /**
      * 支持转换的最小农历年份
      */
@@ -278,6 +280,7 @@ final class CalendarViewDelegate {
         mMonthViewScrollable = array.getBoolean(R.styleable.CalendarView_month_view_scrollable, true);
         mWeekViewScrollable = array.getBoolean(R.styleable.CalendarView_week_view_scrollable, true);
         mYearViewScrollable = array.getBoolean(R.styleable.CalendarView_year_view_scrollable, true);
+
 
         mMonthViewShowMode = array.getInt(R.styleable.CalendarView_month_view_show_mode, MODE_ALL_MONTH);
         mWeekStart = array.getInt(R.styleable.CalendarView_week_start_with, WEEK_START_WITH_SUN);
@@ -556,6 +559,7 @@ final class CalendarViewDelegate {
 
     /**
      * 设置选择模式
+     *
      * @param mSelectMode mSelectMode
      */
     void setSelectMode(int mSelectMode) {

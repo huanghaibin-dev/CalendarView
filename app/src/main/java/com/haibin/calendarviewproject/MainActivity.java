@@ -80,7 +80,6 @@ public class MainActivity extends BaseActivity implements
             public void onClick(View v) {
                 mCalendarView.scrollToCurrent();
                 Log.e("scrollToCurrent", "   --  " + mCalendarView.getSelectedCalendar());
-
             }
         });
 

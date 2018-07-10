@@ -187,6 +187,7 @@ public class CalendarView extends FrameLayout {
                 }
                 int y = calendar.getYear() - mDelegate.getMinYear();
                 int position = 12 * y + mDelegate.mIndexCalendar.getMonth() - mDelegate.getMinYearMonth();
+                mWeekPager.updateSingleSelect();
                 mMonthPager.setCurrentItem(position, false);
                 mMonthPager.updateSelected();
                 if (mWeekBar != null &&

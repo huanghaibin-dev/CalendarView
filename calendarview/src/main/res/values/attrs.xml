@@ -85,6 +85,14 @@
             <enum name="shrink" value="1" />
         </attr>
 
+
+        <!-- 手势模式 -->
+        <attr name="gesture_mode">
+            <enum name="default_mode" value="0" />
+            <!--<enum name="only_calendar" value="1" />-->
+            <enum name="disabled" value="2" />
+        </attr>
+
         <attr name="calendar_show_mode">
             <enum name="both_month_week_view" value="0" />
             <enum name="only_week_view" value="1" />
