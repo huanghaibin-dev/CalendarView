@@ -411,9 +411,11 @@ public class CalendarView extends FrameLayout {
             return;
         }
         mDelegate.mSelectedCalendar = mDelegate.createCurrentDate();
+        mDelegate.mIndexCalendar = mDelegate.mSelectedCalendar;
         mWeekBar.onDateSelected(mDelegate.mSelectedCalendar, mDelegate.getWeekStart(), false);
         if (mMonthPager.getVisibility() == VISIBLE) {
             mMonthPager.scrollToCurrent(smoothScroll);
+            mWeekPager.updateSelected(mDelegate.mIndexCalendar, false);
         } else {
             mWeekPager.scrollToCurrent(smoothScroll);
         }

@@ -79,6 +79,7 @@ public class MainActivity extends BaseActivity implements
             @Override
             public void onClick(View v) {
                 mCalendarView.scrollToCurrent();
+                //mCalendarView.scrollToCalendar(2018,7,14);
                 Log.e("scrollToCurrent", "   --  " + mCalendarView.getSelectedCalendar());
             }
         });
