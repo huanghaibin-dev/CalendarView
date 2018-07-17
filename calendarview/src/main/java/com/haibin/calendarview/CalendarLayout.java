@@ -24,8 +24,10 @@ import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -40,6 +42,15 @@ import android.widget.LinearLayout;
  * 日历布局
  */
 public class CalendarLayout extends LinearLayout {
+
+    /**
+     * 多点触控支持
+     */
+    private int mActivePointerId;
+
+    private static final int ACTIVE_POINTER = 1;
+
+    private static final int INVALID_POINTER = -1;
 
     /**
      * 周月视图
@@ -222,6 +233,8 @@ public class CalendarLayout extends LinearLayout {
         }
     }
 
+
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -239,6 +252,12 @@ public class CalendarLayout extends LinearLayout {
         mVelocityTracker.addMovement(event);
         switch (action) {
             case MotionEvent.ACTION_DOWN:
+
+                int index = MotionEventCompat.getActionIndex(event);
+                mActivePointerId = MotionEventCompat.getPointerId(event, index);
+
+
+
                 mLastY = downY = y;
                 return true;
             case MotionEvent.ACTION_MOVE:
@@ -248,7 +267,15 @@ public class CalendarLayout extends LinearLayout {
                     return false;
                 }
 
+
+                getPointerIndex(event, mActivePointerId);
+                if (mActivePointerId == INVALID_POINTER) {//如果切换了手指，那把mLastY换到最新手指的y坐标即可，同时让手势继续生效
+                    mLastY = y;
+                    mActivePointerId = ACTIVE_POINTER;
+                }
+
                 float dy = y - mLastY;
+
                 //向上滑动，并且contentView平移到最大距离，显示周视图
                 if (dy < 0 && mContentView.getTranslationY() == -mContentViewTranslateY) {
                     mContentView.onTouchEvent(event);
@@ -276,10 +303,15 @@ public class CalendarLayout extends LinearLayout {
                 mLastY = y;
                 break;
             case MotionEvent.ACTION_CANCEL:
-            case MotionEvent.ACTION_UP:
-                if (mGestureMode == GESTURE_MODE_DISABLED) {
+
+            case MotionEvent.ACTION_POINTER_UP:
+                int pointerIndex = getPointerIndex(event, mActivePointerId);
+                if (mActivePointerId == INVALID_POINTER)
                     break;
-                }
+                mLastY = MotionEventCompat.getY(event, pointerIndex);
+                break;
+            case MotionEvent.ACTION_UP:
+
                 final VelocityTracker velocityTracker = mVelocityTracker;
                 velocityTracker.computeCurrentVelocity(1000, mMaximumVelocity);
                 float mYVelocity = velocityTracker.getYVelocity();
@@ -303,32 +335,6 @@ public class CalendarLayout extends LinearLayout {
                 break;
         }
         return super.onTouchEvent(event);
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        if (mContentView != null && mMonthView != null) {
-            int h = getHeight() - mItemHeight
-                    - (mDelegate != null ? mDelegate.getWeekBarHeight() :
-                    CalendarUtil.dipToPx(getContext(), 40))
-                    - CalendarUtil.dipToPx(getContext(), 1);
-            int heightSpec = MeasureSpec.makeMeasureSpec(h,
-                    MeasureSpec.EXACTLY);
-            mContentView.measure(widthMeasureSpec, heightSpec);
-        }
-    }
-
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-        mMonthView = (MonthViewPager) findViewById(R.id.vp_calendar).findViewById(R.id.vp_calendar);
-        mWeekPager = (WeekViewPager) findViewById(R.id.vp_week).findViewById(R.id.vp_week);
-        mContentView = (ViewGroup) findViewById(mContentViewId);
-        mYearView = (YearSelectLayout) findViewById(R.id.selectLayout);
-        if (mContentView != null) {
-            mContentView.setOverScrollMode(View.OVER_SCROLL_NEVER);
-        }
     }
 
 
@@ -358,8 +364,19 @@ public class CalendarLayout extends LinearLayout {
         float y = ev.getY();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
+                int index = MotionEventCompat.getActionIndex(ev);
+                mActivePointerId = MotionEventCompat.getPointerId(ev, index);
+                if (mActivePointerId == INVALID_POINTER) {
+                    break;
+                }
+
                 mLastY = downY = y;
                 break;
+            case MotionEventCompat.ACTION_POINTER_DOWN: {
+                final int indexx = MotionEventCompat.getActionIndex(ev);
+                mActivePointerId = MotionEventCompat.getPointerId(ev, indexx);
+                break;
+            }
             case MotionEvent.ACTION_MOVE:
                 float dy = y - mLastY;
                  /*
@@ -392,11 +409,44 @@ public class CalendarLayout extends LinearLayout {
                     }
                 }
                 break;
-            case MotionEvent.ACTION_CANCEL:
-            case MotionEvent.ACTION_UP:
-                break;
         }
         return super.onInterceptTouchEvent(ev);
+    }
+
+
+    private int getPointerIndex(MotionEvent ev, int id) {
+        int activePointerIndex = MotionEventCompat.findPointerIndex(ev, id);
+        if (activePointerIndex == -1) {
+            mActivePointerId = INVALID_POINTER;
+        }
+
+        return activePointerIndex;
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        if (mContentView != null && mMonthView != null) {
+            int h = getHeight() - mItemHeight
+                    - (mDelegate != null ? mDelegate.getWeekBarHeight() :
+                    CalendarUtil.dipToPx(getContext(), 40))
+                    - CalendarUtil.dipToPx(getContext(), 1);
+            int heightSpec = MeasureSpec.makeMeasureSpec(h,
+                    MeasureSpec.EXACTLY);
+            mContentView.measure(widthMeasureSpec, heightSpec);
+        }
+    }
+
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        mMonthView = (MonthViewPager) findViewById(R.id.vp_calendar).findViewById(R.id.vp_calendar);
+        mWeekPager = (WeekViewPager) findViewById(R.id.vp_week).findViewById(R.id.vp_week);
+        mContentView = (ViewGroup) findViewById(mContentViewId);
+        mYearView = (YearSelectLayout) findViewById(R.id.selectLayout);
+        if (mContentView != null) {
+            mContentView.setOverScrollMode(View.OVER_SCROLL_NEVER);
+        }
     }
 
 

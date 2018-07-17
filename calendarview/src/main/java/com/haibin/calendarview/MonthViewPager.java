@@ -135,7 +135,7 @@ public final class MonthViewPager extends ViewPager {
                 }
 
                 if (!isUsingScrollToCalendar && mDelegate.getSelectMode() != CalendarViewDelegate.SELECT_MODE_SINGLE) {
-                    mWeekBar.onDateSelected(calendar, mDelegate.getWeekStart(), false);
+                    mWeekBar.onDateSelected(mDelegate.mSelectedCalendar, mDelegate.getWeekStart(), false);
                     if (mDelegate.mDateSelectedListener != null) {
                         mDelegate.mDateSelectedListener.onDateSelected(calendar, false);
                     }

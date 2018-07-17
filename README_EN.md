@@ -5,13 +5,13 @@ This widget has obvious advantages of memory and efficiency, adapt to many scene
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.3.7'
+compile 'com.haibin:calendarview:3.3.8'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.3.7</version>
+  <version>3.3.8</version>
   <type>pom</type>
 </dependency>
 ```
