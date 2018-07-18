@@ -24,8 +24,6 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 
-import java.util.List;
-
 /**
  * 年份视图
  * Created by haibin on 2017/3/6.
@@ -39,9 +37,9 @@ public class YearView extends View {
     private int mLine;//多少行
     private Paint mPaint = new Paint();
     private Paint mSchemePaint = new Paint();
-    private List<Calendar> mSchemes;
     private Calendar mCalendar;
     private int mMinHeight;//最小高度
+    private CalendarViewDelegate mDelegate;
 
     public YearView(Context context) {
         this(context, null);
@@ -58,7 +56,6 @@ public class YearView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
         int width = getWidth();
         int height = getHeight();
         int pLeft = getPaddingLeft();
@@ -117,26 +114,18 @@ public class YearView extends View {
     }
 
     /**
-     * 设置事件
-     *
-     * @param mSchemes mSchemes
-     */
-    void setSchemes(List<Calendar> mSchemes) {
-        this.mSchemes = mSchemes;
-    }
-
-    /**
      * 初始化
      *
      * @param delegate delegate
      */
     void setup(CalendarViewDelegate delegate) {
+        this.mDelegate = delegate;
         mSchemePaint.setColor(delegate.getYearViewSchemeTextColor());
         mSchemePaint.setTextSize(delegate.getYearViewDayTextSize());
         mPaint.setTextSize(delegate.getYearViewDayTextSize());
         mPaint.setColor(delegate.getYearViewDayTextColor());
         Rect rect = new Rect();
-        mPaint.getTextBounds("1",0,1, rect);
+        mPaint.getTextBounds("1", 0, 1, rect);
         int textHeight = rect.height();
         mMinHeight = 12 * textHeight;
     }
@@ -179,10 +168,25 @@ public class YearView extends View {
         }
     }
 
+    /**
+     * 是否包含事件
+     *
+     * @param day day
+     * @return return
+     */
     private boolean isScheme(int day) {
-        if (mSchemes == null || mSchemes.size() == 0)
+        if (mDelegate.getSchemeType() == CalendarViewDelegate.SCHEME_TYPE_LIST) {
+            if (mDelegate.mSchemeDate == null || mDelegate.mSchemeDate.size() == 0) {
+                return false;
+            }
+            mCalendar.setDay(day);
+            return mDelegate.mSchemeDate.contains(mCalendar);
+        }
+
+        if (mDelegate.mSchemeDatesMap == null || mDelegate.mSchemeDatesMap.size() == 0) {
             return false;
+        }
         mCalendar.setDay(day);
-        return mSchemes.contains(mCalendar);
+        return mDelegate.mSchemeDatesMap.containsKey(mCalendar.toString());
     }
 }

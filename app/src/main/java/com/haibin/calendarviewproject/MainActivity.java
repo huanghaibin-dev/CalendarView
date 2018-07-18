@@ -23,7 +23,9 @@ import com.haibin.calendarviewproject.single.SingleActivity;
 import com.haibin.calendarviewproject.solay.SolarActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends BaseActivity implements
         CalendarView.OnDateSelectedListener,
@@ -97,53 +99,113 @@ public class MainActivity extends BaseActivity implements
         mTextCurrentDay.setText(String.valueOf(mCalendarView.getCurDay()));
     }
 
+    @SuppressWarnings("unused")
     @Override
     protected void initData() {
         final List<Calendar> schemes = new ArrayList<>();
         final int year = mCalendarView.getCurYear();
         final int month = mCalendarView.getCurMonth();
-        schemes.add(getSchemeCalendar(year, month, 3, 0xFF40db25, "假"));
-        schemes.add(getSchemeCalendar(year, month, 6, 0xFFe69138, "事"));
-        schemes.add(getSchemeCalendar(year, month, 9, 0xFFdf1356, "议"));
-        schemes.add(getSchemeCalendar(year, month, 13, 0xFFedc56d, "记"));
-        schemes.add(getSchemeCalendar(year, month, 14, 0xFFedc56d, "记"));
-        schemes.add(getSchemeCalendar(year, month, 15, 0xFFaacc44, "假"));
-        schemes.add(getSchemeCalendar(year, month, 18, 0xFFbc13f0, "记"));
-        schemes.add(getSchemeCalendar(year, month, 25, 0xFF13acf0, "假"));
-        schemes.add(getSchemeCalendar(year, month, 27, 0xFF13acf0, "多"));
-//        for (int y = year; y < 2082; y++) {
-//            for (int m = 1; m < 12; m++) {
-//                schemes.add(getSchemeCalendar(y, m, 1, 0xFF40db25, "假"));
-//                schemes.add(getSchemeCalendar(y, m, 2, 0xFF40db25, "假"));
-//                schemes.add(getSchemeCalendar(y, m, 3, 0xFF40db25, "假"));
-//                schemes.add(getSchemeCalendar(y, m, 4, 0xFF40db25, "假"));
-//                schemes.add(getSchemeCalendar(y, m, 5, 0xFF40db25, "假"));
-//                schemes.add(getSchemeCalendar(y, m, 6, 0xFF40db25, "假"));
-//                schemes.add(getSchemeCalendar(y, m, 7, 0xFFe69138, "事"));
-//                schemes.add(getSchemeCalendar(y, m, 8, 0xFFdf1356, "议"));
-//                schemes.add(getSchemeCalendar(y, m, 9, 0xFF40db25, "假"));
-//                schemes.add(getSchemeCalendar(y, m, 10, 0xFF40db25, "假"));
-//                schemes.add(getSchemeCalendar(y, m, 11, 0xFF40db25, "假"));
-//                schemes.add(getSchemeCalendar(y, m, 12, 0xFF40db25, "假"));
-//                schemes.add(getSchemeCalendar(y, m, 13, 0xFFedc56d, "记"));
-//                schemes.add(getSchemeCalendar(y, m, 14, 0xFFedc56d, "记"));
-//                schemes.add(getSchemeCalendar(y, m, 15, 0xFFaacc44, "假"));
-//                schemes.add(getSchemeCalendar(y, m, 16, 0xFF40db25, "假"));
-//                schemes.add(getSchemeCalendar(y, m, 17, 0xFF40db25, "假"));
-//                schemes.add(getSchemeCalendar(y, m, 18, 0xFFbc13f0, "记"));
-//                schemes.add(getSchemeCalendar(y, m, 19, 0xFF40db25, "假"));
-//                schemes.add(getSchemeCalendar(y, m, 20, 0xFF40db25, "假"));
-//                schemes.add(getSchemeCalendar(y, m, 21, 0xFF40db25, "假"));
-//                schemes.add(getSchemeCalendar(y, m, 22, 0xFF40db25, "假"));
-//                schemes.add(getSchemeCalendar(y, m, 23, 0xFF40db25, "假"));
-//                schemes.add(getSchemeCalendar(y, m, 24, 0xFF40db25, "假"));
-//                schemes.add(getSchemeCalendar(y, m, 25, 0xFF40db25, "假"));
-//                schemes.add(getSchemeCalendar(y, m, 26, 0xFF13acf0, "假"));
-//                schemes.add(getSchemeCalendar(y, m, 37, 0xFF40db25, "假"));
-//                schemes.add(getSchemeCalendar(y, m, 38, 0xFF40db25, "假"));
-//            }
-//        }
-        mCalendarView.setSchemeDate(schemes);
+
+        Map<String, Calendar> map = new HashMap<>();
+        for (int y = 1997; y < 2082; y++) {
+            for (int m = 1; m <= 12; m++) {
+                map.put(getSchemeCalendar(y, m, 1, 0xFF40db25, "假").toString(),
+                        getSchemeCalendar(y, m, 1, 0xFF40db25, "假"));
+                map.put(getSchemeCalendar(y, m, 2, 0xFFe69138, "游").toString(),
+                        getSchemeCalendar(y, m, 2, 0xFFe69138, "游"));
+                map.put(getSchemeCalendar(y, m, 3, 0xFFdf1356, "事").toString(),
+                        getSchemeCalendar(y, m, 3, 0xFFdf1356, "事"));
+                map.put(getSchemeCalendar(y, m, 4, 0xFFaacc44, "车").toString(),
+                        getSchemeCalendar(y, m, 4, 0xFFaacc44, "车"));
+                map.put(getSchemeCalendar(y, m, 5, 0xFFbc13f0, "驾").toString(),
+                        getSchemeCalendar(y, m, 5, 0xFFbc13f0, "驾"));
+                map.put(getSchemeCalendar(y, m, 6, 0xFF542261, "记").toString(),
+                        getSchemeCalendar(y, m, 6, 0xFF542261, "记"));
+                map.put(getSchemeCalendar(y, m, 7, 0xFF4a4bd2, "会").toString(),
+                        getSchemeCalendar(y, m, 7, 0xFF4a4bd2, "会"));
+                map.put(getSchemeCalendar(y, m, 8, 0xFFe69138, "车").toString(),
+                        getSchemeCalendar(y, m, 8, 0xFFe69138, "车"));
+                map.put(getSchemeCalendar(y, m, 9, 0xFF542261, "考").toString(),
+                        getSchemeCalendar(y, m, 9, 0xFF542261, "考"));
+                map.put(getSchemeCalendar(y, m, 10, 0xFF87af5a, "记").toString(),
+                        getSchemeCalendar(y, m, 10, 0xFF87af5a, "记"));
+                map.put(getSchemeCalendar(y, m, 11, 0xFF40db25, "会").toString(),
+                        getSchemeCalendar(y, m, 11, 0xFF40db25, "会"));
+                map.put(getSchemeCalendar(y, m, 12, 0xFFcda1af, "游").toString(),
+                        getSchemeCalendar(y, m, 12, 0xFFcda1af, "游"));
+                map.put(getSchemeCalendar(y, m, 13, 0xFF95af1a, "事").toString(),
+                        getSchemeCalendar(y, m, 13, 0xFF95af1a, "事"));
+                map.put(getSchemeCalendar(y, m, 14, 0xFF33aadd, "学").toString(),
+                        getSchemeCalendar(y, m, 14, 0xFF33aadd, "学"));
+                map.put(getSchemeCalendar(y, m, 15, 0xFF1aff1a, "码").toString(),
+                        getSchemeCalendar(y, m, 15, 0xFF1aff1a, "码"));
+                map.put(getSchemeCalendar(y, m, 16, 0xFF22acaf, "驾").toString(),
+                        getSchemeCalendar(y, m, 16, 0xFF22acaf, "驾"));
+                map.put(getSchemeCalendar(y, m, 17, 0xFF99a6fa, "校").toString(),
+                        getSchemeCalendar(y, m, 17, 0xFF99a6fa, "校"));
+                map.put(getSchemeCalendar(y, m, 18, 0xFFe69138, "车").toString(),
+                        getSchemeCalendar(y, m, 18, 0xFFe69138, "车"));
+                map.put(getSchemeCalendar(y, m, 19, 0xFF40db25, "码").toString(),
+                        getSchemeCalendar(y, m, 19, 0xFF40db25, "码"));
+                map.put(getSchemeCalendar(y, m, 20, 0xFFe69138, "火").toString(),
+                        getSchemeCalendar(y, m, 20, 0xFFe69138, "火"));
+                map.put(getSchemeCalendar(y, m, 21, 0xFF40db25, "假").toString(),
+                        getSchemeCalendar(y, m, 21, 0xFF40db25, "假"));
+                map.put(getSchemeCalendar(y, m, 22, 0xFF99a6fa, "记").toString(),
+                        getSchemeCalendar(y, m, 22, 0xFF99a6fa, "记"));
+                map.put(getSchemeCalendar(y, m, 23, 0xFF33aadd, "假").toString(),
+                        getSchemeCalendar(y, m, 23, 0xFF33aadd, "假"));
+                map.put(getSchemeCalendar(y, m, 24, 0xFF40db25, "校").toString(),
+                        getSchemeCalendar(y, m, 24, 0xFF40db25, "校"));
+                map.put(getSchemeCalendar(y, m, 25, 0xFF1aff1a, "假").toString(),
+                        getSchemeCalendar(y, m, 25, 0xFF1aff1a, "假"));
+                map.put(getSchemeCalendar(y, m, 26, 0xFF40db25, "议").toString(),
+                        getSchemeCalendar(y, m, 26, 0xFF40db25, "议"));
+                map.put(getSchemeCalendar(y, m, 27, 0xFF95af1a, "假").toString(),
+                        getSchemeCalendar(y, m, 27, 0xFF95af1a, "假"));
+                map.put(getSchemeCalendar(y, m, 28, 0xFF40db25, "码").toString(),
+                        getSchemeCalendar(y, m, 28, 0xFF40db25, "码"));
+            }
+        }
+
+        for (int y = 1997; y < 2082; y++) {
+            for (int m = 1; m <= 12; m++) {
+                schemes.add(getSchemeCalendar(y, m, 1, 0xFF40db25, "假"));
+                schemes.add(getSchemeCalendar(y, m, 2, 0xFF40db25, "假"));
+                schemes.add(getSchemeCalendar(y, m, 3, 0xFFe69138, "假"));
+                schemes.add(getSchemeCalendar(y, m, 4, 0xFFe69138, "假"));
+                schemes.add(getSchemeCalendar(y, m, 5, 0xFFdf1356, "假"));
+                schemes.add(getSchemeCalendar(y, m, 6, 0xFFdf1356, "假"));
+                schemes.add(getSchemeCalendar(y, m, 7, 0xFFaacc44, "事"));
+                schemes.add(getSchemeCalendar(y, m, 8, 0xFFaacc44, "议"));
+                schemes.add(getSchemeCalendar(y, m, 9, 0xFF40db25, "假"));
+                schemes.add(getSchemeCalendar(y, m, 10, 0xFF40db25, "假"));
+                schemes.add(getSchemeCalendar(y, m, 11, 0xFF40db25, "假"));
+                schemes.add(getSchemeCalendar(y, m, 12, 0xFF40db25, "假"));
+                schemes.add(getSchemeCalendar(y, m, 13, 0xFFedc56d, "记"));
+                schemes.add(getSchemeCalendar(y, m, 14, 0xFFedc56d, "记"));
+                schemes.add(getSchemeCalendar(y, m, 15, 0xFFaacc44, "假"));
+                schemes.add(getSchemeCalendar(y, m, 16, 0xFF40db25, "假"));
+                schemes.add(getSchemeCalendar(y, m, 17, 0xFF40db25, "假"));
+                schemes.add(getSchemeCalendar(y, m, 18, 0xFFbc13f0, "记"));
+                schemes.add(getSchemeCalendar(y, m, 19, 0xFF40db25, "假"));
+                schemes.add(getSchemeCalendar(y, m, 20, 0xFF40db25, "假"));
+                schemes.add(getSchemeCalendar(y, m, 21, 0xFF40db25, "假"));
+                schemes.add(getSchemeCalendar(y, m, 22, 0xFF40db25, "假"));
+                schemes.add(getSchemeCalendar(y, m, 23, 0xFF40db25, "假"));
+                schemes.add(getSchemeCalendar(y, m, 24, 0xFF40db25, "假"));
+                schemes.add(getSchemeCalendar(y, m, 25, 0xFF40db25, "假"));
+                schemes.add(getSchemeCalendar(y, m, 26, 0xFF13acf0, "假"));
+                schemes.add(getSchemeCalendar(y, m, 37, 0xFF40db25, "假"));
+                schemes.add(getSchemeCalendar(y, m, 38, 0xFF40db25, "假"));
+            }
+        }
+        //28560 数据量增长不会影响UI响应速度，请使用这个API替换
+        mCalendarView.setSchemeDate(map);
+
+        //可自行测试性能差距
+        //mCalendarView.setSchemeDate(schemes);
+
         findViewById(R.id.ll_flyme).setOnClickListener(this);
         findViewById(R.id.ll_simple).setOnClickListener(this);
         findViewById(R.id.ll_colorful).setOnClickListener(this);
@@ -212,6 +274,10 @@ public class MainActivity extends BaseActivity implements
         if (isClick) {
             Toast.makeText(this, getCalendarText(calendar), Toast.LENGTH_SHORT).show();
         }
+        Log.e("onDateSelected", "  -- " + calendar.getYear() +
+                "  --  " + calendar.getMonth() +
+                "  -- " + calendar.getDay() +
+                "  --  " + isClick);
     }
 
     @Override

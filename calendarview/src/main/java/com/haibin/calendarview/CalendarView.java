@@ -30,6 +30,7 @@ import android.widget.FrameLayout;
 
 import java.lang.reflect.Constructor;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 日历布局
@@ -116,7 +117,7 @@ public class CalendarView extends FrameLayout {
         lineParams.setMargins(lineParams.leftMargin, mDelegate.getWeekBarHeight(), lineParams.rightMargin, 0);
         this.mWeekLine.setLayoutParams(lineParams);
 
-        this.mMonthPager = (MonthViewPager) findViewById(R.id.vp_calendar);
+        this.mMonthPager = (MonthViewPager) findViewById(R.id.vp_month);
         this.mMonthPager.mWeekPager = mWeekPager;
         this.mMonthPager.mWeekBar = mWeekBar;
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) this.mMonthPager.getLayoutParams();
@@ -629,22 +630,45 @@ public class CalendarView extends FrameLayout {
 
     /**
      * 标记哪些日期有事件
+     * 推荐使用 public void setSchemeDate(Map<String, Calendar> mSchemeDates)
      *
      * @param mSchemeDate mSchemeDate 通过自己的需求转换即可
      */
+    @Deprecated
     public void setSchemeDate(List<Calendar> mSchemeDate) {
         this.mDelegate.mSchemeDate = mSchemeDate;
+        this.mDelegate.mSchemeDatesMap = null;
         this.mDelegate.clearSelectedScheme();
-        mSelectLayout.update();
-        mMonthPager.updateScheme();
-        mWeekPager.updateScheme();
+        this.mDelegate.setSchemeType(CalendarViewDelegate.SCHEME_TYPE_LIST);
+        this.mSelectLayout.update();
+        this.mMonthPager.updateScheme();
+        this.mWeekPager.updateScheme();
     }
 
+    /**
+     * 标记哪些日期有事件
+     * 如果标记的日期数量很大，mSchemeDatesMap.size()>10000?,请使用这个
+     * key=Calendar.toString();
+     * 优势？Android的用户相应时间一旦大于16ms,UI就会卡顿，Map在数据增长量巨大时，查找性能上不会损耗，
+     * List的性能就会差很大，List.contains()会遍历整个数组，性能太差
+     *
+     * @param mSchemeDates mSchemeDatesMap 通过自己的需求转换即可
+     */
+    public void setSchemeDate(Map<String, Calendar> mSchemeDates) {
+        this.mDelegate.mSchemeDatesMap = mSchemeDates;
+        this.mDelegate.mSchemeDate = null;
+        this.mDelegate.clearSelectedScheme();
+        this.mDelegate.setSchemeType(CalendarViewDelegate.SCHEME_TYPE_MAP);
+        this.mSelectLayout.update();
+        this.mMonthPager.updateScheme();
+        this.mWeekPager.updateScheme();
+    }
 
     /**
      * 清空日期标记
      */
     public void clearSchemeDate() {
+        this.mDelegate.mSchemeDatesMap = null;
         this.mDelegate.mSchemeDate = null;
         this.mDelegate.clearSelectedScheme();
         mSelectLayout.update();
@@ -660,17 +684,28 @@ public class CalendarView extends FrameLayout {
      * @param calendar calendar
      */
     public void removeSchemeDate(Calendar calendar) {
+        if (calendar == null) {
+            return;
+        }
+        if (mDelegate.getSchemeType() == CalendarViewDelegate.SCHEME_TYPE_LIST) {
+            if (mDelegate.mSchemeDate == null || mDelegate.mSchemeDate.size() == 0) {
+                return;
+            }
+            if (mDelegate.mSchemeDate.contains(calendar)) {
+                mDelegate.mSchemeDate.remove(calendar);
+            }
+        } else {
+            if (mDelegate.mSchemeDatesMap == null || mDelegate.mSchemeDatesMap.size() == 0) {
+                return;
+            }
+            if (mDelegate.mSchemeDatesMap.containsKey(calendar.toString())) {
+                mDelegate.mSchemeDatesMap.remove(calendar.toString());
+            }
+        }
         if (mDelegate.mSelectedCalendar.equals(calendar)) {
             mDelegate.clearSelectedScheme();
         }
-        if (mDelegate.mSchemeDate == null ||
-                mDelegate.mSchemeDate.size() == 0 ||
-                calendar == null) {
-            return;
-        }
-        if (mDelegate.mSchemeDate.contains(calendar)) {
-            mDelegate.mSchemeDate.remove(calendar);
-        }
+
         mSelectLayout.update();
         mMonthPager.updateScheme();
         mWeekPager.updateScheme();
@@ -765,8 +800,8 @@ public class CalendarView extends FrameLayout {
     /**
      * 默认选择模式
      */
-    public void setSelectDefaultMode(){
-        if(mDelegate.getSelectMode() == CalendarViewDelegate.SELECT_MODE_DEFAULT){
+    public void setSelectDefaultMode() {
+        if (mDelegate.getSelectMode() == CalendarViewDelegate.SELECT_MODE_DEFAULT) {
             return;
         }
         mDelegate.setSelectMode(CalendarViewDelegate.SELECT_MODE_DEFAULT);
@@ -775,8 +810,8 @@ public class CalendarView extends FrameLayout {
     /**
      * 单选模式
      */
-    public void setSelectSingleMode(){
-        if(mDelegate.getSelectMode() == CalendarViewDelegate.SELECT_MODE_SINGLE){
+    public void setSelectSingleMode() {
+        if (mDelegate.getSelectMode() == CalendarViewDelegate.SELECT_MODE_SINGLE) {
             return;
         }
         mDelegate.setSelectMode(CalendarViewDelegate.SELECT_MODE_SINGLE);

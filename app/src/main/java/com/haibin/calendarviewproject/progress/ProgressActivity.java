@@ -22,7 +22,9 @@ import com.haibin.calendarviewproject.index.IndexActivity;
 import com.haibin.calendarviewproject.simple.SimpleActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProgressActivity extends BaseActivity implements
         CalendarView.OnDateSelectedListener,
@@ -109,7 +111,38 @@ public class ProgressActivity extends BaseActivity implements
         schemes.add(getSchemeCalendar(year, month, 18, 0xFFbc13f0, "70"));
         schemes.add(getSchemeCalendar(year, month, 25, 0xFF13acf0, "36"));
         schemes.add(getSchemeCalendar(year, month, 27, 0xFF13acf0, "95"));
+
+
+         /*
+         * 此方法现在弃用，但不影响原来的效果，原因：数据量大时 size()>10000 ，遍历性能太差，超过Android限制的16ms响应，造成卡顿
+         * 现在推荐使用 setSchemeDate(Map<String, Calendar> mSchemeDates)，Map查找性能非常好，经测试，50000以上数据，1ms解决
+         */
         mCalendarView.setSchemeDate(schemes);
+
+
+        Map<String, Calendar> map = new HashMap<>();
+        map.put(getSchemeCalendar(year, month, 3, 0xFF40db25, "20").toString(),
+                getSchemeCalendar(year, month, 3, 0xFF40db25, "20"));
+        map.put(getSchemeCalendar(year, month, 6, 0xFFe69138, "33").toString(),
+                getSchemeCalendar(year, month, 6, 0xFFe69138, "33"));
+        map.put(getSchemeCalendar(year, month, 9, 0xFFdf1356, "25").toString(),
+                getSchemeCalendar(year, month, 9, 0xFFdf1356, "25"));
+        map.put(getSchemeCalendar(year, month, 13, 0xFFedc56d, "50").toString(),
+                getSchemeCalendar(year, month, 13, 0xFFedc56d, "50"));
+        map.put(getSchemeCalendar(year, month, 14, 0xFFedc56d, "80").toString(),
+                getSchemeCalendar(year, month, 14, 0xFFedc56d, "80"));
+        map.put(getSchemeCalendar(year, month, 15, 0xFFaacc44, "20").toString(),
+                getSchemeCalendar(year, month, 15, 0xFFaacc44, "20"));
+        map.put(getSchemeCalendar(year, month, 18, 0xFFbc13f0, "70").toString(),
+                getSchemeCalendar(year, month, 18, 0xFFbc13f0, "70"));
+        map.put(getSchemeCalendar(year, month, 25, 0xFF13acf0, "36").toString(),
+                getSchemeCalendar(year, month, 25, 0xFF13acf0, "36"));
+        map.put(getSchemeCalendar(year, month, 27, 0xFF13acf0, "95").toString(),
+                getSchemeCalendar(year, month, 27, 0xFF13acf0, "95"));
+        //此方法在巨大的数据量上不影响遍历性能，推荐使用
+        mCalendarView.setSchemeDate(map);
+
+
 
         mRecyclerView = (GroupRecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));

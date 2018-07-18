@@ -20,6 +20,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -260,6 +261,61 @@ public abstract class BaseView extends View implements View.OnClickListener, Vie
     }
 
 
+    /**
+     * 移除事件
+     */
+    final void removeSchemes() {
+        for (Calendar a : mItems) {
+            a.setScheme("");
+            a.setSchemeColor(0);
+            a.setSchemes(null);
+        }
+    }
+
+
+    /**
+     * 添加事件标记，来自List
+     */
+    final void addSchemesFromList() {
+        if (mDelegate.mSchemeDate == null || mDelegate.mSchemeDate.size() == 0) {
+            return;
+        }
+        for (Calendar a : mItems) {//添加操作
+            if (mDelegate.mSchemeDate.contains(a)) {
+                Calendar d = mDelegate.mSchemeDate.get(mDelegate.mSchemeDate.indexOf(a));
+                a.setScheme(TextUtils.isEmpty(d.getScheme()) ? mDelegate.getSchemeText() : d.getScheme());
+                a.setSchemeColor(d.getSchemeColor());
+                a.setSchemes(d.getSchemes());
+            } else {
+                a.setScheme("");
+                a.setSchemeColor(0);
+                a.setSchemes(null);
+            }
+        }
+    }
+
+    /**
+     * 添加事件标记，来自Map
+     */
+    final void addSchemesFromMap() {
+        if (mDelegate.mSchemeDatesMap == null || mDelegate.mSchemeDatesMap.size() == 0) {
+            return;
+        }
+        for (Calendar a : mItems) {
+            if (mDelegate.mSchemeDatesMap.containsKey(a.toString())) {
+                Calendar d = mDelegate.mSchemeDatesMap.get(a.toString());
+                a.setScheme(TextUtils.isEmpty(d.getScheme()) ? mDelegate.getSchemeText() : d.getScheme());
+                a.setSchemeColor(d.getSchemeColor());
+                a.setSchemes(d.getSchemes());
+            } else {
+                a.setScheme("");
+                a.setSchemeColor(0);
+                a.setSchemes(null);
+            }
+        }
+    }
+
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -321,7 +377,28 @@ public abstract class BaseView extends View implements View.OnClickListener, Vie
         return mItems != null && mItems.indexOf(calendar) == mCurrentItem;
     }
 
-    abstract void update();
+    /**
+     * 更新事件
+     */
+    final void update() {
+        if (mDelegate.getSchemeType() == CalendarViewDelegate.SCHEME_TYPE_LIST) {
+            if (mDelegate.mSchemeDate == null || mDelegate.mSchemeDate.size() == 0) {//清空操作
+                removeSchemes();
+                invalidate();
+                return;
+            }
+            addSchemesFromList();
+        } else {
+            if (mDelegate.mSchemeDatesMap == null || mDelegate.mSchemeDatesMap.size() == 0) {//清空操作
+                removeSchemes();
+                invalidate();
+                return;
+            }
+            addSchemesFromMap();
+        }
+
+        invalidate();
+    }
 
     abstract void updateCurrentDate();
 

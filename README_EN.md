@@ -5,13 +5,13 @@ This widget has obvious advantages of memory and efficiency, adapt to many scene
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.3.8'
+compile 'com.haibin:calendarview:3.3.9'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.3.8</version>
+  <version>3.3.9</version>
   <type>pom</type>
 </dependency>
 ```
@@ -223,7 +223,20 @@ public void setOnDateSelectedListener(OnDateSelectedListener listener);//date se
 
 public void setOnDateLongClickListener(OnDateLongClickListener listener);//date long click listener
 
+
+@Deprecated
 public void setSchemeDate(List<Calendar> mSchemeDate);//mark dates
+
+/**
+  * mark dates
+  * when mSchemeDatesMap.size()>10000?,use this
+  * key=Calendar.toString();
+  * best performance
+  *
+  * @param mSchemeDates mSchemeDatesMap 通过自己的需求转换即可
+*/
+public void setSchemeDate(Map<String, Calendar> mSchemeDates);//mark dates
+
 
 public void update();//update change
 

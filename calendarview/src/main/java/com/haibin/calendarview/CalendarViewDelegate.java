@@ -24,6 +24,7 @@ import android.util.AttributeSet;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Google规范化的属性委托,
@@ -31,11 +32,30 @@ import java.util.List;
  */
 final class CalendarViewDelegate {
 
+    /**
+     * 周起始：周日
+     */
     static final int WEEK_START_WITH_SUN = 1;
 
+    /**
+     * 周起始：周一
+     */
     static final int WEEK_START_WITH_MON = 2;
 
+    /**
+     * 周起始：周六
+     */
     static final int WEEK_START_WITH_SAT = 7;
+
+    /**
+     * 事件标记类型，LIST
+     */
+    static final int SCHEME_TYPE_LIST = 1;
+
+    /**
+     * 事件标记类型，MAP
+     */
+    static final int SCHEME_TYPE_MAP = 2;
 
     /**
      * 全部显示
@@ -76,7 +96,6 @@ final class CalendarViewDelegate {
      * 选择模式
      */
     private int mSelectMode;
-
 
 
     /**
@@ -209,10 +228,18 @@ final class CalendarViewDelegate {
     @SuppressWarnings("all")
     int mCurrentMonthViewItem, mCurrentWeekViewItem;
 
+
+    private int mSchemeType;
+
     /**
      * 标记的日期
      */
     List<Calendar> mSchemeDate;
+
+    /**
+     * 标记的日期,数量巨大，请使用这个
+     */
+    Map<String, Calendar> mSchemeDatesMap;
 
 
     /**
@@ -580,6 +607,14 @@ final class CalendarViewDelegate {
 
     int getCalendarPadding() {
         return mCalendarPadding;
+    }
+
+    int getSchemeType() {
+        return mSchemeType;
+    }
+
+    void setSchemeType(int schemeType) {
+        this.mSchemeType = schemeType;
     }
 
     void setPreventLongPressedSelected(boolean preventLongPressedSelected) {

@@ -27,7 +27,6 @@ import android.content.res.TypedArray;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -234,7 +233,6 @@ public class CalendarLayout extends LinearLayout {
     }
 
 
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -255,11 +253,17 @@ public class CalendarLayout extends LinearLayout {
 
                 int index = MotionEventCompat.getActionIndex(event);
                 mActivePointerId = MotionEventCompat.getPointerId(event, index);
-
-
-
                 mLastY = downY = y;
                 return true;
+            case MotionEventCompat.ACTION_POINTER_DOWN: {
+                final int indexx = MotionEventCompat.getActionIndex(event);
+                mActivePointerId = MotionEventCompat.getPointerId(event, indexx);
+                if (mActivePointerId == 0) {
+                    //核心代码：就是让下面的 dy = y- mLastY == 0，避免抖动
+                    mLastY = MotionEventCompat.getY(event, mActivePointerId);
+                }
+                break;
+            }
             case MotionEvent.ACTION_MOVE:
                 if (mGestureMode == GESTURE_MODE_DISABLED ||
                         mCalendarShowMode == CALENDAR_SHOW_MODE_ONLY_MONTH_VIEW ||
@@ -269,16 +273,16 @@ public class CalendarLayout extends LinearLayout {
 
 
                 getPointerIndex(event, mActivePointerId);
-                if (mActivePointerId == INVALID_POINTER) {//如果切换了手指，那把mLastY换到最新手指的y坐标即可，同时让手势继续生效
+                if (mActivePointerId == INVALID_POINTER) {
+                    //如果切换了手指，那把mLastY换到最新手指的y坐标即可，核心就是让下面的 dy== 0，避免抖动
                     mLastY = y;
                     mActivePointerId = ACTIVE_POINTER;
                 }
 
                 float dy = y - mLastY;
-
                 //向上滑动，并且contentView平移到最大距离，显示周视图
                 if (dy < 0 && mContentView.getTranslationY() == -mContentViewTranslateY) {
-                    mContentView.onTouchEvent(event);
+                    //mContentView.onTouchEvent(event);
                     showWeek();
                     return false;
                 }
@@ -366,17 +370,8 @@ public class CalendarLayout extends LinearLayout {
             case MotionEvent.ACTION_DOWN:
                 int index = MotionEventCompat.getActionIndex(ev);
                 mActivePointerId = MotionEventCompat.getPointerId(ev, index);
-                if (mActivePointerId == INVALID_POINTER) {
-                    break;
-                }
-
                 mLastY = downY = y;
                 break;
-            case MotionEventCompat.ACTION_POINTER_DOWN: {
-                final int indexx = MotionEventCompat.getActionIndex(ev);
-                mActivePointerId = MotionEventCompat.getPointerId(ev, indexx);
-                break;
-            }
             case MotionEvent.ACTION_MOVE:
                 float dy = y - mLastY;
                  /*
@@ -419,7 +414,6 @@ public class CalendarLayout extends LinearLayout {
         if (activePointerIndex == -1) {
             mActivePointerId = INVALID_POINTER;
         }
-
         return activePointerIndex;
     }
 
@@ -440,8 +434,8 @@ public class CalendarLayout extends LinearLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mMonthView = (MonthViewPager) findViewById(R.id.vp_calendar).findViewById(R.id.vp_calendar);
-        mWeekPager = (WeekViewPager) findViewById(R.id.vp_week).findViewById(R.id.vp_week);
+        mMonthView = (MonthViewPager) findViewById(R.id.vp_month);
+        mWeekPager = (WeekViewPager) findViewById(R.id.vp_week);
         mContentView = (ViewGroup) findViewById(mContentViewId);
         mYearView = (YearSelectLayout) findViewById(R.id.selectLayout);
         if (mContentView != null) {

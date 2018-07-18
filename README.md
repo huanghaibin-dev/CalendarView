@@ -1,5 +1,5 @@
 # CalenderView
-Android上一个优雅、高度自定义、性能高效的日历控件，完美支持周视图，支持标记、自定义颜色、农历等，任意控制月视图显示、自定义周起始等。Canvas绘制，速度快、占用内存低，，支持简单定制即可实现任意自定义布局、自定义UI，支持收缩展开、性能非常高效，
+Android上一个优雅、高度自定义、性能高效的日历控件，完美支持周视图，支持标记、自定义颜色、农历等，任意控制月视图显示、自定义周起始等。Canvas绘制，极速性能、占用内存低，，支持简单定制即可实现任意自定义布局、自定义UI，支持收缩展开、性能非常高效，
 这个控件内存和效率优势相当明显，而且真正做到收缩+展开，适配多种场景，支持同时多种颜色标记日历事务，支持多点触控，你真的想不到日历还可以如此优雅！更多参考用法请移步Demo，Demo实现了4个精美的自定义效果。
 
 ### Support English Version
@@ -7,13 +7,13 @@ Android上一个优雅、高度自定义、性能高效的日历控件，完美�
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.3.8'
+compile 'com.haibin:calendarview:3.3.9'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.3.8</version>
+  <version>3.3.9</version>
   <type>pom</type>
 </dependency>
 ```
@@ -227,7 +227,19 @@ public void setOnDateSelectedListener(OnDateSelectedListener listener);//日期�
 
 public void setOnDateLongClickListener(OnDateLongClickListener listener);//日期长按事件
 
+@Deprecated
 public void setSchemeDate(List<Calendar> mSchemeDate);//标记日期
+
+/**
+  * 标记哪些日期有事件
+  * 如果标记的日期数量很大，mSchemeDatesMap.size()>10000?,请使用这个
+  * key=Calendar.toString();
+  * 优势？Android的用户相应时间一旦大于16ms,UI就会卡顿，Map在数据增长量巨大时，查找性能上不会损耗，
+  * List的性能就会差很大，List.contains()会遍历整个数组，性能太差
+  *
+  * @param mSchemeDates mSchemeDatesMap 通过自己的需求转换即可
+*/
+public void setSchemeDate(Map<String, Calendar> mSchemeDates);//标记日期
 
 public void update();//动态更新
 

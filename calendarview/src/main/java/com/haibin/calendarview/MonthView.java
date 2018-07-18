@@ -18,7 +18,6 @@ package com.haibin.calendarview;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.text.TextUtils;
 import android.view.View;
 
 /**
@@ -324,16 +323,10 @@ public abstract class MonthView extends BaseView {
         } else {
             mLineCount = (preDiff + monthDayCount + mNextDiff) / 7;
         }
-
-        if (mDelegate.mSchemeDate != null) {
-            for (Calendar a : mItems) {
-                if(mDelegate.mSchemeDate.contains(a)){
-                    Calendar d = mDelegate.mSchemeDate.get(mDelegate.mSchemeDate.indexOf(a));
-                    a.setScheme(TextUtils.isEmpty(d.getScheme()) ? mDelegate.getSchemeText() : d.getScheme());
-                    a.setSchemeColor(d.getSchemeColor());
-                    a.setSchemes(d.getSchemes());
-                }
-            }
+        if (mDelegate.getSchemeType() == CalendarViewDelegate.SCHEME_TYPE_LIST) {
+            addSchemesFromList();
+        } else {
+            addSchemesFromMap();
         }
         invalidate();
     }
@@ -342,39 +335,12 @@ public abstract class MonthView extends BaseView {
     void updateCurrentDate() {
         if (mItems == null)
             return;
-
         if (mItems.contains(mDelegate.getCurrentDay())) {
             for (Calendar a : mItems) {//添加操作
                 a.setCurrentDay(false);
             }
             int index = mItems.indexOf(mDelegate.getCurrentDay());
             mItems.get(index).setCurrentDay(true);
-        }
-        invalidate();
-    }
-
-    @Override
-    void update() {
-        if (mDelegate.mSchemeDate == null || mDelegate.mSchemeDate.size() == 0) {//清空操作
-            for (Calendar a : mItems) {
-                a.setScheme("");
-                a.setSchemeColor(0);
-                a.setSchemes(null);
-            }
-            invalidate();
-            return;
-        }
-        for (Calendar a : mItems) {//添加操作
-            if (mDelegate.mSchemeDate.contains(a)) {
-                Calendar d = mDelegate.mSchemeDate.get(mDelegate.mSchemeDate.indexOf(a));
-                a.setScheme(TextUtils.isEmpty(d.getScheme()) ? mDelegate.getSchemeText() : d.getScheme());
-                a.setSchemeColor(d.getSchemeColor());
-                a.setSchemes(d.getSchemes());
-            } else {
-                a.setScheme("");
-                a.setSchemeColor(0);
-                a.setSchemes(null);
-            }
         }
         invalidate();
     }
