@@ -60,17 +60,17 @@ compile 'com.haibin:calendarview:3.3.9'
 ### Effect preview
 
 ###
-<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/custom_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/custom_shrink.png" height="650"/>
+<img src="https://github.com/huanghaibin-dev/CalendarView/raw/master/app/src/main/assets/custom_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/raw/master/app/src/main/assets/custom_shrink.png" height="650"/>
 ###
-<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/meizu_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/meizu_shrink.png" height="650"/>
+<img src="https://github.com/huanghaibin-dev/CalendarView/raw/master/app/src/main/assets/meizu_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/raw/master/app/src/main/assets/meizu_shrink.png" height="650"/>
 ###
 <img src="https://github.com/huanghaibin-dev/CalendarView/raw/master/app/src/main/assets/index_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/raw/master/app/src/main/assets/color_expand.png" height="650"/>
 ###
-<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/progress_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/progress_shrink.png" height="650"/>
+<img src="https://github.com/huanghaibin-dev/CalendarView/raw/master/app/src/main/assets/progress_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/raw/master/app/src/main/assets/progress_shrink.png" height="650"/>
 ###
-<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/solar_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/solar_shrink.png" height="650"/>
+<img src="https://github.com/huanghaibin-dev/CalendarView/raw/master/app/src/main/assets/solar_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/raw/master/app/src/main/assets/solar_shrink.png" height="650"/>
 ###
-<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/year_view.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/simple_expand.png" height="650"/>
+<img src="https://github.com/huanghaibin-dev/CalendarView/raw/master/app/src/main/assets/year_view.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/raw/master/app/src/main/assets/simple_expand.png" height="650"/>
 
 
 
@@ -194,12 +194,6 @@ app:week_bar_view="com.haibin.calendarviewproject.EnglishWeekBar"
              <enum name="mon" value="2" />
              <enum name="sat" value="7" />
         </attr>
-
-        <!-- select_mode -->
-        <attr name="select_mode">
-              <enum name="default_mode" value="0" />
-              <enum name="single_mode" value="1" />
-        </attr>
 </declare-styleable>
 ```
 ### CalendarView api
@@ -223,20 +217,7 @@ public void setOnDateSelectedListener(OnDateSelectedListener listener);//date se
 
 public void setOnDateLongClickListener(OnDateLongClickListener listener);//date long click listener
 
-
-@Deprecated
 public void setSchemeDate(List<Calendar> mSchemeDate);//mark dates
-
-/**
-  * mark dates
-  * when mSchemeDatesMap.size()>10000?,use this
-  * key=Calendar.toString();
-  * best performance
-  *
-  * @param mSchemeDates mSchemeDatesMap 通过自己的需求转换即可
-*/
-public void setSchemeDate(Map<String, Calendar> mSchemeDates);//mark dates
-
 
 public void update();//update change
 
