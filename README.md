@@ -7,13 +7,13 @@ Android上一个优雅、高度自定义、性能高效的日历控件，完美�
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.3.9'
+compile 'com.haibin:calendarview:3.4.0'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.3.9</version>
+  <version>3.4.0</version>
   <type>pom</type>
 </dependency>
 ```
@@ -63,6 +63,8 @@ compile 'com.haibin:calendarview:3.3.9'
 ### 如果你需要完全定制UI，参考demo，简单几步即可绘制你需要的效果，一般只需要实现三个回调函数绘制你需要的特效即可，自定义日历UI需要同时自定义周视图，真正做到热插拔效果，方便大众定制各种UI需求
 
 ### 效果预览
+### 功能性展示
+<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/main_zh_func.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/main_zh_list.png" height="650"/>
 ### 中国式变态需求风格
 <img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/custom_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/custom_shrink.png" height="650"/>
 ### 收缩展开的魅族风格效果

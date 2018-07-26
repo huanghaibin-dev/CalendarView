@@ -1,6 +1,8 @@
 package com.haibin.calendarviewproject;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +16,9 @@ import com.haibin.calendarview.CalendarView;
 import com.haibin.calendarviewproject.base.activity.BaseActivity;
 import com.haibin.calendarviewproject.colorful.ColorfulActivity;
 import com.haibin.calendarviewproject.custom.CustomActivity;
+import com.haibin.calendarviewproject.custom.CustomMonthView;
+import com.haibin.calendarviewproject.custom.CustomWeekBar;
+import com.haibin.calendarviewproject.custom.CustomWeekView;
 import com.haibin.calendarviewproject.index.IndexActivity;
 import com.haibin.calendarviewproject.meizu.MeiZuActivity;
 import com.haibin.calendarviewproject.pager.ViewPagerActivity;
@@ -33,6 +38,7 @@ public class MainActivity extends BaseActivity implements
         CalendarView.OnYearChangeListener,
         CalendarView.OnDateLongClickListener,
         CalendarView.OnViewChangeListener,
+        DialogInterface.OnClickListener,
         View.OnClickListener {
 
     TextView mTextMonthDay;
@@ -48,6 +54,10 @@ public class MainActivity extends BaseActivity implements
     RelativeLayout mRelativeTool;
     private int mYear;
     CalendarLayout mCalendarLayout;
+
+    private AlertDialog mMoreDialog;
+
+    private AlertDialog mFuncDialog;
 
     @Override
     protected int getLayoutId() {
@@ -83,6 +93,55 @@ public class MainActivity extends BaseActivity implements
                 mCalendarView.scrollToCurrent();
                 //mCalendarView.scrollToCalendar(2018,7,14);
                 Log.e("scrollToCurrent", "   --  " + mCalendarView.getSelectedCalendar());
+            }
+        });
+        findViewById(R.id.iv_more).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mMoreDialog == null) {
+                    mMoreDialog = new AlertDialog.Builder(MainActivity.this)
+                            .setTitle(R.string.list_dialog_title)
+                            .setItems(R.array.list_dialog_items, MainActivity.this)
+                            .create();
+                }
+                mMoreDialog.show();
+            }
+        });
+
+        final DialogInterface.OnClickListener listener =
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                mCalendarLayout.expand();
+                                break;
+                            case 1:
+                                mCalendarLayout.shrink();
+                                break;
+                            case 2:
+                                mCalendarView.scrollToPre(true);
+                                break;
+                            case 3:
+                                mCalendarView.scrollToNext(true);
+                                break;
+                            case 4:
+                                mCalendarView.scrollToCurrent(true);
+                                break;
+                        }
+                    }
+                };
+
+        findViewById(R.id.iv_func).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mFuncDialog == null) {
+                    mFuncDialog = new AlertDialog.Builder(MainActivity.this)
+                            .setTitle(R.string.func_dialog_title)
+                            .setItems(R.array.func_dialog_items, listener)
+                            .create();
+                }
+                mFuncDialog.show();
             }
         });
 
@@ -219,10 +278,49 @@ public class MainActivity extends BaseActivity implements
     }
 
     @Override
+    public void onClick(DialogInterface dialog, int which) {
+        switch (which) {
+            case 0:
+                mCalendarView.setWeekStarWithSun();
+                break;
+            case 1:
+                mCalendarView.setWeekStarWithMon();
+                break;
+            case 2:
+                mCalendarView.setWeekStarWithSat();
+                break;
+            case 3:
+                if (mCalendarView.isSingleSelectMode()) {
+                    mCalendarView.setSelectDefaultMode();
+                } else {
+                    mCalendarView.setSelectSingleMode();
+                }
+                break;
+            case 4:
+                mCalendarView.setWeekView(CustomWeekView.class);
+                mCalendarView.setMonthView(CustomMonthView.class);
+                mCalendarView.setWeekBar(CustomWeekBar.class);
+                break;
+            case 5:
+                mCalendarView.setAllMode();
+                break;
+            case 6:
+                mCalendarView.setOnlyCurrentMode();
+                break;
+            case 7:
+                mCalendarView.setFixMode();
+                break;
+        }
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ll_flyme:
                 MeiZuActivity.show(this);
+                break;
+            case R.id.ll_custom:
+                CustomActivity.show(this);
                 break;
             case R.id.ll_simple:
                 SimpleActivity.show(this);
@@ -245,9 +343,7 @@ public class MainActivity extends BaseActivity implements
             case R.id.ll_progress:
                 ProgressActivity.show(this);
                 break;
-            case R.id.ll_custom:
-                CustomActivity.show(this);
-                break;
+
         }
     }
 

@@ -59,14 +59,28 @@
                 tools:ignore="SmallSp" />
         </LinearLayout>
 
+        <ImageView
+            android:id="@+id/iv_func"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="12dp"
+            android:layout_toLeftOf="@+id/iv_more"
+            android:background="@drawable/bg_ripple"
+            android:padding="4dp"
+            android:tint="#333333"
+            android:src="@mipmap/ic_func" />
+
+
         <FrameLayout
             android:id="@+id/fl_current"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="12dp"
-            android:background="@drawable/bg_ripple">
+            android:layout_toLeftOf="@+id/iv_more"
+            android:background="@drawable/bg_ripple"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/ib_calendar"
@@ -74,7 +88,7 @@
                 android:layout_height="match_parent"
                 android:contentDescription="@string/app_name"
                 android:scaleType="centerInside"
-                android:src="@mipmap/menu_action_calendar_mvp"
+                android:src="@mipmap/ic_calendar"
                 android:tint="#000000" />
 
             <TextView
@@ -88,6 +102,21 @@
                 android:textColor="#000000"
                 android:textSize="12sp" />
         </FrameLayout>
+
+        <ImageView
+            android:id="@+id/iv_more"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="12dp"
+            android:background="@drawable/bg_ripple"
+            android:contentDescription="@string/app_name"
+            android:padding="6dp"
+            android:scaleType="centerInside"
+            android:src="@mipmap/ic_more"
+            android:tint="#333333" />
+
 
     </RelativeLayout>
 

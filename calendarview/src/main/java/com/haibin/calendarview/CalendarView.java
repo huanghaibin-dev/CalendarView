@@ -436,7 +436,6 @@ public class CalendarView extends FrameLayout {
      *
      * @param smoothScroll smoothScroll
      */
-    @SuppressWarnings("all")
     public void scrollToNext(boolean smoothScroll) {
         if (isYearSelectLayoutVisible()) {
             mSelectLayout.setCurrentItem(mSelectLayout.getCurrentItem() + 1, smoothScroll);
@@ -460,7 +459,6 @@ public class CalendarView extends FrameLayout {
      *
      * @param smoothScroll smoothScroll
      */
-    @SuppressWarnings("all")
     public void scrollToPre(boolean smoothScroll) {
         if (isYearSelectLayoutVisible()) {
             mSelectLayout.setCurrentItem(mSelectLayout.getCurrentItem() - 1, smoothScroll);
@@ -530,6 +528,74 @@ public class CalendarView extends FrameLayout {
             return;
         }
         mSelectLayout.scrollToYear(year, smoothScroll);
+    }
+
+
+    /**
+     * 设置月视图
+     *
+     * @param cls MonthView.class
+     */
+    public void setMonthView(Class<?> cls) {
+        if (cls == null) {
+            return;
+        }
+        String monthViewClassPath = cls.getName();
+        if (monthViewClassPath.equals(mDelegate.getMonthViewClass()) &&
+                !TextUtils.isEmpty(mDelegate.getMonthViewClass())) {
+            return;
+        }
+        mDelegate.setMonthViewClass(monthViewClassPath);
+        mMonthPager.updateMonthViewClass();
+    }
+
+    /**
+     * 设置周视图
+     *
+     * @param cls WeekView.class
+     */
+    public void setWeekView(Class<?> cls) {
+        if (cls == null) {
+            return;
+        }
+        String weekViewClassPath = cls.getName();
+        if (weekViewClassPath.equals(mDelegate.getWeekViewClass()) &&
+                !TextUtils.isEmpty(mDelegate.getWeekViewClass())) {
+            return;
+        }
+        mDelegate.setWeekViewClass(weekViewClassPath);
+        mWeekPager.updateWeekViewClass();
+    }
+
+    /**
+     * 设置周栏视图
+     *
+     * @param cls WeekBar.class
+     */
+    public void setWeekBar(Class<?> cls) {
+        if (cls == null) {
+            return;
+        }
+        String weekBarClassPath = cls.getName();
+        if (weekBarClassPath.equals(mDelegate.getWeekBarClass()) &&
+                !TextUtils.isEmpty(mDelegate.getWeekBarClass())) {
+            return;
+        }
+        mDelegate.setWeekBarClass(weekBarClassPath);
+        FrameLayout frameContent = (FrameLayout) findViewById(R.id.frameContent);
+        frameContent.removeView(mWeekBar);
+
+        try {
+            Constructor constructor = cls.getConstructor(Context.class);
+            mWeekBar = (WeekBar) constructor.newInstance(getContext());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        frameContent.addView(mWeekBar, 2);
+        mWeekBar.setup(mDelegate);
+        mWeekBar.onWeekStartChange(mDelegate.getWeekStart());
+        this.mMonthPager.mWeekBar = mWeekBar;
+        mWeekBar.onDateSelected(mDelegate.mSelectedCalendar, mDelegate.getWeekStart(), false);
     }
 
     /**
@@ -804,7 +870,12 @@ public class CalendarView extends FrameLayout {
         if (mDelegate.getSelectMode() == CalendarViewDelegate.SELECT_MODE_DEFAULT) {
             return;
         }
+        mDelegate.mSelectedCalendar = mDelegate.mIndexCalendar;
         mDelegate.setSelectMode(CalendarViewDelegate.SELECT_MODE_DEFAULT);
+        mWeekBar.onDateSelected(mDelegate.mSelectedCalendar, mDelegate.getWeekStart(), false);
+        mMonthPager.updateDefaultSelect();
+        mWeekPager.updateDefaultSelect();
+
     }
 
     /**
@@ -815,6 +886,8 @@ public class CalendarView extends FrameLayout {
             return;
         }
         mDelegate.setSelectMode(CalendarViewDelegate.SELECT_MODE_SINGLE);
+        mWeekPager.updateSelected();
+        mMonthPager.updateSelected();
     }
 
     /**
@@ -859,9 +932,16 @@ public class CalendarView extends FrameLayout {
         mWeekPager.updateWeekStart();
         mMonthPager.updateWeekStart();
         mSelectLayout.updateWeekStart();
-        mWeekPager.notifyDataSetChanged();
     }
 
+    /**
+     * 是否是单选模式
+     *
+     * @return isSingleSelectMode
+     */
+    public boolean isSingleSelectMode() {
+        return mDelegate.getSelectMode() == CalendarViewDelegate.SELECT_MODE_SINGLE;
+    }
 
     /**
      * 设置显示模式为全部

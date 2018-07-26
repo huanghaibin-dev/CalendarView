@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">CalendarViewProject</string>
+
+    <string-array name="english_week_string_array">
+        <item>日</item>
+        <item>一</item>
+        <item>二</item>
+        <item>三</item>
+        <item>四</item>
+        <item>五</item>
+        <item>六</item>
+    </string-array>
+
+    <string-array name="chinese_week_string_array">
+        <item>周日</item>
+        <item>周一</item>
+        <item>周二</item>
+        <item>周三</item>
+        <item>周四</item>
+        <item>周五</item>
+        <item>周六</item>
+    </string-array>
+
+    <string name="list_dialog_title">动态更新</string>
+
+    <string name="func_dialog_title">功能支持</string>
+
+    <string-array name="list_dialog_items">
+        <item>周日为周起始</item>
+        <item>周一为周起始</item>
+        <item>周六为周起始</item>
+        <item>更换选择模式：单选/默认</item>
+        <item>热插拔更换周月视图</item>
+        <item>月视图模式：全部显示</item>
+        <item>月视图模式：仅当前月份</item>
+        <item>月视图模式：自动填充</item>
+    </string-array>
+
+    <string-array name="func_dialog_items">
+        <item>展开日历布局</item>
+        <item>收缩日历布局</item>
+        <item>上一页</item>
+        <item>下一页</item>
+        <item>返回今天</item>
+    </string-array>
+</resources>

@@ -621,6 +621,18 @@ final class CalendarViewDelegate {
         this.preventLongPressedSelected = preventLongPressedSelected;
     }
 
+    void setMonthViewClass(String monthViewClass) {
+        this.mMonthViewClass = monthViewClass;
+    }
+
+    void setWeekBarClass(String weekBarClass) {
+        this.mWeekBarClass = weekBarClass;
+    }
+
+    void setWeekViewClass(String weekViewClass) {
+        this.mWeekViewClass = weekViewClass;
+    }
+
     boolean isPreventLongPressedSelected() {
         return preventLongPressedSelected;
     }

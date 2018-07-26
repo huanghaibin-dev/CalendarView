@@ -74,7 +74,7 @@
                 android:layout_height="match_parent"
                 android:contentDescription="@string/app_name"
                 android:scaleType="centerInside"
-                android:src="@mipmap/menu_action_calendar_mvp"
+                android:src="@mipmap/ic_calendar"
                 android:tint="#000000" />
 
             <TextView

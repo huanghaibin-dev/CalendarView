@@ -5,13 +5,13 @@ This widget has obvious advantages of memory and efficiency, adapt to many scene
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.3.9'
+compile 'com.haibin:calendarview:3.4.0'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.3.9</version>
+  <version>3.4.0</version>
   <type>pom</type>
 </dependency>
 ```
@@ -58,7 +58,8 @@ compile 'com.haibin:calendarview:3.3.9'
 ### If you want to use the English version, it means you don't need to use the lunar calendar, customize MonthView and WeekView, and refer to Demo.
 
 ### Effect preview
-
+### Function List
+<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/main_en_func.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/main_en_list.png" height="650"/>
 ###
 <img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/custom_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/custom_shrink.png" height="650"/>
 ###
