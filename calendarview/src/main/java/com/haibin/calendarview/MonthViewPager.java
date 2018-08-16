@@ -137,10 +137,11 @@ public final class MonthViewPager extends ViewPager {
                     }
                 }
 
+                mDelegate.updateSelectCalendarScheme();
                 if (!isUsingScrollToCalendar && mDelegate.getSelectMode() != CalendarViewDelegate.SELECT_MODE_SINGLE) {
                     mWeekBar.onDateSelected(mDelegate.mSelectedCalendar, mDelegate.getWeekStart(), false);
                     if (mDelegate.mDateSelectedListener != null) {
-                        mDelegate.mDateSelectedListener.onDateSelected(calendar, false);
+                        mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar, false);
                     }
                 }
 
@@ -231,6 +232,7 @@ public final class MonthViewPager extends ViewPager {
         LunarCalendar.setupLunarCalendar(calendar);
         mDelegate.mIndexCalendar = calendar;
         mDelegate.mSelectedCalendar = calendar;
+        mDelegate.updateSelectCalendarScheme();
         int y = calendar.getYear() - mDelegate.getMinYear();
         int position = 12 * y + calendar.getMonth() - mDelegate.getMinYearMonth();
         int curItem = getCurrentItem();
@@ -286,7 +288,7 @@ public final class MonthViewPager extends ViewPager {
             }
         }
         if (mDelegate.mDateSelectedListener != null && getVisibility() == VISIBLE) {
-            mDelegate.mDateSelectedListener.onDateSelected(mDelegate.createCurrentDate(), false);
+            mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar, false);
         }
     }
 

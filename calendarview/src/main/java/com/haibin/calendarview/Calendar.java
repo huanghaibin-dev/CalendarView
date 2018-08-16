@@ -333,6 +333,22 @@ public final class Calendar implements Serializable {
         return year + "" + (month < 10 ? "0" + month : month) + "" + (day < 10 ? "0" + day : day);
     }
 
+
+    void mergeScheme(Calendar calendar, String defaultScheme) {
+        if (calendar == null)
+            return;
+        setScheme(TextUtils.isEmpty(calendar.getScheme()) ?
+                defaultScheme : calendar.getScheme());
+        setSchemeColor(calendar.getSchemeColor());
+        setSchemes(calendar.getSchemes());
+    }
+
+    void clearScheme() {
+        setScheme("");
+        setSchemeColor(0);
+        setSchemes(null);
+    }
+
     /**
      * 事件标记服务，现在多类型的事务标记建议使用这个
      */

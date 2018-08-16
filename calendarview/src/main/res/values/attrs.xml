@@ -8,6 +8,7 @@
         <attr name="week_line_background" format="color" /><!--线条颜色-->
         <attr name="week_text_color" format="color" /><!--周栏字体颜色-->
         <attr name="week_text_size" format="dimension" /><!--周栏字体大小-->
+        <attr name="week_line_margin" format="dimension" /><!--线条margin-->
 
         <attr name="month_view" format="string" /><!--完全自定义月视图-->
 
