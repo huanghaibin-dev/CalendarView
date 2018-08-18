@@ -114,7 +114,10 @@ public class CalendarView extends FrameLayout {
         this.mWeekLine = findViewById(R.id.line);
         this.mWeekLine.setBackgroundColor(mDelegate.getWeekLineBackground());
         FrameLayout.LayoutParams lineParams = (FrameLayout.LayoutParams) this.mWeekLine.getLayoutParams();
-        lineParams.setMargins(lineParams.leftMargin, mDelegate.getWeekBarHeight(), lineParams.rightMargin, 0);
+        lineParams.setMargins(mDelegate.getWeekLineMargin(),
+                mDelegate.getWeekBarHeight(),
+                mDelegate.getWeekLineMargin(),
+                0);
         this.mWeekLine.setLayoutParams(lineParams);
 
         this.mMonthPager = (MonthViewPager) findViewById(R.id.vp_month);
@@ -413,6 +416,7 @@ public class CalendarView extends FrameLayout {
         }
         mDelegate.mSelectedCalendar = mDelegate.createCurrentDate();
         mDelegate.mIndexCalendar = mDelegate.mSelectedCalendar;
+        mDelegate.updateSelectCalendarScheme();
         mWeekBar.onDateSelected(mDelegate.mSelectedCalendar, mDelegate.getWeekStart(), false);
         if (mMonthPager.getVisibility() == VISIBLE) {
             mMonthPager.scrollToCurrent(smoothScroll);
@@ -632,17 +636,20 @@ public class CalendarView extends FrameLayout {
      */
     public void setOnDateSelectedListener(OnDateSelectedListener listener) {
         this.mDelegate.mDateSelectedListener = listener;
-        if (mDelegate.mDateSelectedListener != null) {
-            if (!CalendarUtil.isCalendarInRange(mDelegate.mSelectedCalendar, mDelegate)) {
-                return;
-            }
-            post(new Runnable() {
-                @Override
-                public void run() {
-                    mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar, false);
-                }
-            });
+        if (mDelegate.mDateSelectedListener == null) {
+            return;
         }
+        if (!CalendarUtil.isCalendarInRange(mDelegate.mSelectedCalendar, mDelegate)) {
+            return;
+        }
+
+        post(new Runnable() {
+            @Override
+            public void run() {
+                mDelegate.updateSelectCalendarScheme();
+                mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar, false);
+            }
+        });
     }
 
     /**
@@ -1071,7 +1078,6 @@ public class CalendarView extends FrameLayout {
          */
         void onDateSelected(Calendar calendar, boolean isClick);
     }
-
 
     /**
      * 外部日期长按事件

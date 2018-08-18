@@ -74,9 +74,10 @@ public abstract class WeekView extends BaseView {
             if (calendar != null) {
                 if (!CalendarUtil.isCalendarInRange(calendar, mDelegate.getMinYear(),
                         mDelegate.getMinYearMonth(), mDelegate.getMaxYear(), mDelegate.getMaxYearMonth())) {
-                    mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);
                     return;
                 }
+
+                mCurrentItem = mItems.indexOf(calendar);
 
                 if (mDelegate.mInnerListener != null) {
                     mDelegate.mInnerListener.onWeekDateSelected(calendar, true);
@@ -103,20 +104,20 @@ public abstract class WeekView extends BaseView {
         if (isClick) {
             Calendar calendar = getIndex();
             if (calendar != null) {
-
                 boolean isCalendarInRange = CalendarUtil.isCalendarInRange(calendar, mDelegate.getMinYear(),
                         mDelegate.getMinYearMonth(), mDelegate.getMaxYear(), mDelegate.getMaxYearMonth());
 
                 if (mDelegate.isPreventLongPressedSelected() && isCalendarInRange) {//如果启用拦截长按事件不选择日期
                     mDelegate.mDateLongClickListener.onDateLongClick(calendar);
-                    mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);
                     return true;
                 }
 
                 if (!isCalendarInRange) {
-                    mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);
                     return false;
                 }
+
+                mCurrentItem = mItems.indexOf(calendar);
+
                 mDelegate.mIndexCalendar = mDelegate.mSelectedCalendar;
 
                 if (mDelegate.mInnerListener != null) {
@@ -213,21 +214,22 @@ public abstract class WeekView extends BaseView {
         return isMinEdge ? 6 : 0;
     }
 
+
     /**
      * 获取点击的日历
      *
      * @return 获取点击的日历
      */
-    private Calendar getIndex() {
+    protected Calendar getIndex() {
 
         int indexX = (int) mX / mItemWidth;
         if (indexX >= 7) {
             indexX = 6;
         }
         int indexY = (int) mY / mItemHeight;
-        mCurrentItem = indexY * 7 + indexX;// 选择项
-        if (mCurrentItem >= 0 && mCurrentItem < mItems.size())
-            return mItems.get(mCurrentItem);
+        int position = indexY * 7 + indexX;// 选择项
+        if (position >= 0 && position < mItems.size())
+            return mItems.get(position);
         return null;
     }
 

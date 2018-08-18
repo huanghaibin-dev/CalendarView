@@ -7,13 +7,13 @@ Android上一个优雅、高度自定义、性能高效的日历控件，完美�
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.4.0'
+compile 'com.haibin:calendarview:3.4.1'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.4.0</version>
+  <version>3.4.1</version>
   <type>pom</type>
 </dependency>
 ```
@@ -138,6 +138,7 @@ app:week_bar_view="com.haibin.calendarviewproject.EnglishWeekBar"
         <attr name="week_view" format="string" /> <!--自定义类周视图路径-->
         <attr name="week_bar_height" format="dimension" /> <!--星期栏的高度-->
         <attr name="week_bar_view" format="color" /> <!--自定义类周栏路径，通过自定义则 week_text_color week_background xml设置无效，当仍可java api设置-->
+        <attr name="week_line_margin" format="dimension" /><!--线条margin-->
 
         <attr name="week_line_background" format="color" /><!--线条颜色-->
         <attr name="week_background" format="color" /> <!--星期栏的背景-->

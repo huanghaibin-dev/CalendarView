@@ -139,15 +139,15 @@ public abstract class MonthView extends BaseView {
 
                 if (mDelegate.getMonthViewShowMode() == CalendarViewDelegate.MODE_ONLY_CURRENT_MONTH &&
                         !calendar.isCurrentMonth()) {
-                    mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);
                     return;
                 }
 
                 if (!CalendarUtil.isCalendarInRange(calendar, mDelegate.getMinYear(),
                         mDelegate.getMinYearMonth(), mDelegate.getMaxYear(), mDelegate.getMaxYearMonth())) {
-                    mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);
                     return;
                 }
+
+                mCurrentItem = mItems.indexOf(calendar);
 
                 if (!calendar.isCurrentMonth() && mMonthViewPager != null) {
                     int cur = mMonthViewPager.getCurrentItem();
@@ -189,20 +189,19 @@ public abstract class MonthView extends BaseView {
 
                 if (mDelegate.isPreventLongPressedSelected() && isCalendarInRange) {
                     mDelegate.mDateLongClickListener.onDateLongClick(calendar);
-                    mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);
                     return true;
                 }
 
                 if (mDelegate.getMonthViewShowMode() == CalendarViewDelegate.MODE_ONLY_CURRENT_MONTH &&
                         !calendar.isCurrentMonth()) {
-                    mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);
                     return false;
                 }
 
                 if (!isCalendarInRange) {
-                    mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);
                     return false;
                 }
+
+                mCurrentItem = mItems.indexOf(calendar);
 
                 if (!calendar.isCurrentMonth() && mMonthViewPager != null) {
                     int cur = mMonthViewPager.getCurrentItem();
@@ -234,18 +233,22 @@ public abstract class MonthView extends BaseView {
         return false;
     }
 
-    private Calendar getIndex() {
+    /**
+     * 获取点击选中的日期
+     *
+     * @return return
+     */
+    protected Calendar getIndex() {
         int indexX = (int) mX / mItemWidth;
         if (indexX >= 7) {
             indexX = 6;
         }
         int indexY = (int) mY / mItemHeight;
-        mCurrentItem = indexY * 7 + indexX;// 选择项
-        if (mCurrentItem >= 0 && mCurrentItem < mItems.size())
-            return mItems.get(mCurrentItem);
+        int position = indexY * 7 + indexX;// 选择项
+        if (position >= 0 && position < mItems.size())
+            return mItems.get(position);
         return null;
     }
-
 
     /**
      * 记录已经选择的日期

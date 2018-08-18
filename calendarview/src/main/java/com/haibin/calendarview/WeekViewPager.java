@@ -125,6 +125,7 @@ public final class WeekViewPager extends ViewPager {
         LunarCalendar.setupLunarCalendar(calendar);
         mDelegate.mIndexCalendar = calendar;
         mDelegate.mSelectedCalendar = calendar;
+        mDelegate.updateSelectCalendarScheme();
         updateSelected(calendar, smoothScroll);
         if (mDelegate.mInnerListener != null) {
             mDelegate.mInnerListener.onWeekDateSelected(calendar, false);
@@ -157,7 +158,7 @@ public final class WeekViewPager extends ViewPager {
             view.invalidate();
         }
         if (mDelegate.mDateSelectedListener != null && getVisibility() == VISIBLE) {
-            mDelegate.mDateSelectedListener.onDateSelected(mDelegate.createCurrentDate(), false);
+            mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar, false);
         }
         if (getVisibility() == VISIBLE) {
             mDelegate.mInnerListener.onWeekDateSelected(mDelegate.getCurrentDay(), false);

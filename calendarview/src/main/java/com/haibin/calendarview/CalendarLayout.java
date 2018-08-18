@@ -224,8 +224,8 @@ public class CalendarLayout extends LinearLayout {
             mContentViewTranslateY = CalendarUtil.getMonthViewHeight(calendar.getYear(), calendar.getMonth(), mItemHeight, mDelegate.getWeekStart())
                     - mItemHeight;
         }
-        //已经显示周视图，如果月视图高度是动态改变的，则需要动态平移contentView的高度
-        if (mWeekPager.getVisibility() == VISIBLE && mDelegate.getMonthViewShowMode() != CalendarViewDelegate.MODE_ALL_MONTH) {
+        //已经显示周视图，则需要动态平移contentView的高度
+        if (mWeekPager.getVisibility() == VISIBLE) {
             if (mContentView == null)
                 return;
             mContentView.setTranslationY(-mContentViewTranslateY);
@@ -288,7 +288,7 @@ public class CalendarLayout extends LinearLayout {
                 }
                 hideWeek();
 
-                //向下滑动，并且contentView已经完全到底部
+                //向下滑动，并且contentView已经完全平移到底部
                 if (dy > 0 && mContentView.getTranslationY() + dy >= 0) {
                     mContentView.setTranslationY(0);
                     translationViewPager();
@@ -428,6 +428,7 @@ public class CalendarLayout extends LinearLayout {
             int heightSpec = MeasureSpec.makeMeasureSpec(h,
                     MeasureSpec.EXACTLY);
             mContentView.measure(widthMeasureSpec, heightSpec);
+            mContentView.layout(mContentView.getLeft(), mContentView.getTop(), mContentView.getRight(), mContentView.getBottom());
         }
     }
 
@@ -659,6 +660,7 @@ public class CalendarLayout extends LinearLayout {
     /**
      * 隐藏内容布局
      */
+    @SuppressLint("NewApi")
     final void hideContentView() {
         if (mContentView == null)
             return;
@@ -679,6 +681,7 @@ public class CalendarLayout extends LinearLayout {
     /**
      * 显示内容布局
      */
+    @SuppressLint("NewApi")
     final void showContentView() {
         if (mContentView == null)
             return;
@@ -702,7 +705,6 @@ public class CalendarLayout extends LinearLayout {
         return mMonthView.getVisibility() == VISIBLE ? mDelegate.getWeekBarHeight() + mMonthView.getHeight() :
                 mDelegate.getWeekBarHeight() + mDelegate.getCalendarItemHeight();
     }
-
 
     /**
      * 如果有十分特别的ContentView，可以自定义实现这个接口

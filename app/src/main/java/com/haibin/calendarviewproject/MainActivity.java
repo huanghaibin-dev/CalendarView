@@ -90,7 +90,7 @@ public class MainActivity extends BaseActivity implements
         findViewById(R.id.fl_current).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCalendarView.scrollToCurrent();
+                //mCalendarView.scrollToCurrent();
                 //mCalendarView.scrollToCalendar(2018,7,14);
                 Log.e("scrollToCurrent", "   --  " + mCalendarView.getSelectedCalendar());
             }
@@ -127,6 +127,7 @@ public class MainActivity extends BaseActivity implements
                                 break;
                             case 4:
                                 mCalendarView.scrollToCurrent(true);
+                                //mCalendarView.scrollToCalendar(2018,7,14);
                                 break;
                         }
                     }
@@ -318,6 +319,8 @@ public class MainActivity extends BaseActivity implements
         switch (v.getId()) {
             case R.id.ll_flyme:
                 MeiZuActivity.show(this);
+                Log.e("scheme","  " + mCalendarView.getSelectedCalendar().getScheme() + "  --  "
+                + mCalendarView.getSelectedCalendar().isCurrentDay());
                 break;
             case R.id.ll_custom:
                 CustomActivity.show(this);
@@ -373,7 +376,9 @@ public class MainActivity extends BaseActivity implements
         Log.e("onDateSelected", "  -- " + calendar.getYear() +
                 "  --  " + calendar.getMonth() +
                 "  -- " + calendar.getDay() +
-                "  --  " + isClick);
+                "  --  " + isClick + "  --   " + calendar.getScheme());
+        Log.e("onDateSelected","  " + mCalendarView.getSelectedCalendar().getScheme() +
+                "  --  " + mCalendarView.getSelectedCalendar().isCurrentDay());
     }
 
     @Override

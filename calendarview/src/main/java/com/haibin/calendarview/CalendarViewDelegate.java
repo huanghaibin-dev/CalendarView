@@ -150,6 +150,11 @@ final class CalendarViewDelegate {
             mWeekBackground;
 
     /**
+     * 星期栏Line margin
+     */
+    private int mWeekLineMargin;
+
+    /**
      * 星期栏字体大小
      */
     private int mWeekTextSize;
@@ -298,6 +303,7 @@ final class CalendarViewDelegate {
         mWeekBarClass = array.getString(R.styleable.CalendarView_week_bar_view);
         mWeekTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_week_text_size, CalendarUtil.dipToPx(context, 12));
         mWeekBarHeight = (int) array.getDimension(R.styleable.CalendarView_week_bar_height, CalendarUtil.dipToPx(context, 40));
+        mWeekLineMargin = (int) array.getDimension(R.styleable.CalendarView_week_line_margin, CalendarUtil.dipToPx(context, 0));
 
         mSchemeText = array.getString(R.styleable.CalendarView_scheme_text);
         if (TextUtils.isEmpty(mSchemeText)) {
@@ -446,6 +452,9 @@ final class CalendarViewDelegate {
         return mWeekLineBackground;
     }
 
+    int getWeekLineMargin(){
+        return mWeekLineMargin;
+    }
 
     String getMonthViewClass() {
         return mMonthViewClass;
@@ -638,9 +647,27 @@ final class CalendarViewDelegate {
     }
 
     void clearSelectedScheme() {
-        mSelectedCalendar.setScheme(null);
-        mSelectedCalendar.setSchemeColor(0);
-        mSelectedCalendar.setSchemes(null);
+        mSelectedCalendar.clearScheme();
+    }
+
+    void updateSelectCalendarScheme() {
+        if (getSchemeType() == CalendarViewDelegate.SCHEME_TYPE_LIST &&
+                mSchemeDate != null &&
+                mSchemeDate.size() > 0) {
+            if (mSchemeDate.contains(mSelectedCalendar)) {
+                Calendar d = mSchemeDate.get(mSchemeDate.indexOf(mSelectedCalendar));
+                mSelectedCalendar.mergeScheme(d, getSchemeText());
+            }
+        }
+        if (getSchemeType() == CalendarViewDelegate.SCHEME_TYPE_MAP &&
+                mSchemeDatesMap != null &&
+                mSchemeDatesMap.size() > 0) {
+            String key = mSelectedCalendar.toString();
+            if (mSchemeDatesMap.containsKey(key)) {
+                Calendar d = mSchemeDatesMap.get(key);
+                mSelectedCalendar.mergeScheme(d, getSchemeText());
+            }
+        }
     }
 
     Calendar createCurrentDate() {
@@ -649,6 +676,7 @@ final class CalendarViewDelegate {
         calendar.setWeek(mCurrentDate.getWeek());
         calendar.setMonth(mCurrentDate.getMonth());
         calendar.setDay(mCurrentDate.getDay());
+        calendar.setCurrentDay(true);
         LunarCalendar.setupLunarCalendar(calendar);
         return calendar;
     }

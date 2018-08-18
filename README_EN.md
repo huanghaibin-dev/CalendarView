@@ -137,7 +137,8 @@ app:week_bar_view="com.haibin.calendarviewproject.EnglishWeekBar"
         <attr name="week_line_background" format="color" /><!--line color-->
         <attr name="week_background" format="color" /> <!--WeekBar background-->
         <attr name="week_text_color" format="color" /> <!--WeekBar textColor-->
-              <attr name="week_text_size" format="dimension" /><!--WeekBar textSize-->
+        <attr name="week_text_size" format="dimension" /><!--WeekBar textSize-->
+        <attr name="week_line_margin" format="dimension" /><!--week_line_margin-->
 
         <attr name="current_day_text_color" format="color" /> <!--today textColor-->
         <attr name="current_day_lunar_text_color" format="color" /><!--today lunarTextColo-->
