@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarLayout;
@@ -30,6 +31,7 @@ import java.util.Map;
 public class SingleActivity extends BaseActivity implements
         CalendarView.OnDateSelectedListener,
         CalendarView.OnYearChangeListener,
+        CalendarView.OnCalendarInterceptListener,
         CalendarView.OnMonthChangeListener,
         View.OnClickListener {
 
@@ -71,6 +73,9 @@ public class SingleActivity extends BaseActivity implements
         mTextMonthDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mYear == 0) {
+                    mYear = mCalendarView.getCurYear();
+                }
                 if (!mCalendarLayout.isExpand()) {
                     mCalendarView.showYearSelectLayout(mYear);
                     return;
@@ -91,6 +96,10 @@ public class SingleActivity extends BaseActivity implements
         mCalendarView.setOnDateSelectedListener(this);
         mCalendarView.setOnYearChangeListener(this);
         mCalendarView.setOnMonthChangeListener(this);
+
+        //设置日期拦截事件，仅适用单选模式，当前有效
+        mCalendarView.setOnCalendarInterceptListener(this);
+
         mTextYear.setText(String.valueOf(mCalendarView.getCurYear()));
         mYear = mCalendarView.getCurYear();
         mTextMonthDay.setText(mCalendarView.getCurMonth() + "月" + mCalendarView.getCurDay() + "日");
@@ -193,19 +202,49 @@ public class SingleActivity extends BaseActivity implements
                 "  --  " + calendar.getMonth() +
                 "  -- " + calendar.getDay() +
                 "  --  " + isClick);
+        if (!calendar.isAvailable()) {
+            mTextLunar.setText("");
+            mTextYear.setText("");
+            mTextMonthDay.setText("无效日期");
+        }
     }
 
     @SuppressLint("SetTextI18n")
     @Override
     public void onMonthChange(int year, int month) {
-        Calendar calendar = mCalendarView.getSelectedCalendar();
-        mTextLunar.setVisibility(View.VISIBLE);
-        mTextYear.setVisibility(View.VISIBLE);
-        mTextMonthDay.setText(calendar.getMonth() + "月" + calendar.getDay() + "日");
-        mTextYear.setText(String.valueOf(calendar.getYear()));
-        mTextLunar.setText(calendar.getLunar());
-        mYear = calendar.getYear();
+//        Calendar calendar = mCalendarView.getSelectedCalendar();
+//        mTextLunar.setVisibility(View.VISIBLE);
+//        mTextYear.setVisibility(View.VISIBLE);
+//        mTextMonthDay.setText(calendar.getMonth() + "月" + calendar.getDay() + "日");
+//        mTextYear.setText(String.valueOf(calendar.getYear()));
+//        mTextLunar.setText(calendar.getLunar());
+//        mYear = calendar.getYear();
     }
+
+
+    /**
+     * 屏蔽某些不可点击的日期，可根据自己的业务自行修改
+     * 如 calendar > 2018年1月1日 && calendar <= 2020年12月31日
+     *
+     * @param calendar calendar
+     * @return 是否屏蔽某些不可点击的日期，MonthView和WeekView有类似的API可调用
+     */
+    @Override
+    public boolean onCalendarIntercept(Calendar calendar) {
+        Log.e("onCalendarIntercept", calendar.toString());
+        int day = calendar.getDay();
+        return day == 1 || day == 3 || day == 6 || day == 11 ||
+                day == 12 || day == 15 || day == 20 || day == 26 ||
+                day == mCalendarView.getCurDay();
+    }
+
+    @Override
+    public void onCalendarInterceptClick(Calendar calendar, boolean isClick) {
+        Toast.makeText(this,
+                calendar.toString() + (isClick ? "拦截不可点击" : "拦截滚动到无效日期"),
+                Toast.LENGTH_SHORT).show();
+    }
+
 
     @Override
     public void onYearChange(int year) {

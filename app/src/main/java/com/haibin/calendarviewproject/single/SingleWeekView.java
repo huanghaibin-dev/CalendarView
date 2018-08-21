@@ -20,6 +20,13 @@ public class SingleWeekView extends WeekView {
     private Paint mRingPaint = new Paint();
     private int mRingRadius;
 
+    /**
+     * 不可用画笔
+     */
+    private Paint mDisablePaint = new Paint();
+
+    private int mH;
+
     public SingleWeekView(Context context) {
         super(context);
         //兼容硬件加速无效的代码
@@ -36,6 +43,13 @@ public class SingleWeekView extends WeekView {
         mRingPaint.setStrokeWidth(dipToPx(context, 1));
         setLayerType(View.LAYER_TYPE_SOFTWARE, mRingPaint);
         mRingPaint.setMaskFilter(new BlurMaskFilter(30, BlurMaskFilter.Blur.SOLID));
+
+        mDisablePaint.setColor(0xFF9f9f9f);
+        mDisablePaint.setAntiAlias(true);
+        mDisablePaint.setStrokeWidth(dipToPx(context,2));
+        mDisablePaint.setFakeBoldText(true);
+
+        mH = dipToPx(context, 18);
     }
 
     @Override
@@ -66,8 +80,8 @@ public class SingleWeekView extends WeekView {
 
     @Override
     protected void onDrawScheme(Canvas canvas, Calendar calendar, int x) {
-        int cx = x + mItemWidth / 2;
-        int cy = mItemHeight / 2;
+//        int cx = x + mItemWidth / 2;
+//        int cy = mItemHeight / 2;
         //canvas.drawCircle(cx, cy, mRadius, mSchemePaint);
     }
 
@@ -93,6 +107,11 @@ public class SingleWeekView extends WeekView {
                     baselineY,
                     calendar.isCurrentDay() ? mCurDayTextPaint :
                             calendar.isCurrentMonth() ? mCurMonthTextPaint : mOtherMonthTextPaint);
+        }
+
+        //日期是否可用？拦截
+        if (onCalendarIntercept(calendar)) {
+            canvas.drawLine(x + mH, mH, x + mItemWidth - mH, mItemHeight - mH, mDisablePaint);
         }
     }
 

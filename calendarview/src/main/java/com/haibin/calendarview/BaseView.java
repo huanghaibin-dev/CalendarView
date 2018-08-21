@@ -400,6 +400,17 @@ public abstract class BaseView extends View implements View.OnClickListener, Vie
         invalidate();
     }
 
+    /**
+     * 是否拦截日期，此设置续设置mCalendarInterceptListener
+     *
+     * @param calendar calendar
+     * @return 是否拦截日期
+     */
+    protected boolean onCalendarIntercept(Calendar calendar) {
+        return mDelegate.mCalendarInterceptListener != null &&
+                mDelegate.mCalendarInterceptListener.onCalendarIntercept(calendar);
+    }
+
     abstract void updateCurrentDate();
 
     protected abstract void onDestroy();

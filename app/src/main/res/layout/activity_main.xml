@@ -156,6 +156,8 @@
             app:selected_theme_color="#80cfcfcf"
             app:week_background="#fff"
             app:week_bar_height="46dp"
+            app:month_view="com.haibin.calendarviewproject.meizu.MeiZuMonthView"
+            app:week_view="com.haibin.calendarviewproject.meizu.MeizuWeekView"
             app:week_bar_view="com.haibin.calendarviewproject.EnglishWeekBar"
             app:week_line_background="#00000000"
             app:week_line_margin="16dp"

@@ -38,6 +38,7 @@ public class MainActivity extends BaseActivity implements
         CalendarView.OnYearChangeListener,
         CalendarView.OnDateLongClickListener,
         CalendarView.OnViewChangeListener,
+        CalendarView.OnCalendarInterceptListener,
         DialogInterface.OnClickListener,
         View.OnClickListener {
 
@@ -151,6 +152,10 @@ public class MainActivity extends BaseActivity implements
         mCalendarView.setOnDateSelectedListener(this);
         mCalendarView.setOnMonthChangeListener(this);
         mCalendarView.setOnDateLongClickListener(this, true);
+
+        //设置日期拦截事件，仅适用单选模式，当前无效
+        mCalendarView.setOnCalendarInterceptListener(this);
+
         mCalendarView.setOnViewChangeListener(this);
         mTextYear.setText(String.valueOf(mCalendarView.getCurYear()));
         mYear = mCalendarView.getCurYear();
@@ -319,8 +324,8 @@ public class MainActivity extends BaseActivity implements
         switch (v.getId()) {
             case R.id.ll_flyme:
                 MeiZuActivity.show(this);
-                Log.e("scheme","  " + mCalendarView.getSelectedCalendar().getScheme() + "  --  "
-                + mCalendarView.getSelectedCalendar().isCurrentDay());
+                Log.e("scheme", "  " + mCalendarView.getSelectedCalendar().getScheme() + "  --  "
+                        + mCalendarView.getSelectedCalendar().isCurrentDay());
                 break;
             case R.id.ll_custom:
                 CustomActivity.show(this);
@@ -377,7 +382,7 @@ public class MainActivity extends BaseActivity implements
                 "  --  " + calendar.getMonth() +
                 "  -- " + calendar.getDay() +
                 "  --  " + isClick + "  --   " + calendar.getScheme());
-        Log.e("onDateSelected","  " + mCalendarView.getSelectedCalendar().getScheme() +
+        Log.e("onDateSelected", "  " + mCalendarView.getSelectedCalendar().getScheme() +
                 "  --  " + mCalendarView.getSelectedCalendar().isCurrentDay());
     }
 
@@ -412,6 +417,24 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void onViewChange(boolean isMonthView) {
         Log.e("onViewChange", "  ---  " + (isMonthView ? "月视图" : "周视图"));
+    }
+
+    /**
+     * 屏蔽某些不可点击的日期，可根据自己的业务自行修改
+     *
+     * @param calendar calendar
+     * @return 是否屏蔽某些不可点击的日期，MonthView和WeekView有类似的API可调用
+     */
+    @Override
+    public boolean onCalendarIntercept(Calendar calendar) {
+        Log.e("onCalendarIntercept", calendar.toString());
+        int day = calendar.getDay();
+        return day == 1 || day == 3 || day == 6 || day == 11 || day == 12 || day == 15 || day == 20 || day == 26;
+    }
+
+    @Override
+    public void onCalendarInterceptClick(Calendar calendar, boolean isClick) {
+        Toast.makeText(this, calendar.toString() + "拦截不可点击", Toast.LENGTH_SHORT).show();
     }
 
     @Override

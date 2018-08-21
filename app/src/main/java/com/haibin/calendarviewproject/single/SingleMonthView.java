@@ -20,6 +20,13 @@ public class SingleMonthView extends MonthView {
     private Paint mRingPaint = new Paint();
     private int mRingRadius;
 
+    /**
+     * 不可用画笔
+     */
+    private Paint mDisablePaint = new Paint();
+
+    private int mH;
+
     public SingleMonthView(Context context) {
         super(context);
 
@@ -37,6 +44,13 @@ public class SingleMonthView extends MonthView {
         mRingPaint.setStrokeWidth(dipToPx(context, 1));
         setLayerType(View.LAYER_TYPE_SOFTWARE, mRingPaint);
         mRingPaint.setMaskFilter(new BlurMaskFilter(30, BlurMaskFilter.Blur.SOLID));
+
+        mDisablePaint.setColor(0xFF9f9f9f);
+        mDisablePaint.setAntiAlias(true);
+        mDisablePaint.setStrokeWidth(dipToPx(context,2));
+        mDisablePaint.setFakeBoldText(true);
+
+        mH = dipToPx(context, 18);
 
     }
 
@@ -71,8 +85,8 @@ public class SingleMonthView extends MonthView {
 
     @Override
     protected void onDrawScheme(Canvas canvas, Calendar calendar, int x, int y) {
-        int cx = x + mItemWidth / 2;
-        int cy = y + mItemHeight / 2;
+//        int cx = x + mItemWidth / 2;
+//        int cy = y + mItemHeight / 2;
         //canvas.drawCircle(cx, cy, mRadius, mSchemePaint);
     }
 
@@ -99,6 +113,12 @@ public class SingleMonthView extends MonthView {
                     calendar.isCurrentDay() ? mCurDayTextPaint :
                             calendar.isCurrentMonth() ? mCurMonthTextPaint : mOtherMonthTextPaint);
         }
+
+        //日期是否可用？拦截
+        if (onCalendarIntercept(calendar)) {
+            canvas.drawLine(x + mH, y + mH, x + mItemWidth - mH, y + mItemHeight - mH, mDisablePaint);
+        }
+
     }
 
 

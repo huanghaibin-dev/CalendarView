@@ -217,7 +217,7 @@ public class CalendarView extends FrameLayout {
             }
         });
         mSelectLayout.setup(mDelegate);
-        mWeekPager.updateSelected(mDelegate.mSelectedCalendar, false);
+        mWeekPager.updateSelected(mDelegate.createCurrentDate(), false);
     }
 
     /**
@@ -363,7 +363,8 @@ public class CalendarView extends FrameLayout {
         mSelectLayout.setVisibility(GONE);
         mWeekBar.setVisibility(VISIBLE);
         if (position == mMonthPager.getCurrentItem()) {
-            if (mDelegate.mDateSelectedListener != null) {
+            if (mDelegate.mDateSelectedListener != null &&
+                    mDelegate.getSelectMode() != CalendarViewDelegate.SELECT_MODE_SINGLE) {
                 mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar, false);
             }
         } else {
@@ -412,6 +413,12 @@ public class CalendarView extends FrameLayout {
      */
     public void scrollToCurrent(boolean smoothScroll) {
         if (!CalendarUtil.isCalendarInRange(mDelegate.getCurrentDay(), mDelegate)) {
+            return;
+        }
+        Calendar calendar = mDelegate.createCurrentDate();
+        if (mDelegate.mCalendarInterceptListener != null &&
+                mDelegate.mCalendarInterceptListener.onCalendarIntercept(calendar)) {
+            mDelegate.mCalendarInterceptListener.onCalendarInterceptClick(calendar, false);
             return;
         }
         mDelegate.mSelectedCalendar = mDelegate.createCurrentDate();
@@ -477,6 +484,9 @@ public class CalendarView extends FrameLayout {
      * 滚动到选择的日历
      */
     public void scrollToSelectCalendar() {
+        if (!mDelegate.mSelectedCalendar.isAvailable()) {
+            return;
+        }
         scrollToCalendar(mDelegate.mSelectedCalendar.getYear(),
                 mDelegate.mSelectedCalendar.getMonth(),
                 mDelegate.mSelectedCalendar.getDay(),
@@ -504,6 +514,17 @@ public class CalendarView extends FrameLayout {
      */
     @SuppressWarnings("all")
     public void scrollToCalendar(int year, int month, int day, boolean smoothScroll) {
+
+        Calendar calendar = new Calendar();
+        calendar.setYear(year);
+        calendar.setMonth(month);
+        calendar.setDay(day);
+        if (mDelegate.mCalendarInterceptListener != null &&
+                mDelegate.mCalendarInterceptListener.onCalendarIntercept(calendar)) {
+            mDelegate.mCalendarInterceptListener.onCalendarInterceptClick(calendar, false);
+            return;
+        }
+
         if (mWeekPager.getVisibility() == VISIBLE) {
             mWeekPager.scrollToCalendar(year, month, day, smoothScroll);
         } else {
@@ -600,6 +621,29 @@ public class CalendarView extends FrameLayout {
         mWeekBar.onWeekStartChange(mDelegate.getWeekStart());
         this.mMonthPager.mWeekBar = mWeekBar;
         mWeekBar.onDateSelected(mDelegate.mSelectedCalendar, mDelegate.getWeekStart(), false);
+    }
+
+
+    /**
+     * 添加日期拦截事件
+     * 使用此方法，只能基于select_mode = single_mode
+     * 否则的话，如果标记全部日期为不可点击，那是没有意义的，
+     * 框架本身也不可能在滑动的过程中全部去判断每个日期的可点击性
+     *
+     * @param listener listener
+     */
+    public void setOnCalendarInterceptListener(OnCalendarInterceptListener listener) {
+        if (listener == null) {
+            mDelegate.mCalendarInterceptListener = null;
+        }
+        if (listener == null || mDelegate.getSelectMode() != CalendarViewDelegate.SELECT_MODE_SINGLE) {
+            return;
+        }
+        mDelegate.mCalendarInterceptListener = listener;
+        if (!listener.onCalendarIntercept(mDelegate.mSelectedCalendar)) {
+            return;
+        }
+        mDelegate.mSelectedCalendar = new Calendar();
     }
 
     /**
@@ -1103,4 +1147,13 @@ public class CalendarView extends FrameLayout {
         void onViewChange(boolean isMonthView);
     }
 
+
+    /**
+     * 拦截日期是否可用事件
+     */
+    public interface OnCalendarInterceptListener {
+        boolean onCalendarIntercept(Calendar calendar);
+
+        void onCalendarInterceptClick(Calendar calendar, boolean isClick);
+    }
 }

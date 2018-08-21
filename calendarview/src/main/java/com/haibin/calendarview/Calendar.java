@@ -319,6 +319,10 @@ public final class Calendar implements Serializable {
         return toString().compareTo(calendar.toString());
     }
 
+    public boolean isAvailable() {
+        return year > 0 & month > 0 & day > 0;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o != null && o instanceof Calendar) {

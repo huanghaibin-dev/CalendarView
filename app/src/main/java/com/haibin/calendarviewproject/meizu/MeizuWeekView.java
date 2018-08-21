@@ -16,6 +16,7 @@ import com.haibin.calendarview.WeekView;
 
 public class MeizuWeekView extends WeekView {
     private Paint mTextPaint = new Paint();
+
     private Paint mSchemeBasicPaint = new Paint();
     private float mRadio;
     private int mPadding;

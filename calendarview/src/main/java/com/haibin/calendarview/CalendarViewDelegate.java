@@ -246,6 +246,10 @@ final class CalendarViewDelegate {
      */
     Map<String, Calendar> mSchemeDatesMap;
 
+    /**
+     * 日期拦截事件
+     */
+    CalendarView.OnCalendarInterceptListener mCalendarInterceptListener;
 
     /**
      * 日期被选中监听

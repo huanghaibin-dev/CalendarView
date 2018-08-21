@@ -21,6 +21,8 @@ public class EnglishWeekBar extends WeekBar {
         super(context);
         LayoutInflater.from(context).inflate(R.layout.english_week_bar, this, true);
         setBackgroundColor(Color.WHITE);
+        int padding = dipToPx(context, 10);
+        setPadding(padding, 0, padding, 0);
     }
 
     @Override
@@ -45,7 +47,8 @@ public class EnglishWeekBar extends WeekBar {
 
     /**
      * 或者周文本，这个方法仅供父类使用
-     * @param index index
+     *
+     * @param index     index
      * @param weekStart weekStart
      * @return 或者周文本
      */
@@ -59,5 +62,17 @@ public class EnglishWeekBar extends WeekBar {
             return weeks[index == 6 ? 0 : index + 1];
         }
         return weeks[index == 0 ? 6 : index - 1];
+    }
+
+    /**
+     * dp转px
+     *
+     * @param context context
+     * @param dpValue dp
+     * @return px
+     */
+    private static int dipToPx(Context context, float dpValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
     }
 }

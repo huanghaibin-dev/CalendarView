@@ -1,5 +1,5 @@
 # CalenderView
-Android上一个优雅、高度自定义、性能高效的日历控件，完美支持周视图，支持标记、自定义颜色、农历等，任意控制月视图显示、自定义周起始等。Canvas绘制，极速性能、占用内存低，，支持简单定制即可实现任意自定义布局、自定义UI，支持收缩展开、性能非常高效，
+Android上一个优雅、高度自定义、性能高效的日历控件，完美支持周视图，支持标记、自定义颜色、农历等，任意控制月视图显示、任意日期拦截条件、自定义周起始等。Canvas绘制，极速性能、占用内存低，，支持简单定制即可实现任意自定义布局、自定义UI，支持收缩展开、性能非常高效，
 这个控件内存和效率优势相当明显，而且真正做到收缩+展开，适配多种场景，支持同时多种颜色标记日历事务，支持多点触控，你真的想不到日历还可以如此优雅！更多参考用法请移步Demo，Demo实现了4个精美的自定义效果。
 
 ### Support English Version
@@ -7,13 +7,13 @@ Android上一个优雅、高度自定义、性能高效的日历控件，完美�
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.4.1'
+compile 'com.haibin:calendarview:3.4.2'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.4.1</version>
+  <version>3.4.2</version>
   <type>pom</type>
 </dependency>
 ```
@@ -28,6 +28,8 @@ compile 'com.haibin:calendarview:3.4.1'
 > * 是否支持用图片作为点击效果？支持的，但你需要会drawBitmap
 
 > * 是否支持网格显示？当然是支持的，看你怎么绘制
+
+> * 是否支持日期拦截？日期可用绘制？支持的，可以自行写拦截条件即可，支持拦截点击、滚动、和绘制任意日期
 
 > * 是否支持自定义周起始？支持的，你可以定制周一、周日、周六为视图起始时间，使用 week_start_with attr
 
@@ -229,6 +231,8 @@ public void setOnYearChangeListener(OnYearChangeListener listener);//年份切�
 public void setOnDateSelectedListener(OnDateSelectedListener listener);//日期选择事件
 
 public void setOnDateLongClickListener(OnDateLongClickListener listener);//日期长按事件
+
+public void setOnCalendarInterceptListener(OnCalendarInterceptListener listener);//日期拦截和日期有效性绘制
 
 @Deprecated
 public void setSchemeDate(List<Calendar> mSchemeDate);//标记日期

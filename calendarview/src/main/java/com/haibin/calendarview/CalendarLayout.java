@@ -176,7 +176,7 @@ public class CalendarLayout extends LinearLayout {
      */
     final void setup(CalendarViewDelegate delegate) {
         this.mDelegate = delegate;
-        initCalendarPosition(delegate.mSelectedCalendar);
+        initCalendarPosition(delegate.createCurrentDate());
         updateContentViewTranslateY();
     }
 

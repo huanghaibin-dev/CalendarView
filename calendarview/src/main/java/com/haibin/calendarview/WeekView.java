@@ -69,30 +69,35 @@ public abstract class WeekView extends BaseView {
 
     @Override
     public void onClick(View v) {
-        if (isClick) {
-            Calendar calendar = getIndex();
-            if (calendar != null) {
-                if (!CalendarUtil.isCalendarInRange(calendar, mDelegate.getMinYear(),
-                        mDelegate.getMinYearMonth(), mDelegate.getMaxYear(), mDelegate.getMaxYearMonth())) {
-                    return;
-                }
-
-                mCurrentItem = mItems.indexOf(calendar);
-
-                if (mDelegate.mInnerListener != null) {
-                    mDelegate.mInnerListener.onWeekDateSelected(calendar, true);
-                }
-                if (mParentLayout != null) {
-                    int i = CalendarUtil.getWeekFromDayInMonth(calendar, mDelegate.getWeekStart());
-                    mParentLayout.updateSelectWeek(i);
-                }
-
-                if (mDelegate.mDateSelectedListener != null) {
-                    mDelegate.mDateSelectedListener.onDateSelected(calendar, true);
-                }
-
-                invalidate();
+        if (!isClick) {
+            return;
+        }
+        Calendar calendar = getIndex();
+        if (onCalendarIntercept(calendar)) {
+            mDelegate.mCalendarInterceptListener.onCalendarInterceptClick(calendar,true);
+            return;
+        }
+        if (calendar != null) {
+            if (!CalendarUtil.isCalendarInRange(calendar, mDelegate.getMinYear(),
+                    mDelegate.getMinYearMonth(), mDelegate.getMaxYear(), mDelegate.getMaxYearMonth())) {
+                return;
             }
+
+            mCurrentItem = mItems.indexOf(calendar);
+
+            if (mDelegate.mInnerListener != null) {
+                mDelegate.mInnerListener.onWeekDateSelected(calendar, true);
+            }
+            if (mParentLayout != null) {
+                int i = CalendarUtil.getWeekFromDayInMonth(calendar, mDelegate.getWeekStart());
+                mParentLayout.updateSelectWeek(i);
+            }
+
+            if (mDelegate.mDateSelectedListener != null) {
+                mDelegate.mDateSelectedListener.onDateSelected(calendar, true);
+            }
+
+            invalidate();
         }
     }
 
@@ -101,41 +106,46 @@ public abstract class WeekView extends BaseView {
     public boolean onLongClick(View v) {
         if (mDelegate.mDateLongClickListener == null)
             return false;
-        if (isClick) {
-            Calendar calendar = getIndex();
-            if (calendar != null) {
-                boolean isCalendarInRange = CalendarUtil.isCalendarInRange(calendar, mDelegate.getMinYear(),
-                        mDelegate.getMinYearMonth(), mDelegate.getMaxYear(), mDelegate.getMaxYearMonth());
+        if (!isClick) {
+            return false;
+        }
+        Calendar calendar = getIndex();
+        if (onCalendarIntercept(calendar)) {
+            mDelegate.mCalendarInterceptListener.onCalendarInterceptClick(calendar,true);
+            return false;
+        }
+        if (calendar != null) {
+            boolean isCalendarInRange = CalendarUtil.isCalendarInRange(calendar, mDelegate.getMinYear(),
+                    mDelegate.getMinYearMonth(), mDelegate.getMaxYear(), mDelegate.getMaxYearMonth());
 
-                if (mDelegate.isPreventLongPressedSelected() && isCalendarInRange) {//如果启用拦截长按事件不选择日期
-                    mDelegate.mDateLongClickListener.onDateLongClick(calendar);
-                    return true;
-                }
-
-                if (!isCalendarInRange) {
-                    return false;
-                }
-
-                mCurrentItem = mItems.indexOf(calendar);
-
-                mDelegate.mIndexCalendar = mDelegate.mSelectedCalendar;
-
-                if (mDelegate.mInnerListener != null) {
-                    mDelegate.mInnerListener.onWeekDateSelected(calendar, true);
-                }
-                if (mParentLayout != null) {
-                    int i = CalendarUtil.getWeekFromDayInMonth(calendar, mDelegate.getWeekStart());
-                    mParentLayout.updateSelectWeek(i);
-                }
-
-                if (mDelegate.mDateSelectedListener != null) {
-                    mDelegate.mDateSelectedListener.onDateSelected(calendar, true);
-                }
-
+            if (mDelegate.isPreventLongPressedSelected() && isCalendarInRange) {//如果启用拦截长按事件不选择日期
                 mDelegate.mDateLongClickListener.onDateLongClick(calendar);
-
-                invalidate();
+                return true;
             }
+
+            if (!isCalendarInRange) {
+                return false;
+            }
+
+            mCurrentItem = mItems.indexOf(calendar);
+
+            mDelegate.mIndexCalendar = mDelegate.mSelectedCalendar;
+
+            if (mDelegate.mInnerListener != null) {
+                mDelegate.mInnerListener.onWeekDateSelected(calendar, true);
+            }
+            if (mParentLayout != null) {
+                int i = CalendarUtil.getWeekFromDayInMonth(calendar, mDelegate.getWeekStart());
+                mParentLayout.updateSelectWeek(i);
+            }
+
+            if (mDelegate.mDateSelectedListener != null) {
+                mDelegate.mDateSelectedListener.onDateSelected(calendar, true);
+            }
+
+            mDelegate.mDateLongClickListener.onDateLongClick(calendar);
+
+            invalidate();
         }
         return false;
     }
