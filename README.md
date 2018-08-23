@@ -7,13 +7,13 @@ Android上一个优雅、高度自定义、性能高效的日历控件，完美�
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.4.2'
+compile 'com.haibin:calendarview:3.4.3'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.4.2</version>
+  <version>3.4.3</version>
   <type>pom</type>
 </dependency>
 ```
@@ -214,7 +214,8 @@ app:week_bar_view="com.haibin.calendarviewproject.EnglishWeekBar"
 ### CalendarView api
 ```java
 
-public void setRange(int minYear, int minYearMonth, int maxYear, int maxYearMonth);//置日期范围
+public void setRange(int minYear, int minYearMonth, int minYearDay,
+                     int maxYear, int maxYearMonth, int maxYearDay) ;//置日期范围
 
 public int getCurDay(); //今天
 public int getCurMonth(); //当前的月份
@@ -228,24 +229,14 @@ public void setOnMonthChangeListener(OnMonthChangeListener listener);//月份改
 
 public void setOnYearChangeListener(OnYearChangeListener listener);//年份切换事件
 
-public void setOnDateSelectedListener(OnDateSelectedListener listener);//日期选择事件
+public void setOnCalendarSelectListener(OnCalendarSelectListener listener)//日期选择事件
 
-public void setOnDateLongClickListener(OnDateLongClickListener listener);//日期长按事件
+public void setOnCalendarLongClickListener(OnCalendarLongClickListener listener);//日期长按事件
+
+public void setOnCalendarLongClickListener(OnCalendarLongClickListener listener, boolean preventLongPressedSelect);//日期长按事件
 
 public void setOnCalendarInterceptListener(OnCalendarInterceptListener listener);//日期拦截和日期有效性绘制
 
-@Deprecated
-public void setSchemeDate(List<Calendar> mSchemeDate);//标记日期
-
-/**
-  * 标记哪些日期有事件
-  * 如果标记的日期数量很大，mSchemeDatesMap.size()>10000?,请使用这个
-  * key=Calendar.toString();
-  * 优势？Android的用户相应时间一旦大于16ms,UI就会卡顿，Map在数据增长量巨大时，查找性能上不会损耗，
-  * List的性能就会差很大，List.contains()会遍历整个数组，性能太差
-  *
-  * @param mSchemeDates mSchemeDatesMap 通过自己的需求转换即可
-*/
 public void setSchemeDate(Map<String, Calendar> mSchemeDates);//标记日期
 
 public void update();//动态更新
@@ -266,6 +257,10 @@ public void scrollToPre();//滚动到上一个月
 public void scrollToNext();//滚动到下一个月
 
 public void scrollToCalendar(int year, int month, int day);//滚动到指定日期
+
+public Calendar getMinRangeCalendar();//获得最小范围日期
+
+public Calendar getMaxRangeCalendar();//获得最大范围日期
 
 /**
   * 设置背景色

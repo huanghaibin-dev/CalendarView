@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.lang.reflect.Constructor;
+import java.util.List;
 
 /**
  * 周视图滑动ViewPager，需要动态固定高度
@@ -33,6 +34,7 @@ import java.lang.reflect.Constructor;
  * WeekViewPager需要和CalendarView关联:
  */
 
+@SuppressWarnings("deprecation")
 public final class WeekViewPager extends ViewPager {
     private boolean isUpdateWeekView;
     private int mWeekCount;
@@ -62,10 +64,13 @@ public final class WeekViewPager extends ViewPager {
     }
 
     private void init() {
-        mWeekCount = CalendarUtil.getWeekCountBetweenYearAndYear(mDelegate.getMinYear(),
+        mWeekCount = CalendarUtil.getWeekCountBetweenBothCalendar(
+                mDelegate.getMinYear(),
                 mDelegate.getMinYearMonth(),
+                mDelegate.getMinYearDay(),
                 mDelegate.getMaxYear(),
                 mDelegate.getMaxYearMonth(),
+                mDelegate.getMaxYearDay(),
                 mDelegate.getWeekStart());
         setAdapter(new WeekViewPagerAdapter());
         addOnPageChangeListener(new OnPageChangeListener() {
@@ -81,10 +86,17 @@ public final class WeekViewPager extends ViewPager {
                     isUsingScrollToCalendar = false;
                     return;
                 }
+                if (isUsingScrollToCalendar) {
+                    isUsingScrollToCalendar = false;
+                    return;
+                }
                 WeekView view = (WeekView) findViewWithTag(position);
                 if (view != null) {
                     view.performClickCalendar(mDelegate.getSelectMode() == CalendarViewDelegate.SELECT_MODE_SINGLE ?
                             mDelegate.mIndexCalendar : mDelegate.mSelectedCalendar, !isUsingScrollToCalendar);
+                    if (mDelegate.mWeekChangeListener != null) {
+                        mDelegate.mWeekChangeListener.onWeekChange(getCurrentWeekCalendars());
+                    }
                 }
                 isUsingScrollToCalendar = false;
             }
@@ -96,16 +108,73 @@ public final class WeekViewPager extends ViewPager {
         });
     }
 
+    /**
+     * 获取当前周数据
+     *
+     * @return 获取当前周数据
+     */
+    List<Calendar> getCurrentWeekCalendars() {
+        List<Calendar> calendars = CalendarUtil.getWeekCalendars(mDelegate.mIndexCalendar,
+                mDelegate);
+        if (mDelegate.getSchemeType() == CalendarViewDelegate.SCHEME_TYPE_LIST) {
+            mDelegate.addSchemesFromList(calendars);
+        } else {
+            mDelegate.addSchemesFromMap(calendars);
+        }
+        return calendars;
+    }
+
+
+    /**
+     * 更新周视图
+     */
     void notifyDataSetChanged() {
-        mWeekCount = CalendarUtil.getWeekCountBetweenYearAndYear(mDelegate.getMinYear(), mDelegate.getMinYearMonth(),
-                mDelegate.getMaxYear(), mDelegate.getMaxYearMonth(), mDelegate.getWeekStart());
+        mWeekCount = CalendarUtil.getWeekCountBetweenBothCalendar(
+                mDelegate.getMinYear(),
+                mDelegate.getMinYearMonth(),
+                mDelegate.getMinYearDay(),
+                mDelegate.getMaxYear(),
+                mDelegate.getMaxYearMonth(),
+                mDelegate.getMaxYearDay(),
+                mDelegate.getWeekStart());
         getAdapter().notifyDataSetChanged();
     }
 
+    /**
+     * 更新周视图布局
+     */
     void updateWeekViewClass() {
         isUpdateWeekView = true;
         getAdapter().notifyDataSetChanged();
         isUpdateWeekView = false;
+    }
+
+    /**
+     * 更新日期范围
+     */
+    void updateRange() {
+        isUpdateWeekView = true;
+        notifyDataSetChanged();
+        isUpdateWeekView = false;
+        if (getVisibility() != VISIBLE) {
+            return;
+        }
+        isUsingScrollToCalendar = true;
+        Calendar calendar = mDelegate.mSelectedCalendar;
+        updateSelected(calendar, false);
+        if (mDelegate.mInnerListener != null) {
+            mDelegate.mInnerListener.onWeekDateSelected(calendar, false);
+        }
+        if (mDelegate.mDateSelectedListener != null) {
+            mDelegate.mDateSelectedListener.onDateSelected(calendar, false);
+        }
+
+        if (mDelegate.mCalendarSelectListener != null) {
+            mDelegate.mCalendarSelectListener.onCalendarSelect(calendar, false);
+        }
+
+        int i = CalendarUtil.getWeekFromDayInMonth(calendar, mDelegate.getWeekStart());
+        mParentLayout.updateSelectWeek(i);
     }
 
     /**
@@ -133,6 +202,9 @@ public final class WeekViewPager extends ViewPager {
         if (mDelegate.mDateSelectedListener != null) {
             mDelegate.mDateSelectedListener.onDateSelected(calendar, false);
         }
+        if (mDelegate.mCalendarSelectListener != null) {
+            mDelegate.mCalendarSelectListener.onCalendarSelect(calendar, false);
+        }
         int i = CalendarUtil.getWeekFromDayInMonth(calendar, mDelegate.getWeekStart());
         mParentLayout.updateSelectWeek(i);
     }
@@ -142,9 +214,10 @@ public final class WeekViewPager extends ViewPager {
      */
     void scrollToCurrent(boolean smoothScroll) {
         isUsingScrollToCalendar = true;
-        int position = CalendarUtil.getWeekFromCalendarBetweenYearAndYear(mDelegate.getCurrentDay(),
+        int position = CalendarUtil.getWeekFromCalendarStartWithMinCalendar(mDelegate.getCurrentDay(),
                 mDelegate.getMinYear(),
                 mDelegate.getMinYearMonth(),
+                mDelegate.getMaxYearDay(),
                 mDelegate.getWeekStart()) - 1;
         int curItem = getCurrentItem();
         if (curItem == position) {
@@ -160,6 +233,11 @@ public final class WeekViewPager extends ViewPager {
         if (mDelegate.mDateSelectedListener != null && getVisibility() == VISIBLE) {
             mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar, false);
         }
+
+        if (mDelegate.mCalendarSelectListener != null && getVisibility() == VISIBLE) {
+            mDelegate.mCalendarSelectListener.onCalendarSelect(mDelegate.mSelectedCalendar, false);
+        }
+
         if (getVisibility() == VISIBLE) {
             mDelegate.mInnerListener.onWeekDateSelected(mDelegate.getCurrentDay(), false);
         }
@@ -171,14 +249,13 @@ public final class WeekViewPager extends ViewPager {
      * 更新任意一个选择的日期
      */
     void updateSelected(Calendar calendar, boolean smoothScroll) {
-        int position = CalendarUtil.getWeekFromCalendarBetweenYearAndYear(calendar,
+        int position = CalendarUtil.getWeekFromCalendarStartWithMinCalendar(calendar,
                 mDelegate.getMinYear(),
                 mDelegate.getMinYearMonth(),
+                mDelegate.getMinYearDay(),
                 mDelegate.getWeekStart()) - 1;
         int curItem = getCurrentItem();
-        if (curItem == position) {
-            isUsingScrollToCalendar = false;
-        }
+        isUsingScrollToCalendar = curItem != position;
         setCurrentItem(position, smoothScroll);
         WeekView view = (WeekView) findViewWithTag(position);
         if (view != null) {
@@ -259,22 +336,27 @@ public final class WeekViewPager extends ViewPager {
      */
     void updateWeekStart() {
         int count = getAdapter().getCount();
-        mWeekCount = CalendarUtil.getWeekCountBetweenYearAndYear(mDelegate.getMinYear(),
+        mWeekCount = CalendarUtil.getWeekCountBetweenBothCalendar(
+                mDelegate.getMinYear(),
                 mDelegate.getMinYearMonth(),
+                mDelegate.getMinYearDay(),
                 mDelegate.getMaxYear(),
                 mDelegate.getMaxYearMonth(),
+                mDelegate.getMaxYearDay(),
                 mDelegate.getWeekStart());
         /*
          * 如果count发生变化，意味着数据源变化，则必须先调用notifyDataSetChanged()，
          * 否则会抛出异常
          */
         if (count != mWeekCount) {
+            isUpdateWeekView = true;
             getAdapter().notifyDataSetChanged();
         }
         for (int i = 0; i < getChildCount(); i++) {
             WeekView view = (WeekView) getChildAt(i);
             view.updateWeekStart();
         }
+        isUpdateWeekView = false;
         updateSelected(mDelegate.mSelectedCalendar, false);
     }
 
@@ -321,8 +403,9 @@ public final class WeekViewPager extends ViewPager {
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            Calendar calendar = CalendarUtil.getFirstCalendarFromWeekCount(mDelegate.getMinYear(),
+            Calendar calendar = CalendarUtil.getFirstCalendarStartWithMinCalendar(mDelegate.getMinYear(),
                     mDelegate.getMinYearMonth(),
+                    mDelegate.getMinYearDay(),
                     position + 1,
                     mDelegate.getWeekStart());
             WeekView view;

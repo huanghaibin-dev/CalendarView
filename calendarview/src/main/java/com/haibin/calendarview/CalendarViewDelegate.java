@@ -28,8 +28,9 @@ import java.util.Map;
 
 /**
  * Google规范化的属性委托,
- * 这里基本是没有逻辑的，代码量多，但是不影响阅读性
+ * 代码量多，但是不影响阅读性
  */
+@SuppressWarnings({"DeprecatedIsStillUsed", "deprecation"})
 final class CalendarViewDelegate {
 
     /**
@@ -203,6 +204,12 @@ final class CalendarViewDelegate {
     private int mMinYearMonth, mMaxYearMonth;
 
     /**
+     * 最小年份和最大年份对应最小天和最大天数
+     * when you want set like 2015-07-08 to 2017-08-30
+     */
+    private int mMinYearDay, mMaxYearDay;
+
+    /**
      * 日期和农历文本大小
      */
     private int mDayTextSize, mLunarTextSize;
@@ -231,7 +238,7 @@ final class CalendarViewDelegate {
      * 当前月份和周视图的item位置
      */
     @SuppressWarnings("all")
-    int mCurrentMonthViewItem, mCurrentWeekViewItem;
+    int mCurrentMonthViewItem;
 
 
     private int mSchemeType;
@@ -254,12 +261,24 @@ final class CalendarViewDelegate {
     /**
      * 日期被选中监听
      */
+    @Deprecated
     CalendarView.OnDateSelectedListener mDateSelectedListener;
+
+    /**
+     * 日期选中监听
+     */
+    CalendarView.OnCalendarSelectListener mCalendarSelectListener;
 
     /**
      * 外部日期长按事件
      */
+    @Deprecated
     CalendarView.OnDateLongClickListener mDateLongClickListener;
+
+    /**
+     * 外部日期长按事件
+     */
+    CalendarView.OnCalendarLongClickListener mCalendarLongClickListener;
 
     /**
      * 内部日期切换监听，用于内部更新计算
@@ -276,6 +295,11 @@ final class CalendarViewDelegate {
      * 月份切换事件
      */
     CalendarView.OnMonthChangeListener mMonthChangeListener;
+
+    /**
+     * 周视图改变事件
+     */
+    CalendarView.OnWeekChangeListener mWeekChangeListener;
 
     /**
      * 视图改变事件
@@ -344,6 +368,8 @@ final class CalendarViewDelegate {
         mMaxYear = array.getInt(R.styleable.CalendarView_max_year, 2055);
         mMinYearMonth = array.getInt(R.styleable.CalendarView_min_year_month, 1);
         mMaxYearMonth = array.getInt(R.styleable.CalendarView_max_year_month, 12);
+        mMinYearDay = array.getInt(R.styleable.CalendarView_min_year_day, 1);
+        mMaxYearDay = array.getInt(R.styleable.CalendarView_max_year_day, -1);
 
         mDayTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_day_text_size, CalendarUtil.dipToPx(context, 16));
         mLunarTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_lunar_text_size, CalendarUtil.dipToPx(context, 10));
@@ -374,8 +400,8 @@ final class CalendarViewDelegate {
     }
 
 
-    void setRange(int minYear, int minYearMonth,
-                  int maxYear, int maxYearMonth) {
+    private void setRange(int minYear, int minYearMonth,
+                          int maxYear, int maxYearMonth) {
         this.mMinYear = minYear;
         this.mMinYearMonth = minYearMonth;
         this.mMaxYear = maxYear;
@@ -383,9 +409,29 @@ final class CalendarViewDelegate {
         if (this.mMaxYear < mCurrentDate.getYear()) {
             this.mMaxYear = mCurrentDate.getYear();
         }
+        if (this.mMaxYearDay == -1) {
+            this.mMaxYearDay = CalendarUtil.getMonthDaysCount(this.mMaxYear, mMaxYearMonth);
+        }
         int y = mCurrentDate.getYear() - this.mMinYear;
         mCurrentMonthViewItem = 12 * y + mCurrentDate.getMonth() - this.mMinYearMonth;
-        mCurrentWeekViewItem = CalendarUtil.getWeekFromCalendarBetweenYearAndYear(mCurrentDate, mMinYear, mMinYearMonth, mWeekStart);
+    }
+
+    void setRange(int minYear, int minYearMonth, int minYearDay,
+                  int maxYear, int maxYearMonth, int maxYearDay) {
+        this.mMinYear = minYear;
+        this.mMinYearMonth = minYearMonth;
+        this.mMinYearDay = minYearDay;
+        this.mMaxYear = maxYear;
+        this.mMaxYearMonth = maxYearMonth;
+        this.mMaxYearDay = maxYearDay;
+        if (this.mMaxYear < mCurrentDate.getYear()) {
+            this.mMaxYear = mCurrentDate.getYear();
+        }
+        if (this.mMaxYearDay == -1) {
+            this.mMaxYearDay = CalendarUtil.getMonthDaysCount(this.mMaxYear, mMaxYearMonth);
+        }
+        int y = mCurrentDate.getYear() - this.mMinYear;
+        mCurrentMonthViewItem = 12 * y + mCurrentDate.getMonth() - this.mMinYearMonth;
     }
 
     String getSchemeText() {
@@ -456,7 +502,7 @@ final class CalendarViewDelegate {
         return mWeekLineBackground;
     }
 
-    int getWeekLineMargin(){
+    int getWeekLineMargin() {
         return mWeekLineMargin;
     }
 
@@ -654,7 +700,15 @@ final class CalendarViewDelegate {
         mSelectedCalendar.clearScheme();
     }
 
-    void updateSelectCalendarScheme() {
+    int getMinYearDay() {
+        return mMinYearDay;
+    }
+
+    int getMaxYearDay() {
+        return mMaxYearDay;
+    }
+
+    final void updateSelectCalendarScheme() {
         if (getSchemeType() == CalendarViewDelegate.SCHEME_TYPE_LIST &&
                 mSchemeDate != null &&
                 mSchemeDate.size() > 0) {
@@ -683,5 +737,69 @@ final class CalendarViewDelegate {
         calendar.setCurrentDay(true);
         LunarCalendar.setupLunarCalendar(calendar);
         return calendar;
+    }
+
+    final Calendar getMinRangeCalendar() {
+        Calendar calendar = new Calendar();
+        calendar.setYear(mMinYear);
+        calendar.setMonth(mMinYearMonth);
+        calendar.setDay(mMinYearDay);
+        calendar.setCurrentDay(calendar.equals(mCurrentDate));
+        LunarCalendar.setupLunarCalendar(calendar);
+        return calendar;
+    }
+
+    @SuppressWarnings("unused")
+    final Calendar getMaxRangeCalendar() {
+        Calendar calendar = new Calendar();
+        calendar.setYear(mMaxYear);
+        calendar.setMonth(mMaxYearMonth);
+        calendar.setDay(mMaxYearDay);
+        calendar.setCurrentDay(calendar.equals(mCurrentDate));
+        LunarCalendar.setupLunarCalendar(calendar);
+        return calendar;
+    }
+
+    /**
+     * 添加事件标记，来自List
+     * 兼容老版本
+     */
+    final void addSchemesFromList(List<Calendar> mItems) {
+        if (mSchemeDate == null || mSchemeDate.size() == 0) {
+            return;
+        }
+        for (Calendar a : mItems) {//添加操作
+            if (mSchemeDate.contains(a)) {
+                Calendar d = mSchemeDate.get(mSchemeDate.indexOf(a));
+                a.setScheme(TextUtils.isEmpty(d.getScheme()) ? getSchemeText() : d.getScheme());
+                a.setSchemeColor(d.getSchemeColor());
+                a.setSchemes(d.getSchemes());
+            } else {
+                a.setScheme("");
+                a.setSchemeColor(0);
+                a.setSchemes(null);
+            }
+        }
+    }
+
+    /**
+     * 添加事件标记，来自Map
+     */
+    final void addSchemesFromMap(List<Calendar> mItems) {
+        if (mSchemeDatesMap == null || mSchemeDatesMap.size() == 0) {
+            return;
+        }
+        for (Calendar a : mItems) {
+            if (mSchemeDatesMap.containsKey(a.toString())) {
+                Calendar d = mSchemeDatesMap.get(a.toString());
+                a.setScheme(TextUtils.isEmpty(d.getScheme()) ? getSchemeText() : d.getScheme());
+                a.setSchemeColor(d.getSchemeColor());
+                a.setSchemes(d.getSchemes());
+            } else {
+                a.setScheme("");
+                a.setSchemeColor(0);
+                a.setSchemes(null);
+            }
+        }
     }
 }

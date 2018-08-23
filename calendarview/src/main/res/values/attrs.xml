@@ -50,6 +50,9 @@
         <attr name="max_year" format="integer" />
         <attr name="min_year_month" format="integer" />
         <attr name="max_year_month" format="integer" />
+        <attr name="min_year_day" format="integer" />
+        <attr name="max_year_day" format="integer" />
+
 
         <!--月视图是否可滚动-->
         <attr name="month_view_scrollable" format="boolean" />

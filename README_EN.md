@@ -5,13 +5,13 @@ This widget has obvious advantages of memory and efficiency, adapt to many scene
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.4.2'
+compile 'com.haibin:calendarview:3.4.3'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.4.2</version>
+  <version>3.4.3</version>
   <type>pom</type>
 </dependency>
 ```
@@ -207,7 +207,8 @@ app:week_bar_view="com.haibin.calendarviewproject.EnglishWeekBar"
 ### CalendarView api
 ```java
 
-public void setRange(int minYear, int minYearMonth, int maxYear, int maxYearMonth);//date range
+public void setRange(int minYear, int minYearMonth, int minYearDay,
+                     int maxYear, int maxYearMonth, int maxYearDay) ;//date range
 
 public int getCurDay(); //get today
 public int getCurMonth(); //get currentMonth
@@ -221,14 +222,17 @@ public void setOnMonthChangeListener(OnMonthChangeListener listener);//month cha
 
 public void setOnYearChangeListener(OnYearChangeListener listener);//year change listener
 
-public void setOnDateSelectedListener(OnDateSelectedListener listener);//date selected listener
+public void setOnCalendarSelectListener(OnCalendarSelectListener listener)//date selected listener
 
-public void setOnDateLongClickListener(OnDateLongClickListener listener);//date long click listener
+public void setOnCalendarLongClickListener(OnCalendarLongClickListener listener);//date long click listener
+
+public void setOnCalendarLongClickListener(OnCalendarLongClickListener listener, boolean preventLongPressedSelect);//date long click listener
 
 public void setOnCalendarInterceptListener(OnCalendarInterceptListener listener);//Intercept calendar click and Available draw
 
-@Deprecated
-public void setSchemeDate(List<Calendar> mSchemeDate);//mark dates
+public Calendar getMinRangeCalendar();//getMinRangeCalendar
+
+public Calendar getMaxRangeCalendar();//getMaxRangeCalendar
 
 /**
   * mark dates
@@ -236,7 +240,7 @@ public void setSchemeDate(List<Calendar> mSchemeDate);//mark dates
   * key=Calendar.toString();
   * best performance
   *
-  * @param mSchemeDates mSchemeDatesMap 通过自己的需求转换即可
+  * @param mSchemeDates mSchemeDatesMap
 */
 public void setSchemeDate(Map<String, Calendar> mSchemeDates);//mark dates
 

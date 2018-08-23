@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 public class SimpleActivity extends BaseActivity implements
-        CalendarView.OnDateSelectedListener,
+        CalendarView.OnCalendarSelectListener,
         CalendarView.OnYearChangeListener,
         View.OnClickListener {
 
@@ -89,7 +89,7 @@ public class SimpleActivity extends BaseActivity implements
 
         mCalendarLayout = (CalendarLayout) findViewById(R.id.calendarLayout);
         mCalendarView.setOnYearChangeListener(this);
-        mCalendarView.setOnDateSelectedListener(this);
+        mCalendarView.setOnCalendarSelectListener(this);
         mTextYear.setText(String.valueOf(mCalendarView.getCurYear()));
         mYear = mCalendarView.getCurYear();
         mTextMonthDay.setText(mCalendarView.getCurMonth() + "月" + mCalendarView.getCurDay() + "日");
@@ -178,9 +178,14 @@ public class SimpleActivity extends BaseActivity implements
         return calendar;
     }
 
+    @Override
+    public void onCalendarOutOfRange(Calendar calendar) {
+
+    }
+
     @SuppressLint("SetTextI18n")
     @Override
-    public void onDateSelected(Calendar calendar, boolean isClick) {
+    public void onCalendarSelect(Calendar calendar, boolean isClick) {
         mTextLunar.setVisibility(View.VISIBLE);
         mTextYear.setVisibility(View.VISIBLE);
         mTextMonthDay.setText(calendar.getMonth() + "月" + calendar.getDay() + "日");
@@ -188,7 +193,6 @@ public class SimpleActivity extends BaseActivity implements
         mTextLunar.setText(calendar.getLunar());
         mYear = calendar.getYear();
     }
-
 
     @Override
     public void onYearChange(int year) {

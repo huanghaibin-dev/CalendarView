@@ -42,5 +42,7 @@
         <item>scrollToPre</item>
         <item>scrollToNext</item>
         <item>scrollToCurrent</item>
+        <item>Limit calendar range</item>
+        <item>Show range</item>
     </string-array>
 </resources>

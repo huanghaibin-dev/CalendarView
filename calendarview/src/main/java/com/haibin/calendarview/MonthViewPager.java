@@ -31,6 +31,7 @@ import java.lang.reflect.Constructor;
 /**
  * 月份切换ViewPager，自定义适应高度
  */
+@SuppressWarnings("deprecation")
 public final class MonthViewPager extends ViewPager {
 
     private boolean isUpdateMonthView;
@@ -110,7 +111,7 @@ public final class MonthViewPager extends ViewPager {
 
             @Override
             public void onPageSelected(int position) {
-                Calendar calendar = CalendarUtil.getCalendarFromMonthViewPager(position, mDelegate);
+                Calendar calendar = CalendarUtil.getFirstCalendarFromMonthViewPager(position, mDelegate);
                 mDelegate.mIndexCalendar = calendar;
                 //月份改变事件
                 if (mDelegate.mMonthChangeListener != null) {
@@ -128,7 +129,7 @@ public final class MonthViewPager extends ViewPager {
                     if (!calendar.isCurrentMonth()) {
                         mDelegate.mSelectedCalendar = calendar;
                     } else {
-                        mDelegate.mSelectedCalendar = mDelegate.createCurrentDate();
+                        mDelegate.mSelectedCalendar = CalendarUtil.getRangeEdgeCalendar(calendar, mDelegate);
                     }
                     mDelegate.mIndexCalendar = mDelegate.mSelectedCalendar;
                 } else {
@@ -142,6 +143,9 @@ public final class MonthViewPager extends ViewPager {
                     mWeekBar.onDateSelected(mDelegate.mSelectedCalendar, mDelegate.getWeekStart(), false);
                     if (mDelegate.mDateSelectedListener != null) {
                         mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar, false);
+                    }
+                    if (mDelegate.mCalendarSelectListener != null) {
+                        mDelegate.mCalendarSelectListener.onCalendarSelect(mDelegate.mSelectedCalendar, false);
                     }
                 }
 
@@ -202,6 +206,9 @@ public final class MonthViewPager extends ViewPager {
         }
     }
 
+    /**
+     * 刷新
+     */
     void notifyDataSetChanged() {
         mMonthCount = 12 * (mDelegate.getMaxYear() - mDelegate.getMinYear())
                 - mDelegate.getMinYearMonth() + 1 +
@@ -209,10 +216,56 @@ public final class MonthViewPager extends ViewPager {
         getAdapter().notifyDataSetChanged();
     }
 
+    /**
+     * 更新月视图Class
+     */
     void updateMonthViewClass() {
         isUpdateMonthView = true;
         getAdapter().notifyDataSetChanged();
         isUpdateMonthView = false;
+    }
+
+    /**
+     * 更新日期范围
+     */
+    void updateRange() {
+        isUpdateMonthView = true;
+        notifyDataSetChanged();
+        isUpdateMonthView = false;
+        if (getVisibility() != VISIBLE) {
+            return;
+        }
+        isUsingScrollToCalendar = true;
+        Calendar calendar = mDelegate.mSelectedCalendar;
+        int y = calendar.getYear() - mDelegate.getMinYear();
+        int position = 12 * y + calendar.getMonth() - mDelegate.getMinYearMonth();
+        setCurrentItem(position, false);
+        MonthView view = (MonthView) findViewWithTag(position);
+        if (view != null) {
+            view.setSelectedCalendar(mDelegate.mIndexCalendar);
+            view.invalidate();
+            if (mParentLayout != null) {
+                mParentLayout.updateSelectPosition(view.getSelectedIndex(mDelegate.mIndexCalendar));
+            }
+        }
+        if (mParentLayout != null) {
+            int week = CalendarUtil.getWeekFromDayInMonth(calendar, mDelegate.getWeekStart());
+            mParentLayout.updateSelectWeek(week);
+        }
+
+
+        if (mDelegate.mInnerListener != null) {
+            mDelegate.mInnerListener.onMonthDateSelected(calendar, false);
+        }
+
+        if (mDelegate.mDateSelectedListener != null) {
+            mDelegate.mDateSelectedListener.onDateSelected(calendar, false);
+        }
+
+        if (mDelegate.mCalendarSelectListener != null) {
+            mDelegate.mCalendarSelectListener.onCalendarSelect(calendar, false);
+        }
+        updateSelected();
     }
 
     /**
@@ -289,6 +342,10 @@ public final class MonthViewPager extends ViewPager {
         }
         if (mDelegate.mDateSelectedListener != null && getVisibility() == VISIBLE) {
             mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar, false);
+        }
+
+        if (mDelegate.mCalendarSelectListener != null && getVisibility() == VISIBLE) {
+            mDelegate.mCalendarSelectListener.onCalendarSelect(mDelegate.mSelectedCalendar, false);
         }
     }
 

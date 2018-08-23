@@ -42,5 +42,7 @@
         <item>上一页</item>
         <item>下一页</item>
         <item>返回今天</item>
+        <item>限制日期范围</item>
+        <item>显示日期范围</item>
     </string-array>
 </resources>

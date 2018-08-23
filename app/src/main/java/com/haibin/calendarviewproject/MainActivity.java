@@ -27,16 +27,16 @@ import com.haibin.calendarviewproject.simple.SimpleActivity;
 import com.haibin.calendarviewproject.single.SingleActivity;
 import com.haibin.calendarviewproject.solay.SolarActivity;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends BaseActivity implements
-        CalendarView.OnDateSelectedListener,
+        CalendarView.OnCalendarSelectListener,
+        CalendarView.OnCalendarLongClickListener,
         CalendarView.OnMonthChangeListener,
         CalendarView.OnYearChangeListener,
-        CalendarView.OnDateLongClickListener,
+        CalendarView.OnWeekChangeListener,
         CalendarView.OnViewChangeListener,
         CalendarView.OnCalendarInterceptListener,
         DialogInterface.OnClickListener,
@@ -93,7 +93,8 @@ public class MainActivity extends BaseActivity implements
             public void onClick(View v) {
                 //mCalendarView.scrollToCurrent();
                 //mCalendarView.scrollToCalendar(2018,7,14);
-                Log.e("scrollToCurrent", "   --  " + mCalendarView.getSelectedCalendar());
+                //Log.e("scrollToCurrent", "   --  " + mCalendarView.getSelectedCalendar());
+
             }
         });
         findViewById(R.id.iv_more).setOnClickListener(new View.OnClickListener() {
@@ -128,7 +129,23 @@ public class MainActivity extends BaseActivity implements
                                 break;
                             case 4:
                                 mCalendarView.scrollToCurrent(true);
-                                //mCalendarView.scrollToCalendar(2018,7,14);
+                                break;
+                            case 5:
+                                mCalendarView.setRange(mCalendarView.getCurYear(), mCalendarView.getCurMonth(), 6,
+                                        mCalendarView.getCurYear(), mCalendarView.getCurMonth(), 23);
+                                break;
+                            case 6:
+                                Log.e("scheme", "  " + mCalendarView.getSelectedCalendar().getScheme() + "  --  "
+                                        + mCalendarView.getSelectedCalendar().isCurrentDay());
+                                List<Calendar> weekCalendars = mCalendarView.getCurrentWeekCalendars();
+                                for (Calendar calendar : weekCalendars) {
+                                    Log.e("onWeekChange", calendar.toString() + "  --  " + calendar.getScheme());
+                                }
+                                new AlertDialog.Builder(MainActivity.this)
+                                        .setMessage(String.format("Calendar Range: \n%s —— %s",
+                                                mCalendarView.getMinRangeCalendar(),
+                                                mCalendarView.getMaxRangeCalendar()))
+                                        .show();
                                 break;
                         }
                     }
@@ -149,9 +166,10 @@ public class MainActivity extends BaseActivity implements
 
         mCalendarLayout = (CalendarLayout) findViewById(R.id.calendarLayout);
         mCalendarView.setOnYearChangeListener(this);
-        mCalendarView.setOnDateSelectedListener(this);
+        mCalendarView.setOnCalendarSelectListener(this);
         mCalendarView.setOnMonthChangeListener(this);
-        mCalendarView.setOnDateLongClickListener(this, true);
+        mCalendarView.setOnCalendarLongClickListener(this, true);
+        mCalendarView.setOnWeekChangeListener(this);
 
         //设置日期拦截事件，仅适用单选模式，当前无效
         mCalendarView.setOnCalendarInterceptListener(this);
@@ -167,7 +185,7 @@ public class MainActivity extends BaseActivity implements
     @SuppressWarnings("unused")
     @Override
     protected void initData() {
-        final List<Calendar> schemes = new ArrayList<>();
+
         final int year = mCalendarView.getCurYear();
         final int month = mCalendarView.getCurMonth();
 
@@ -233,38 +251,6 @@ public class MainActivity extends BaseActivity implements
             }
         }
 
-        for (int y = 1997; y < 2082; y++) {
-            for (int m = 1; m <= 12; m++) {
-                schemes.add(getSchemeCalendar(y, m, 1, 0xFF40db25, "假"));
-                schemes.add(getSchemeCalendar(y, m, 2, 0xFF40db25, "假"));
-                schemes.add(getSchemeCalendar(y, m, 3, 0xFFe69138, "假"));
-                schemes.add(getSchemeCalendar(y, m, 4, 0xFFe69138, "假"));
-                schemes.add(getSchemeCalendar(y, m, 5, 0xFFdf1356, "假"));
-                schemes.add(getSchemeCalendar(y, m, 6, 0xFFdf1356, "假"));
-                schemes.add(getSchemeCalendar(y, m, 7, 0xFFaacc44, "事"));
-                schemes.add(getSchemeCalendar(y, m, 8, 0xFFaacc44, "议"));
-                schemes.add(getSchemeCalendar(y, m, 9, 0xFF40db25, "假"));
-                schemes.add(getSchemeCalendar(y, m, 10, 0xFF40db25, "假"));
-                schemes.add(getSchemeCalendar(y, m, 11, 0xFF40db25, "假"));
-                schemes.add(getSchemeCalendar(y, m, 12, 0xFF40db25, "假"));
-                schemes.add(getSchemeCalendar(y, m, 13, 0xFFedc56d, "记"));
-                schemes.add(getSchemeCalendar(y, m, 14, 0xFFedc56d, "记"));
-                schemes.add(getSchemeCalendar(y, m, 15, 0xFFaacc44, "假"));
-                schemes.add(getSchemeCalendar(y, m, 16, 0xFF40db25, "假"));
-                schemes.add(getSchemeCalendar(y, m, 17, 0xFF40db25, "假"));
-                schemes.add(getSchemeCalendar(y, m, 18, 0xFFbc13f0, "记"));
-                schemes.add(getSchemeCalendar(y, m, 19, 0xFF40db25, "假"));
-                schemes.add(getSchemeCalendar(y, m, 20, 0xFF40db25, "假"));
-                schemes.add(getSchemeCalendar(y, m, 21, 0xFF40db25, "假"));
-                schemes.add(getSchemeCalendar(y, m, 22, 0xFF40db25, "假"));
-                schemes.add(getSchemeCalendar(y, m, 23, 0xFF40db25, "假"));
-                schemes.add(getSchemeCalendar(y, m, 24, 0xFF40db25, "假"));
-                schemes.add(getSchemeCalendar(y, m, 25, 0xFF40db25, "假"));
-                schemes.add(getSchemeCalendar(y, m, 26, 0xFF13acf0, "假"));
-                schemes.add(getSchemeCalendar(y, m, 37, 0xFF40db25, "假"));
-                schemes.add(getSchemeCalendar(y, m, 38, 0xFF40db25, "假"));
-            }
-        }
         //28560 数据量增长不会影响UI响应速度，请使用这个API替换
         mCalendarView.setSchemeDate(map);
 
@@ -324,8 +310,6 @@ public class MainActivity extends BaseActivity implements
         switch (v.getId()) {
             case R.id.ll_flyme:
                 MeiZuActivity.show(this);
-                Log.e("scheme", "  " + mCalendarView.getSelectedCalendar().getScheme() + "  --  "
-                        + mCalendarView.getSelectedCalendar().isCurrentDay());
                 break;
             case R.id.ll_custom:
                 CustomActivity.show(this);
@@ -365,9 +349,15 @@ public class MainActivity extends BaseActivity implements
         return calendar;
     }
 
+
+    @Override
+    public void onCalendarOutOfRange(Calendar calendar) {
+        Toast.makeText(this, String.format("%s : OutOfRange", calendar), Toast.LENGTH_SHORT).show();
+    }
+
     @SuppressLint("SetTextI18n")
     @Override
-    public void onDateSelected(Calendar calendar, boolean isClick) {
+    public void onCalendarSelect(Calendar calendar, boolean isClick) {
         //Log.e("onDateSelected", "  -- " + calendar.getYear() + "  --  " + calendar.getMonth() + "  -- " + calendar.getDay());
         mTextLunar.setVisibility(View.VISIBLE);
         mTextYear.setVisibility(View.VISIBLE);
@@ -387,7 +377,12 @@ public class MainActivity extends BaseActivity implements
     }
 
     @Override
-    public void onDateLongClick(Calendar calendar) {
+    public void onCalendarLongClickOutOfRange(Calendar calendar) {
+        Toast.makeText(this, String.format("%s : LongClickOutOfRange", calendar), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCalendarLongClick(Calendar calendar) {
         Toast.makeText(this, "长按不选择日期\n" + getCalendarText(calendar), Toast.LENGTH_SHORT).show();
     }
 
@@ -417,6 +412,14 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void onViewChange(boolean isMonthView) {
         Log.e("onViewChange", "  ---  " + (isMonthView ? "月视图" : "周视图"));
+    }
+
+
+    @Override
+    public void onWeekChange(List<Calendar> weekCalendars) {
+        for (Calendar calendar : weekCalendars) {
+            Log.e("onWeekChange", calendar.toString());
+        }
     }
 
     /**

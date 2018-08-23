@@ -311,16 +311,45 @@ public final class Calendar implements Serializable {
         return false;
     }
 
+    /**
+     * 是否是相同月份
+     * @param calendar
+     * @return 是否是相同月份
+     */
     public boolean isSameMonth(Calendar calendar) {
         return year == calendar.getYear() && month == calendar.getMonth();
     }
 
+    /**
+     * 比较日期
+     *
+     * @param calendar
+     * @return -1 0 1
+     */
     public int compareTo(Calendar calendar) {
         return toString().compareTo(calendar.toString());
     }
 
+    /**
+     * 日期是否可用
+     *
+     * @return 日期是否可用
+     */
     public boolean isAvailable() {
         return year > 0 & month > 0 & day > 0;
+    }
+
+    /**
+     * 获取当前日历对应时间戳
+     *
+     * @return getTimeInMillis
+     */
+    public long getTimeInMillis() {
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+        calendar.set(java.util.Calendar.YEAR, year);
+        calendar.set(java.util.Calendar.MONTH, month - 1);
+        calendar.set(java.util.Calendar.DAY_OF_MONTH, day);
+        return calendar.getTimeInMillis();
     }
 
     @Override

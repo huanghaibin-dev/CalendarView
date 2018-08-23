@@ -21,8 +21,7 @@ import android.graphics.Canvas;
 import android.view.View;
 
 /**
- * 月视图基础控件,请使用 MonthView替换，没有任何不同，只是规范命名
- * pleased using MonthView replace BaseCalendarCardView
+ * 月视图基础控件,可自由继承实现
  * Created by huanghaibin on 2017/11/15.
  */
 public abstract class MonthView extends BaseView {
@@ -137,109 +136,136 @@ public abstract class MonthView extends BaseView {
             return;
         }
         Calendar calendar = getIndex();
+
+        if (calendar == null) {
+            return;
+        }
+
         if (onCalendarIntercept(calendar)) {
             mDelegate.mCalendarInterceptListener.onCalendarInterceptClick(calendar, true);
             return;
         }
-        if (calendar != null) {
 
-            if (mDelegate.getMonthViewShowMode() == CalendarViewDelegate.MODE_ONLY_CURRENT_MONTH &&
-                    !calendar.isCurrentMonth()) {
-                return;
+        if (mDelegate.getMonthViewShowMode() == CalendarViewDelegate.MODE_ONLY_CURRENT_MONTH &&
+                !calendar.isCurrentMonth()) {
+            return;
+        }
+
+        if (!isInRange(calendar)) {
+            if (mDelegate.mCalendarSelectListener != null) {
+                mDelegate.mCalendarSelectListener.onCalendarOutOfRange(calendar);
+            }
+            return;
+        }
+
+        mCurrentItem = mItems.indexOf(calendar);
+
+        if (!calendar.isCurrentMonth() && mMonthViewPager != null) {
+            int cur = mMonthViewPager.getCurrentItem();
+            int position = mCurrentItem < 7 ? cur - 1 : cur + 1;
+            mMonthViewPager.setCurrentItem(position);
+        }
+
+        if (mDelegate.mInnerListener != null) {
+            mDelegate.mInnerListener.onMonthDateSelected(calendar, true);
+        }
+
+        if (mParentLayout != null) {
+            if (calendar.isCurrentMonth()) {
+                mParentLayout.updateSelectPosition(mItems.indexOf(calendar));
+            } else {
+                mParentLayout.updateSelectWeek(CalendarUtil.getWeekFromDayInMonth(calendar, mDelegate.getWeekStart()));
             }
 
-            if (!CalendarUtil.isCalendarInRange(calendar, mDelegate.getMinYear(),
-                    mDelegate.getMinYearMonth(), mDelegate.getMaxYear(), mDelegate.getMaxYearMonth())) {
-                return;
-            }
+        }
 
-            mCurrentItem = mItems.indexOf(calendar);
-
-            if (!calendar.isCurrentMonth() && mMonthViewPager != null) {
-                int cur = mMonthViewPager.getCurrentItem();
-                int position = mCurrentItem < 7 ? cur - 1 : cur + 1;
-                mMonthViewPager.setCurrentItem(position);
-            }
-
-            if (mDelegate.mInnerListener != null) {
-                mDelegate.mInnerListener.onMonthDateSelected(calendar, true);
-            }
-
-            if (mParentLayout != null) {
-                if (calendar.isCurrentMonth()) {
-                    mParentLayout.updateSelectPosition(mItems.indexOf(calendar));
-                } else {
-                    mParentLayout.updateSelectWeek(CalendarUtil.getWeekFromDayInMonth(calendar, mDelegate.getWeekStart()));
-                }
-
-            }
-
-            if (mDelegate.mDateSelectedListener != null) {
-                mDelegate.mDateSelectedListener.onDateSelected(calendar, true);
-            }
+        if (mDelegate.mDateSelectedListener != null) {
+            mDelegate.mDateSelectedListener.onDateSelected(calendar, true);
+        }
+        if (mDelegate.mCalendarSelectListener != null) {
+            mDelegate.mCalendarSelectListener.onCalendarSelect(calendar, true);
         }
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean onLongClick(View v) {
-        if (mDelegate.mDateLongClickListener == null)
+        if (mDelegate.mDateLongClickListener == null &&
+                mDelegate.mCalendarLongClickListener == null)
             return false;
         if (!isClick) {
             return false;
         }
         Calendar calendar = getIndex();
+        if (calendar == null) {
+            return false;
+        }
         if (onCalendarIntercept(calendar)) {
             mDelegate.mCalendarInterceptListener.onCalendarInterceptClick(calendar, true);
             return false;
         }
-        if (calendar != null) {
-
-            boolean isCalendarInRange = CalendarUtil.isCalendarInRange(calendar, mDelegate.getMinYear(),
-                    mDelegate.getMinYearMonth(), mDelegate.getMaxYear(), mDelegate.getMaxYearMonth());
-
-            if (mDelegate.isPreventLongPressedSelected() && isCalendarInRange) {
-                mDelegate.mDateLongClickListener.onDateLongClick(calendar);
-                return true;
-            }
-
-            if (mDelegate.getMonthViewShowMode() == CalendarViewDelegate.MODE_ONLY_CURRENT_MONTH &&
-                    !calendar.isCurrentMonth()) {
-                return false;
-            }
-
-            if (!isCalendarInRange) {
-                return false;
-            }
-
-            mCurrentItem = mItems.indexOf(calendar);
-
-            if (!calendar.isCurrentMonth() && mMonthViewPager != null) {
-                int cur = mMonthViewPager.getCurrentItem();
-                int position = mCurrentItem < 7 ? cur - 1 : cur + 1;
-                mMonthViewPager.setCurrentItem(position);
-            }
-
-            if (mDelegate.mInnerListener != null) {
-                mDelegate.mInnerListener.onMonthDateSelected(calendar, true);
-            }
-
-            if (mParentLayout != null) {
-                if (calendar.isCurrentMonth()) {
-                    mParentLayout.updateSelectPosition(mItems.indexOf(calendar));
-                } else {
-                    mParentLayout.updateSelectWeek(CalendarUtil.getWeekFromDayInMonth(calendar, mDelegate.getWeekStart()));
-                }
-
-            }
-
-            if (mDelegate.mDateSelectedListener != null) {
-                mDelegate.mDateSelectedListener.onDateSelected(calendar, true);
-            }
-
-            mDelegate.mDateLongClickListener.onDateLongClick(calendar);
-            invalidate();
+        if (mDelegate.getMonthViewShowMode() == CalendarViewDelegate.MODE_ONLY_CURRENT_MONTH &&
+                !calendar.isCurrentMonth()) {
+            return false;
         }
-        return false;
+
+        boolean isCalendarInRange = isInRange(calendar);
+
+        if (!isCalendarInRange) {
+            if (mDelegate.mCalendarLongClickListener != null) {
+                mDelegate.mCalendarLongClickListener.onCalendarLongClickOutOfRange(calendar);
+            }
+            return true;
+        }
+
+        if (mDelegate.isPreventLongPressedSelected()) {
+            if (mDelegate.mDateLongClickListener != null) {
+                mDelegate.mDateLongClickListener.onDateLongClick(calendar);
+            }
+            if (mDelegate.mCalendarLongClickListener != null) {
+                mDelegate.mCalendarLongClickListener.onCalendarLongClick(calendar);
+            }
+            return true;
+        }
+
+
+        mCurrentItem = mItems.indexOf(calendar);
+
+        if (!calendar.isCurrentMonth() && mMonthViewPager != null) {
+            int cur = mMonthViewPager.getCurrentItem();
+            int position = mCurrentItem < 7 ? cur - 1 : cur + 1;
+            mMonthViewPager.setCurrentItem(position);
+        }
+
+        if (mDelegate.mInnerListener != null) {
+            mDelegate.mInnerListener.onMonthDateSelected(calendar, true);
+        }
+
+        if (mParentLayout != null) {
+            if (calendar.isCurrentMonth()) {
+                mParentLayout.updateSelectPosition(mItems.indexOf(calendar));
+            } else {
+                mParentLayout.updateSelectWeek(CalendarUtil.getWeekFromDayInMonth(calendar, mDelegate.getWeekStart()));
+            }
+
+        }
+
+        if (mDelegate.mDateSelectedListener != null) {
+            mDelegate.mDateSelectedListener.onDateSelected(calendar, true);
+        }
+
+        if (mDelegate.mCalendarSelectListener != null) {
+            mDelegate.mCalendarSelectListener.onCalendarSelect(calendar, true);
+        }
+
+        if (mDelegate.mDateLongClickListener != null) {
+            mDelegate.mDateLongClickListener.onDateLongClick(calendar);
+        }
+        if (mDelegate.mCalendarLongClickListener != null) {
+            mDelegate.mCalendarLongClickListener.onCalendarLongClick(calendar);
+        }
+        invalidate();
+        return true;
     }
 
     /**

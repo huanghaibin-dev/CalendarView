@@ -36,7 +36,7 @@ import java.util.Map;
  * 日历布局
  * 各个类使用包权限，避免不必要的public
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "deprecation"})
 public class CalendarView extends FrameLayout {
 
     /**
@@ -203,7 +203,15 @@ public class CalendarView extends FrameLayout {
             }
         };
 
-        mDelegate.mSelectedCalendar = mDelegate.createCurrentDate();
+
+        if (isInRange(mDelegate.getCurrentDay())) {
+            mDelegate.mSelectedCalendar = mDelegate.createCurrentDate();
+        } else {
+            mDelegate.mSelectedCalendar = mDelegate.getMinRangeCalendar();
+        }
+
+        mDelegate.mIndexCalendar = mDelegate.mSelectedCalendar;
+
         mWeekBar.onDateSelected(mDelegate.mSelectedCalendar, mDelegate.getWeekStart(), false);
 
         mMonthPager.setup(mDelegate);
@@ -228,22 +236,43 @@ public class CalendarView extends FrameLayout {
      * @param maxYear      最大月份
      * @param maxYearMonth 最大月份对应月份
      */
+    @Deprecated
     public void setRange(int minYear, int minYearMonth,
                          int maxYear, int maxYearMonth) {
-        mDelegate.setRange(minYear, minYearMonth,
-                maxYear, maxYearMonth);
+        setRange(minYear, minYearMonth, 0,
+                maxYear, maxYearMonth, -1);
+
+    }
+
+    /**
+     * 设置日期范围
+     *
+     * @param minYear      最小年份
+     * @param minYearMonth 最小年份对应月份
+     * @param minYearDay   最小年份对应天
+     * @param maxYear      最大月份
+     * @param maxYearMonth 最大月份对应月份
+     * @param maxYearDay   最大月份对应天
+     */
+    public void setRange(int minYear, int minYearMonth, int minYearDay,
+                         int maxYear, int maxYearMonth, int maxYearDay) {
+        if (CalendarUtil.compareTo(minYear, minYearMonth, minYearDay,
+                maxYear, maxYearMonth, maxYearDay) > 0) {
+            return;
+        }
+        mDelegate.setRange(minYear, minYearMonth, minYearDay,
+                maxYear, maxYearMonth, maxYearDay);
         mWeekPager.notifyDataSetChanged();
         mSelectLayout.notifyDataSetChanged();
         mMonthPager.notifyDataSetChanged();
-        if (CalendarUtil.isCalendarInRange(mDelegate.mSelectedCalendar, mDelegate)) {
-            scrollToCalendar(mDelegate.mSelectedCalendar.getYear(),
-                    mDelegate.mSelectedCalendar.getMonth(),
-                    mDelegate.mSelectedCalendar.getDay());
-
-        } else {
-            scrollToCurrent();
+        if (!isInRange(mDelegate.mSelectedCalendar)) {
+            mDelegate.mSelectedCalendar = mDelegate.getMinRangeCalendar();
+            mDelegate.updateSelectCalendarScheme();
+            mDelegate.mIndexCalendar = mDelegate.mSelectedCalendar;
         }
-
+        mWeekPager.updateRange();
+        mMonthPager.updateRange();
+        mSelectLayout.updateRange();
     }
 
     /**
@@ -292,7 +321,7 @@ public class CalendarView extends FrameLayout {
      */
     @SuppressWarnings("DeprecatedIsStillUsed")
     @Deprecated
-    public void showSelectLayout(final int year) {
+    private void showSelectLayout(final int year) {
         if (mParentLayout != null && mParentLayout.mContentView != null) {
             if (!mParentLayout.isExpand()) {
                 mParentLayout.expand();
@@ -367,6 +396,10 @@ public class CalendarView extends FrameLayout {
                     mDelegate.getSelectMode() != CalendarViewDelegate.SELECT_MODE_SINGLE) {
                 mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar, false);
             }
+            if (mDelegate.mCalendarSelectListener != null &&
+                    mDelegate.getSelectMode() != CalendarViewDelegate.SELECT_MODE_SINGLE) {
+                mDelegate.mCalendarSelectListener.onCalendarSelect(mDelegate.mSelectedCalendar, false);
+            }
         } else {
             mMonthPager.setCurrentItem(position, false);
         }
@@ -412,7 +445,7 @@ public class CalendarView extends FrameLayout {
      * @param smoothScroll smoothScroll
      */
     public void scrollToCurrent(boolean smoothScroll) {
-        if (!CalendarUtil.isCalendarInRange(mDelegate.getCurrentDay(), mDelegate)) {
+        if (!isInRange(mDelegate.getCurrentDay())) {
             return;
         }
         Calendar calendar = mDelegate.createCurrentDate();
@@ -519,6 +552,9 @@ public class CalendarView extends FrameLayout {
         calendar.setYear(year);
         calendar.setMonth(month);
         calendar.setDay(day);
+        if (!isInRange(calendar)) {
+            return;
+        }
         if (mDelegate.mCalendarInterceptListener != null &&
                 mDelegate.mCalendarInterceptListener.onCalendarIntercept(calendar)) {
             mDelegate.mCalendarInterceptListener.onCalendarInterceptClick(calendar, false);
@@ -662,28 +698,41 @@ public class CalendarView extends FrameLayout {
      */
     public void setOnMonthChangeListener(OnMonthChangeListener listener) {
         this.mDelegate.mMonthChangeListener = listener;
-        if (mDelegate.mMonthChangeListener != null) {
-            post(new Runnable() {
-                @Override
-                public void run() {
-                    mDelegate.mMonthChangeListener.onMonthChange(mDelegate.mSelectedCalendar.getYear(),
-                            mDelegate.mSelectedCalendar.getMonth());
-                }
-            });
+        if (mDelegate.mMonthChangeListener == null) {
+            return;
         }
+        post(new Runnable() {
+            @Override
+            public void run() {
+                mDelegate.mMonthChangeListener.onMonthChange(mDelegate.mSelectedCalendar.getYear(),
+                        mDelegate.mSelectedCalendar.getMonth());
+            }
+        });
+    }
+
+
+    /**
+     * 周视图切换监听
+     *
+     * @param listener listener
+     */
+    public void setOnWeekChangeListener(OnWeekChangeListener listener) {
+        this.mDelegate.mWeekChangeListener = listener;
     }
 
     /**
      * 设置日期选中事件
+     * using setOnCalendarSelectListener(OnCalendarSelectListener listener) replace
      *
      * @param listener 日期选中事件
      */
+    @Deprecated
     public void setOnDateSelectedListener(OnDateSelectedListener listener) {
         this.mDelegate.mDateSelectedListener = listener;
         if (mDelegate.mDateSelectedListener == null) {
             return;
         }
-        if (!CalendarUtil.isCalendarInRange(mDelegate.mSelectedCalendar, mDelegate)) {
+        if (!isInRange(mDelegate.mSelectedCalendar)) {
             return;
         }
 
@@ -697,12 +746,61 @@ public class CalendarView extends FrameLayout {
     }
 
     /**
+     * 日期选择事件
+     *
+     * @param listener listener
+     */
+    public void setOnCalendarSelectListener(OnCalendarSelectListener listener) {
+        this.mDelegate.mCalendarSelectListener = listener;
+        if (mDelegate.mCalendarSelectListener == null) {
+            return;
+        }
+        if (!isInRange(mDelegate.mSelectedCalendar)) {
+            return;
+        }
+
+        post(new Runnable() {
+            @Override
+            public void run() {
+                mDelegate.updateSelectCalendarScheme();
+                mDelegate.mCalendarSelectListener.onCalendarSelect(mDelegate.mSelectedCalendar, false);
+            }
+        });
+    }
+
+
+    /**
+     * 日期长按事件、弃用，使用以下api
+     * using setOnCalendarLongClickListener(OnCalendarLongClickListener listener)
+     *
+     * @param listener listener
+     */
+    @Deprecated
+    public void setOnDateLongClickListener(OnDateLongClickListener listener) {
+        this.mDelegate.mDateLongClickListener = listener;
+    }
+
+
+    /**
      * 日期长按事件
      *
      * @param listener listener
      */
-    public void setOnDateLongClickListener(OnDateLongClickListener listener) {
+    public void setOnCalendarLongClickListener(OnCalendarLongClickListener listener) {
+        this.mDelegate.mCalendarLongClickListener = listener;
+    }
+
+    /**
+     * 日期长按事件，弃用，使用以下api
+     * using setOnCalendarLongClickListener(OnCalendarLongClickListener listener, boolean preventLongPressedSelect)
+     *
+     * @param preventLongPressedSelect 防止长按选择日期
+     * @param listener                 listener
+     */
+    @Deprecated
+    public void setOnDateLongClickListener(OnDateLongClickListener listener, boolean preventLongPressedSelect) {
         this.mDelegate.mDateLongClickListener = listener;
+        this.mDelegate.setPreventLongPressedSelected(preventLongPressedSelect);
     }
 
 
@@ -712,11 +810,10 @@ public class CalendarView extends FrameLayout {
      * @param preventLongPressedSelect 防止长按选择日期
      * @param listener                 listener
      */
-    public void setOnDateLongClickListener(OnDateLongClickListener listener, boolean preventLongPressedSelect) {
-        this.mDelegate.mDateLongClickListener = listener;
+    public void setOnCalendarLongClickListener(OnCalendarLongClickListener listener, boolean preventLongPressedSelect) {
+        this.mDelegate.mCalendarLongClickListener = listener;
         this.mDelegate.setPreventLongPressedSelected(preventLongPressedSelect);
     }
-
 
     /**
      * 视图改变事件
@@ -1065,6 +1162,15 @@ public class CalendarView extends FrameLayout {
     }
 
     /**
+     * 获取当前周数据
+     *
+     * @return 获取当前周数据
+     */
+    public List<Calendar> getCurrentWeekCalendars() {
+        return mWeekPager.getCurrentWeekCalendars();
+    }
+
+    /**
      * 获取选择的日期
      *
      * @return 获取选择的日期
@@ -1073,9 +1179,57 @@ public class CalendarView extends FrameLayout {
         return mDelegate.mSelectedCalendar;
     }
 
+    /**
+     * 获得最小范围日期
+     *
+     * @return 最小范围日期
+     */
+    public Calendar getMinRangeCalendar() {
+        return mDelegate.getMinRangeCalendar();
+    }
+
 
     /**
-     * 年份改变事件，快速年份切换
+     * 获得最大范围日期
+     *
+     * @return 最大范围日期
+     */
+    public Calendar getMaxRangeCalendar() {
+        return mDelegate.getMaxRangeCalendar();
+    }
+
+    /**
+     * MonthViewPager
+     *
+     * @return 获得月视图
+     */
+    public MonthViewPager getMonthViewPager() {
+        return mMonthPager;
+    }
+
+    /**
+     * 获得周视图
+     *
+     * @return 获得周视图
+     */
+    public WeekViewPager getWeekViewPager() {
+        return mWeekPager;
+    }
+
+    /**
+     * 是否在日期范围内
+     *
+     * @param calendar calendar
+     * @return 是否在日期范围内
+     */
+    @SuppressWarnings("unused")
+    protected final boolean isInRange(Calendar calendar) {
+        return mDelegate != null && CalendarUtil.isCalendarInRange(calendar, mDelegate);
+    }
+
+
+    /**
+     * 年份视图切换事件，快速年份切换
      */
     public interface OnYearChangeListener {
         void onYearChange(int year);
@@ -1086,6 +1240,14 @@ public class CalendarView extends FrameLayout {
      */
     public interface OnMonthChangeListener {
         void onMonthChange(int year, int month);
+    }
+
+
+    /**
+     * 周视图切换事件
+     */
+    public interface OnWeekChangeListener {
+        void onWeekChange(List<Calendar> weekCalendars);
     }
 
     /**
@@ -1111,8 +1273,11 @@ public class CalendarView extends FrameLayout {
     }
 
     /**
-     * 外部日期选择事件
+     * 外部日期选择事件，弃用
+     * using OnCalendarSelectListener
      */
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     public interface OnDateSelectedListener {
         /**
          * 日期选择事件
@@ -1120,19 +1285,63 @@ public class CalendarView extends FrameLayout {
          * @param calendar calendar
          * @param isClick  isClick
          */
+        @Deprecated
         void onDateSelected(Calendar calendar, boolean isClick);
     }
+
+
+    /**
+     * 日历选择事件
+     */
+    public interface OnCalendarSelectListener {
+
+        /**
+         * 超出范围越界
+         *
+         * @param calendar calendar
+         */
+        void onCalendarOutOfRange(Calendar calendar);
+
+        /**
+         * 日期选择事件
+         *
+         * @param calendar calendar
+         * @param isClick  isClick
+         */
+        void onCalendarSelect(Calendar calendar, boolean isClick);
+    }
+
 
     /**
      * 外部日期长按事件
      */
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     public interface OnDateLongClickListener {
         /**
          * 日期长按事件
          *
          * @param calendar calendar
          */
+        @Deprecated
         void onDateLongClick(Calendar calendar);
+    }
+
+    public interface OnCalendarLongClickListener {
+
+        /**
+         * 超出范围越界
+         *
+         * @param calendar calendar
+         */
+        void onCalendarLongClickOutOfRange(Calendar calendar);
+
+        /**
+         * 日期长按事件
+         *
+         * @param calendar calendar
+         */
+        void onCalendarLongClick(Calendar calendar);
     }
 
     /**

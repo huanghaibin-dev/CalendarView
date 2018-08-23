@@ -29,10 +29,9 @@ import java.util.List;
 import java.util.Map;
 
 public class SingleActivity extends BaseActivity implements
-        CalendarView.OnDateSelectedListener,
+        CalendarView.OnCalendarSelectListener,
         CalendarView.OnYearChangeListener,
         CalendarView.OnCalendarInterceptListener,
-        CalendarView.OnMonthChangeListener,
         View.OnClickListener {
 
     TextView mTextMonthDay;
@@ -93,9 +92,8 @@ public class SingleActivity extends BaseActivity implements
             }
         });
         mCalendarLayout = (CalendarLayout) findViewById(R.id.calendarLayout);
-        mCalendarView.setOnDateSelectedListener(this);
+        mCalendarView.setOnCalendarSelectListener(this);
         mCalendarView.setOnYearChangeListener(this);
-        mCalendarView.setOnMonthChangeListener(this);
 
         //设置日期拦截事件，仅适用单选模式，当前有效
         mCalendarView.setOnCalendarInterceptListener(this);
@@ -189,9 +187,14 @@ public class SingleActivity extends BaseActivity implements
     }
 
 
+    @Override
+    public void onCalendarOutOfRange(Calendar calendar) {
+
+    }
+
     @SuppressLint("SetTextI18n")
     @Override
-    public void onDateSelected(Calendar calendar, boolean isClick) {
+    public void onCalendarSelect(Calendar calendar, boolean isClick) {
         mTextLunar.setVisibility(View.VISIBLE);
         mTextYear.setVisibility(View.VISIBLE);
         mTextMonthDay.setText(calendar.getMonth() + "月" + calendar.getDay() + "日");
@@ -207,18 +210,6 @@ public class SingleActivity extends BaseActivity implements
             mTextYear.setText("");
             mTextMonthDay.setText("无效日期");
         }
-    }
-
-    @SuppressLint("SetTextI18n")
-    @Override
-    public void onMonthChange(int year, int month) {
-//        Calendar calendar = mCalendarView.getSelectedCalendar();
-//        mTextLunar.setVisibility(View.VISIBLE);
-//        mTextYear.setVisibility(View.VISIBLE);
-//        mTextMonthDay.setText(calendar.getMonth() + "月" + calendar.getDay() + "日");
-//        mTextYear.setText(String.valueOf(calendar.getYear()));
-//        mTextLunar.setText(calendar.getLunar());
-//        mYear = calendar.getYear();
     }
 
 

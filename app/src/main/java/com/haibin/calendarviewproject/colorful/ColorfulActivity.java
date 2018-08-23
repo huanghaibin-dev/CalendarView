@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ColorfulActivity extends BaseActivity implements
-        CalendarView.OnDateSelectedListener,
+        CalendarView.OnCalendarSelectListener,
         CalendarView.OnYearChangeListener,
         View.OnClickListener {
 
@@ -86,7 +86,7 @@ public class ColorfulActivity extends BaseActivity implements
             }
         });
         mCalendarLayout = (CalendarLayout) findViewById(R.id.calendarLayout);
-        mCalendarView.setOnDateSelectedListener(this);
+        mCalendarView.setOnCalendarSelectListener(this);
         mCalendarView.setOnYearChangeListener(this);
         mTextYear.setText(String.valueOf(mCalendarView.getCurYear()));
         mYear = mCalendarView.getCurYear();
@@ -179,9 +179,14 @@ public class ColorfulActivity extends BaseActivity implements
 
 
 
+    @Override
+    public void onCalendarOutOfRange(Calendar calendar) {
+
+    }
+
     @SuppressLint("SetTextI18n")
     @Override
-    public void onDateSelected(Calendar calendar, boolean isClick) {
+    public void onCalendarSelect(Calendar calendar, boolean isClick) {
         mTextLunar.setVisibility(View.VISIBLE);
         mTextYear.setVisibility(View.VISIBLE);
         mTextMonthDay.setText(calendar.getMonth() + "月" + calendar.getDay() + "日");
@@ -189,7 +194,6 @@ public class ColorfulActivity extends BaseActivity implements
         mTextLunar.setText(calendar.getLunar());
         mYear = calendar.getYear();
     }
-
 
     @Override
     public void onYearChange(int year) {
