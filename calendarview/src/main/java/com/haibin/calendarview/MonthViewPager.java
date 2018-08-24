@@ -53,6 +53,11 @@ public final class MonthViewPager extends ViewPager {
      */
     private boolean isUsingScrollToCalendar = false;
 
+    /**
+     * Use to know viewpager is scroll left or right.
+     */
+    private int mLastPage = -1;
+
     public MonthViewPager(Context context) {
         this(context, null);
     }
@@ -98,7 +103,7 @@ public final class MonthViewPager extends ViewPager {
                             * (1 - positionOffset) +
                             mCurrentViewHeight
                                     * positionOffset);
-                } else {//左滑+！
+                } else {//左滑+1
                     height = (int) ((mCurrentViewHeight)
                             * (1 - positionOffset) +
                             (mNextViewHeight)
@@ -113,6 +118,20 @@ public final class MonthViewPager extends ViewPager {
             public void onPageSelected(int position) {
                 Calendar calendar = CalendarUtil.getFirstCalendarFromMonthViewPager(position, mDelegate);
                 mDelegate.mIndexCalendar = calendar;
+
+                /*
+                 We should invoke onYearChange() when month changed like 2018/01 -> 2017/12
+                 or 2017/12 -> 2018/01.
+                  */
+                int currentMonth = calendar.getMonth();
+                if (mLastPage != -1) {
+                    if ((currentMonth == 12 && mLastPage > position) ||  // scroll left
+                            (currentMonth == 1 && mLastPage < position)) { // scroll right
+                        mDelegate.mYearChangeListener.onYearChange(calendar.getYear());
+                    }
+                }
+                mLastPage = position;
+
                 //月份改变事件
                 if (mDelegate.mMonthChangeListener != null) {
                     mDelegate.mMonthChangeListener.onMonthChange(calendar.getYear(), calendar.getMonth());
