@@ -217,7 +217,7 @@ public final class WeekViewPager extends ViewPager {
         int position = CalendarUtil.getWeekFromCalendarStartWithMinCalendar(mDelegate.getCurrentDay(),
                 mDelegate.getMinYear(),
                 mDelegate.getMinYearMonth(),
-                mDelegate.getMaxYearDay(),
+                mDelegate.getMinYearDay(),
                 mDelegate.getWeekStart()) - 1;
         int curItem = getCurrentItem();
         if (curItem == position) {

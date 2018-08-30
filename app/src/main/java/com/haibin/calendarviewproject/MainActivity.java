@@ -129,6 +129,7 @@ public class MainActivity extends BaseActivity implements
                                 break;
                             case 4:
                                 mCalendarView.scrollToCurrent(true);
+                                //mCalendarView.scrollToCalendar(2018,8,30);
                                 break;
                             case 5:
                                 mCalendarView.setRange(mCalendarView.getCurYear(), mCalendarView.getCurMonth(), 6,
