@@ -5,37 +5,21 @@ Android上一个优雅、高度自定义、性能高效的日历控件，完美�
 ### Support English Version
 [**English Version**](https://github.com/huanghaibin-dev/CalendarView/blob/master/README_EN.md)
 
+### 详细介绍
+[**详细介绍**](https://github.com/huanghaibin-dev/CalendarView/blob/master/QUESTION.md)
+
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.4.4'
+compile 'com.haibin:calendarview:3.4.5'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.4.4</version>
+  <version>3.4.5</version>
   <type>pom</type>
 </dependency>
 ```
-
-### 列举一些常用的是否支持的问题
-> * 是否支持周末等颜色单独？支持的，需要你自定义MonthView，WeekView，Calendar.isWeekend()可以自行判断是否周末，使用对应的画笔即可
-
-> * 是否支持与其他控件联动？支持的，假如你喜欢小米的日历日期快速跳转，那么你也可以使用类似的控件通过调用各种 CalendarView.scrollToCalendar(); 函数即可
-
-> * 是否支持日期长按？支持的，长按回调你可以做一些诸如声音、震动效果，框架并不提供，不利于解耦
-
-> * 是否支持用图片作为点击效果？支持的，但你需要会drawBitmap
-
-> * 是否支持网格显示？当然是支持的，看你怎么绘制
-
-> * 是否支持日期拦截？日期可用绘制？支持的，可以自行写拦截条件即可，支持拦截点击、滚动、和绘制任意日期
-
-> * 是否支持自定义周起始？支持的，你可以定制周一、周日、周六为视图起始时间，使用 week_start_with attr
-
-> * 是否支持WeekBar星期栏与日期联动？支持的，你需要自定义WeekBar，实现 onDateSelected(Calendar calendar,int weekStart, boolean isClick)；函数即可
-
-> * 因此，只要在MonthView、WeekView里面出现的UI，什么五角星、贝塞尔曲线、图片等等，都是支持的，只要你会绘制，UI美不美，真的就看你了
 
 
 ### 混淆proguard-rules
@@ -58,15 +42,11 @@ compile 'com.haibin:calendarview:3.4.4'
 }
 ```
 
-
-### 完整用法教程请参照博客教程
-[**https://juejin.im/post/5a6743836fb9a01caa20aefc**](https://juejin.im/post/5a6743836fb9a01caa20aefc)
-
-### 如果你需要完全定制UI，参考demo，简单几步即可绘制你需要的效果，一般只需要实现三个回调函数绘制你需要的特效即可，自定义日历UI需要同时自定义周视图，真正做到热插拔效果，方便大众定制各种UI需求
-
 ### 效果预览
 ### 功能性展示
 <img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/main_zh_func.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/main_zh_list.png" height="650"/>
+### 年视图和范围选择风格
+<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/year_view.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/range.png" height="650"/>
 ### 中国式变态需求风格
 <img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/custom_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/custom_shrink.png" height="650"/>
 ### 收缩展开的魅族风格效果
@@ -77,8 +57,6 @@ compile 'com.haibin:calendarview:3.4.4'
 <img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/progress_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/progress_shrink.png" height="650"/>
 ### 星系图风格
 <img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/solar_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/solar_shrink.png" height="650"/>
-### 快速年份月份切换
-<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/year_view.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/simple_expand.png" height="650"/>
 
 ### 特别的，请注意不要复制这三个路径，自行替换您自己的自定义路径
 
@@ -208,7 +186,12 @@ app:week_bar_view="com.haibin.calendarviewproject.EnglishWeekBar"
         <attr name="select_mode">
               <enum name="default_mode" value="0" />
               <enum name="single_mode" value="1" />
+              <enum name="range_mode" value="2" />
         </attr>
+
+        <!-- 当 select_mode=range_mode -->
+        <attr name="min_select_range" format="integer" />
+        <attr name="max_select_range" format="integer" />
 </declare-styleable>
 ```
 ### CalendarView api
@@ -337,116 +320,6 @@ public boolean isExpand();//是否展开了
 ```
 
 ### 如果你需要完全定制UI，参考demo，简单几步即可绘制你需要的效果，月视图和周视图需要同时更换，达到UI一致
-#### 首先绘制月视图
-```java
-public class SimpleCalendarCardView extends MonthView {
-
-    private int mRadius;
-
-    public SimpleCalendarCardView(Context context) {
-        super(context);
-    }
-
-    @Override
-    protected void onPreviewHook() {
-        mRadius = Math.min(mItemWidth, mItemHeight) / 5 * 2;
-        mSchemePaint.setStyle(Paint.Style.STROKE);
-    }
-
-    @Override
-    protected void onLoopStart(int x, int y) {
-
-    }
-
-    @Override
-    protected boolean onDrawSelected(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme) {
-        int cx = x + mItemWidth / 2;
-        int cy = y + mItemHeight / 2;
-        canvas.drawCircle(cx, cy, mRadius, mSelectedPaint);
-        return false;
-    }
-
-    @Override
-    protected void onDrawScheme(Canvas canvas, Calendar calendar, int x, int y) {
-        int cx = x + mItemWidth / 2;
-        int cy = y + mItemHeight / 2;
-        canvas.drawCircle(cx, cy, mRadius, mSchemePaint);
-    }
-
-    @Override
-    protected void onDrawText(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme, boolean isSelected) {
-        float baselineY = mTextBaseLine + y;
-        int cx = x + mItemWidth / 2;
-        if (hasScheme) {
-            canvas.drawText(String.valueOf(calendar.getDay()),
-                    cx,
-                    baselineY,
-                    calendar.isCurrentDay() ? mCurDayTextPaint :
-                            calendar.isCurrentMonth() ? mSchemeTextPaint : mOtherMonthTextPaint);
-
-        } else {
-            canvas.drawText(String.valueOf(calendar.getDay()), cx, baselineY,
-                    calendar.isCurrentDay() ? mCurDayTextPaint :
-                            calendar.isCurrentMonth() ? mCurMonthTextPaint : mOtherMonthTextPaint);
-        }
-    }
-}
-```
-
-#### 其次绘制周视图，周视图回调几乎一样，唯一的区别是不需要y，只有一行，所以可以直接拷贝代码，把y=0即可
-```java
-public class SimpleWeekView extends WeekView{
-    private int mRadius;
-
-
-    public SimpleWeekView(Context context) {
-        super(context);
-    }
-
-    @Override
-    protected void onPreviewHook() {
-        mRadius = Math.min(mItemWidth, mItemHeight) / 5 * 2;
-        mSchemePaint.setStyle(Paint.Style.STROKE);
-    }
-
-    @Override
-    protected boolean onDrawSelected(Canvas canvas, Calendar calendar, int x, boolean hasScheme) {
-        int cx = x + mItemWidth / 2;
-        int cy =  mItemHeight / 2;
-        canvas.drawCircle(cx, cy, mRadius, mSelectedPaint);
-        return false
-    }
-
-    @Override
-    protected void onDrawScheme(Canvas canvas, Calendar calendar, int x) {
-        int cx = x + mItemWidth / 2;
-        int cy = mItemHeight / 2;
-        canvas.drawCircle(cx, cy, mRadius, mSchemePaint);
-    }
-
-    @Override
-    protected void onDrawText(Canvas canvas, Calendar calendar, int x, boolean hasScheme, boolean isSelected) {
-        float baselineY = mTextBaseLine ;
-        int cx = x + mItemWidth / 2;
-        if (hasScheme) {
-            canvas.drawText(String.valueOf(calendar.getDay()),
-                    cx,
-                    baselineY,
-                    calendar.isCurrentDay() ? mCurDayTextPaint :
-                            calendar.isCurrentMonth() ? mSchemeTextPaint : mSchemeTextPaint);
-
-        } else {
-            canvas.drawText(String.valueOf(calendar.getDay()), cx, baselineY,
-                    calendar.isCurrentDay() ? mCurDayTextPaint :
-                            calendar.isCurrentMonth() ? mCurMonthTextPaint : mCurMonthTextPaint);
-        }
-    }
-}
-```
-
-### 写在结尾：这个控件。只需要懂得一点Canvas的知识即可，如果你是新手，那么你可以通过此控件获得提升，此项目代码注释完善，结构也很简单，逻辑没那么复杂。这个项目是十分解耦合的，自定义WeekBar，MonthView、WeekView都是可以的，如果想和其它控件嵌套使用，外部父控件事件冲突可以自由通过CalendarLayout.isExpand();解决，内部基本没有事件冲突
-
-### 个人不做什么打赏，不搞QQ群，如果帮助你解决了问题，请给个star就好。
 
 ## Licenses
 - Copyright (C) 2013 huanghaibin_dev <huanghaibin_dev@163.com>

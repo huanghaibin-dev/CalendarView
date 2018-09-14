@@ -19,7 +19,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -133,13 +132,18 @@ public final class MonthViewPager extends ViewPager {
                     }
                     mDelegate.mIndexCalendar = mDelegate.mSelectedCalendar;
                 } else {
-                    if (calendar.isSameMonth(mDelegate.mSelectedCalendar)) {
-                        mDelegate.mIndexCalendar = mDelegate.mSelectedCalendar;
+                    if (mDelegate.mSelectedStartRangeCalendar != null &&
+                            mDelegate.mSelectedStartRangeCalendar.isSameMonth(mDelegate.mIndexCalendar)) {
+                        mDelegate.mIndexCalendar = mDelegate.mSelectedStartRangeCalendar;
+                    } else {
+                        if (calendar.isSameMonth(mDelegate.mSelectedCalendar)) {
+                            mDelegate.mIndexCalendar = mDelegate.mSelectedCalendar;
+                        }
                     }
                 }
 
                 mDelegate.updateSelectCalendarScheme();
-                if (!isUsingScrollToCalendar && mDelegate.getSelectMode() != CalendarViewDelegate.SELECT_MODE_SINGLE) {
+                if (!isUsingScrollToCalendar && mDelegate.getSelectMode() == CalendarViewDelegate.SELECT_MODE_DEFAULT) {
                     mWeekBar.onDateSelected(mDelegate.mSelectedCalendar, mDelegate.getWeekStart(), false);
                     if (mDelegate.mDateSelectedListener != null) {
                         mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar, false);
@@ -149,10 +153,10 @@ public final class MonthViewPager extends ViewPager {
                     }
                 }
 
-                MonthView view = (MonthView) findViewWithTag(position);
+                BaseMonthView view = (BaseMonthView) findViewWithTag(position);
                 if (view != null) {
                     int index = view.getSelectedIndex(mDelegate.mIndexCalendar);
-                    if (mDelegate.getSelectMode() != CalendarViewDelegate.SELECT_MODE_SINGLE) {
+                    if (mDelegate.getSelectMode() == CalendarViewDelegate.SELECT_MODE_DEFAULT) {
                         view.mCurrentItem = index;
                     }
                     if (index >= 0 && mParentLayout != null) {
@@ -228,7 +232,7 @@ public final class MonthViewPager extends ViewPager {
     /**
      * 更新日期范围
      */
-    void updateRange() {
+    final void updateRange() {
         isUpdateMonthView = true;
         notifyDataSetChanged();
         isUpdateMonthView = false;
@@ -240,7 +244,7 @@ public final class MonthViewPager extends ViewPager {
         int y = calendar.getYear() - mDelegate.getMinYear();
         int position = 12 * y + calendar.getMonth() - mDelegate.getMinYearMonth();
         setCurrentItem(position, false);
-        MonthView view = (MonthView) findViewWithTag(position);
+        BaseMonthView view = (BaseMonthView) findViewWithTag(position);
         if (view != null) {
             view.setSelectedCalendar(mDelegate.mIndexCalendar);
             view.invalidate();
@@ -294,7 +298,7 @@ public final class MonthViewPager extends ViewPager {
         }
         setCurrentItem(position, smoothScroll);
 
-        MonthView view = (MonthView) findViewWithTag(position);
+        BaseMonthView view = (BaseMonthView) findViewWithTag(position);
         if (view != null) {
             view.setSelectedCalendar(mDelegate.mIndexCalendar);
             view.invalidate();
@@ -332,7 +336,7 @@ public final class MonthViewPager extends ViewPager {
 
         setCurrentItem(position, smoothScroll);
 
-        MonthView view = (MonthView) findViewWithTag(position);
+        BaseMonthView view = (BaseMonthView) findViewWithTag(position);
         if (view != null) {
             view.setSelectedCalendar(mDelegate.getCurrentDay());
             view.invalidate();
@@ -353,7 +357,7 @@ public final class MonthViewPager extends ViewPager {
      * 更新为默认选择模式
      */
     void updateDefaultSelect() {
-        MonthView view = (MonthView) findViewWithTag(getCurrentItem());
+        BaseMonthView view = (BaseMonthView) findViewWithTag(getCurrentItem());
         if (view != null) {
             int index = view.getSelectedIndex(mDelegate.mSelectedCalendar);
             view.mCurrentItem = index;
@@ -370,7 +374,7 @@ public final class MonthViewPager extends ViewPager {
      */
     void updateSelected() {
         for (int i = 0; i < getChildCount(); i++) {
-            MonthView view = (MonthView) getChildAt(i);
+            BaseMonthView view = (BaseMonthView) getChildAt(i);
             view.setSelectedCalendar(mDelegate.mSelectedCalendar);
             view.invalidate();
         }
@@ -381,7 +385,7 @@ public final class MonthViewPager extends ViewPager {
      */
     void updateScheme() {
         for (int i = 0; i < getChildCount(); i++) {
-            MonthView view = (MonthView) getChildAt(i);
+            BaseMonthView view = (BaseMonthView) getChildAt(i);
             view.update();
         }
     }
@@ -391,7 +395,7 @@ public final class MonthViewPager extends ViewPager {
      */
     void updateCurrentDate() {
         for (int i = 0; i < getChildCount(); i++) {
-            MonthView view = (MonthView) getChildAt(i);
+            BaseMonthView view = (BaseMonthView) getChildAt(i);
             view.updateCurrentDate();
         }
     }
@@ -402,7 +406,7 @@ public final class MonthViewPager extends ViewPager {
      */
     void updateShowMode() {
         for (int i = 0; i < getChildCount(); i++) {
-            MonthView view = (MonthView) getChildAt(i);
+            BaseMonthView view = (BaseMonthView) getChildAt(i);
             view.updateShowMode();
             view.requestLayout();
         }
@@ -426,7 +430,7 @@ public final class MonthViewPager extends ViewPager {
      */
     void updateWeekStart() {
         for (int i = 0; i < getChildCount(); i++) {
-            MonthView view = (MonthView) getChildAt(i);
+            BaseMonthView view = (BaseMonthView) getChildAt(i);
             view.updateWeekStart();
             view.requestLayout();
         }
@@ -440,6 +444,46 @@ public final class MonthViewPager extends ViewPager {
             mParentLayout.updateSelectWeek(i);
         }
         updateSelected();
+    }
+
+    /**
+     * 更新高度
+     */
+    final void updateItemHeight() {
+        for (int i = 0; i < getChildCount(); i++) {
+            BaseMonthView view = (BaseMonthView) getChildAt(i);
+            view.updateItemHeight();
+            view.requestLayout();
+        }
+
+        int year = mDelegate.mIndexCalendar.getYear();
+        int month = mDelegate.mIndexCalendar.getMonth();
+        mCurrentViewHeight = CalendarUtil.getMonthViewHeight(year, month,
+                mDelegate.getCalendarItemHeight(), mDelegate.getWeekStart());
+        if (month == 1) {
+            mPreViewHeight = CalendarUtil.getMonthViewHeight(year - 1, 12, mDelegate.getCalendarItemHeight(), mDelegate.getWeekStart());
+            mNextViewHeight = CalendarUtil.getMonthViewHeight(year, 2, mDelegate.getCalendarItemHeight(), mDelegate.getWeekStart());
+        } else {
+            mPreViewHeight = CalendarUtil.getMonthViewHeight(year, month - 1, mDelegate.getCalendarItemHeight(), mDelegate.getWeekStart());
+            if (month == 12) {
+                mNextViewHeight = CalendarUtil.getMonthViewHeight(year + 1, 1, mDelegate.getCalendarItemHeight(), mDelegate.getWeekStart());
+            } else {
+                mNextViewHeight = CalendarUtil.getMonthViewHeight(year, month + 1, mDelegate.getCalendarItemHeight(), mDelegate.getWeekStart());
+            }
+        }
+        ViewGroup.LayoutParams params = getLayoutParams();
+        params.height = mCurrentViewHeight;
+        setLayoutParams(params);
+    }
+
+    /**
+     * 清除选择范围
+     */
+    final void clearSelectRange() {
+        for (int i = 0; i < getChildCount(); i++) {
+            BaseMonthView view = (BaseMonthView) getChildAt(i);
+            view.invalidate();
+        }
     }
 
 
@@ -493,24 +537,19 @@ public final class MonthViewPager extends ViewPager {
         public Object instantiateItem(ViewGroup container, int position) {
             int year = (position + mDelegate.getMinYearMonth() - 1) / 12 + mDelegate.getMinYear();
             int month = (position + mDelegate.getMinYearMonth() - 1) % 12 + 1;
-            MonthView view;
-            if (TextUtils.isEmpty(mDelegate.getMonthViewClass())) {
-                view = new DefaultMonthView(getContext());
-            } else {
-                try {
-                    Class<?> cls = Class.forName(mDelegate.getMonthViewClass());
-                    Constructor constructor = cls.getConstructor(Context.class);
-                    view = (MonthView) constructor.newInstance(getContext());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return null;
-                }
+            BaseMonthView view;
+            try {
+                Constructor constructor = mDelegate.getMonthViewClass().getConstructor(Context.class);
+                view = (BaseMonthView) constructor.newInstance(getContext());
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
             }
-            view.mParentLayout = mParentLayout;
             view.mMonthViewPager = MonthViewPager.this;
+            view.mParentLayout = mParentLayout;
             view.setup(mDelegate);
             view.setTag(position);
-            view.setCurrentDate(year, month);
+            view.initMonthWithDate(year, month);
             view.setSelectedCalendar(mDelegate.mSelectedCalendar);
             container.addView(view);
             return view;

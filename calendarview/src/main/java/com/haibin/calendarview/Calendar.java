@@ -15,7 +15,6 @@
  */
 package com.haibin.calendarview;
 
-
 import android.text.TextUtils;
 
 import java.io.Serializable;
@@ -119,7 +118,7 @@ public final class Calendar implements Serializable {
     /**
      * 获取完整的农历日期
      */
-    private Calendar lunarCakendar;
+    private Calendar lunarCalendar;
 
 
     public int getYear() {
@@ -252,12 +251,12 @@ public final class Calendar implements Serializable {
         this.week = week;
     }
 
-    public Calendar getLunarCakendar() {
-        return lunarCakendar;
+    public Calendar getLunarCalendar() {
+        return lunarCalendar;
     }
 
-    public void setLunarCakendar(Calendar lunarCakendar) {
-        this.lunarCakendar = lunarCakendar;
+    public void setLunarCalendar(Calendar lunarCakendar) {
+        this.lunarCalendar = lunarCakendar;
     }
 
     public String getSolarTerm() {
@@ -313,6 +312,7 @@ public final class Calendar implements Serializable {
 
     /**
      * 是否是相同月份
+     *
      * @param calendar
      * @return 是否是相同月份
      */
@@ -327,7 +327,20 @@ public final class Calendar implements Serializable {
      * @return -1 0 1
      */
     public int compareTo(Calendar calendar) {
+        if (calendar == null) {
+            return 1;
+        }
         return toString().compareTo(calendar.toString());
+    }
+
+    /**
+     * 运算差距多少天
+     *
+     * @param calendar calendar
+     * @return 运算差距多少天
+     */
+    public final int differ(Calendar calendar) {
+        return CalendarUtil.differ(this, calendar);
     }
 
     /**

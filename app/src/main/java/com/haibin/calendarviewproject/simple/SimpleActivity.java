@@ -21,9 +21,7 @@ import com.haibin.calendarviewproject.group.GroupRecyclerView;
 import com.haibin.calendarviewproject.index.IndexActivity;
 import com.haibin.calendarviewproject.meizu.MeiZuActivity;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class SimpleActivity extends BaseActivity implements
@@ -104,25 +102,9 @@ public class SimpleActivity extends BaseActivity implements
 
     @Override
     protected void initData() {
-        List<Calendar> schemes = new ArrayList<>();
+
         int year = mCalendarView.getCurYear();
         int month = mCalendarView.getCurMonth();
-
-        schemes.add(getSchemeCalendar(year, month, 3, 0, "假"));
-        schemes.add(getSchemeCalendar(year, month, 6, 0, "事"));
-        schemes.add(getSchemeCalendar(year, month, 9, 0, "议"));
-        schemes.add(getSchemeCalendar(year, month, 13, 0, "记"));
-        schemes.add(getSchemeCalendar(year, month, 14, 0, "记"));
-        schemes.add(getSchemeCalendar(year, month, 15, 0, "假"));
-        schemes.add(getSchemeCalendar(year, month, 18, 0, "记"));
-        schemes.add(getSchemeCalendar(year, month, 25, 0, "假"));
-
-         /*
-         * 此方法现在弃用，但不影响原来的效果，原因：数据量大时 size()>10000 ，遍历性能太差，超过Android限制的16ms响应，造成卡顿
-         * 现在推荐使用 setSchemeDate(Map<String, Calendar> mSchemeDates)，Map查找性能非常好，经测试，50000以上数据，1ms解决
-         */
-        mCalendarView.setSchemeDate(schemes);
-
 
         Map<String, Calendar> map = new HashMap<>();
         map.put(getSchemeCalendar(year, month, 3, 0xFF40db25, "假").toString(),

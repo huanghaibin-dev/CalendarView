@@ -23,6 +23,7 @@ import com.haibin.calendarviewproject.index.IndexActivity;
 import com.haibin.calendarviewproject.meizu.MeiZuActivity;
 import com.haibin.calendarviewproject.pager.ViewPagerActivity;
 import com.haibin.calendarviewproject.progress.ProgressActivity;
+import com.haibin.calendarviewproject.range.RangeActivity;
 import com.haibin.calendarviewproject.simple.SimpleActivity;
 import com.haibin.calendarviewproject.single.SingleActivity;
 import com.haibin.calendarviewproject.solay.SolarActivity;
@@ -260,6 +261,7 @@ public class MainActivity extends BaseActivity implements
 
         findViewById(R.id.ll_flyme).setOnClickListener(this);
         findViewById(R.id.ll_simple).setOnClickListener(this);
+        findViewById(R.id.ll_range).setOnClickListener(this);
         findViewById(R.id.ll_colorful).setOnClickListener(this);
         findViewById(R.id.ll_index).setOnClickListener(this);
         findViewById(R.id.ll_tab).setOnClickListener(this);
@@ -315,6 +317,9 @@ public class MainActivity extends BaseActivity implements
             case R.id.ll_custom:
                 CustomActivity.show(this);
                 break;
+            case R.id.ll_range:
+                RangeActivity.show(this);
+                break;
             case R.id.ll_simple:
                 SimpleActivity.show(this);
                 break;
@@ -369,6 +374,8 @@ public class MainActivity extends BaseActivity implements
         if (isClick) {
             Toast.makeText(this, getCalendarText(calendar), Toast.LENGTH_SHORT).show();
         }
+//        Log.e("lunar "," --  " + calendar.getLunarCalendar().toString() + "\n" +
+//        "  --  " + calendar.getLunarCalendar().getYear());
         Log.e("onDateSelected", "  -- " + calendar.getYear() +
                 "  --  " + calendar.getMonth() +
                 "  -- " + calendar.getDay() +
@@ -390,7 +397,7 @@ public class MainActivity extends BaseActivity implements
     private static String getCalendarText(Calendar calendar) {
         return String.format("新历%s \n 农历%s \n 公历节日：%s \n 农历节日：%s \n 节气：%s \n 是否闰月：%s",
                 calendar.getMonth() + "月" + calendar.getDay() + "日",
-                calendar.getLunarCakendar().getMonth() + "月" + calendar.getLunarCakendar().getDay() + "日",
+                calendar.getLunarCalendar().getMonth() + "月" + calendar.getLunarCalendar().getDay() + "日",
                 TextUtils.isEmpty(calendar.getGregorianFestival()) ? "无" : calendar.getGregorianFestival(),
                 TextUtils.isEmpty(calendar.getTraditionFestival()) ? "无" : calendar.getTraditionFestival(),
                 TextUtils.isEmpty(calendar.getSolarTerm()) ? "无" : calendar.getSolarTerm(),
@@ -412,7 +419,7 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void onViewChange(boolean isMonthView) {
-        Log.e("onViewChange", "  ---  " + (isMonthView ? "月视图" : "周视图"));
+        //Log.e("onViewChange", "  ---  " + (isMonthView ? "月视图" : "周视图"));
     }
 
 

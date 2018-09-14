@@ -21,7 +21,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -96,17 +95,13 @@ public class CalendarView extends FrameLayout {
         this.mWeekPager = (WeekViewPager) findViewById(R.id.vp_week);
         this.mWeekPager.setup(mDelegate);
 
-        if (TextUtils.isEmpty(mDelegate.getWeekBarClass())) {
-            this.mWeekBar = new WeekBar(getContext());
-        } else {
-            try {
-                Class<?> cls = Class.forName(mDelegate.getWeekBarClass());
-                Constructor constructor = cls.getConstructor(Context.class);
-                mWeekBar = (WeekBar) constructor.newInstance(getContext());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        try {
+            Constructor constructor = mDelegate.getWeekBarClass().getConstructor(Context.class);
+            mWeekBar = (WeekBar) constructor.newInstance(getContext());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
         frameContent.addView(mWeekBar, 2);
         mWeekBar.setup(mDelegate);
         mWeekBar.onWeekStartChange(mDelegate.getWeekStart());
@@ -160,6 +155,7 @@ public class CalendarView extends FrameLayout {
              */
             @Override
             public void onMonthDateSelected(Calendar calendar, boolean isClick) {
+
                 if (calendar.getYear() == mDelegate.getCurrentDay().getYear() &&
                         calendar.getMonth() == mDelegate.getCurrentDay().getMonth()
                         && mMonthPager.getCurrentItem() != mDelegate.mCurrentMonthViewItem) {
@@ -233,27 +229,12 @@ public class CalendarView extends FrameLayout {
      *
      * @param minYear      最小年份
      * @param minYearMonth 最小年份对应月份
-     * @param maxYear      最大月份
-     * @param maxYearMonth 最大月份对应月份
-     */
-    @Deprecated
-    public void setRange(int minYear, int minYearMonth,
-                         int maxYear, int maxYearMonth) {
-        setRange(minYear, minYearMonth, 0,
-                maxYear, maxYearMonth, -1);
-
-    }
-
-    /**
-     * 设置日期范围
-     *
-     * @param minYear      最小年份
-     * @param minYearMonth 最小年份对应月份
      * @param minYearDay   最小年份对应天
      * @param maxYear      最大月份
      * @param maxYearMonth 最大月份对应月份
      * @param maxYearDay   最大月份对应天
      */
+    @SuppressWarnings("all")
     public void setRange(int minYear, int minYearMonth, int minYearDay,
                          int maxYear, int maxYearMonth, int maxYearDay) {
         if (CalendarUtil.compareTo(minYear, minYearMonth, minYearDay,
@@ -319,8 +300,6 @@ public class CalendarView extends FrameLayout {
      *
      * @param year 年
      */
-    @SuppressWarnings("DeprecatedIsStillUsed")
-    @Deprecated
     private void showSelectLayout(final int year) {
         if (mParentLayout != null && mParentLayout.mContentView != null) {
             if (!mParentLayout.isExpand()) {
@@ -377,6 +356,9 @@ public class CalendarView extends FrameLayout {
      * 关闭年月视图选择布局
      */
     public void closeYearSelectLayout() {
+        if (mSelectLayout.getVisibility() == GONE) {
+            return;
+        }
         int position = 12 * (mDelegate.mSelectedCalendar.getYear() - mDelegate.getMinYear()) +
                 mDelegate.mSelectedCalendar.getMonth() - mDelegate.getMinYearMonth();
         closeSelectLayout(position);
@@ -591,6 +573,70 @@ public class CalendarView extends FrameLayout {
         mSelectLayout.scrollToYear(year, smoothScroll);
     }
 
+    /**
+     * 设置月视图是否可滚动
+     *
+     * @param monthViewScrollable 设置月视图是否可滚动
+     */
+    public final void setMonthViewScrollable(boolean monthViewScrollable) {
+        mDelegate.setMonthViewScrollable(monthViewScrollable);
+    }
+
+
+    /**
+     * 设置周视图是否可滚动
+     *
+     * @param weekViewScrollable 设置周视图是否可滚动
+     */
+    public final void setWeekViewScrollable(boolean weekViewScrollable) {
+        mDelegate.setWeekViewScrollable(weekViewScrollable);
+    }
+
+    /**
+     * 设置年视图是否可滚动
+     *
+     * @param yearViewScrollable 设置年视图是否可滚动
+     */
+    public final void setYearViewScrollable(boolean yearViewScrollable) {
+        mDelegate.setYearViewScrollable(yearViewScrollable);
+    }
+
+    /**
+     * 清除选择
+     */
+    public final void clearSelectRange() {
+        mDelegate.clearSelectRange();
+        mMonthPager.clearSelectRange();
+        mWeekPager.clearSelectRange();
+    }
+
+    /**
+     * 获取选中范围
+     *
+     * @return return
+     */
+    public final List<Calendar> getSelectCalendarRange() {
+        return mDelegate.getSelectCalendarRange();
+    }
+
+    /**
+     * 设置月视图项高度
+     *
+     * @param calendarItemHeight MonthView item height
+     */
+    public void setCalendarItemHeight(int calendarItemHeight) {
+        if (mDelegate.getCalendarItemHeight() == calendarItemHeight) {
+            return;
+        }
+        mDelegate.setCalendarItemHeight(calendarItemHeight);
+        mMonthPager.updateItemHeight();
+        mWeekPager.updateItemHeight();
+        if (mParentLayout == null) {
+            return;
+        }
+        mParentLayout.updateCalendarItemHeight();
+    }
+
 
     /**
      * 设置月视图
@@ -601,12 +647,10 @@ public class CalendarView extends FrameLayout {
         if (cls == null) {
             return;
         }
-        String monthViewClassPath = cls.getName();
-        if (monthViewClassPath.equals(mDelegate.getMonthViewClass()) &&
-                !TextUtils.isEmpty(mDelegate.getMonthViewClass())) {
+        if (mDelegate.getMonthViewClass().equals(cls)) {
             return;
         }
-        mDelegate.setMonthViewClass(monthViewClassPath);
+        mDelegate.setMonthViewClass(cls);
         mMonthPager.updateMonthViewClass();
     }
 
@@ -619,12 +663,10 @@ public class CalendarView extends FrameLayout {
         if (cls == null) {
             return;
         }
-        String weekViewClassPath = cls.getName();
-        if (weekViewClassPath.equals(mDelegate.getWeekViewClass()) &&
-                !TextUtils.isEmpty(mDelegate.getWeekViewClass())) {
+        if (mDelegate.getWeekBarClass().equals(cls)) {
             return;
         }
-        mDelegate.setWeekViewClass(weekViewClassPath);
+        mDelegate.setWeekViewClass(cls);
         mWeekPager.updateWeekViewClass();
     }
 
@@ -637,12 +679,10 @@ public class CalendarView extends FrameLayout {
         if (cls == null) {
             return;
         }
-        String weekBarClassPath = cls.getName();
-        if (weekBarClassPath.equals(mDelegate.getWeekBarClass()) &&
-                !TextUtils.isEmpty(mDelegate.getWeekBarClass())) {
+        if (mDelegate.getWeekBarClass().equals(cls)) {
             return;
         }
-        mDelegate.setWeekBarClass(weekBarClassPath);
+        mDelegate.setWeekBarClass(cls);
         FrameLayout frameContent = (FrameLayout) findViewById(R.id.frameContent);
         frameContent.removeView(mWeekBar);
 
@@ -672,7 +712,7 @@ public class CalendarView extends FrameLayout {
         if (listener == null) {
             mDelegate.mCalendarInterceptListener = null;
         }
-        if (listener == null || mDelegate.getSelectMode() != CalendarViewDelegate.SELECT_MODE_SINGLE) {
+        if (listener == null || mDelegate.getSelectMode() == CalendarViewDelegate.SELECT_MODE_DEFAULT) {
             return;
         }
         mDelegate.mCalendarInterceptListener = listener;
@@ -755,6 +795,9 @@ public class CalendarView extends FrameLayout {
         if (mDelegate.mCalendarSelectListener == null) {
             return;
         }
+        if (mDelegate.getSelectMode() == CalendarViewDelegate.SELECT_MODE_RANGE) {
+            return;
+        }
         if (!isInRange(mDelegate.mSelectedCalendar)) {
             return;
         }
@@ -768,6 +811,46 @@ public class CalendarView extends FrameLayout {
         });
     }
 
+
+    /**
+     * 日期选择事件
+     *
+     * @param listener listener
+     */
+    public final void setOnCalendarRangeSelectListener(OnCalendarRangeSelectListener listener) {
+        this.mDelegate.mCalendarRangeSelectListener = listener;
+    }
+
+    /**
+     * 设置最小范围和最大访问，default：minRange = -1，maxRange = -1 没有限制
+     *
+     * @param minRange minRange
+     * @param maxRange maxRange
+     */
+    public final void setSelectRange(int minRange, int maxRange) {
+        if (minRange > maxRange) {
+            return;
+        }
+        mDelegate.setSelectRange(minRange, maxRange);
+    }
+
+    /**
+     * 最小选择范围
+     *
+     * @return 最小选择范围
+     */
+    public final int getMinSelectRange() {
+        return mDelegate.getMinSelectRange();
+    }
+
+    /**
+     * 最大选择范围
+     *
+     * @return 最大选择范围
+     */
+    public final int getMaxSelectRange() {
+        return mDelegate.getMaxSelectRange();
+    }
 
     /**
      * 日期长按事件、弃用，使用以下api
@@ -832,7 +915,6 @@ public class CalendarView extends FrameLayout {
         super.onAttachedToWindow();
         if (getParent() != null && getParent() instanceof CalendarLayout) {
             mParentLayout = (CalendarLayout) getParent();
-            mParentLayout.mItemHeight = mDelegate.getCalendarItemHeight();
             mMonthPager.mParentLayout = mParentLayout;
             mWeekPager.mParentLayout = mParentLayout;
             mParentLayout.mWeekBar = mWeekBar;
@@ -1024,6 +1106,17 @@ public class CalendarView extends FrameLayout {
         mMonthPager.updateDefaultSelect();
         mWeekPager.updateDefaultSelect();
 
+    }
+
+    /**
+     * 单选模式
+     */
+    public void setSelectRangeMode() {
+        if (mDelegate.getSelectMode() == CalendarViewDelegate.SELECT_MODE_RANGE) {
+            return;
+        }
+        mDelegate.setSelectMode(CalendarViewDelegate.SELECT_MODE_RANGE);
+        clearSelectRange();
     }
 
     /**
@@ -1289,6 +1382,34 @@ public class CalendarView extends FrameLayout {
         void onDateSelected(Calendar calendar, boolean isClick);
     }
 
+    /**
+     * 日历范围选择事件
+     */
+    public interface OnCalendarRangeSelectListener {
+
+        /**
+         * 范围选择超出范围越界
+         *
+         * @param calendar calendar
+         */
+        void onCalendarSelectOutOfRange(Calendar calendar);
+
+        /**
+         * 选择范围超出范围
+         *
+         * @param calendar        calendar
+         * @param isOutOfMinRange 是否小于最小范围，否则为最大范围
+         */
+        void onSelectOutOfRange(Calendar calendar, boolean isOutOfMinRange);
+
+        /**
+         * 日期选择事件
+         *
+         * @param calendar calendar
+         * @param isEnd    是否结束
+         */
+        void onCalendarRangeSelect(Calendar calendar, boolean isEnd);
+    }
 
     /**
      * 日历选择事件

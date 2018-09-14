@@ -257,7 +257,14 @@ public abstract class BaseView extends View implements View.OnClickListener, Vie
 
         this.mSelectedPaint.setStyle(Paint.Style.FILL);
         this.mSelectedPaint.setColor(delegate.getSelectedThemeColor());
-        setItemHeight(delegate.getCalendarItemHeight());
+
+        updateItemHeight();
+    }
+
+    void updateItemHeight() {
+        this.mItemHeight = mDelegate.getCalendarItemHeight();
+        Paint.FontMetrics metrics = mCurMonthTextPaint.getFontMetrics();
+        mTextBaseLine = mItemHeight / 2 - metrics.descent + (metrics.bottom - metrics.top) / 2;
     }
 
 
@@ -354,19 +361,6 @@ public abstract class BaseView extends View implements View.OnClickListener, Vie
         // TODO: 2017/11/16
     }
 
-
-    /**
-     * 设置高度
-     *
-     * @param itemHeight itemHeight
-     */
-    private void setItemHeight(int itemHeight) {
-        this.mItemHeight = itemHeight;
-        Paint.FontMetrics metrics = mCurMonthTextPaint.getFontMetrics();
-        mTextBaseLine = mItemHeight / 2 - metrics.descent + (metrics.bottom - metrics.top) / 2;
-    }
-
-
     /**
      * 是否是选中的
      *
@@ -418,7 +412,6 @@ public abstract class BaseView extends View implements View.OnClickListener, Vie
      * @param calendar calendar
      * @return 是否在日期范围内
      */
-    @SuppressWarnings("unused")
     protected final boolean isInRange(Calendar calendar) {
         return mDelegate != null && CalendarUtil.isCalendarInRange(calendar, mDelegate);
     }

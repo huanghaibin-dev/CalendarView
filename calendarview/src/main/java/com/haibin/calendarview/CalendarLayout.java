@@ -107,7 +107,6 @@ public class CalendarLayout extends LinearLayout {
      */
     ViewGroup mContentView;
 
-
     /**
      * 默认手势
      */
@@ -150,7 +149,7 @@ public class CalendarLayout extends LinearLayout {
     private VelocityTracker mVelocityTracker;
     private int mMaximumVelocity;
 
-    int mItemHeight;
+    private int mItemHeight;
 
     private CalendarViewDelegate mDelegate;
 
@@ -176,6 +175,7 @@ public class CalendarLayout extends LinearLayout {
      */
     final void setup(CalendarViewDelegate delegate) {
         this.mDelegate = delegate;
+        mItemHeight = mDelegate.getCalendarItemHeight();
         initCalendarPosition(delegate.mSelectedCalendar.isAvailable() ?
                 delegate.mSelectedCalendar :
                 delegate.createCurrentDate());
@@ -217,8 +217,6 @@ public class CalendarLayout extends LinearLayout {
      * 更新内容ContentView可平移的最大距离
      */
     void updateContentViewTranslateY() {
-        if (mDelegate == null || mContentView == null)
-            return;
         Calendar calendar = mDelegate.mIndexCalendar;
         if (mDelegate.getMonthViewShowMode() == CalendarViewDelegate.MODE_ALL_MONTH) {
             mContentViewTranslateY = 5 * mItemHeight;
@@ -234,6 +232,26 @@ public class CalendarLayout extends LinearLayout {
         }
     }
 
+    /**
+     * 更新日历项高度
+     */
+    final void updateCalendarItemHeight() {
+        mItemHeight = mDelegate.getCalendarItemHeight();
+        if (mContentView == null)
+            return;
+        Calendar calendar = mDelegate.mIndexCalendar;
+        updateSelectWeek(CalendarUtil.getWeekFromDayInMonth(calendar, mDelegate.getWeekStart()));
+        if (mDelegate.getMonthViewShowMode() == CalendarViewDelegate.MODE_ALL_MONTH) {
+            mContentViewTranslateY = 5 * mItemHeight;
+        } else {
+            mContentViewTranslateY = CalendarUtil.getMonthViewHeight(calendar.getYear(), calendar.getMonth(),
+                    mItemHeight, mDelegate.getWeekStart()) - mItemHeight;
+        }
+        translationViewPager();
+        if (mWeekPager.getVisibility() == VISIBLE) {
+            mContentView.setTranslationY(-mContentViewTranslateY);
+        }
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -421,16 +439,36 @@ public class CalendarLayout extends LinearLayout {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
         if (mContentView != null && mMonthView != null) {
-            int h = getHeight() - mItemHeight
+            int year = mDelegate.mIndexCalendar.getYear();
+            int month = mDelegate.mIndexCalendar.getMonth();
+
+            int monthHeight = CalendarUtil.getMonthViewHeight(year, month,
+                    mDelegate.getCalendarItemHeight(),
+                    mDelegate.getWeekStart()) + CalendarUtil.dipToPx(getContext(),41);
+            int height = getHeight();
+
+            if(monthHeight >= height && mMonthView.getHeight() >0 ){
+                height = monthHeight;
+                heightMeasureSpec = MeasureSpec.makeMeasureSpec(monthHeight +
+                        CalendarUtil.dipToPx(getContext(), 41) +
+                        mDelegate.getWeekBarHeight() , MeasureSpec.EXACTLY);
+            }else if(monthHeight < height && mMonthView.getHeight()>0){
+                heightMeasureSpec = MeasureSpec.makeMeasureSpec(height,MeasureSpec.EXACTLY);
+            }
+
+            int h = height - mItemHeight
                     - (mDelegate != null ? mDelegate.getWeekBarHeight() :
                     CalendarUtil.dipToPx(getContext(), 40))
                     - CalendarUtil.dipToPx(getContext(), 1);
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
             int heightSpec = MeasureSpec.makeMeasureSpec(h,
                     MeasureSpec.EXACTLY);
             mContentView.measure(widthMeasureSpec, heightSpec);
             mContentView.layout(mContentView.getLeft(), mContentView.getTop(), mContentView.getRight(), mContentView.getBottom());
+        }else {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         }
     }
 

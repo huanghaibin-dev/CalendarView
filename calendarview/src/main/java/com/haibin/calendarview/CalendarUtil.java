@@ -125,6 +125,45 @@ final class CalendarUtil {
         return (calendar.getDay() + diff - 1) / 7 + 1;
     }
 
+    /**
+     * 获取上一个日子
+     *
+     * @param calendar calendar
+     * @return 获取上一个日子
+     */
+    static Calendar getPreCalendar(Calendar calendar) {
+        java.util.Calendar date = java.util.Calendar.getInstance();
+
+        date.set(calendar.getYear(), calendar.getMonth() - 1, calendar.getDay());//
+
+        long timeMills = date.getTimeInMillis();//获得起始时间戳
+
+        date.setTimeInMillis(timeMills - ONE_DAY);
+
+        Calendar preCalendar = new Calendar();
+        preCalendar.setYear(date.get(java.util.Calendar.YEAR));
+        preCalendar.setMonth(date.get(java.util.Calendar.MONTH) + 1);
+        preCalendar.setDay(date.get(java.util.Calendar.DAY_OF_MONTH));
+
+        return preCalendar;
+    }
+
+    static Calendar getNextCalendar(Calendar calendar) {
+        java.util.Calendar date = java.util.Calendar.getInstance();
+
+        date.set(calendar.getYear(), calendar.getMonth() - 1, calendar.getDay());//
+
+        long timeMills = date.getTimeInMillis();//获得起始时间戳
+
+        date.setTimeInMillis(timeMills + ONE_DAY);
+
+        Calendar nextCalendar = new Calendar();
+        nextCalendar.setYear(date.get(java.util.Calendar.YEAR));
+        nextCalendar.setMonth(date.get(java.util.Calendar.MONTH) + 1);
+        nextCalendar.setDay(date.get(java.util.Calendar.DAY_OF_MONTH));
+
+        return nextCalendar;
+    }
 
     /**
      * DAY_OF_WEEK return  1  2  3 	4  5  6	 7，偏移了一位
@@ -257,16 +296,7 @@ final class CalendarUtil {
      * @return 获取周视图的切换默认选项位置
      */
     static int getWeekViewIndexFromCalendar(Calendar calendar, int weekStart) {
-        java.util.Calendar date = java.util.Calendar.getInstance();
-        date.set(calendar.getYear(), calendar.getMonth() - 1, calendar.getDay());
-        int weekStartDiff = getWeekViewStartDiff(calendar.getYear(), calendar.getMonth(), calendar.getDay(), weekStart);
-        if (weekStart == CalendarViewDelegate.WEEK_START_WITH_SUN) {
-            return weekStartDiff;
-        }
-        if (weekStart == CalendarViewDelegate.WEEK_START_WITH_MON) {
-            return weekStartDiff == 1 ? 6 : weekStartDiff;
-        }
-        return weekStartDiff == 7 ? 0 : weekStartDiff;
+        return getWeekViewStartDiff(calendar.getYear(), calendar.getMonth(), calendar.getDay(), weekStart);
     }
 
 
@@ -566,6 +596,33 @@ final class CalendarUtil {
         calendar.setDay(date.get(java.util.Calendar.DAY_OF_MONTH));
 
         return calendar;
+    }
+
+    /**
+     * 运算 calendar1 - calendar2
+     * test Pass
+     * @param calendar1 calendar1
+     * @param calendar2 calendar2
+     * @return calendar1 - calendar2
+     */
+    static int differ(Calendar calendar1, Calendar calendar2) {
+        if (calendar1 == null) {
+            return Integer.MIN_VALUE;
+        }
+        if (calendar2 == null) {
+            return Integer.MAX_VALUE;
+        }
+        java.util.Calendar date = java.util.Calendar.getInstance();
+
+        date.set(calendar1.getYear(), calendar1.getMonth() - 11, calendar1.getDay());//
+
+        long startTimeMills = date.getTimeInMillis();//获得起始时间戳
+
+        date.set(calendar2.getYear(), calendar2.getMonth() - 11, calendar2.getDay());//
+
+        long endTimeMills = date.getTimeInMillis();//获得结束时间戳
+
+        return (int) ((startTimeMills - endTimeMills) / ONE_DAY);
     }
 
     /**

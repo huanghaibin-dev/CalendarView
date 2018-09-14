@@ -344,6 +344,47 @@ public class CalendarUtilTest {
      * @throws Exception Exception
      */
     @Test
+    public void differ() throws Exception {
+        Calendar calendar1 = new Calendar();
+        calendar1.setYear(2018);
+        calendar1.setMonth(4);
+        calendar1.setDay(1);
+
+        Calendar calendar2 = new Calendar();
+        calendar2.setYear(2018);
+        calendar2.setMonth(4);
+        calendar2.setDay(3);
+
+        assertEquals(-2,CalendarUtil.differ(calendar1,calendar2));
+
+        calendar1.setYear(2018);
+        calendar1.setMonth(9);
+        calendar1.setDay(30);
+
+        calendar2.setYear(2018);
+        calendar2.setMonth(9);
+        calendar2.setDay(1);
+
+        assertEquals(29,CalendarUtil.differ(calendar1,calendar2));
+
+        calendar1.setYear(2018);
+        calendar1.setMonth(9);
+        calendar1.setDay(12);
+
+        calendar2.setYear(2018);
+        calendar2.setMonth(9);
+        calendar2.setDay(5);
+
+        assertEquals(7,CalendarUtil.differ(calendar1,calendar2));
+    }
+
+
+    /**
+     * 根据日期获取两个年份中第几周,用来设置 WeekView currentItem
+     *
+     * @throws Exception Exception
+     */
+    @Test
     public void getWeekFromCalendarBetweenYearAndYear() throws Exception {
         Calendar calendar = new Calendar();
 

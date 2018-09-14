@@ -23,6 +23,7 @@
         <activity android:name=".meizu.MeiZuActivity" />
         <activity android:name=".index.IndexActivity" />
         <activity android:name=".simple.SimpleActivity" />
+        <activity android:name=".range.RangeActivity" />
         <activity android:name=".colorful.ColorfulActivity" />
         <activity android:name=".solay.SolarActivity" />
         <activity android:name=".single.SingleActivity" />
