@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="cv_app_name">CalendarView</string>
     <string-array name="lunar_first_of_month">
         <item>春節</item>
@@ -58,7 +58,7 @@
         <item>三十</item>
     </string-array>
 
-    <string-array name="solar_festival">
+    <string-array name="solar_festival" tools:ignore="InconsistentArrays">
         <item>0101元旦</item>
         <item>0214情人節</item>
         <item>0308婦女節</item>

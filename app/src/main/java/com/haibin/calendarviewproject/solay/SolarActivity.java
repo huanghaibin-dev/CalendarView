@@ -23,13 +23,11 @@ import com.haibin.calendarviewproject.group.GroupRecyclerView;
 import com.haibin.calendarviewproject.index.IndexActivity;
 import com.haibin.calendarviewproject.simple.SimpleActivity;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class SolarActivity extends BaseActivity implements
-        CalendarView.OnDateSelectedListener,
+        CalendarView.OnCalendarSelectListener,
         CalendarView.OnYearChangeListener,
         View.OnClickListener {
 
@@ -90,7 +88,7 @@ public class SolarActivity extends BaseActivity implements
             }
         });
         mCalendarLayout = (CalendarLayout) findViewById(R.id.calendarLayout);
-        mCalendarView.setOnDateSelectedListener(this);
+        mCalendarView.setOnCalendarSelectListener(this);
         mCalendarView.setOnYearChangeListener(this);
         mTextYear.setText(String.valueOf(mCalendarView.getCurYear()));
         mYear = mCalendarView.getCurYear();
@@ -101,28 +99,8 @@ public class SolarActivity extends BaseActivity implements
 
     @Override
     protected void initData() {
-        List<Calendar> schemes = new ArrayList<>();
         int year = mCalendarView.getCurYear();
         int month = mCalendarView.getCurMonth();
-
-
-        schemes.add(getSchemeCalendar(year, month, 3, "假"));
-        schemes.add(getSchemeCalendar(year, month, 6, "事"));
-        schemes.add(getSchemeCalendar(year, month, 9, "议"));
-        schemes.add(getSchemeCalendar(year, month, 13, "记"));
-        schemes.add(getSchemeCalendar(year, month, 14, "记"));
-        schemes.add(getSchemeCalendar(year, month, 15, "假"));
-        schemes.add(getSchemeCalendar(year, month, 18, "记"));
-        schemes.add(getSchemeCalendar(year, month, 25, "假"));
-        schemes.add(getSchemeCalendar(year, month, 27, "多"));
-
-
-         /*
-         * 此方法现在弃用，但不影响原来的效果，原因：数据量大时 size()>10000 ，遍历性能太差，超过Android限制的16ms响应，造成卡顿
-         * 现在推荐使用 setSchemeDate(Map<String, Calendar> mSchemeDates)，Map查找性能非常好，经测试，50000以上数据，1ms解决
-         */
-        mCalendarView.setSchemeDate(schemes);
-
 
         Map<String, Calendar> map = new HashMap<>();
         map.put(getSchemeCalendar(year, month, 3, "假").toString(),
@@ -187,10 +165,13 @@ public class SolarActivity extends BaseActivity implements
         return calendar;
     }
 
-
-    @SuppressLint("SetTextI18n")
     @Override
-    public void onDateSelected(Calendar calendar, boolean isClick) {
+    public void onCalendarOutOfRange(Calendar calendar) {
+
+    }
+
+    @Override
+    public void onCalendarSelect(Calendar calendar, boolean isClick) {
         mTextLunar.setVisibility(View.VISIBLE);
         mTextYear.setVisibility(View.VISIBLE);
         mTextMonthDay.setText(calendar.getMonth() + "月" + calendar.getDay() + "日");
@@ -198,7 +179,6 @@ public class SolarActivity extends BaseActivity implements
         mTextLunar.setText(calendar.getLunar());
         mYear = calendar.getYear();
     }
-
 
     @Override
     public void onYearChange(int year) {

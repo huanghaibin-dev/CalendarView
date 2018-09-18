@@ -304,6 +304,7 @@ public class CalendarLayout extends LinearLayout {
                 if (dy < 0 && mContentView.getTranslationY() == -mContentViewTranslateY) {
                     //mContentView.onTouchEvent(event);
                     showWeek();
+                    mLastY = y;
                     return false;
                 }
                 hideWeek();
@@ -312,6 +313,7 @@ public class CalendarLayout extends LinearLayout {
                 if (dy > 0 && mContentView.getTranslationY() + dy >= 0) {
                     mContentView.setTranslationY(0);
                     translationViewPager();
+                    mLastY = y;
                     return super.onTouchEvent(event);
                 }
 
@@ -319,6 +321,7 @@ public class CalendarLayout extends LinearLayout {
                 if (dy < 0 && mContentView.getTranslationY() + dy <= -mContentViewTranslateY) {
                     mContentView.setTranslationY(-mContentViewTranslateY);
                     translationViewPager();
+                    mLastY = y;
                     return super.onTouchEvent(event);
                 }
                 //否则按比例平移

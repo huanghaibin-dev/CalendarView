@@ -35,11 +35,11 @@ import java.util.Map;
  * 日历布局
  * 各个类使用包权限，避免不必要的public
  */
-@SuppressWarnings({"unused", "deprecation"})
+@SuppressWarnings({"unused"})
 public class CalendarView extends FrameLayout {
 
     /**
-     * 使用google官方推荐的方式抽取自定义属性
+     * 抽取自定义属性
      */
     private final CalendarViewDelegate mDelegate;
 
@@ -289,7 +289,6 @@ public class CalendarView extends FrameLayout {
      *
      * @param year 年
      */
-    @SuppressWarnings("deprecation")
     public void showYearSelectLayout(final int year) {
         showSelectLayout(year);
     }
@@ -374,10 +373,6 @@ public class CalendarView extends FrameLayout {
         mSelectLayout.setVisibility(GONE);
         mWeekBar.setVisibility(VISIBLE);
         if (position == mMonthPager.getCurrentItem()) {
-            if (mDelegate.mDateSelectedListener != null &&
-                    mDelegate.getSelectMode() != CalendarViewDelegate.SELECT_MODE_SINGLE) {
-                mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar, false);
-            }
             if (mDelegate.mCalendarSelectListener != null &&
                     mDelegate.getSelectMode() != CalendarViewDelegate.SELECT_MODE_SINGLE) {
                 mDelegate.mCalendarSelectListener.onCalendarSelect(mDelegate.mSelectedCalendar, false);
@@ -624,7 +619,7 @@ public class CalendarView extends FrameLayout {
      *
      * @param calendarItemHeight MonthView item height
      */
-    public void setCalendarItemHeight(int calendarItemHeight) {
+    public final void setCalendarItemHeight(int calendarItemHeight) {
         if (mDelegate.getCalendarItemHeight() == calendarItemHeight) {
             return;
         }
@@ -643,7 +638,7 @@ public class CalendarView extends FrameLayout {
      *
      * @param cls MonthView.class
      */
-    public void setMonthView(Class<?> cls) {
+    public final void setMonthView(Class<?> cls) {
         if (cls == null) {
             return;
         }
@@ -659,7 +654,7 @@ public class CalendarView extends FrameLayout {
      *
      * @param cls WeekView.class
      */
-    public void setWeekView(Class<?> cls) {
+    public final void setWeekView(Class<?> cls) {
         if (cls == null) {
             return;
         }
@@ -675,7 +670,7 @@ public class CalendarView extends FrameLayout {
      *
      * @param cls WeekBar.class
      */
-    public void setWeekBar(Class<?> cls) {
+    public final void setWeekBar(Class<?> cls) {
         if (cls == null) {
             return;
         }
@@ -708,7 +703,7 @@ public class CalendarView extends FrameLayout {
      *
      * @param listener listener
      */
-    public void setOnCalendarInterceptListener(OnCalendarInterceptListener listener) {
+    public final void setOnCalendarInterceptListener(OnCalendarInterceptListener listener) {
         if (listener == null) {
             mDelegate.mCalendarInterceptListener = null;
         }
@@ -758,31 +753,6 @@ public class CalendarView extends FrameLayout {
      */
     public void setOnWeekChangeListener(OnWeekChangeListener listener) {
         this.mDelegate.mWeekChangeListener = listener;
-    }
-
-    /**
-     * 设置日期选中事件
-     * using setOnCalendarSelectListener(OnCalendarSelectListener listener) replace
-     *
-     * @param listener 日期选中事件
-     */
-    @Deprecated
-    public void setOnDateSelectedListener(OnDateSelectedListener listener) {
-        this.mDelegate.mDateSelectedListener = listener;
-        if (mDelegate.mDateSelectedListener == null) {
-            return;
-        }
-        if (!isInRange(mDelegate.mSelectedCalendar)) {
-            return;
-        }
-
-        post(new Runnable() {
-            @Override
-            public void run() {
-                mDelegate.updateSelectCalendarScheme();
-                mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar, false);
-            }
-        });
     }
 
     /**
@@ -853,18 +823,6 @@ public class CalendarView extends FrameLayout {
     }
 
     /**
-     * 日期长按事件、弃用，使用以下api
-     * using setOnCalendarLongClickListener(OnCalendarLongClickListener listener)
-     *
-     * @param listener listener
-     */
-    @Deprecated
-    public void setOnDateLongClickListener(OnDateLongClickListener listener) {
-        this.mDelegate.mDateLongClickListener = listener;
-    }
-
-
-    /**
      * 日期长按事件
      *
      * @param listener listener
@@ -872,20 +830,6 @@ public class CalendarView extends FrameLayout {
     public void setOnCalendarLongClickListener(OnCalendarLongClickListener listener) {
         this.mDelegate.mCalendarLongClickListener = listener;
     }
-
-    /**
-     * 日期长按事件，弃用，使用以下api
-     * using setOnCalendarLongClickListener(OnCalendarLongClickListener listener, boolean preventLongPressedSelect)
-     *
-     * @param preventLongPressedSelect 防止长按选择日期
-     * @param listener                 listener
-     */
-    @Deprecated
-    public void setOnDateLongClickListener(OnDateLongClickListener listener, boolean preventLongPressedSelect) {
-        this.mDelegate.mDateLongClickListener = listener;
-        this.mDelegate.setPreventLongPressedSelected(preventLongPressedSelect);
-    }
-
 
     /**
      * 日期长按事件
@@ -926,35 +870,12 @@ public class CalendarView extends FrameLayout {
 
     /**
      * 标记哪些日期有事件
-     * 推荐使用 public void setSchemeDate(Map<String, Calendar> mSchemeDates)
-     *
-     * @param mSchemeDate mSchemeDate 通过自己的需求转换即可
-     */
-    @Deprecated
-    public void setSchemeDate(List<Calendar> mSchemeDate) {
-        this.mDelegate.mSchemeDate = mSchemeDate;
-        this.mDelegate.mSchemeDatesMap = null;
-        this.mDelegate.clearSelectedScheme();
-        this.mDelegate.setSchemeType(CalendarViewDelegate.SCHEME_TYPE_LIST);
-        this.mSelectLayout.update();
-        this.mMonthPager.updateScheme();
-        this.mWeekPager.updateScheme();
-    }
-
-    /**
-     * 标记哪些日期有事件
-     * 如果标记的日期数量很大，mSchemeDatesMap.size()>10000?,请使用这个
-     * key=Calendar.toString();
-     * 优势？Android的用户相应时间一旦大于16ms,UI就会卡顿，Map在数据增长量巨大时，查找性能上不会损耗，
-     * List的性能就会差很大，List.contains()会遍历整个数组，性能太差
      *
      * @param mSchemeDates mSchemeDatesMap 通过自己的需求转换即可
      */
-    public void setSchemeDate(Map<String, Calendar> mSchemeDates) {
+    public final void setSchemeDate(Map<String, Calendar> mSchemeDates) {
         this.mDelegate.mSchemeDatesMap = mSchemeDates;
-        this.mDelegate.mSchemeDate = null;
         this.mDelegate.clearSelectedScheme();
-        this.mDelegate.setSchemeType(CalendarViewDelegate.SCHEME_TYPE_MAP);
         this.mSelectLayout.update();
         this.mMonthPager.updateScheme();
         this.mWeekPager.updateScheme();
@@ -963,9 +884,8 @@ public class CalendarView extends FrameLayout {
     /**
      * 清空日期标记
      */
-    public void clearSchemeDate() {
+    public final void clearSchemeDate() {
         this.mDelegate.mSchemeDatesMap = null;
-        this.mDelegate.mSchemeDate = null;
         this.mDelegate.clearSelectedScheme();
         mSelectLayout.update();
         mMonthPager.updateScheme();
@@ -979,24 +899,15 @@ public class CalendarView extends FrameLayout {
      *
      * @param calendar calendar
      */
-    public void removeSchemeDate(Calendar calendar) {
+    public final void removeSchemeDate(Calendar calendar) {
         if (calendar == null) {
             return;
         }
-        if (mDelegate.getSchemeType() == CalendarViewDelegate.SCHEME_TYPE_LIST) {
-            if (mDelegate.mSchemeDate == null || mDelegate.mSchemeDate.size() == 0) {
-                return;
-            }
-            if (mDelegate.mSchemeDate.contains(calendar)) {
-                mDelegate.mSchemeDate.remove(calendar);
-            }
-        } else {
-            if (mDelegate.mSchemeDatesMap == null || mDelegate.mSchemeDatesMap.size() == 0) {
-                return;
-            }
-            if (mDelegate.mSchemeDatesMap.containsKey(calendar.toString())) {
-                mDelegate.mSchemeDatesMap.remove(calendar.toString());
-            }
+        if (mDelegate.mSchemeDatesMap == null || mDelegate.mSchemeDatesMap.size() == 0) {
+            return;
+        }
+        if (mDelegate.mSchemeDatesMap.containsKey(calendar.toString())) {
+            mDelegate.mSchemeDatesMap.remove(calendar.toString());
         }
         if (mDelegate.mSelectedCalendar.equals(calendar)) {
             mDelegate.clearSelectedScheme();
@@ -1096,7 +1007,7 @@ public class CalendarView extends FrameLayout {
     /**
      * 默认选择模式
      */
-    public void setSelectDefaultMode() {
+    public final void setSelectDefaultMode() {
         if (mDelegate.getSelectMode() == CalendarViewDelegate.SELECT_MODE_DEFAULT) {
             return;
         }
@@ -1230,7 +1141,7 @@ public class CalendarView extends FrameLayout {
      * 更新界面，
      * 重新设置颜色等都需要调用该方法
      */
-    public void update() {
+    public final void update() {
         mWeekBar.onWeekStartChange(mDelegate.getWeekStart());
         mSelectLayout.update();
         mMonthPager.updateScheme();
@@ -1248,7 +1159,7 @@ public class CalendarView extends FrameLayout {
     /**
      * 更新当前日期
      */
-    public void updateCurrentDate() {
+    public final void updateCurrentDate() {
         mDelegate.updateCurrentDay();
         mMonthPager.updateCurrentDate();
         mWeekPager.updateCurrentDate();
@@ -1315,7 +1226,6 @@ public class CalendarView extends FrameLayout {
      * @param calendar calendar
      * @return 是否在日期范围内
      */
-    @SuppressWarnings("unused")
     protected final boolean isInRange(Calendar calendar) {
         return mDelegate != null && CalendarUtil.isCalendarInRange(calendar, mDelegate);
     }
@@ -1365,22 +1275,6 @@ public class CalendarView extends FrameLayout {
         void onWeekDateSelected(Calendar calendar, boolean isClick);
     }
 
-    /**
-     * 外部日期选择事件，弃用
-     * using OnCalendarSelectListener
-     */
-    @SuppressWarnings("DeprecatedIsStillUsed")
-    @Deprecated
-    public interface OnDateSelectedListener {
-        /**
-         * 日期选择事件
-         *
-         * @param calendar calendar
-         * @param isClick  isClick
-         */
-        @Deprecated
-        void onDateSelected(Calendar calendar, boolean isClick);
-    }
 
     /**
      * 日历范围选择事件
@@ -1430,22 +1324,6 @@ public class CalendarView extends FrameLayout {
          * @param isClick  isClick
          */
         void onCalendarSelect(Calendar calendar, boolean isClick);
-    }
-
-
-    /**
-     * 外部日期长按事件
-     */
-    @SuppressWarnings("DeprecatedIsStillUsed")
-    @Deprecated
-    public interface OnDateLongClickListener {
-        /**
-         * 日期长按事件
-         *
-         * @param calendar calendar
-         */
-        @Deprecated
-        void onDateLongClick(Calendar calendar);
     }
 
     public interface OnCalendarLongClickListener {

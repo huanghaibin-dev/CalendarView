@@ -31,7 +31,6 @@ import java.util.Map;
  * Google规范化的属性委托,
  * 代码量多，但是不影响阅读性
  */
-@SuppressWarnings({"DeprecatedIsStillUsed", "deprecation"})
 final class CalendarViewDelegate {
 
     /**
@@ -48,16 +47,6 @@ final class CalendarViewDelegate {
      * 周起始：周六
      */
     static final int WEEK_START_WITH_SAT = 7;
-
-    /**
-     * 事件标记类型，LIST
-     */
-    static final int SCHEME_TYPE_LIST = 1;
-
-    /**
-     * 事件标记类型，MAP
-     */
-    static final int SCHEME_TYPE_MAP = 2;
 
     /**
      * 全部显示
@@ -259,14 +248,6 @@ final class CalendarViewDelegate {
      */
     int mCurrentMonthViewItem;
 
-
-    private int mSchemeType;
-
-    /**
-     * 标记的日期
-     */
-    List<Calendar> mSchemeDate;
-
     /**
      * 标记的日期,数量巨大，请使用这个
      */
@@ -278,12 +259,6 @@ final class CalendarViewDelegate {
     CalendarView.OnCalendarInterceptListener mCalendarInterceptListener;
 
     /**
-     * 日期被选中监听
-     */
-    @Deprecated
-    CalendarView.OnDateSelectedListener mDateSelectedListener;
-
-    /**
      * 日期选中监听
      */
     CalendarView.OnCalendarSelectListener mCalendarSelectListener;
@@ -292,12 +267,6 @@ final class CalendarViewDelegate {
      * 范围选择
      */
     CalendarView.OnCalendarRangeSelectListener mCalendarRangeSelectListener;
-
-    /**
-     * 外部日期长按事件
-     */
-    @Deprecated
-    CalendarView.OnDateLongClickListener mDateLongClickListener;
 
     /**
      * 外部日期长按事件
@@ -765,13 +734,6 @@ final class CalendarViewDelegate {
         return mCalendarPadding;
     }
 
-    int getSchemeType() {
-        return mSchemeType;
-    }
-
-    void setSchemeType(int schemeType) {
-        this.mSchemeType = schemeType;
-    }
 
     void setPreventLongPressedSelected(boolean preventLongPressedSelected) {
         this.preventLongPressedSelected = preventLongPressedSelected;
@@ -806,17 +768,7 @@ final class CalendarViewDelegate {
     }
 
     final void updateSelectCalendarScheme() {
-        if (getSchemeType() == CalendarViewDelegate.SCHEME_TYPE_LIST &&
-                mSchemeDate != null &&
-                mSchemeDate.size() > 0) {
-            if (mSchemeDate.contains(mSelectedCalendar)) {
-                Calendar d = mSchemeDate.get(mSchemeDate.indexOf(mSelectedCalendar));
-                mSelectedCalendar.mergeScheme(d, getSchemeText());
-            }
-        }
-        if (getSchemeType() == CalendarViewDelegate.SCHEME_TYPE_MAP &&
-                mSchemeDatesMap != null &&
-                mSchemeDatesMap.size() > 0) {
+        if (mSchemeDatesMap != null && mSchemeDatesMap.size() > 0) {
             String key = mSelectedCalendar.toString();
             if (mSchemeDatesMap.containsKey(key)) {
                 Calendar d = mSchemeDatesMap.get(key);
@@ -855,28 +807,6 @@ final class CalendarViewDelegate {
         calendar.setCurrentDay(calendar.equals(mCurrentDate));
         LunarCalendar.setupLunarCalendar(calendar);
         return calendar;
-    }
-
-    /**
-     * 添加事件标记，来自List
-     * 兼容老版本
-     */
-    final void addSchemesFromList(List<Calendar> mItems) {
-        if (mSchemeDate == null || mSchemeDate.size() == 0) {
-            return;
-        }
-        for (Calendar a : mItems) {//添加操作
-            if (mSchemeDate.contains(a)) {
-                Calendar d = mSchemeDate.get(mSchemeDate.indexOf(a));
-                a.setScheme(TextUtils.isEmpty(d.getScheme()) ? getSchemeText() : d.getScheme());
-                a.setSchemeColor(d.getSchemeColor());
-                a.setSchemes(d.getSchemes());
-            } else {
-                a.setScheme("");
-                a.setSchemeColor(0);
-                a.setSchemes(null);
-            }
-        }
     }
 
     /**
@@ -949,11 +879,7 @@ final class CalendarViewDelegate {
             LunarCalendar.setupLunarCalendar(calendar);
             calendars.add(calendar);
         }
-        if (mSchemeType == CalendarViewDelegate.SCHEME_TYPE_LIST) {
-            addSchemesFromList(calendars);
-        } else {
-            addSchemesFromMap(calendars);
-        }
+        addSchemesFromMap(calendars);
         return calendars;
     }
 }

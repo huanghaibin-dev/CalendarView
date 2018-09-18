@@ -129,30 +129,18 @@ public abstract class RangeWeekView extends BaseWeekView {
             mDelegate.mSelectedStartRangeCalendar = calendar;
             mDelegate.mSelectedEndRangeCalendar = null;
         } else {
-            if (mDelegate.getMinSelectRange() != -1) {
-                if (mDelegate.getMinSelectRange() >
-                        CalendarUtil.differ(calendar, mDelegate.mSelectedStartRangeCalendar) + 1) {
-                    if (mDelegate.mCalendarRangeSelectListener != null) {
-                        mDelegate.mCalendarRangeSelectListener.onSelectOutOfRange(calendar, true);
-                    }
-                    return;
+            if (mDelegate.getMinSelectRange() != -1 && mDelegate.getMinSelectRange() >
+                    CalendarUtil.differ(calendar, mDelegate.mSelectedStartRangeCalendar) + 1) {
+                if (mDelegate.mCalendarRangeSelectListener != null) {
+                    mDelegate.mCalendarRangeSelectListener.onSelectOutOfRange(calendar, true);
                 }
-            } else if (mDelegate.getMaxSelectRange() == -1) {
-                mDelegate.mSelectedEndRangeCalendar = calendar;
-            } else if (mDelegate.getMaxSelectRange() <
+                return;
+            } else if (mDelegate.getMaxSelectRange() != -1 && mDelegate.getMaxSelectRange() <
                     CalendarUtil.differ(calendar, mDelegate.mSelectedStartRangeCalendar) + 1) {
                 if (mDelegate.mCalendarRangeSelectListener != null) {
                     mDelegate.mCalendarRangeSelectListener.onSelectOutOfRange(calendar, false);
                 }
                 return;
-            } else if (mDelegate.getMinSelectRange() != -1) {
-                if (mDelegate.getMinSelectRange() >
-                        CalendarUtil.differ(calendar, mDelegate.mSelectedStartRangeCalendar) + 1) {
-                    if (mDelegate.mCalendarRangeSelectListener != null) {
-                        mDelegate.mCalendarRangeSelectListener.onSelectOutOfRange(calendar, true);
-                    }
-                    return;
-                }
             }
             mDelegate.mSelectedEndRangeCalendar = calendar;
         }

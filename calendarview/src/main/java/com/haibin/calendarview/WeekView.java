@@ -23,8 +23,6 @@ import android.view.View;
  * 周视图，因为日历UI采用热插拔实现，所以这里必须继承实现，达到UI一致即可
  * Created by huanghaibin on 2017/11/21.
  */
-
-@SuppressWarnings("deprecation")
 public abstract class WeekView extends BaseWeekView {
 
     public WeekView(Context context) {
@@ -98,10 +96,6 @@ public abstract class WeekView extends BaseWeekView {
             mParentLayout.updateSelectWeek(i);
         }
 
-        if (mDelegate.mDateSelectedListener != null) {
-            mDelegate.mDateSelectedListener.onDateSelected(calendar, true);
-        }
-
         if (mDelegate.mCalendarSelectListener != null) {
             mDelegate.mCalendarSelectListener.onCalendarSelect(calendar, true);
         }
@@ -112,8 +106,7 @@ public abstract class WeekView extends BaseWeekView {
 
     @Override
     public boolean onLongClick(View v) {
-        if (mDelegate.mDateLongClickListener == null &&
-                mDelegate.mCalendarLongClickListener == null)
+        if (mDelegate.mCalendarLongClickListener == null)
             return false;
         if (!isClick) {
             return false;
@@ -136,9 +129,6 @@ public abstract class WeekView extends BaseWeekView {
         }
 
         if (mDelegate.isPreventLongPressedSelected()) {//如果启用拦截长按事件不选择日期
-            if (mDelegate.mDateLongClickListener != null) {
-                mDelegate.mDateLongClickListener.onDateLongClick(calendar);
-            }
             if (mDelegate.mCalendarLongClickListener != null) {
                 mDelegate.mCalendarLongClickListener.onCalendarLongClick(calendar);
             }
@@ -158,17 +148,10 @@ public abstract class WeekView extends BaseWeekView {
             mParentLayout.updateSelectWeek(i);
         }
 
-        if (mDelegate.mDateSelectedListener != null) {
-            mDelegate.mDateSelectedListener.onDateSelected(calendar, true);
-        }
-
         if (mDelegate.mCalendarSelectListener != null) {
             mDelegate.mCalendarSelectListener.onCalendarSelect(calendar, true);
         }
 
-        if (mDelegate.mDateLongClickListener != null) {
-            mDelegate.mDateLongClickListener.onDateLongClick(calendar);
-        }
         if (mDelegate.mCalendarLongClickListener != null) {
             mDelegate.mCalendarLongClickListener.onCalendarLongClick(calendar);
         }

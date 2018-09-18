@@ -21,9 +21,7 @@ import com.haibin.calendarviewproject.group.GroupRecyclerView;
 import com.haibin.calendarviewproject.index.IndexActivity;
 import com.haibin.calendarviewproject.simple.SimpleActivity;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ProgressActivity extends BaseActivity implements
@@ -97,27 +95,8 @@ public class ProgressActivity extends BaseActivity implements
 
     @Override
     protected void initData() {
-        List<Calendar> schemes = new ArrayList<>();
         int year = mCalendarView.getCurYear();
         int month = mCalendarView.getCurMonth();
-
-        schemes.add(getSchemeCalendar(year, month, 3, 0xFF40db25, "20"));
-        schemes.add(getSchemeCalendar(year, month, 6, 0xFFe69138, "30"));
-        schemes.add(getSchemeCalendar(year, month, 9, 0xFFdf1356, "33"));
-        schemes.add(getSchemeCalendar(year, month, 12, 0xFFdf1356, "25"));
-        schemes.add(getSchemeCalendar(year, month, 13, 0xFFedc56d, "50"));
-        schemes.add(getSchemeCalendar(year, month, 14, 0xFFedc56d, "80"));
-        schemes.add(getSchemeCalendar(year, month, 15, 0xFFaacc44, "20"));
-        schemes.add(getSchemeCalendar(year, month, 18, 0xFFbc13f0, "70"));
-        schemes.add(getSchemeCalendar(year, month, 25, 0xFF13acf0, "36"));
-        schemes.add(getSchemeCalendar(year, month, 27, 0xFF13acf0, "95"));
-
-
-         /*
-         * 此方法现在弃用，但不影响原来的效果，原因：数据量大时 size()>10000 ，遍历性能太差，超过Android限制的16ms响应，造成卡顿
-         * 现在推荐使用 setSchemeDate(Map<String, Calendar> mSchemeDates)，Map查找性能非常好，经测试，50000以上数据，1ms解决
-         */
-        mCalendarView.setSchemeDate(schemes);
 
 
         Map<String, Calendar> map = new HashMap<>();

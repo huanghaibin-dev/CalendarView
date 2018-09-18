@@ -147,9 +147,6 @@ public abstract class MonthView extends BaseMonthView {
 
         }
 
-        if (mDelegate.mDateSelectedListener != null) {
-            mDelegate.mDateSelectedListener.onDateSelected(calendar, true);
-        }
         if (mDelegate.mCalendarSelectListener != null) {
             mDelegate.mCalendarSelectListener.onCalendarSelect(calendar, true);
         }
@@ -158,8 +155,7 @@ public abstract class MonthView extends BaseMonthView {
     @SuppressWarnings("deprecation")
     @Override
     public boolean onLongClick(View v) {
-        if (mDelegate.mDateLongClickListener == null &&
-                mDelegate.mCalendarLongClickListener == null)
+        if (mDelegate.mCalendarLongClickListener == null)
             return false;
         if (!isClick) {
             return false;
@@ -190,9 +186,6 @@ public abstract class MonthView extends BaseMonthView {
         }
 
         if (mDelegate.isPreventLongPressedSelected()) {
-            if (mDelegate.mDateLongClickListener != null) {
-                mDelegate.mDateLongClickListener.onDateLongClick(calendar);
-            }
             if (mDelegate.mCalendarLongClickListener != null) {
                 mDelegate.mCalendarLongClickListener.onCalendarLongClick(calendar);
             }
@@ -221,18 +214,10 @@ public abstract class MonthView extends BaseMonthView {
 
         }
 
-
-        if (mDelegate.mDateSelectedListener != null) {
-            mDelegate.mDateSelectedListener.onDateSelected(calendar, true);
-        }
-
         if (mDelegate.mCalendarSelectListener != null) {
             mDelegate.mCalendarSelectListener.onCalendarSelect(calendar, true);
         }
 
-        if (mDelegate.mDateLongClickListener != null) {
-            mDelegate.mDateLongClickListener.onDateLongClick(calendar);
-        }
         if (mDelegate.mCalendarLongClickListener != null) {
             mDelegate.mCalendarLongClickListener.onCalendarLongClick(calendar);
         }

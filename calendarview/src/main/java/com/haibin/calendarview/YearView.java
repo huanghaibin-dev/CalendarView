@@ -175,14 +175,6 @@ public class YearView extends View {
      * @return return
      */
     private boolean isScheme(int day) {
-        if (mDelegate.getSchemeType() == CalendarViewDelegate.SCHEME_TYPE_LIST) {
-            if (mDelegate.mSchemeDate == null || mDelegate.mSchemeDate.size() == 0) {
-                return false;
-            }
-            mCalendar.setDay(day);
-            return mDelegate.mSchemeDate.contains(mCalendar);
-        }
-
         if (mDelegate.mSchemeDatesMap == null || mDelegate.mSchemeDatesMap.size() == 0) {
             return false;
         }

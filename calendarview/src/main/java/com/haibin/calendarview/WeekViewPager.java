@@ -33,7 +33,6 @@ import java.util.List;
  * WeekViewPager需要和CalendarView关联:
  */
 
-@SuppressWarnings("deprecation")
 public final class WeekViewPager extends ViewPager {
     private boolean isUpdateWeekView;
     private int mWeekCount;
@@ -115,11 +114,7 @@ public final class WeekViewPager extends ViewPager {
     List<Calendar> getCurrentWeekCalendars() {
         List<Calendar> calendars = CalendarUtil.getWeekCalendars(mDelegate.mIndexCalendar,
                 mDelegate);
-        if (mDelegate.getSchemeType() == CalendarViewDelegate.SCHEME_TYPE_LIST) {
-            mDelegate.addSchemesFromList(calendars);
-        } else {
-            mDelegate.addSchemesFromMap(calendars);
-        }
+        mDelegate.addSchemesFromMap(calendars);
         return calendars;
     }
 
@@ -164,9 +159,6 @@ public final class WeekViewPager extends ViewPager {
         if (mDelegate.mInnerListener != null) {
             mDelegate.mInnerListener.onWeekDateSelected(calendar, false);
         }
-        if (mDelegate.mDateSelectedListener != null) {
-            mDelegate.mDateSelectedListener.onDateSelected(calendar, false);
-        }
 
         if (mDelegate.mCalendarSelectListener != null) {
             mDelegate.mCalendarSelectListener.onCalendarSelect(calendar, false);
@@ -198,9 +190,6 @@ public final class WeekViewPager extends ViewPager {
         if (mDelegate.mInnerListener != null) {
             mDelegate.mInnerListener.onWeekDateSelected(calendar, false);
         }
-        if (mDelegate.mDateSelectedListener != null) {
-            mDelegate.mDateSelectedListener.onDateSelected(calendar, false);
-        }
         if (mDelegate.mCalendarSelectListener != null) {
             mDelegate.mCalendarSelectListener.onCalendarSelect(calendar, false);
         }
@@ -228,9 +217,6 @@ public final class WeekViewPager extends ViewPager {
             view.performClickCalendar(mDelegate.getCurrentDay(), false);
             view.setSelectedCalendar(mDelegate.getCurrentDay());
             view.invalidate();
-        }
-        if (mDelegate.mDateSelectedListener != null && getVisibility() == VISIBLE) {
-            mDelegate.mDateSelectedListener.onDateSelected(mDelegate.mSelectedCalendar, false);
         }
 
         if (mDelegate.mCalendarSelectListener != null && getVisibility() == VISIBLE) {

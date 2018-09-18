@@ -22,8 +22,6 @@ import android.content.Context;
  * 可通过此扩展各种视图如：WeekView、RangeWeekView
  */
 
-
-@SuppressWarnings("deprecation")
 public abstract class BaseWeekView extends BaseView {
 
     public BaseWeekView(Context context) {
@@ -69,11 +67,6 @@ public abstract class BaseWeekView extends BaseView {
         int i = CalendarUtil.getWeekFromDayInMonth(currentCalendar, mDelegate.getWeekStart());
         mParentLayout.updateSelectWeek(i);
 
-        if (mDelegate.mDateSelectedListener != null
-                && isNotice
-                && mDelegate.getSelectMode() == CalendarViewDelegate.SELECT_MODE_DEFAULT) {
-            mDelegate.mDateSelectedListener.onDateSelected(currentCalendar, false);
-        }
 
         if (mDelegate.mCalendarSelectListener != null
                 && isNotice
@@ -165,11 +158,7 @@ public abstract class BaseWeekView extends BaseView {
     final void setup(Calendar calendar) {
 
         mItems = CalendarUtil.initCalendarForWeekView(calendar, mDelegate, mDelegate.getWeekStart());
-        if (mDelegate.getSchemeType() == CalendarViewDelegate.SCHEME_TYPE_LIST) {
-            addSchemesFromList();
-        } else {
-            addSchemesFromMap();
-        }
+        addSchemesFromMap();
         invalidate();
     }
 

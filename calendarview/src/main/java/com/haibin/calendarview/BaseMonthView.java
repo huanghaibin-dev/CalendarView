@@ -166,11 +166,7 @@ public abstract class BaseMonthView extends BaseView {
         } else {
             mLineCount = (preDiff + monthDayCount + mNextDiff) / 7;
         }
-        if (mDelegate.getSchemeType() == CalendarViewDelegate.SCHEME_TYPE_LIST) {
-            addSchemesFromList();
-        } else {
-            addSchemesFromMap();
-        }
+        addSchemesFromMap();
         invalidate();
     }
 

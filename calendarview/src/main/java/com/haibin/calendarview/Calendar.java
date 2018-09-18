@@ -313,7 +313,7 @@ public final class Calendar implements Serializable {
     /**
      * 是否是相同月份
      *
-     * @param calendar
+     * @param calendar 日期
      * @return 是否是相同月份
      */
     public boolean isSameMonth(Calendar calendar) {
@@ -323,7 +323,7 @@ public final class Calendar implements Serializable {
     /**
      * 比较日期
      *
-     * @param calendar
+     * @param calendar 日期
      * @return -1 0 1
      */
     public int compareTo(Calendar calendar) {

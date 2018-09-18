@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="cv_app_name">CalendarView</string>
     <string-array name="lunar_first_of_month">
         <item>春節</item>
@@ -58,7 +58,7 @@
         <item>三十</item>
     </string-array>
 
-    <string-array name="solar_festival">
+    <string-array name="solar_festival" tools:ignore="InconsistentArrays">
         <item>0101元旦</item>
         <item>0214情人節</item>
         <item>0308婦女節</item>
@@ -75,7 +75,7 @@
         <item>0601兒童節</item>
         <item>0701建黨節</item>
         <item>0801建軍節</item>
-        <item>0910教師節</item>
+        <item>0928教師節</item>
         <item>1001國慶節</item>
         <item>1010國慶日</item>
         <item>1031萬聖節</item>
@@ -91,10 +91,6 @@
         <item>立夏</item>
         <item>小滿</item>
         <item>芒種</item>
-        <item>谷雨</item>
-        <item>立夏</item>
-        <item>小满</item>
-        <item>芒种</item>
         <item>夏至</item>
         <item>小暑</item>
         <item>大暑</item>
