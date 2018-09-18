@@ -59,14 +59,28 @@
                 tools:ignore="SmallSp" />
         </LinearLayout>
 
+        <ImageView
+            android:id="@+id/iv_func"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="12dp"
+            android:layout_toLeftOf="@+id/iv_more"
+            android:background="@drawable/bg_ripple"
+            android:padding="4dp"
+            android:tint="#333333"
+            android:src="@mipmap/ic_func" />
+
+
         <FrameLayout
             android:id="@+id/fl_current"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="12dp"
-            android:background="@drawable/bg_ripple">
+            android:layout_toLeftOf="@+id/iv_more"
+            android:background="@drawable/bg_ripple"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/ib_calendar"
@@ -74,7 +88,7 @@
                 android:layout_height="match_parent"
                 android:contentDescription="@string/app_name"
                 android:scaleType="centerInside"
-                android:src="@mipmap/menu_action_calendar_mvp"
+                android:src="@mipmap/ic_calendar"
                 android:tint="#000000" />
 
             <TextView
@@ -88,6 +102,21 @@
                 android:textColor="#000000"
                 android:textSize="12sp" />
         </FrameLayout>
+
+        <ImageView
+            android:id="@+id/iv_more"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="12dp"
+            android:background="@drawable/bg_ripple"
+            android:contentDescription="@string/app_name"
+            android:padding="6dp"
+            android:scaleType="centerInside"
+            android:src="@mipmap/ic_more"
+            android:tint="#333333" />
+
 
     </RelativeLayout>
 
@@ -111,10 +140,12 @@
             app:current_month_lunar_text_color="#CFCFCF"
             app:current_month_text_color="#333333"
             app:lunar_text_size="10sp"
-            app:max_year="2022"
+            app:max_year="2030"
             app:max_year_month="12"
-            app:min_year="2016"
-            app:min_year_month="9"
+            app:max_year_day="31"
+            app:min_year="2017"
+            app:min_year_month="1"
+            app:min_year_day="1"
             app:month_view_show_mode="mode_only_current"
             app:other_month_lunar_text_color="#e1e1e1"
             app:other_month_text_color="#e1e1e1"
@@ -127,8 +158,11 @@
             app:selected_theme_color="#80cfcfcf"
             app:week_background="#fff"
             app:week_bar_height="46dp"
+            app:month_view="com.haibin.calendarviewproject.meizu.MeiZuMonthView"
+            app:week_view="com.haibin.calendarviewproject.meizu.MeizuWeekView"
             app:week_bar_view="com.haibin.calendarviewproject.EnglishWeekBar"
             app:week_line_background="#00000000"
+            app:week_line_margin="16dp"
             app:week_start_with="mon"
             app:week_text_size="10sp"
             app:year_view_background="#f6f6f6"
@@ -197,7 +231,7 @@
                     android:background="@color/line_color" />
 
                 <LinearLayout
-                    android:id="@+id/ll_simple"
+                    android:id="@+id/ll_custom"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -206,8 +240,8 @@
                         android:layout_width="39dp"
                         android:layout_height="39dp"
                         android:layout_margin="16dp"
-                        android:contentDescription="flyme"
-                        android:src="@mipmap/ic_simple_logo" />
+                        android:contentDescription="progress"
+                        android:src="@mipmap/ic_custom" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -219,7 +253,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="简单日历风格"
+                            android:text="精美中国式风格"
                             android:textColor="#333333"
                             android:textSize="18sp"
                             android:textStyle="bold" />
@@ -228,51 +262,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="点击查看简单没有农历风格的日历"
-                            android:textColor="#666666"
-                            android:textSize="14sp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:background="@color/line_color" />
-
-
-                <LinearLayout
-                    android:id="@+id/ll_index"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="39dp"
-                        android:layout_height="39dp"
-                        android:layout_margin="16dp"
-                        android:contentDescription="flyme"
-                        android:src="@mipmap/ic_index_logo" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:layout_marginTop="16dp"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="下标风格"
-                            android:textColor="#333333"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="点击查看下标风格的日历控件"
+                            android:text="演示一个中国式需求的变态日历"
                             android:textColor="#666666"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -284,7 +274,7 @@
                     android:background="@color/line_color" />
 
                 <LinearLayout
-                    android:id="@+id/ll_tab"
+                    android:id="@+id/ll_range"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -293,8 +283,9 @@
                         android:layout_width="39dp"
                         android:layout_height="39dp"
                         android:layout_margin="16dp"
+                        android:padding="6dp"
                         android:contentDescription="flyme"
-                        android:src="@mipmap/ic_tab_logo" />
+                        android:src="@mipmap/ic_range" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -306,7 +297,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="ViewPager风格"
+                            android:text="范围选择风格:Range style"
                             android:textColor="#333333"
                             android:textSize="18sp"
                             android:textStyle="bold" />
@@ -315,7 +306,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="点击查看Tab ViewPager风格的日历控件"
+                            android:text="点击查看范围选择风格风格的日历控件"
                             android:textColor="#666666"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -364,13 +355,14 @@
                     </LinearLayout>
                 </LinearLayout>
 
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:background="@color/line_color" />
 
                 <LinearLayout
-                    android:id="@+id/ll_solar_system"
+                    android:id="@+id/ll_tab"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -380,7 +372,7 @@
                         android:layout_height="39dp"
                         android:layout_margin="16dp"
                         android:contentDescription="flyme"
-                        android:src="@mipmap/ic_solar_system" />
+                        android:src="@mipmap/ic_tab_logo" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -392,7 +384,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="类似星系风格"
+                            android:text="ViewPager风格"
                             android:textColor="#333333"
                             android:textSize="18sp"
                             android:textStyle="bold" />
@@ -401,7 +393,51 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="点击查看类似星系风格的日历控件"
+                            android:text="点击查看Tab ViewPager风格的日历控件"
+                            android:textColor="#666666"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/line_color" />
+
+                <LinearLayout
+                    android:id="@+id/ll_single"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="39dp"
+                        android:layout_height="39dp"
+                        android:layout_margin="16dp"
+                        android:contentDescription="flyme"
+                        android:src="@mipmap/ic_single" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="16dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="单选风格"
+                            android:textColor="#333333"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="点击查看单选风格的日历控件"
                             android:textColor="#666666"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -450,13 +486,15 @@
                     </LinearLayout>
                 </LinearLayout>
 
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:background="@color/line_color" />
 
+
                 <LinearLayout
-                    android:id="@+id/ll_custom"
+                    android:id="@+id/ll_index"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -465,8 +503,8 @@
                         android:layout_width="39dp"
                         android:layout_height="39dp"
                         android:layout_margin="16dp"
-                        android:contentDescription="progress"
-                        android:src="@mipmap/ic_custom" />
+                        android:contentDescription="flyme"
+                        android:src="@mipmap/ic_index_logo" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -478,7 +516,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="精美中国式风格"
+                            android:text="下标风格"
                             android:textColor="#333333"
                             android:textSize="18sp"
                             android:textStyle="bold" />
@@ -487,7 +525,95 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:text="演示一个中国式需求的变态日历"
+                            android:text="点击查看下标风格的日历控件"
+                            android:textColor="#666666"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/line_color" />
+
+                <LinearLayout
+                    android:id="@+id/ll_solar_system"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="39dp"
+                        android:layout_height="39dp"
+                        android:layout_margin="16dp"
+                        android:contentDescription="flyme"
+                        android:src="@mipmap/ic_solar_system" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="16dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="类似星系风格"
+                            android:textColor="#333333"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="点击查看类似星系风格的日历控件"
+                            android:textColor="#666666"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/line_color" />
+
+                <LinearLayout
+                    android:id="@+id/ll_simple"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="39dp"
+                        android:layout_height="39dp"
+                        android:layout_margin="16dp"
+                        android:contentDescription="flyme"
+                        android:src="@mipmap/ic_simple_logo" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="16dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="简单日历风格"
+                            android:textColor="#333333"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="点击查看简单没有农历风格的日历"
                             android:textColor="#666666"
                             android:textSize="14sp" />
                     </LinearLayout>

@@ -23,11 +23,13 @@ import com.haibin.calendarviewproject.meizu.MeiZuActivity;
 import com.haibin.calendarviewproject.simple.SimpleActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class IndexActivity extends BaseActivity implements
-        CalendarView.OnDateSelectedListener,
-        CalendarView.OnDateLongClickListener,
+        CalendarView.OnCalendarSelectListener,
+        CalendarView.OnCalendarLongClickListener,
         CalendarView.OnYearChangeListener,
         View.OnClickListener {
 
@@ -85,9 +87,9 @@ public class IndexActivity extends BaseActivity implements
             }
         });
         mCalendarLayout = (CalendarLayout) findViewById(R.id.calendarLayout);
-        mCalendarView.setOnDateSelectedListener(this);
+        mCalendarView.setOnCalendarSelectListener(this);
         mCalendarView.setOnYearChangeListener(this);
-        mCalendarView.setOnDateLongClickListener(this,false);
+        mCalendarView.setOnCalendarLongClickListener(this,false);
         mTextYear.setText(String.valueOf(mCalendarView.getCurYear()));
         mYear = mCalendarView.getCurYear();
         mTextMonthDay.setText(mCalendarView.getCurMonth() + "月" + mCalendarView.getCurDay() + "日");
@@ -109,7 +111,38 @@ public class IndexActivity extends BaseActivity implements
         schemes.add(getSchemeCalendar(year, month, 15, 0xFFaacc44, "假"));
         schemes.add(getSchemeCalendar(year, month, 18, 0xFFbc13f0, "记"));
         schemes.add(getSchemeCalendar(year, month, 25, 0xFF13acf0, "假"));
+
+
+        /*
+         * 此方法现在弃用，但不影响原来的效果，原因：数据量大时 size()>10000 ，遍历性能太差，超过Android限制的16ms响应，造成卡顿
+         * 现在推荐使用 setSchemeDate(Map<String, Calendar> mSchemeDates)，Map查找性能非常好，经测试，50000以上数据，1ms解决
+         */
         mCalendarView.setSchemeDate(schemes);
+
+
+        Map<String, Calendar> map = new HashMap<>();
+        map.put(getSchemeCalendar(year, month, 3, 0xFF40db25, "假").toString(),
+                getSchemeCalendar(year, month, 3, 0xFF40db25, "假"));
+        map.put(getSchemeCalendar(year, month, 6, 0xFFe69138, "事").toString(),
+                getSchemeCalendar(year, month, 6, 0xFFe69138, "事"));
+        map.put(getSchemeCalendar(year, month, 9, 0xFFdf1356, "议").toString(),
+                getSchemeCalendar(year, month, 9, 0xFFdf1356, "议"));
+        map.put(getSchemeCalendar(year, month, 13, 0xFFedc56d, "记").toString(),
+                getSchemeCalendar(year, month, 13, 0xFFedc56d, "记"));
+        map.put(getSchemeCalendar(year, month, 14, 0xFFedc56d, "记").toString(),
+                getSchemeCalendar(year, month, 14, 0xFFedc56d, "记"));
+        map.put(getSchemeCalendar(year, month, 15, 0xFFaacc44, "假").toString(),
+                getSchemeCalendar(year, month, 15, 0xFFaacc44, "假"));
+        map.put(getSchemeCalendar(year, month, 18, 0xFFbc13f0, "记").toString(),
+                getSchemeCalendar(year, month, 18, 0xFFbc13f0, "记"));
+        map.put(getSchemeCalendar(year, month, 25, 0xFF13acf0, "假").toString(),
+                getSchemeCalendar(year, month, 25, 0xFF13acf0, "假"));
+        map.put(getSchemeCalendar(year, month, 27, 0xFF13acf0, "多").toString(),
+                getSchemeCalendar(year, month, 27, 0xFF13acf0, "多"));
+        //此方法在巨大的数据量上不影响遍历性能，推荐使用
+        mCalendarView.setSchemeDate(map);
+
+
 
         mRecyclerView = (GroupRecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -148,13 +181,13 @@ public class IndexActivity extends BaseActivity implements
     }
 
     @Override
-    public void onDateLongClick(Calendar calendar) {
-        Log.e("onDateLongClick", "  -- " + calendar.getDay() + "  --  " + calendar.getMonth());
+    public void onCalendarOutOfRange(Calendar calendar) {
+
     }
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onDateSelected(Calendar calendar, boolean isClick) {
+    public void onCalendarSelect(Calendar calendar, boolean isClick) {
         mTextLunar.setVisibility(View.VISIBLE);
         mTextYear.setVisibility(View.VISIBLE);
         mTextMonthDay.setText(calendar.getMonth() + "月" + calendar.getDay() + "日");
@@ -163,6 +196,15 @@ public class IndexActivity extends BaseActivity implements
         mYear = calendar.getYear();
     }
 
+    @Override
+    public void onCalendarLongClickOutOfRange(Calendar calendar) {
+
+    }
+
+    @Override
+    public void onCalendarLongClick(Calendar calendar) {
+        Log.e("onDateLongClick", "  -- " + calendar.getDay() + "  --  " + calendar.getMonth());
+    }
 
     @Override
     public void onYearChange(int year) {

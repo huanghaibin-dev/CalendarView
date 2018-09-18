@@ -75,7 +75,7 @@
                 android:tint="#000000"
                 android:contentDescription="@string/app_name"
                 android:scaleType="centerInside"
-                android:src="@mipmap/menu_action_calendar_mvp" />
+                android:src="@mipmap/ic_calendar" />
 
             <TextView
                 android:id="@+id/tv_current_day"

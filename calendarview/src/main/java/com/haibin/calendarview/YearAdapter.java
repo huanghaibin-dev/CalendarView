@@ -49,7 +49,6 @@ final class YearAdapter extends BaseRecyclerAdapter<Month> {
     void onBindViewHolder(RecyclerView.ViewHolder holder, Month item, int position) {
         YearViewHolder h = (YearViewHolder) holder;
         YearView view = h.mYearView;
-        view.setSchemes(mDelegate.mSchemeDate);
         view.setSchemeColor(mDelegate.getYearViewSchemeTextColor());
         view.setTextStyle(mDelegate.getYearViewDayTextSize(),
                 mDelegate.getYearViewDayTextColor());

@@ -32,6 +32,7 @@ import android.view.WindowManager;
  */
 public final class YearSelectLayout extends ViewPager {
     private int mYearCount;
+    private boolean isUpdateYearView;
     private CalendarViewDelegate mDelegate;
     private YearRecyclerView.OnMonthSelectedListener mListener;
 
@@ -51,6 +52,11 @@ public final class YearSelectLayout extends ViewPager {
             @Override
             public int getCount() {
                 return mYearCount;
+            }
+
+            @Override
+            public int getItemPosition(Object object) {
+                return isUpdateYearView ? POSITION_NONE : super.getItemPosition(object);
             }
 
             @Override
@@ -77,15 +83,32 @@ public final class YearSelectLayout extends ViewPager {
         setCurrentItem(mDelegate.getCurrentDay().getYear() - mDelegate.getMinYear());
     }
 
+    /**
+     * 通知刷新
+     */
     void notifyDataSetChanged() {
         this.mYearCount = mDelegate.getMaxYear() - mDelegate.getMinYear() + 1;
         getAdapter().notifyDataSetChanged();
     }
 
+    /**
+     * 滚动到某年
+     *
+     * @param year         year
+     * @param smoothScroll smoothScroll
+     */
     void scrollToYear(int year, boolean smoothScroll) {
         setCurrentItem(year - mDelegate.getMinYear(), smoothScroll);
     }
 
+    /**
+     * 更新日期范围
+     */
+    void updateRange() {
+        isUpdateYearView = true;
+        notifyDataSetChanged();
+        isUpdateYearView = false;
+    }
 
     /**
      * 更新界面

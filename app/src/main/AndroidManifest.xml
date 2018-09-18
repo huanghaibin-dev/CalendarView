@@ -23,11 +23,14 @@
         <activity android:name=".meizu.MeiZuActivity" />
         <activity android:name=".index.IndexActivity" />
         <activity android:name=".simple.SimpleActivity" />
+        <activity android:name=".range.RangeActivity" />
         <activity android:name=".colorful.ColorfulActivity" />
         <activity android:name=".solay.SolarActivity" />
+        <activity android:name=".single.SingleActivity" />
         <activity android:name=".progress.ProgressActivity" />
         <activity android:name=".custom.CustomActivity" />
         <activity android:name=".pager.ViewPagerActivity" />
+        <activity android:name=".TestActivity" />
     </application>
 
 </manifest>

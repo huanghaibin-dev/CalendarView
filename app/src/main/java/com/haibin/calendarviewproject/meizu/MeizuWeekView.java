@@ -16,6 +16,7 @@ import com.haibin.calendarview.WeekView;
 
 public class MeizuWeekView extends WeekView {
     private Paint mTextPaint = new Paint();
+
     private Paint mSchemeBasicPaint = new Paint();
     private float mRadio;
     private int mPadding;
@@ -79,21 +80,23 @@ public class MeizuWeekView extends WeekView {
         int cx = x + mItemWidth / 2;
         int top = -mItemHeight / 6;
 
+        boolean isInRange = isInRange(calendar);
+
         if (isSelected) {
             canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
                     mSelectTextPaint);
             canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + mItemHeight / 10, mSelectedLunarTextPaint);
         } else if (hasScheme) {
             canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
-                    calendar.isCurrentMonth() ? mSchemeTextPaint : mOtherMonthTextPaint);
+                    calendar.isCurrentMonth() && isInRange ? mSchemeTextPaint : mOtherMonthTextPaint);
 
             canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + mItemHeight / 10, mCurMonthLunarTextPaint);
         } else {
             canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
-                    calendar.isCurrentDay() ? mCurDayTextPaint :
-                            calendar.isCurrentMonth() ? mCurMonthTextPaint : mOtherMonthTextPaint);
+                    calendar.isCurrentDay() && isInRange ? mCurDayTextPaint :
+                            calendar.isCurrentMonth() && isInRange ? mCurMonthTextPaint : mOtherMonthTextPaint);
             canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + mItemHeight / 10,
-                    calendar.isCurrentDay() ? mCurDayLunarTextPaint :
+                    calendar.isCurrentDay() && isInRange ? mCurDayLunarTextPaint :
                             calendar.isCurrentMonth() ? mCurMonthLunarTextPaint : mOtherMonthLunarTextPaint);
         }
     }

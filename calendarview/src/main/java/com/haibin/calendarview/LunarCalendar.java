@@ -334,7 +334,7 @@ final class LunarCalendar {
         calendar.setWeek(CalendarUtil.getWeekFormCalendar(calendar));
 
         Calendar lunarCalendar = new Calendar();
-        calendar.setLunarCakendar(lunarCalendar);
+        calendar.setLunarCalendar(lunarCalendar);
         int[] lunar = LunarUtil.solarToLunar(year, month, day);
         lunarCalendar.setYear(lunar[0]);
         lunarCalendar.setMonth(lunar[1]);

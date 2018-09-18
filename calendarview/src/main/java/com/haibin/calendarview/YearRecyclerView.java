@@ -64,15 +64,16 @@ public final class YearRecyclerView extends RecyclerView {
 
     /**
      * 初始化年视图
+     *
      * @param year year
      */
-    void init(int year) {
+    final void init(int year) {
         java.util.Calendar date = java.util.Calendar.getInstance();
         for (int i = 1; i <= 12; i++) {
             date.set(year, i - 1, 1);
             int mDaysCount = CalendarUtil.getMonthDaysCount(year, i);
             Month month = new Month();
-            month.setDiff(CalendarUtil.getMonthViewStartDiff(year,i,mDelegate.getWeekStart()));
+            month.setDiff(CalendarUtil.getMonthViewStartDiff(year, i, mDelegate.getWeekStart()));
             month.setCount(mDaysCount);
             month.setMonth(i);
             month.setYear(year);
@@ -83,17 +84,18 @@ public final class YearRecyclerView extends RecyclerView {
     /**
      * 更新周起始
      */
-    void updateWeekStart() {
+    final void updateWeekStart() {
         for (Month month : mAdapter.getItems()) {
-            month.setDiff(CalendarUtil.getMonthViewStartDiff(month.getYear(),month.getMonth(),mDelegate.getWeekStart()));
+            month.setDiff(CalendarUtil.getMonthViewStartDiff(month.getYear(), month.getMonth(), mDelegate.getWeekStart()));
         }
     }
 
     /**
      * 月份选择事件
+     *
      * @param listener listener
      */
-    void setOnMonthSelectedListener(OnMonthSelectedListener listener) {
+    final void setOnMonthSelectedListener(OnMonthSelectedListener listener) {
         this.mListener = listener;
     }
 

@@ -17,7 +17,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="@string/sun"
-        android:textColor="#333333"
+        android:textColor="#e1e1e1"
         android:textSize="12sp" />
 
     <TextView
@@ -26,7 +26,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="@string/mon"
-        android:textColor="#333333"
+        android:textColor="#e1e1e1"
         android:textSize="12sp" />
 
     <TextView
@@ -35,7 +35,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="@string/tue"
-        android:textColor="#333333"
+        android:textColor="#e1e1e1"
         android:textSize="12sp" />
 
     <TextView
@@ -44,6 +44,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="@string/wed"
+        android:textColor="#e1e1e1"
         android:textSize="12sp" />
 
     <TextView
@@ -52,7 +53,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="@string/thu"
-        android:textColor="#333333"
+        android:textColor="#e1e1e1"
         android:textSize="12sp" />
 
     <TextView
@@ -61,7 +62,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="@string/fri"
-        android:textColor="#333333"
+        android:textColor="#e1e1e1"
         android:textSize="12sp" />
 
     <TextView
@@ -70,6 +71,6 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="@string/sat"
-        android:textColor="#333333"
+        android:textColor="#e1e1e1"
         android:textSize="12sp" />
 </merge>

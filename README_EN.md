@@ -5,13 +5,13 @@ This widget has obvious advantages of memory and efficiency, adapt to many scene
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.3.4'
+compile 'com.haibin:calendarview:3.4.5'
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.3.4</version>
+  <version>3.4.5</version>
   <type>pom</type>
 </dependency>
 ```
@@ -58,7 +58,8 @@ compile 'com.haibin:calendarview:3.3.4'
 ### If you want to use the English version, it means you don't need to use the lunar calendar, customize MonthView and WeekView, and refer to Demo.
 
 ### Effect preview
-
+### Function List
+<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/main_en_func.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/main_en_list.png" height="650"/>
 ###
 <img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/custom_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/custom_shrink.png" height="650"/>
 ###
@@ -70,7 +71,7 @@ compile 'com.haibin:calendarview:3.3.4'
 ###
 <img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/solar_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/solar_shrink.png" height="650"/>
 ###
-<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/year_view.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/simple_expand.png" height="650"/>
+<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/year_view.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/range.png" height="650"/>
 
 
 
@@ -136,7 +137,8 @@ app:week_bar_view="com.haibin.calendarviewproject.EnglishWeekBar"
         <attr name="week_line_background" format="color" /><!--line color-->
         <attr name="week_background" format="color" /> <!--WeekBar background-->
         <attr name="week_text_color" format="color" /> <!--WeekBar textColor-->
-              <attr name="week_text_size" format="dimension" /><!--WeekBar textSize-->
+        <attr name="week_text_size" format="dimension" /><!--WeekBar textSize-->
+        <attr name="week_line_margin" format="dimension" /><!--week_line_margin-->
 
         <attr name="current_day_text_color" format="color" /> <!--today textColor-->
         <attr name="current_day_lunar_text_color" format="color" /><!--today lunarTextColo-->
@@ -194,12 +196,24 @@ app:week_bar_view="com.haibin.calendarviewproject.EnglishWeekBar"
              <enum name="mon" value="2" />
              <enum name="sat" value="7" />
         </attr>
+
+        <!-- select_mode -->
+        <attr name="select_mode">
+              <enum name="default_mode" value="0" />
+              <enum name="single_mode" value="1" />
+              <enum name="range_mode" value="2" />
+        </attr>
+
+        <!-- when select_mode=range_mode -->
+        <attr name="min_select_range" format="integer" />
+        <attr name="max_select_range" format="integer" />
 </declare-styleable>
 ```
 ### CalendarView api
 ```java
 
-public void setRange(int minYear, int minYearMonth, int maxYear, int maxYearMonth);//date range
+public void setRange(int minYear, int minYearMonth, int minYearDay,
+                     int maxYear, int maxYearMonth, int maxYearDay) ;//date range
 
 public int getCurDay(); //get today
 public int getCurMonth(); //get currentMonth
@@ -213,11 +227,28 @@ public void setOnMonthChangeListener(OnMonthChangeListener listener);//month cha
 
 public void setOnYearChangeListener(OnYearChangeListener listener);//year change listener
 
-public void setOnDateSelectedListener(OnDateSelectedListener listener);//date selected listener
+public void setOnCalendarSelectListener(OnCalendarSelectListener listener)//date selected listener
 
-public void setOnDateLongClickListener(OnDateLongClickListener listener);//date long click listener
+public void setOnCalendarLongClickListener(OnCalendarLongClickListener listener);//date long click listener
 
-public void setSchemeDate(List<Calendar> mSchemeDate);//mark dates
+public void setOnCalendarLongClickListener(OnCalendarLongClickListener listener, boolean preventLongPressedSelect);//date long click listener
+
+public void setOnCalendarInterceptListener(OnCalendarInterceptListener listener);//Intercept calendar click and Available draw
+
+public Calendar getMinRangeCalendar();//getMinRangeCalendar
+
+public Calendar getMaxRangeCalendar();//getMaxRangeCalendar
+
+/**
+  * mark dates
+  * when mSchemeDatesMap.size()>10000?,use this
+  * key=Calendar.toString();
+  * best performance
+  *
+  * @param mSchemeDates mSchemeDatesMap
+*/
+public void setSchemeDate(Map<String, Calendar> mSchemeDates);//mark dates
+
 
 public void update();//update change
 
@@ -305,112 +336,6 @@ public boolean isExpand();//isExpand
 ```
 
 ### If you need to fully customize the UI, refer to the demo, a few steps can be done to draw the effect you need. The MonthView and WeekView need to be replaced at the same time to achieve UI consistency.
-#### First draw the MonthView
-```java
-public class SimpleCalendarCardView extends MonthView {
-
-    private int mRadius;
-
-    public SimpleCalendarCardView(Context context) {
-        super(context);
-    }
-
-    @Override
-    protected void onPreviewHook() {
-        mRadius = Math.min(mItemWidth, mItemHeight) / 5 * 2;
-        mSchemePaint.setStyle(Paint.Style.STROKE);
-    }
-
-    @Override
-    protected void onLoopStart(int x, int y) {
-
-    }
-
-    @Override
-    protected boolean onDrawSelected(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme) {
-        int cx = x + mItemWidth / 2;
-        int cy = y + mItemHeight / 2;
-        canvas.drawCircle(cx, cy, mRadius, mSelectedPaint);
-        return false;
-    }
-
-    @Override
-    protected void onDrawScheme(Canvas canvas, Calendar calendar, int x, int y) {
-        int cx = x + mItemWidth / 2;
-        int cy = y + mItemHeight / 2;
-        canvas.drawCircle(cx, cy, mRadius, mSchemePaint);
-    }
-
-    @Override
-    protected void onDrawText(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme, boolean isSelected) {
-        float baselineY = mTextBaseLine + y;
-        int cx = x + mItemWidth / 2;
-        if (hasScheme) {
-            canvas.drawText(String.valueOf(calendar.getDay()),
-                    cx,
-                    baselineY,
-                    calendar.isCurrentDay() ? mCurDayTextPaint :
-                            calendar.isCurrentMonth() ? mSchemeTextPaint : mOtherMonthTextPaint);
-
-        } else {
-            canvas.drawText(String.valueOf(calendar.getDay()), cx, baselineY,
-                    calendar.isCurrentDay() ? mCurDayTextPaint :
-                            calendar.isCurrentMonth() ? mCurMonthTextPaint : mOtherMonthTextPaint);
-        }
-    }
-}
-```
-
-#### Second, draw the WeekView, the WeekView is almost the same, the only difference is that you do not need y, only one line, so you can copy the code directly, and then make y=0.
-```java
-public class SimpleWeekView extends WeekView{
-    private int mRadius;
-
-
-    public SimpleWeekView(Context context) {
-        super(context);
-    }
-
-    @Override
-    protected void onPreviewHook() {
-        mRadius = Math.min(mItemWidth, mItemHeight) / 5 * 2;
-        mSchemePaint.setStyle(Paint.Style.STROKE);
-    }
-
-    @Override
-    protected boolean onDrawSelected(Canvas canvas, Calendar calendar, int x, boolean hasScheme) {
-        int cx = x + mItemWidth / 2;
-        int cy =  mItemHeight / 2;
-        canvas.drawCircle(cx, cy, mRadius, mSelectedPaint);
-        return false
-    }
-
-    @Override
-    protected void onDrawScheme(Canvas canvas, Calendar calendar, int x) {
-        int cx = x + mItemWidth / 2;
-        int cy = mItemHeight / 2;
-        canvas.drawCircle(cx, cy, mRadius, mSchemePaint);
-    }
-
-    @Override
-    protected void onDrawText(Canvas canvas, Calendar calendar, int x, boolean hasScheme, boolean isSelected) {
-        float baselineY = mTextBaseLine ;
-        int cx = x + mItemWidth / 2;
-        if (hasScheme) {
-            canvas.drawText(String.valueOf(calendar.getDay()),
-                    cx,
-                    baselineY,
-                    calendar.isCurrentDay() ? mCurDayTextPaint :
-                            calendar.isCurrentMonth() ? mSchemeTextPaint : mSchemeTextPaint);
-
-        } else {
-            canvas.drawText(String.valueOf(calendar.getDay()), cx, baselineY,
-                    calendar.isCurrentDay() ? mCurDayTextPaint :
-                            calendar.isCurrentMonth() ? mCurMonthTextPaint : mCurMonthTextPaint);
-        }
-    }
-}
-```
 
 ## Licenses
 - Copyright (C) 2013 huanghaibin_dev <huanghaibin_dev@163.com>

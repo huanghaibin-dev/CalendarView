@@ -46,6 +46,7 @@ public class WeekBar extends LinearLayout {
             setTextSize(mDelegate.getWeekTextSize());
             setTextColor(delegate.getWeekTextColor());
             setBackgroundColor(delegate.getWeekBackground());
+            setPadding(delegate.getCalendarPadding(), 0, delegate.getCalendarPadding(), 0);
         }
     }
 
@@ -119,7 +120,8 @@ public class WeekBar extends LinearLayout {
 
     /**
      * 或者周文本，这个方法仅供父类使用
-     * @param index index
+     *
+     * @param index     index
      * @param weekStart weekStart
      * @return 或者周文本
      */
