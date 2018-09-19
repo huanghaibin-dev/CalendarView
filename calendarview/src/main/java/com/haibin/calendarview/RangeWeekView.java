@@ -110,27 +110,10 @@ public abstract class RangeWeekView extends BaseWeekView {
             return;
         }
 
-        if (mDelegate.mSelectedStartRangeCalendar != null && mDelegate.getMinSelectRange() == 1) {
-            if (calendar.compareTo(mDelegate.mSelectedStartRangeCalendar) < 0) {
-                mDelegate.mSelectedStartRangeCalendar = calendar;
-                mDelegate.mSelectedEndRangeCalendar = null;
-            } else if (mDelegate.getMaxSelectRange() <
-                    CalendarUtil.differ(calendar, mDelegate.mSelectedStartRangeCalendar) + 1) {
-                if (mDelegate.mCalendarRangeSelectListener != null) {
-                    mDelegate.mCalendarRangeSelectListener.onSelectOutOfRange(calendar, false);
-                }
-                return;
-            } else {
-                mDelegate.mSelectedEndRangeCalendar = calendar;
-            }
-        } else if (mDelegate.mSelectedStartRangeCalendar == null ||
-                calendar.compareTo(mDelegate.mSelectedStartRangeCalendar) <= 0 ||
-                mDelegate.mSelectedEndRangeCalendar != null) {
-            mDelegate.mSelectedStartRangeCalendar = calendar;
-            mDelegate.mSelectedEndRangeCalendar = null;
-        } else {
-            if (mDelegate.getMinSelectRange() != -1 && mDelegate.getMinSelectRange() >
-                    CalendarUtil.differ(calendar, mDelegate.mSelectedStartRangeCalendar) + 1) {
+        //优先判断各种直接return的情况，减少代码深度
+        if (mDelegate.mSelectedStartRangeCalendar != null && mDelegate.mSelectedEndRangeCalendar == null) {
+            int minDiffer = CalendarUtil.differ(calendar, mDelegate.mSelectedStartRangeCalendar);
+            if (minDiffer >= 0 && mDelegate.getMinSelectRange() != -1 && mDelegate.getMinSelectRange() > minDiffer + 1) {
                 if (mDelegate.mCalendarRangeSelectListener != null) {
                     mDelegate.mCalendarRangeSelectListener.onSelectOutOfRange(calendar, true);
                 }
@@ -142,7 +125,26 @@ public abstract class RangeWeekView extends BaseWeekView {
                 }
                 return;
             }
-            mDelegate.mSelectedEndRangeCalendar = calendar;
+        }
+
+        if (mDelegate.mSelectedStartRangeCalendar == null || mDelegate.mSelectedEndRangeCalendar != null) {
+            mDelegate.mSelectedStartRangeCalendar = calendar;
+            mDelegate.mSelectedEndRangeCalendar = null;
+        } else {
+            int compare = calendar.compareTo(mDelegate.mSelectedStartRangeCalendar);
+            if (mDelegate.getMinSelectRange() == -1 && compare <= 0) {
+                mDelegate.mSelectedStartRangeCalendar = calendar;
+                mDelegate.mSelectedEndRangeCalendar = null;
+            } else if (compare < 0) {
+                mDelegate.mSelectedStartRangeCalendar = calendar;
+                mDelegate.mSelectedEndRangeCalendar = null;
+            } else if (compare == 0 &&
+                    mDelegate.getMinSelectRange() == 1) {
+                mDelegate.mSelectedEndRangeCalendar = calendar;
+            } else {
+                mDelegate.mSelectedEndRangeCalendar = calendar;
+            }
+
         }
 
         mCurrentItem = mItems.indexOf(calendar);
