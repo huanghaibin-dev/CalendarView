@@ -380,7 +380,7 @@ public final class Calendar implements Serializable {
     }
 
 
-    void mergeScheme(Calendar calendar, String defaultScheme) {
+    final void mergeScheme(Calendar calendar, String defaultScheme) {
         if (calendar == null)
             return;
         setScheme(TextUtils.isEmpty(calendar.getScheme()) ?
@@ -389,7 +389,7 @@ public final class Calendar implements Serializable {
         setSchemes(calendar.getSchemes());
     }
 
-    void clearScheme() {
+    final void clearScheme() {
         setScheme("");
         setSchemeColor(0);
         setSchemes(null);

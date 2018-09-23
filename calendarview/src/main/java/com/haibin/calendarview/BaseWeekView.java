@@ -28,6 +28,31 @@ public abstract class BaseWeekView extends BaseView {
         super(context);
     }
 
+    /**
+     * 初始化周视图控件
+     *
+     * @param calendar calendar
+     */
+    final void setup(Calendar calendar) {
+        mItems = CalendarUtil.initCalendarForWeekView(calendar, mDelegate, mDelegate.getWeekStart());
+        addSchemesFromMap();
+        invalidate();
+    }
+
+
+    /**
+     * 记录已经选择的日期
+     *
+     * @param calendar calendar
+     */
+    final void setSelectedCalendar(Calendar calendar) {
+        if (mDelegate.getSelectMode() == CalendarViewDelegate.SELECT_MODE_SINGLE &&
+                !calendar.equals(mDelegate.mSelectedCalendar)) {
+            return;
+        }
+        mCurrentItem = mItems.indexOf(calendar);
+    }
+
 
     /**
      * 周视图切换点击默认位置
@@ -135,32 +160,6 @@ public abstract class BaseWeekView extends BaseView {
         return null;
     }
 
-
-    /**
-     * 记录已经选择的日期
-     *
-     * @param calendar calendar
-     */
-    void setSelectedCalendar(Calendar calendar) {
-        if (mDelegate.getSelectMode() == CalendarViewDelegate.SELECT_MODE_SINGLE &&
-                !calendar.equals(mDelegate.mSelectedCalendar)) {
-            return;
-        }
-        mCurrentItem = mItems.indexOf(calendar);
-    }
-
-
-    /**
-     * 初始化周视图控件
-     *
-     * @param calendar calendar
-     */
-    final void setup(Calendar calendar) {
-
-        mItems = CalendarUtil.initCalendarForWeekView(calendar, mDelegate, mDelegate.getWeekStart());
-        addSchemesFromMap();
-        invalidate();
-    }
 
     /**
      * 更新显示模式

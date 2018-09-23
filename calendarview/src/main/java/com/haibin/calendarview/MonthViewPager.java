@@ -544,6 +544,9 @@ public final class MonthViewPager extends ViewPager {
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             BaseView view = (BaseView) object;
+            if (view == null) {
+                return;
+            }
             view.onDestroy();
             container.removeView(view);
         }

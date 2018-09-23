@@ -433,6 +433,9 @@ public final class WeekViewPager extends ViewPager {
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
             BaseWeekView view = (BaseWeekView) object;
+            if (view == null) {
+                return;
+            }
             view.onDestroy();
             container.removeView(view);
         }

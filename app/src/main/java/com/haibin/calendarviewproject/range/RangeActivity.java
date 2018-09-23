@@ -58,7 +58,7 @@ public class RangeActivity extends BaseActivity implements
         mCalendarView = (CalendarView) findViewById(R.id.calendarView);
         mCalendarView.setOnCalendarRangeSelectListener(this);
 
-        //设置日期拦截事件，仅适用单选模式，当前有效
+        //设置日期拦截事件，当前有效
         mCalendarView.setOnCalendarInterceptListener(this);
 
         findViewById(R.id.iv_clear).setOnClickListener(this);

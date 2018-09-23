@@ -369,7 +369,7 @@ public abstract class BaseView extends View implements View.OnClickListener, Vie
      * @param calendar calendar
      * @return 是否拦截日期
      */
-    protected boolean onCalendarIntercept(Calendar calendar) {
+    protected final boolean onCalendarIntercept(Calendar calendar) {
         return mDelegate.mCalendarInterceptListener != null &&
                 mDelegate.mCalendarInterceptListener.onCalendarIntercept(calendar);
     }
@@ -384,7 +384,13 @@ public abstract class BaseView extends View implements View.OnClickListener, Vie
         return mDelegate != null && CalendarUtil.isCalendarInRange(calendar, mDelegate);
     }
 
+    /**
+     * 跟新当前日期
+     */
     abstract void updateCurrentDate();
 
+    /**
+     * 销毁
+     */
     protected abstract void onDestroy();
 }

@@ -56,6 +56,56 @@ public abstract class BaseMonthView extends BaseView {
         super(context);
     }
 
+    /**
+     * 初始化日期
+     *
+     * @param year  year
+     * @param month month
+     */
+    final void initMonthWithDate(int year, int month) {
+        mYear = year;
+        mMonth = month;
+        initCalendar();
+        if (mDelegate.getMonthViewShowMode() == CalendarViewDelegate.MODE_ALL_MONTH) {
+            mHeight = mItemHeight * mLineCount;
+        } else {
+            mHeight = CalendarUtil.getMonthViewHeight(year, month, mItemHeight, mDelegate.getWeekStart());
+        }
+
+    }
+
+    /**
+     * 初始化日历
+     */
+    @SuppressLint("WrongConstant")
+    private void initCalendar() {
+
+        mNextDiff = CalendarUtil.getMonthEndDiff(mYear, mMonth, mDelegate.getWeekStart());
+        int preDiff = CalendarUtil.getMonthViewStartDiff(mYear, mMonth, mDelegate.getWeekStart());
+        int monthDayCount = CalendarUtil.getMonthDaysCount(mYear, mMonth);
+
+        mItems = CalendarUtil.initCalendarForMonthView(mYear, mMonth, mDelegate.getCurrentDay(), mDelegate.getWeekStart());
+
+        if (mItems.contains(mDelegate.getCurrentDay())) {
+            mCurrentItem = mItems.indexOf(mDelegate.getCurrentDay());
+        } else {
+            mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);
+        }
+
+        if (mCurrentItem > 0 &&
+                mDelegate.mCalendarInterceptListener != null &&
+                mDelegate.mCalendarInterceptListener.onCalendarIntercept(mDelegate.mSelectedCalendar)) {
+            mCurrentItem = -1;
+        }
+
+        if (mDelegate.getMonthViewShowMode() == CalendarViewDelegate.MODE_ALL_MONTH) {
+            mLineCount = 6;
+        } else {
+            mLineCount = (preDiff + monthDayCount + mNextDiff) / 7;
+        }
+        addSchemesFromMap();
+        invalidate();
+    }
 
     /**
      * 获取点击选中的日期
@@ -119,56 +169,7 @@ public abstract class BaseMonthView extends BaseView {
         }
     }
 
-    /**
-     * 初始化日期
-     *
-     * @param year  year
-     * @param month month
-     */
-    final void initMonthWithDate(int year, int month) {
-        mYear = year;
-        mMonth = month;
-        initCalendar();
-        if (mDelegate.getMonthViewShowMode() == CalendarViewDelegate.MODE_ALL_MONTH) {
-            mHeight = mItemHeight * mLineCount;
-        } else {
-            mHeight = CalendarUtil.getMonthViewHeight(year, month, mItemHeight, mDelegate.getWeekStart());
-        }
 
-    }
-
-    /**
-     * 初始化日历
-     */
-    @SuppressLint("WrongConstant")
-    private void initCalendar() {
-
-        mNextDiff = CalendarUtil.getMonthEndDiff(mYear, mMonth, mDelegate.getWeekStart());
-        int preDiff = CalendarUtil.getMonthViewStartDiff(mYear, mMonth, mDelegate.getWeekStart());
-        int monthDayCount = CalendarUtil.getMonthDaysCount(mYear, mMonth);
-
-        mItems = CalendarUtil.initCalendarForMonthView(mYear, mMonth, mDelegate.getCurrentDay(), mDelegate.getWeekStart());
-
-        if (mItems.contains(mDelegate.getCurrentDay())) {
-            mCurrentItem = mItems.indexOf(mDelegate.getCurrentDay());
-        } else {
-            mCurrentItem = mItems.indexOf(mDelegate.mSelectedCalendar);
-        }
-
-        if (mCurrentItem > 0 &&
-                mDelegate.mCalendarInterceptListener != null &&
-                mDelegate.mCalendarInterceptListener.onCalendarIntercept(mDelegate.mSelectedCalendar)) {
-            mCurrentItem = -1;
-        }
-
-        if (mDelegate.getMonthViewShowMode() == CalendarViewDelegate.MODE_ALL_MONTH) {
-            mLineCount = 6;
-        } else {
-            mLineCount = (preDiff + monthDayCount + mNextDiff) / 7;
-        }
-        addSchemesFromMap();
-        invalidate();
-    }
 
     @Override
     void updateCurrentDate() {

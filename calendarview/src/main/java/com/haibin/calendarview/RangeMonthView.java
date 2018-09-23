@@ -23,7 +23,6 @@ import android.view.View;
  * 范围选择月视图
  * Created by huanghaibin on 2018/9/11.
  */
-@SuppressWarnings("unused")
 public abstract class RangeMonthView extends BaseMonthView {
 
     public RangeMonthView(Context context) {
@@ -55,12 +54,11 @@ public abstract class RangeMonthView extends BaseMonthView {
                         return;
                     }
                 }
-                draw(canvas, calendar, i, j, d);
+                draw(canvas, calendar, i, j);
                 ++d;
             }
         }
     }
-
 
     /**
      * 开始绘制
@@ -69,9 +67,8 @@ public abstract class RangeMonthView extends BaseMonthView {
      * @param calendar 对应日历
      * @param i        i
      * @param j        j
-     * @param d        d
      */
-    private void draw(Canvas canvas, Calendar calendar, int i, int j, int d) {
+    private void draw(Canvas canvas, Calendar calendar, int i, int j) {
         int x = j * mItemWidth + mDelegate.getCalendarPadding();
         int y = i * mItemHeight;
         onLoopStart(x, y);
