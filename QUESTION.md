@@ -10,7 +10,7 @@
 
 ### **CalendarView** 的特性
 
-- 基于 **Canvas **绘制，极速性能
+- 基于Canvas绘制，极速性能
 - 热插拔思想，任意定制周视图、月视图，即插即用！
 - 支持单选、多选、国内手机日历默认自动选择等选择模式
 - 支持静态、动态设置周起始，一行代码搞定
@@ -99,7 +99,7 @@ mCalendarView.setMonthView(MeiZuMonthView.class);
 
 ```
 
-- 如果你需要可收缩的日历，你可以在 **CalendarView **父布局添加 **CalendarLayout**，当然你不需要周视图也可以不用，例如原生日历，使用如下：
+- 如果你需要可收缩的日历，你可以在 **CalendarView** 父布局添加 **CalendarLayout**，当然你不需要周视图也可以不用，例如原生日历，使用如下：
 
 ```xml
 <com.haibin.calendarview.CalendarLayout
@@ -141,7 +141,7 @@ mCalendarView.setMonthView(MeiZuMonthView.class);
     </com.haibin.calendarview.CalendarLayout>
 ```
 
-- 当然 **CalendarLayout **有很多特性可提供周月视图无缝切换，而且，平滑手势不抖动！使用 **CalendarLayout **，你需要指定 **calendar_content_view_id**，用他来平移收缩月视图，更多特性如下：
+- 当然 **CalendarLayout** 有很多特性可提供周月视图无缝切换，而且，平滑手势不抖动！使用 **CalendarLayout**，你需要指定 **calendar_content_view_id**，用他来平移收缩月视图，更多特性如下：
 
 ```xml
 
@@ -206,7 +206,7 @@ public class CustomRangeWeekView extends RangeWeekView{
 
 ```
 
-- 然后你需要设置选择模式为范围模式：select\_mode="range\_mode"
+- 然后你需要设置选择模式为范围模式：**select\_mode="range\_mode"**
 
 
 - 酒店式日历场景当然是不能从昨天开始订房的，也不能无限期订房，所以你需要静态或动态设置日历范围、精确到具体某一天！！！
