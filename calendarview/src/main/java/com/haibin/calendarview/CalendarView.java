@@ -61,7 +61,7 @@ public class CalendarView extends FrameLayout {
     /**
      * 月份快速选取
      */
-    private YearSelectLayout mSelectLayout;
+    private YearViewSelectLayout mSelectLayout;
 
     /**
      * 星期栏
@@ -123,7 +123,7 @@ public class CalendarView extends FrameLayout {
         mWeekPager.setLayoutParams(params);
 
 
-        mSelectLayout = (YearSelectLayout) findViewById(R.id.selectLayout);
+        mSelectLayout = (YearViewSelectLayout) findViewById(R.id.selectLayout);
         mSelectLayout.setBackgroundColor(mDelegate.getYearViewBackground());
         mSelectLayout.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

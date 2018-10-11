@@ -130,6 +130,15 @@
         <item>Sat</item>
     </string-array>
 
+    <string-array name="year_view_week_string_array">
+        <item>S</item>
+        <item>M</item>
+        <item>T</item>
+        <item>W</item>
+        <item>T</item>
+        <item>F</item>
+        <item>S</item>
+    </string-array>
 
     <string-array name="month_string_array">
         <item>JAN</item>

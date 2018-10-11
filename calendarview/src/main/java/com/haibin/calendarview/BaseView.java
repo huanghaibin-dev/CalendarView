@@ -51,7 +51,6 @@ public abstract class BaseView extends View implements View.OnClickListener, Vie
      */
     protected Paint mCurMonthLunarTextPaint = new Paint();
 
-
     /**
      * 当前月份农历文本颜色
      */

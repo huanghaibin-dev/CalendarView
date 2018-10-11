@@ -36,7 +36,7 @@
 
     </FrameLayout>
 
-    <com.haibin.calendarview.YearSelectLayout
+    <com.haibin.calendarview.YearViewSelectLayout
         android:id="@+id/selectLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

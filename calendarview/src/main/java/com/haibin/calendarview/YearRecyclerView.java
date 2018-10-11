@@ -26,7 +26,7 @@ import android.util.AttributeSet;
  */
 public final class YearRecyclerView extends RecyclerView {
     private CalendarViewDelegate mDelegate;
-    private YearAdapter mAdapter;
+    private YearViewAdapter mAdapter;
     private OnMonthSelectedListener mListener;
 
     public YearRecyclerView(Context context) {
@@ -35,7 +35,7 @@ public final class YearRecyclerView extends RecyclerView {
 
     public YearRecyclerView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        mAdapter = new YearAdapter(context);
+        mAdapter = new YearViewAdapter(context);
         setLayoutManager(new GridLayoutManager(context, 3));
         setAdapter(mAdapter);
         mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
@@ -57,7 +57,12 @@ public final class YearRecyclerView extends RecyclerView {
         });
     }
 
-    void setup(CalendarViewDelegate delegate) {
+    /**
+     * 设置
+     *
+     * @param delegate delegate
+     */
+    final void setup(CalendarViewDelegate delegate) {
         this.mDelegate = delegate;
         this.mAdapter.setup(delegate);
     }
@@ -103,8 +108,9 @@ public final class YearRecyclerView extends RecyclerView {
     @Override
     protected void onMeasure(int widthSpec, int heightSpec) {
         super.onMeasure(widthSpec, heightSpec);
-        int h = MeasureSpec.getSize(heightSpec);
-        mAdapter.setItemHeight(h / 4);
+        int height = MeasureSpec.getSize(heightSpec);
+        int width = MeasureSpec.getSize(widthSpec);
+        mAdapter.setYearViewSize(width / 3, height / 4);
     }
 
     interface OnMonthSelectedListener {

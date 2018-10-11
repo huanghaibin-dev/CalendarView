@@ -17,57 +17,60 @@ package com.haibin.calendarview;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-final class YearAdapter extends BaseRecyclerAdapter<Month> {
+import java.lang.reflect.Constructor;
+
+final class YearViewAdapter extends BaseRecyclerAdapter<Month> {
     private CalendarViewDelegate mDelegate;
-    private int mItemHeight;
-    private int mTextHeight;
+    private int mItemWidth, mItemHeight;
 
-    YearAdapter(Context context) {
+    YearViewAdapter(Context context) {
         super(context);
-        mTextHeight = CalendarUtil.dipToPx(context, 52);
     }
 
-    void setup(CalendarViewDelegate delegate) {
+    final void setup(CalendarViewDelegate delegate) {
         this.mDelegate = delegate;
     }
 
-    void setItemHeight(int itemHeight) {
-        this.mItemHeight = itemHeight;
+
+    final void setYearViewSize(int width, int height) {
+        this.mItemWidth = width;
+        this.mItemHeight = height;
     }
 
     @Override
     RecyclerView.ViewHolder onCreateDefaultViewHolder(ViewGroup parent, int type) {
-        return new YearViewHolder(mInflater.inflate(R.layout.cv_item_list_year, parent, false), mDelegate);
+        YearView yearView;
+        try {
+            Constructor constructor = mDelegate.getYearViewClass().getConstructor(Context.class);
+            yearView = (YearView) constructor.newInstance(mContext);
+            RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT,
+                    RecyclerView.LayoutParams.MATCH_PARENT);
+            yearView.setLayoutParams(params);
+        } catch (Exception e) {
+            e.printStackTrace();
+            yearView = null;
+        }
+        return new YearViewHolder(yearView, mDelegate);
     }
 
     @Override
     void onBindViewHolder(RecyclerView.ViewHolder holder, Month item, int position) {
         YearViewHolder h = (YearViewHolder) holder;
         YearView view = h.mYearView;
-        view.setSchemeColor(mDelegate.getYearViewSchemeTextColor());
-        view.setTextStyle(mDelegate.getYearViewDayTextSize(),
-                mDelegate.getYearViewDayTextColor());
-        view.init(item.getDiff(), item.getCount(), item.getYear(), item.getMonth());
-        view.measureHeight(mItemHeight - mTextHeight);
-        h.mTextMonth.setText(mContext.getResources().getStringArray(R.array.month_string_array)[item.getMonth() - 1]);
-        h.mTextMonth.setTextSize(TypedValue.COMPLEX_UNIT_PX, mDelegate.getYearViewMonthTextSize());
-        h.mTextMonth.setTextColor(mDelegate.getYearViewMonthTextColor());
+        view.init(item.getYear(), item.getMonth());
+        view.measureSize(mItemWidth, mItemHeight);
     }
 
     private static class YearViewHolder extends RecyclerView.ViewHolder {
         YearView mYearView;
-        TextView mTextMonth;
 
         YearViewHolder(View itemView, CalendarViewDelegate delegate) {
             super(itemView);
-            mYearView = (YearView) itemView.findViewById(R.id.selectView);
+            mYearView = (YearView) itemView;
             mYearView.setup(delegate);
-            mTextMonth = (TextView) itemView.findViewById(R.id.tv_month);
         }
     }
 }

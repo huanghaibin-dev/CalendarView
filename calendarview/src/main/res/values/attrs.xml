@@ -11,8 +11,8 @@
         <attr name="week_line_margin" format="dimension" /><!--线条margin-->
 
         <attr name="month_view" format="string" /><!--完全自定义月视图-->
-
         <attr name="week_view" format="string" /> <!--完全自定义周视图-->
+        <attr name="year_view" format="string" /> <!--完全自定义年视图-->
         <attr name="week_bar_height" format="dimension" /> <!--星期栏的高度-->
         <attr name="week_bar_view" format="string" /> <!--如果需要的话使用自定义星期栏-->
 
@@ -44,6 +44,13 @@
         <attr name="year_view_day_text_color" format="color" />
         <attr name="year_view_scheme_color" format="color" />
         <attr name="year_view_background" format="color" />
+        <attr name="year_view_month_height" format="dimension" />
+        <attr name="year_view_week_height" format="dimension" />
+        <attr name="year_view_week_text_size" format="dimension" />
+        <attr name="year_view_week_text_color" format="color" />
+        <attr name="year_view_padding" format="dimension" />
+        <attr name="year_view_month_margin_top" format="dimension" />
+        <attr name="year_view_month_margin_bottom" format="dimension" />
 
         <!--日期范围-->
         <attr name="min_year" format="integer" />

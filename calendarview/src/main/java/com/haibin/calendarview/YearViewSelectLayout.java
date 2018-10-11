@@ -30,17 +30,17 @@ import android.view.WindowManager;
  * 年份+月份选择布局
  * ViewPager + RecyclerView
  */
-public final class YearSelectLayout extends ViewPager {
+public final class YearViewSelectLayout extends ViewPager {
     private int mYearCount;
     private boolean isUpdateYearView;
     private CalendarViewDelegate mDelegate;
     private YearRecyclerView.OnMonthSelectedListener mListener;
 
-    public YearSelectLayout(Context context) {
+    public YearViewSelectLayout(Context context) {
         this(context, null);
     }
 
-    public YearSelectLayout(Context context, AttributeSet attrs) {
+    public YearViewSelectLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -104,7 +104,7 @@ public final class YearSelectLayout extends ViewPager {
     /**
      * 更新日期范围
      */
-    void updateRange() {
+    final void updateRange() {
         isUpdateYearView = true;
         notifyDataSetChanged();
         isUpdateYearView = false;
@@ -113,7 +113,7 @@ public final class YearSelectLayout extends ViewPager {
     /**
      * 更新界面
      */
-    void update() {
+    final void update() {
         for (int i = 0; i < getChildCount(); i++) {
             YearRecyclerView view = (YearRecyclerView) getChildAt(i);
             view.getAdapter().notifyDataSetChanged();
@@ -124,7 +124,7 @@ public final class YearSelectLayout extends ViewPager {
     /**
      * 更新周起始
      */
-    void updateWeekStart() {
+    final void updateWeekStart() {
         for (int i = 0; i < getChildCount(); i++) {
             YearRecyclerView view = (YearRecyclerView) getChildAt(i);
             view.updateWeekStart();
@@ -132,7 +132,7 @@ public final class YearSelectLayout extends ViewPager {
         }
     }
 
-    public void setOnMonthSelectedListener(YearRecyclerView.OnMonthSelectedListener listener) {
+    final void setOnMonthSelectedListener(YearRecyclerView.OnMonthSelectedListener listener) {
         this.mListener = listener;
     }
 

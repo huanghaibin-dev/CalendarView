@@ -48,6 +48,12 @@ final class CalendarViewDelegate {
      */
     static final int WEEK_START_WITH_SAT = 7;
 
+
+    /**
+     * 周起始
+     */
+    private int mWeekStart;
+
     /**
      * 全部显示
      */
@@ -68,10 +74,6 @@ final class CalendarViewDelegate {
     private int mMonthViewShowMode;
 
 
-    /**
-     * 周起始
-     */
-    private int mWeekStart;
 
     /**
      * 默认选择模式
@@ -129,14 +131,29 @@ final class CalendarViewDelegate {
      * 年视图字体大小
      */
     private int mYearViewMonthTextSize,
-            mYearViewDayTextSize;
+            mYearViewDayTextSize,
+            mYearViewWeekTextSize;
+
+    /**
+     * 年视图月份高度和周的高度
+     */
+    private int mYearViewMonthHeight,
+            mYearViewWeekHeight;
+
+    /**
+     * 年视图一些margin和padding
+     */
+    private int mYearViewPadding,
+            mYearViewMonthMarginTop,
+            mYearViewMonthMarginBottom;
 
     /**
      * 年视图字体和标记颜色
      */
     private int mYearViewMonthTextColor,
             mYearViewDayTextColor,
-            mYearViewSchemeTextColor;
+            mYearViewSchemeTextColor,
+            mYearViewWeekTextColor;
 
     /**
      * 星期栏的背景、线的背景、年份背景
@@ -180,6 +197,16 @@ final class CalendarViewDelegate {
      * 周视图类
      */
     private Class<?> mWeekViewClass;
+
+    /**
+     * 自定义年视图路径
+     */
+    private String mYearViewClassPath;
+
+    /**
+     * 周视图类
+     */
+    private Class<?> mYearViewClass;
 
     /**
      * 自定义周栏路径
@@ -327,12 +354,15 @@ final class CalendarViewDelegate {
         mSchemeLunarTextColor = array.getColor(R.styleable.CalendarView_scheme_lunar_text_color, 0xFFe1e1e1);
         mSchemeThemeColor = array.getColor(R.styleable.CalendarView_scheme_theme_color, 0x50CFCFCF);
         mMonthViewClassPath = array.getString(R.styleable.CalendarView_month_view);
-
+        mYearViewClassPath = array.getString(R.styleable.CalendarView_year_view);
         mWeekViewClassPath = array.getString(R.styleable.CalendarView_week_view);
         mWeekBarClassPath = array.getString(R.styleable.CalendarView_week_bar_view);
-        mWeekTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_week_text_size, CalendarUtil.dipToPx(context, 12));
-        mWeekBarHeight = (int) array.getDimension(R.styleable.CalendarView_week_bar_height, CalendarUtil.dipToPx(context, 40));
-        mWeekLineMargin = (int) array.getDimension(R.styleable.CalendarView_week_line_margin, CalendarUtil.dipToPx(context, 0));
+        mWeekTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_week_text_size,
+                CalendarUtil.dipToPx(context, 12));
+        mWeekBarHeight = (int) array.getDimension(R.styleable.CalendarView_week_bar_height,
+                CalendarUtil.dipToPx(context, 40));
+        mWeekLineMargin = (int) array.getDimension(R.styleable.CalendarView_week_line_margin,
+                CalendarUtil.dipToPx(context, 0));
 
         mSchemeText = array.getString(R.styleable.CalendarView_scheme_text);
         if (TextUtils.isEmpty(mSchemeText)) {
@@ -375,16 +405,35 @@ final class CalendarViewDelegate {
         mMinYearDay = array.getInt(R.styleable.CalendarView_min_year_day, 1);
         mMaxYearDay = array.getInt(R.styleable.CalendarView_max_year_day, -1);
 
-        mDayTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_day_text_size, CalendarUtil.dipToPx(context, 16));
-        mLunarTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_lunar_text_size, CalendarUtil.dipToPx(context, 10));
-        mCalendarItemHeight = (int) array.getDimension(R.styleable.CalendarView_calendar_height, CalendarUtil.dipToPx(context, 56));
+        mDayTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_day_text_size,
+                CalendarUtil.dipToPx(context, 16));
+        mLunarTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_lunar_text_size,
+                CalendarUtil.dipToPx(context, 10));
+        mCalendarItemHeight = (int) array.getDimension(R.styleable.CalendarView_calendar_height,
+                CalendarUtil.dipToPx(context, 56));
 
         //年视图相关
-        mYearViewMonthTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_year_view_month_text_size, CalendarUtil.dipToPx(context, 18));
-        mYearViewDayTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_year_view_day_text_size, CalendarUtil.dipToPx(context, 8));
+        mYearViewMonthTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_year_view_month_text_size,
+                CalendarUtil.dipToPx(context, 18));
+        mYearViewDayTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_year_view_day_text_size,
+                CalendarUtil.dipToPx(context, 7));
         mYearViewMonthTextColor = array.getColor(R.styleable.CalendarView_year_view_month_text_color, 0xFF111111);
         mYearViewDayTextColor = array.getColor(R.styleable.CalendarView_year_view_day_text_color, 0xFF111111);
         mYearViewSchemeTextColor = array.getColor(R.styleable.CalendarView_year_view_scheme_color, mSchemeThemeColor);
+        mYearViewWeekTextColor = array.getColor(R.styleable.CalendarView_year_view_week_text_color, 0xFF333333);
+        mYearViewWeekTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_year_view_week_text_size,
+                CalendarUtil.dipToPx(context, 8));
+        mYearViewMonthHeight = array.getDimensionPixelSize(R.styleable.CalendarView_year_view_month_height,
+                CalendarUtil.dipToPx(context, 32));
+        mYearViewWeekHeight = array.getDimensionPixelSize(R.styleable.CalendarView_year_view_week_height,
+                CalendarUtil.dipToPx(context, 0));
+
+        mYearViewPadding = (int) array.getDimension(R.styleable.CalendarView_year_view_padding,
+                CalendarUtil.dipToPx(context, 6));
+        mYearViewMonthMarginTop = (int) array.getDimension(R.styleable.CalendarView_year_view_month_margin_top,
+                CalendarUtil.dipToPx(context, 4));
+        mYearViewMonthMarginBottom = (int) array.getDimension(R.styleable.CalendarView_year_view_month_margin_bottom,
+                CalendarUtil.dipToPx(context, 4));
 
         if (mMinYear <= MIN_YEAR) mMinYear = 1971;
         if (mMaxYear >= MAX_YEAR) mMaxYear = 2055;
@@ -401,8 +450,10 @@ final class CalendarViewDelegate {
         mCurrentDate.setCurrentDay(true);
         LunarCalendar.setupLunarCalendar(mCurrentDate);
         setRange(mMinYear, mMinYearMonth, mMaxYear, mMaxYearMonth);
+
+
         try {
-            if (TextUtils.isEmpty(mMonthViewClassPath)) {
+            if (!TextUtils.isEmpty(mWeekBarClassPath)) {
                 mWeekBarClass = Class.forName(mWeekBarClassPath);
             } else {
                 mWeekBarClass = WeekBar.class;
@@ -410,6 +461,17 @@ final class CalendarViewDelegate {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        try {
+            if (!TextUtils.isEmpty(mYearViewClassPath)) {
+                mYearViewClass = Class.forName(mYearViewClassPath);
+            } else {
+                mYearViewClass = DefaultYearView.class;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         if (TextUtils.isEmpty(mMonthViewClassPath) || TextUtils.isEmpty(mWeekViewClassPath)) {
             mMonthViewClass = DefaultMonthView.class;
             mWeekViewClass = DefaultWeekView.class;
@@ -542,6 +604,10 @@ final class CalendarViewDelegate {
         return mWeekBarClass;
     }
 
+    Class<?> getYearViewClass() {
+        return mYearViewClass;
+    }
+
     int getWeekBarHeight() {
         return mWeekBarHeight;
     }
@@ -585,6 +651,34 @@ final class CalendarViewDelegate {
 
     int getYearViewMonthTextColor() {
         return mYearViewMonthTextColor;
+    }
+
+    int getYearViewWeekTextSize() {
+        return mYearViewWeekTextSize;
+    }
+
+    int getYearViewWeekTextColor() {
+        return mYearViewWeekTextColor;
+    }
+
+    int getYearViewPadding() {
+        return mYearViewPadding;
+    }
+
+    int getYearViewMonthMarginTop() {
+        return mYearViewMonthMarginTop;
+    }
+
+    int getYearViewMonthMarginBottom() {
+        return mYearViewMonthMarginBottom;
+    }
+
+    int getYearViewWeekHeight() {
+        return mYearViewWeekHeight;
+    }
+
+    int getYearViewMonthHeight() {
+        return mYearViewMonthHeight;
     }
 
     int getYearViewDayTextColor() {

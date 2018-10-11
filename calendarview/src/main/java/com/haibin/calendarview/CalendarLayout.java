@@ -100,7 +100,7 @@ public class CalendarLayout extends LinearLayout {
     /**
      * 年视图
      */
-    YearSelectLayout mYearView;
+    YearViewSelectLayout mYearView;
 
     /**
      * ContentView
@@ -481,7 +481,7 @@ public class CalendarLayout extends LinearLayout {
         mMonthView = (MonthViewPager) findViewById(R.id.vp_month);
         mWeekPager = (WeekViewPager) findViewById(R.id.vp_week);
         mContentView = (ViewGroup) findViewById(mContentViewId);
-        mYearView = (YearSelectLayout) findViewById(R.id.selectLayout);
+        mYearView = (YearViewSelectLayout) findViewById(R.id.selectLayout);
         if (mContentView != null) {
             mContentView.setOverScrollMode(View.OVER_SCROLL_NEVER);
         }

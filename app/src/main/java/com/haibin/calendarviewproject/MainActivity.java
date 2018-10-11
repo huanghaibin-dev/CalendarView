@@ -16,11 +16,10 @@ import com.haibin.calendarview.CalendarView;
 import com.haibin.calendarviewproject.base.activity.BaseActivity;
 import com.haibin.calendarviewproject.colorful.ColorfulActivity;
 import com.haibin.calendarviewproject.custom.CustomActivity;
-import com.haibin.calendarviewproject.custom.CustomMonthView;
-import com.haibin.calendarviewproject.custom.CustomWeekBar;
-import com.haibin.calendarviewproject.custom.CustomWeekView;
 import com.haibin.calendarviewproject.index.IndexActivity;
 import com.haibin.calendarviewproject.meizu.MeiZuActivity;
+import com.haibin.calendarviewproject.meizu.MeiZuMonthView;
+import com.haibin.calendarviewproject.meizu.MeizuWeekView;
 import com.haibin.calendarviewproject.pager.ViewPagerActivity;
 import com.haibin.calendarviewproject.progress.ProgressActivity;
 import com.haibin.calendarviewproject.range.RangeActivity;
@@ -87,15 +86,6 @@ public class MainActivity extends BaseActivity implements
                 mTextLunar.setVisibility(View.GONE);
                 mTextYear.setVisibility(View.GONE);
                 mTextMonthDay.setText(String.valueOf(mYear));
-            }
-        });
-        findViewById(R.id.fl_current).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //mCalendarView.scrollToCurrent();
-                //mCalendarView.scrollToCalendar(2018,7,14);
-                //Log.e("scrollToCurrent", "   --  " + mCalendarView.getSelectedCalendar());
-
             }
         });
         findViewById(R.id.iv_more).setOnClickListener(new View.OnClickListener() {
@@ -292,9 +282,9 @@ public class MainActivity extends BaseActivity implements
                 }
                 break;
             case 4:
-                mCalendarView.setWeekView(CustomWeekView.class);
-                mCalendarView.setMonthView(CustomMonthView.class);
-                mCalendarView.setWeekBar(CustomWeekBar.class);
+                mCalendarView.setWeekView(MeizuWeekView.class);
+                mCalendarView.setMonthView(MeiZuMonthView.class);
+                mCalendarView.setWeekBar(EnglishWeekBar.class);
                 break;
             case 5:
                 mCalendarView.setAllMode();
