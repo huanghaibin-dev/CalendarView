@@ -37,13 +37,13 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestProvided('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     //noinspection GradleDependency
-    compile 'com.android.support:appcompat-v7:23.3.0'
+    provided 'com.android.support:appcompat-v7:23.3.0'
     //noinspection GradleDependency
-    compile 'com.android.support:recyclerview-v7:23.3.0'
-    testCompile 'junit:junit:4.12'
+    provided 'com.android.support:recyclerview-v7:23.3.0'
+    testProvided 'junit:junit:4.12'
 }
 apply from: '../script/gradle-jcenter-push.gradle'
