@@ -126,6 +126,7 @@
         android:layout_height="match_parent"
         android:background="#fff"
         android:orientation="vertical"
+        app:calendar_show_mode="both_month_week_view"
         app:calendar_content_view_id="@+id/nestedScrollView"
         app:default_status="expand">
 

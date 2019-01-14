@@ -403,6 +403,7 @@ public final class Calendar implements Serializable {
         private int shcemeColor;
         private String scheme;
         private String other;
+        private Object obj;
 
         public Scheme() {
         }
@@ -463,5 +464,12 @@ public final class Calendar implements Serializable {
             this.type = type;
         }
 
+        public Object getObj() {
+            return obj;
+        }
+
+        public void setObj(Object obj) {
+            this.obj = obj;
+        }
     }
 }

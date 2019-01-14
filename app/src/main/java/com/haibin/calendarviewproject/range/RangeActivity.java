@@ -88,6 +88,7 @@ public class RangeActivity extends BaseActivity implements
                 mTextRightWeek.setText("结束日期");
                 mTextLeftDate.setText("");
                 mTextRightDate.setText("");
+                //mCalendarView.setSelectCalendarRange(2018,10,13,2018,10,13);
                 break;
             case R.id.iv_reduce:
 
@@ -151,7 +152,7 @@ public class RangeActivity extends BaseActivity implements
     @Override
     public void onCalendarInterceptClick(Calendar calendar, boolean isClick) {
         Toast.makeText(this,
-                calendar.toString() + (isClick ? "拦截不可点击" : "拦截滚动到无效日期"),
+                calendar.toString() + (isClick ? "拦截不可点击" : "拦截设定为无效日期"),
                 Toast.LENGTH_SHORT).show();
     }
 

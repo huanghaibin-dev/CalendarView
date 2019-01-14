@@ -79,7 +79,7 @@ public class MainActivity extends BaseActivity implements
             @Override
             public void onClick(View v) {
                 if (!mCalendarLayout.isExpand()) {
-                    mCalendarView.showYearSelectLayout(mYear);
+                    mCalendarLayout.expand(0);
                     return;
                 }
                 mCalendarView.showYearSelectLayout(mYear);
@@ -123,8 +123,9 @@ public class MainActivity extends BaseActivity implements
                                 //mCalendarView.scrollToCalendar(2018,8,30);
                                 break;
                             case 5:
-                                mCalendarView.setRange(mCalendarView.getCurYear(), mCalendarView.getCurMonth(), 6,
-                                        mCalendarView.getCurYear(), mCalendarView.getCurMonth(), 23);
+                                mCalendarView.setRange(2016,7,1,2016,9,28);
+//                                mCalendarView.setRange(mCalendarView.getCurYear(), mCalendarView.getCurMonth(), 6,
+//                                        mCalendarView.getCurYear(), mCalendarView.getCurMonth(), 23);
                                 break;
                             case 6:
                                 Log.e("scheme", "  " + mCalendarView.getSelectedCalendar().getScheme() + "  --  "
@@ -303,6 +304,10 @@ public class MainActivity extends BaseActivity implements
         switch (v.getId()) {
             case R.id.ll_flyme:
                 MeiZuActivity.show(this);
+                Log.e("onDateSelected",
+                        "  --  " + mCalendarView.getSelectedCalendar().getScheme() +
+                                "  --  "  + mCalendarView.getSelectedCalendar().toString() +
+                        "  --  " + mCalendarView.getSelectedCalendar().hasScheme());
                 break;
             case R.id.ll_custom:
                 CustomActivity.show(this);
@@ -409,7 +414,7 @@ public class MainActivity extends BaseActivity implements
 
     @Override
     public void onViewChange(boolean isMonthView) {
-        //Log.e("onViewChange", "  ---  " + (isMonthView ? "月视图" : "周视图"));
+        Log.e("onViewChange", "  ---  " + (isMonthView ? "月视图" : "周视图"));
     }
 
 

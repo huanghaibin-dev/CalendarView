@@ -347,6 +347,7 @@ final class LunarCalendar {
         String solarTerm = LunarCalendar.getSolarTerm(year, month, day);
         String gregorian = LunarCalendar.gregorianFestival(month, day);
         String festival = getTraditionFestival(lunar[0], lunar[1], lunar[2]);
+        String lunarText = LunarCalendar.numToChinese(lunar[1], lunar[2], lunar[3]);
         if (TextUtils.isEmpty(gregorian)) {
             gregorian = getSpecialFestival(year, month, day);
         }
@@ -362,9 +363,9 @@ final class LunarCalendar {
         } else if (!TextUtils.isEmpty(festival)) {
             calendar.setLunar(festival);
         } else {
-            calendar.setLunar(LunarCalendar.numToChinese(lunar[1], lunar[2], lunar[3]));
+            calendar.setLunar(lunarText);
         }
-        lunarCalendar.setLunar(calendar.getLunar());
+        lunarCalendar.setLunar(lunarText);
     }
 
     /**

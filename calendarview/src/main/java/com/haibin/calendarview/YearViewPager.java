@@ -30,17 +30,17 @@ import android.view.WindowManager;
  * 年份+月份选择布局
  * ViewPager + RecyclerView
  */
-public final class YearViewSelectLayout extends ViewPager {
+public final class YearViewPager extends ViewPager {
     private int mYearCount;
     private boolean isUpdateYearView;
     private CalendarViewDelegate mDelegate;
     private YearRecyclerView.OnMonthSelectedListener mListener;
 
-    public YearViewSelectLayout(Context context) {
+    public YearViewPager(Context context) {
         this(context, null);
     }
 
-    public YearViewSelectLayout(Context context, AttributeSet attrs) {
+    public YearViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -76,8 +76,7 @@ public final class YearViewSelectLayout extends ViewPager {
 
             @Override
             public void destroyItem(ViewGroup container, int position, Object object) {
-                if (object instanceof YearRecyclerView)
-                    container.removeView((YearRecyclerView) object);
+                container.removeView((View) object);
             }
         });
         setCurrentItem(mDelegate.getCurrentDay().getYear() - mDelegate.getMinYear());

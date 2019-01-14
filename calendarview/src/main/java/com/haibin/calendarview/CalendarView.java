@@ -18,6 +18,8 @@ package com.haibin.calendarview;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
@@ -61,7 +63,7 @@ public class CalendarView extends FrameLayout {
     /**
      * 月份快速选取
      */
-    private YearViewSelectLayout mSelectLayout;
+    private YearViewPager mYearViewPager;
 
     /**
      * 星期栏
@@ -123,9 +125,9 @@ public class CalendarView extends FrameLayout {
         mWeekPager.setLayoutParams(params);
 
 
-        mSelectLayout = (YearViewSelectLayout) findViewById(R.id.selectLayout);
-        mSelectLayout.setBackgroundColor(mDelegate.getYearViewBackground());
-        mSelectLayout.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mYearViewPager = (YearViewPager) findViewById(R.id.selectLayout);
+        mYearViewPager.setBackgroundColor(mDelegate.getYearViewBackground());
+        mYearViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -200,10 +202,14 @@ public class CalendarView extends FrameLayout {
         };
 
 
-        if (isInRange(mDelegate.getCurrentDay())) {
-            mDelegate.mSelectedCalendar = mDelegate.createCurrentDate();
-        } else {
-            mDelegate.mSelectedCalendar = mDelegate.getMinRangeCalendar();
+        if(mDelegate.getSelectMode() == CalendarViewDelegate.SELECT_MODE_DEFAULT){
+            if (isInRange(mDelegate.getCurrentDay())) {
+                mDelegate.mSelectedCalendar = mDelegate.createCurrentDate();
+            } else {
+                mDelegate.mSelectedCalendar = mDelegate.getMinRangeCalendar();
+            }
+        }else {
+            mDelegate.mSelectedCalendar = new Calendar();
         }
 
         mDelegate.mIndexCalendar = mDelegate.mSelectedCalendar;
@@ -212,7 +218,7 @@ public class CalendarView extends FrameLayout {
 
         mMonthPager.setup(mDelegate);
         mMonthPager.setCurrentItem(mDelegate.mCurrentMonthViewItem);
-        mSelectLayout.setOnMonthSelectedListener(new YearRecyclerView.OnMonthSelectedListener() {
+        mYearViewPager.setOnMonthSelectedListener(new YearRecyclerView.OnMonthSelectedListener() {
             @Override
             public void onMonthSelected(int year, int month) {
                 int position = 12 * (year - mDelegate.getMinYear()) + month - mDelegate.getMinYearMonth();
@@ -220,7 +226,7 @@ public class CalendarView extends FrameLayout {
                 closeSelectLayout(position);
             }
         });
-        mSelectLayout.setup(mDelegate);
+        mYearViewPager.setup(mDelegate);
         mWeekPager.updateSelected(mDelegate.createCurrentDate(), false);
     }
 
@@ -244,7 +250,7 @@ public class CalendarView extends FrameLayout {
         mDelegate.setRange(minYear, minYearMonth, minYearDay,
                 maxYear, maxYearMonth, maxYearDay);
         mWeekPager.notifyDataSetChanged();
-        mSelectLayout.notifyDataSetChanged();
+        mYearViewPager.notifyDataSetChanged();
         mMonthPager.notifyDataSetChanged();
         if (!isInRange(mDelegate.mSelectedCalendar)) {
             mDelegate.mSelectedCalendar = mDelegate.getMinRangeCalendar();
@@ -253,7 +259,7 @@ public class CalendarView extends FrameLayout {
         }
         mWeekPager.updateRange();
         mMonthPager.updateRange();
-        mSelectLayout.updateRange();
+        mYearViewPager.updateRange();
     }
 
     /**
@@ -303,7 +309,7 @@ public class CalendarView extends FrameLayout {
         if (mParentLayout != null && mParentLayout.mContentView != null) {
             if (!mParentLayout.isExpand()) {
                 mParentLayout.expand();
-                return;
+                //return;
             }
         }
         mWeekPager.setVisibility(GONE);
@@ -320,8 +326,8 @@ public class CalendarView extends FrameLayout {
                     public void onAnimationEnd(Animator animation) {
                         super.onAnimationEnd(animation);
                         mWeekBar.setVisibility(GONE);
-                        mSelectLayout.setVisibility(VISIBLE);
-                        mSelectLayout.scrollToYear(year, false);
+                        mYearViewPager.setVisibility(VISIBLE);
+                        mYearViewPager.scrollToYear(year, false);
                         if (mParentLayout != null && mParentLayout.mContentView != null) {
                             mParentLayout.expand();
                         }
@@ -348,14 +354,14 @@ public class CalendarView extends FrameLayout {
      * @return true or false
      */
     public boolean isYearSelectLayoutVisible() {
-        return mSelectLayout.getVisibility() == VISIBLE;
+        return mYearViewPager.getVisibility() == VISIBLE;
     }
 
     /**
      * 关闭年月视图选择布局
      */
     public void closeYearSelectLayout() {
-        if (mSelectLayout.getVisibility() == GONE) {
+        if (mYearViewPager.getVisibility() == GONE) {
             return;
         }
         int position = 12 * (mDelegate.mSelectedCalendar.getYear() - mDelegate.getMinYear()) +
@@ -370,7 +376,7 @@ public class CalendarView extends FrameLayout {
      * @param position 某一年
      */
     private void closeSelectLayout(final int position) {
-        mSelectLayout.setVisibility(GONE);
+        mYearViewPager.setVisibility(GONE);
         mWeekBar.setVisibility(VISIBLE);
         if (position == mMonthPager.getCurrentItem()) {
             if (mDelegate.mCalendarSelectListener != null &&
@@ -400,11 +406,19 @@ public class CalendarView extends FrameLayout {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         super.onAnimationEnd(animation);
-                        mMonthPager.setVisibility(VISIBLE);
-                        mMonthPager.clearAnimation();
+
                         if (mParentLayout != null) {
                             mParentLayout.showContentView();
+                            if(mParentLayout.isExpand()){
+                                mMonthPager.setVisibility(VISIBLE);
+                            }else {
+                                mWeekPager.setVisibility(VISIBLE);
+                                mParentLayout.shrink();
+                            }
+                        }else {
+                            mMonthPager.setVisibility(VISIBLE);
                         }
+                        mMonthPager.clearAnimation();
                     }
                 });
     }
@@ -441,7 +455,7 @@ public class CalendarView extends FrameLayout {
         } else {
             mWeekPager.scrollToCurrent(smoothScroll);
         }
-        mSelectLayout.scrollToYear(mDelegate.getCurrentDay().getYear(), smoothScroll);
+        mYearViewPager.scrollToYear(mDelegate.getCurrentDay().getYear(), smoothScroll);
     }
 
 
@@ -459,7 +473,7 @@ public class CalendarView extends FrameLayout {
      */
     public void scrollToNext(boolean smoothScroll) {
         if (isYearSelectLayoutVisible()) {
-            mSelectLayout.setCurrentItem(mSelectLayout.getCurrentItem() + 1, smoothScroll);
+            mYearViewPager.setCurrentItem(mYearViewPager.getCurrentItem() + 1, smoothScroll);
         } else if (mWeekPager.getVisibility() == VISIBLE) {
             mWeekPager.setCurrentItem(mWeekPager.getCurrentItem() + 1, smoothScroll);
         } else {
@@ -482,7 +496,7 @@ public class CalendarView extends FrameLayout {
      */
     public void scrollToPre(boolean smoothScroll) {
         if (isYearSelectLayoutVisible()) {
-            mSelectLayout.setCurrentItem(mSelectLayout.getCurrentItem() - 1, smoothScroll);
+            mYearViewPager.setCurrentItem(mYearViewPager.getCurrentItem() - 1, smoothScroll);
         } else if (mWeekPager.getVisibility() == VISIBLE) {
             mWeekPager.setCurrentItem(mWeekPager.getCurrentItem() - 1, smoothScroll);
         } else {
@@ -562,10 +576,10 @@ public class CalendarView extends FrameLayout {
      */
     @SuppressWarnings("all")
     public void scrollToYear(int year, boolean smoothScroll) {
-        if (mSelectLayout.getVisibility() != VISIBLE) {
+        if (mYearViewPager.getVisibility() != VISIBLE) {
             return;
         }
-        mSelectLayout.scrollToYear(year, smoothScroll);
+        mYearViewPager.scrollToYear(year, smoothScroll);
     }
 
     /**
@@ -603,6 +617,12 @@ public class CalendarView extends FrameLayout {
         mDelegate.clearSelectRange();
         mMonthPager.clearSelectRange();
         mWeekPager.clearSelectRange();
+    }
+
+    public final void clearSelect(){
+        mDelegate.mSelectedCalendar = new Calendar();
+        mMonthPager.clearSelect();
+        mWeekPager.clearSelect();
     }
 
     /**
@@ -765,20 +785,20 @@ public class CalendarView extends FrameLayout {
         if (mDelegate.mCalendarSelectListener == null) {
             return;
         }
-        if (mDelegate.getSelectMode() == CalendarViewDelegate.SELECT_MODE_RANGE) {
+        if (mDelegate.getSelectMode() != CalendarViewDelegate.SELECT_MODE_DEFAULT) {
             return;
         }
         if (!isInRange(mDelegate.mSelectedCalendar)) {
             return;
         }
-
-        post(new Runnable() {
-            @Override
-            public void run() {
-                mDelegate.updateSelectCalendarScheme();
-                mDelegate.mCalendarSelectListener.onCalendarSelect(mDelegate.mSelectedCalendar, false);
-            }
-        });
+        mDelegate.updateSelectCalendarScheme();
+//        post(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                mDelegate.mCalendarSelectListener.onCalendarSelect(mDelegate.mSelectedCalendar, false);
+//            }
+//        });
     }
 
 
@@ -802,6 +822,170 @@ public class CalendarView extends FrameLayout {
             return;
         }
         mDelegate.setSelectRange(minRange, maxRange);
+    }
+
+
+    public final void setSelectStartCalendar(int startYear, int startMonth, int startDay) {
+        if (mDelegate.getSelectMode() != CalendarViewDelegate.SELECT_MODE_RANGE) {
+            return;
+        }
+        Calendar startCalendar = new Calendar();
+        startCalendar.setYear(startYear);
+        startCalendar.setMonth(startMonth);
+        startCalendar.setDay(startDay);
+        setSelectStartCalendar(startCalendar);
+    }
+
+    public final void setSelectStartCalendar(Calendar startCalendar) {
+        if (mDelegate.getSelectMode() != CalendarViewDelegate.SELECT_MODE_RANGE) {
+            return;
+        }
+        if (startCalendar == null) {
+            return;
+        }
+        if (!isInRange(startCalendar)) {
+            if (mDelegate.mCalendarRangeSelectListener != null) {
+                mDelegate.mCalendarRangeSelectListener.onSelectOutOfRange(startCalendar, true);
+            }
+            return;
+        }
+        if (onCalendarIntercept(startCalendar)) {
+            if (mDelegate.mCalendarInterceptListener != null) {
+                mDelegate.mCalendarInterceptListener.onCalendarInterceptClick(startCalendar, false);
+            }
+            return;
+        }
+        mDelegate.mSelectedEndRangeCalendar = null;
+        mDelegate.mSelectedStartRangeCalendar = startCalendar;
+        scrollToCalendar(startCalendar.getYear(), startCalendar.getMonth(), startCalendar.getDay());
+    }
+
+    public final void setSelectEndCalendar(int endYear, int endMonth, int endDay) {
+        if (mDelegate.getSelectMode() != CalendarViewDelegate.SELECT_MODE_RANGE) {
+            return;
+        }
+        if (mDelegate.mSelectedStartRangeCalendar == null) {
+            return;
+        }
+        Calendar endCalendar = new Calendar();
+        endCalendar.setYear(endYear);
+        endCalendar.setMonth(endMonth);
+        endCalendar.setDay(endDay);
+        setSelectEndCalendar(endCalendar);
+    }
+
+    public final void setSelectEndCalendar(Calendar endCalendar) {
+        if (mDelegate.getSelectMode() != CalendarViewDelegate.SELECT_MODE_RANGE) {
+            return;
+        }
+        if (mDelegate.mSelectedStartRangeCalendar == null) {
+            return;
+        }
+        setSelectCalendarRange(mDelegate.mSelectedStartRangeCalendar, endCalendar);
+    }
+
+    /**
+     * 直接指定选择范围，set select calendar range
+     *
+     * @param startYear  startYear
+     * @param startMonth startMonth
+     * @param startDay   startDay
+     * @param endYear    endYear
+     * @param endMonth   endMonth
+     * @param endDay     endDay
+     */
+    public final void setSelectCalendarRange(int startYear, int startMonth, int startDay,
+                                             int endYear, int endMonth, int endDay) {
+        if (mDelegate.getSelectMode() != CalendarViewDelegate.SELECT_MODE_RANGE) {
+            return;
+        }
+        Calendar startCalendar = new Calendar();
+        startCalendar.setYear(startYear);
+        startCalendar.setMonth(startMonth);
+        startCalendar.setDay(startDay);
+
+        Calendar endCalendar = new Calendar();
+        endCalendar.setYear(endYear);
+        endCalendar.setMonth(endMonth);
+        endCalendar.setDay(endDay);
+        setSelectCalendarRange(startCalendar, endCalendar);
+    }
+
+    /**
+     * 设置选择日期范围
+     *
+     * @param startCalendar startCalendar
+     * @param endCalendar   endCalendar
+     */
+    public final void setSelectCalendarRange(Calendar startCalendar, Calendar endCalendar) {
+        if (mDelegate.getSelectMode() != CalendarViewDelegate.SELECT_MODE_RANGE) {
+            return;
+        }
+        if (startCalendar == null || endCalendar == null) {
+            return;
+        }
+        if (onCalendarIntercept(startCalendar)) {
+            if (mDelegate.mCalendarInterceptListener != null) {
+                mDelegate.mCalendarInterceptListener.onCalendarInterceptClick(startCalendar, false);
+            }
+            return;
+        }
+        if (onCalendarIntercept(endCalendar)) {
+            if (mDelegate.mCalendarInterceptListener != null) {
+                mDelegate.mCalendarInterceptListener.onCalendarInterceptClick(endCalendar, false);
+            }
+            return;
+        }
+        int minDiffer = endCalendar.differ(startCalendar);
+        if (minDiffer < 0) {
+            return;
+        }
+        if (!isInRange(startCalendar) || !isInRange(endCalendar)) {
+            return;
+        }
+
+
+        //优先判断各种直接return的情况，减少代码深度
+        if (mDelegate.getMinSelectRange() != -1 && mDelegate.getMinSelectRange() > minDiffer + 1) {
+            if (mDelegate.mCalendarRangeSelectListener != null) {
+                mDelegate.mCalendarRangeSelectListener.onSelectOutOfRange(endCalendar, true);
+            }
+            return;
+        } else if (mDelegate.getMaxSelectRange() != -1 && mDelegate.getMaxSelectRange() <
+                minDiffer + 1) {
+            if (mDelegate.mCalendarRangeSelectListener != null) {
+                mDelegate.mCalendarRangeSelectListener.onSelectOutOfRange(endCalendar, false);
+            }
+            return;
+        }
+        if (mDelegate.getMinSelectRange() == -1 && minDiffer == 0) {
+            mDelegate.mSelectedStartRangeCalendar = startCalendar;
+            mDelegate.mSelectedEndRangeCalendar = null;
+            if (mDelegate.mCalendarRangeSelectListener != null) {
+                mDelegate.mCalendarRangeSelectListener.onCalendarRangeSelect(startCalendar, false);
+            }
+            scrollToCalendar(startCalendar.getYear(), startCalendar.getMonth(), startCalendar.getDay());
+            return;
+        }
+
+        mDelegate.mSelectedStartRangeCalendar = startCalendar;
+        mDelegate.mSelectedEndRangeCalendar = endCalendar;
+        if (mDelegate.mCalendarRangeSelectListener != null) {
+            mDelegate.mCalendarRangeSelectListener.onCalendarRangeSelect(startCalendar, false);
+            mDelegate.mCalendarRangeSelectListener.onCalendarRangeSelect(endCalendar, true);
+        }
+        scrollToCalendar(startCalendar.getYear(), startCalendar.getMonth(), startCalendar.getDay());
+    }
+
+    /**
+     * 是否拦截日期，此设置续设置mCalendarInterceptListener
+     *
+     * @param calendar calendar
+     * @return 是否拦截日期
+     */
+    protected final boolean onCalendarIntercept(Calendar calendar) {
+        return mDelegate.mCalendarInterceptListener != null &&
+                mDelegate.mCalendarInterceptListener.onCalendarIntercept(calendar);
     }
 
     /**
@@ -851,6 +1035,35 @@ public class CalendarView extends FrameLayout {
         this.mDelegate.mViewChangeListener = listener;
     }
 
+    @Nullable
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        if(mDelegate ==null){
+            return super.onSaveInstanceState();
+        }
+        Bundle bundle = new Bundle();
+        Parcelable parcelable = super.onSaveInstanceState();
+        bundle.putParcelable("super", parcelable);
+        bundle.putSerializable("selected_calendar",mDelegate.mSelectedCalendar);
+        bundle.putSerializable("index_calendar",mDelegate.mIndexCalendar);
+        return bundle;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        Bundle bundle = (Bundle) state;
+        Parcelable superData = bundle.getParcelable("super");
+        mDelegate.mSelectedCalendar = (Calendar) bundle.getSerializable("selected_calendar");
+        mDelegate.mIndexCalendar = (Calendar) bundle.getSerializable("index_calendar");
+        if(mDelegate.mCalendarSelectListener!= null){
+            mDelegate.mCalendarSelectListener.onCalendarSelect(mDelegate.mSelectedCalendar,false);
+        }
+        update();
+        super.onRestoreInstanceState(superData);
+    }
+
+
+
     /**
      * 初始化时初始化日历卡默认选择位置
      */
@@ -875,8 +1088,8 @@ public class CalendarView extends FrameLayout {
      */
     public final void setSchemeDate(Map<String, Calendar> mSchemeDates) {
         this.mDelegate.mSchemeDatesMap = mSchemeDates;
-        this.mDelegate.clearSelectedScheme();
-        this.mSelectLayout.update();
+        this.mDelegate.updateSelectCalendarScheme();
+        this.mYearViewPager.update();
         this.mMonthPager.updateScheme();
         this.mWeekPager.updateScheme();
     }
@@ -887,7 +1100,7 @@ public class CalendarView extends FrameLayout {
     public final void clearSchemeDate() {
         this.mDelegate.mSchemeDatesMap = null;
         this.mDelegate.clearSelectedScheme();
-        mSelectLayout.update();
+        mYearViewPager.update();
         mMonthPager.updateScheme();
         mWeekPager.updateScheme();
     }
@@ -895,7 +1108,7 @@ public class CalendarView extends FrameLayout {
 
     /**
      * 移除某天的标记
-     * 这个API是安全的，无效try cache
+     * 这个API是安全的
      *
      * @param calendar calendar
      */
@@ -913,7 +1126,7 @@ public class CalendarView extends FrameLayout {
             mDelegate.clearSelectedScheme();
         }
 
-        mSelectLayout.update();
+        mYearViewPager.update();
         mMonthPager.updateScheme();
         mWeekPager.updateScheme();
     }
@@ -927,7 +1140,7 @@ public class CalendarView extends FrameLayout {
      */
     public void setBackground(int yearViewBackground, int weekBackground, int lineBg) {
         mWeekBar.setBackgroundColor(weekBackground);
-        mSelectLayout.setBackgroundColor(yearViewBackground);
+        mYearViewPager.setBackgroundColor(yearViewBackground);
         mWeekLine.setBackgroundColor(lineBg);
     }
 
@@ -1083,7 +1296,7 @@ public class CalendarView extends FrameLayout {
         mWeekBar.onDateSelected(mDelegate.mSelectedCalendar, weekStart, false);
         mWeekPager.updateWeekStart();
         mMonthPager.updateWeekStart();
-        mSelectLayout.updateWeekStart();
+        mYearViewPager.updateWeekStart();
     }
 
     /**
@@ -1143,7 +1356,7 @@ public class CalendarView extends FrameLayout {
      */
     public final void update() {
         mWeekBar.onWeekStartChange(mDelegate.getWeekStart());
-        mSelectLayout.update();
+        mYearViewPager.update();
         mMonthPager.updateScheme();
         mWeekPager.updateScheme();
     }
@@ -1172,6 +1385,16 @@ public class CalendarView extends FrameLayout {
      */
     public List<Calendar> getCurrentWeekCalendars() {
         return mWeekPager.getCurrentWeekCalendars();
+    }
+
+
+    /**
+     * 获取当前月份日期
+     *
+     * @return return
+     */
+    public List<Calendar> getCurrentMonthCalendars() {
+        return mMonthPager.getCurrentMonthCalendars();
     }
 
     /**

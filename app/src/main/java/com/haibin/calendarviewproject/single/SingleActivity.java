@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -73,7 +74,7 @@ public class SingleActivity extends BaseActivity implements
                     mYear = mCalendarView.getCurYear();
                 }
                 if (!mCalendarLayout.isExpand()) {
-                    mCalendarView.showYearSelectLayout(mYear);
+                    mCalendarLayout.expand();
                     return;
                 }
                 mCalendarView.showYearSelectLayout(mYear);
@@ -85,7 +86,12 @@ public class SingleActivity extends BaseActivity implements
         findViewById(R.id.fl_current).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //mCalendarView.clearSelect();
                 mCalendarView.scrollToCurrent();
+                Log.e("onDateSelected",
+                        "  --  " + mCalendarView.getSelectedCalendar().getScheme() +
+                                "  --  "  + mCalendarView.getSelectedCalendar().toString() +
+                                "  --  " + mCalendarView.getSelectedCalendar().hasScheme());
             }
         });
         mCalendarLayout = (CalendarLayout) findViewById(R.id.calendarLayout);
@@ -205,8 +211,7 @@ public class SingleActivity extends BaseActivity implements
         //Log.e("onCalendarIntercept", calendar.toString());
         int day = calendar.getDay();
         return day == 1 || day == 3 || day == 6 || day == 11 ||
-                day == 12 || day == 15 || day == 20 || day == 26 ||
-                day == mCalendarView.getCurDay();
+                day == 12 || day == 15 || day == 20 || day == 26 ;
     }
 
     @Override

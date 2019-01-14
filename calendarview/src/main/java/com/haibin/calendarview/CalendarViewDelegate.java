@@ -74,7 +74,6 @@ final class CalendarViewDelegate {
     private int mMonthViewShowMode;
 
 
-
     /**
      * 默认选择模式
      */
@@ -435,8 +434,8 @@ final class CalendarViewDelegate {
         mYearViewMonthMarginBottom = (int) array.getDimension(R.styleable.CalendarView_year_view_month_margin_bottom,
                 CalendarUtil.dipToPx(context, 4));
 
-        if (mMinYear <= MIN_YEAR) mMinYear = 1971;
-        if (mMaxYear >= MAX_YEAR) mMaxYear = 2055;
+        if (mMinYear <= MIN_YEAR) mMinYear = MIN_YEAR;
+        if (mMaxYear >= MAX_YEAR) mMaxYear = MAX_YEAR;
         array.recycle();
         init();
     }
@@ -451,35 +450,28 @@ final class CalendarViewDelegate {
         LunarCalendar.setupLunarCalendar(mCurrentDate);
         setRange(mMinYear, mMinYearMonth, mMaxYear, mMaxYearMonth);
 
-
         try {
-            if (!TextUtils.isEmpty(mWeekBarClassPath)) {
-                mWeekBarClass = Class.forName(mWeekBarClassPath);
-            } else {
-                mWeekBarClass = WeekBar.class;
-            }
+            mWeekBarClass = TextUtils.isEmpty(mWeekBarClassPath) ?
+                    mWeekBarClass = WeekBar.class : Class.forName(mWeekBarClassPath);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         try {
-            if (!TextUtils.isEmpty(mYearViewClassPath)) {
-                mYearViewClass = Class.forName(mYearViewClassPath);
-            } else {
-                mYearViewClass = DefaultYearView.class;
-            }
+            mYearViewClass = TextUtils.isEmpty(mYearViewClassPath) ?
+                    mYearViewClass = DefaultYearView.class : Class.forName(mYearViewClassPath);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        if (TextUtils.isEmpty(mMonthViewClassPath) || TextUtils.isEmpty(mWeekViewClassPath)) {
-            mMonthViewClass = DefaultMonthView.class;
-            mWeekViewClass = DefaultWeekView.class;
-            return;
+        try {
+            mMonthViewClass = TextUtils.isEmpty(mMonthViewClassPath) ?
+                    DefaultMonthView.class : Class.forName(mMonthViewClassPath);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         try {
-            mMonthViewClass = Class.forName(mMonthViewClassPath);
-            mWeekViewClass = Class.forName(mWeekViewClassPath);
+            mWeekViewClass =TextUtils.isEmpty(mWeekViewClassPath) ?
+                    DefaultWeekView.class :  Class.forName(mWeekViewClassPath);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -510,9 +502,9 @@ final class CalendarViewDelegate {
         this.mMaxYear = maxYear;
         this.mMaxYearMonth = maxYearMonth;
         this.mMaxYearDay = maxYearDay;
-        if (this.mMaxYear < mCurrentDate.getYear()) {
-            this.mMaxYear = mCurrentDate.getYear();
-        }
+//        if (this.mMaxYear < mCurrentDate.getYear()) {
+//            this.mMaxYear = mCurrentDate.getYear();
+//        }
         if (this.mMaxYearDay == -1) {
             this.mMaxYearDay = CalendarUtil.getMonthDaysCount(this.mMaxYear, mMaxYearMonth);
         }
@@ -868,6 +860,8 @@ final class CalendarViewDelegate {
                 Calendar d = mSchemeDatesMap.get(key);
                 mSelectedCalendar.mergeScheme(d, getSchemeText());
             }
+        } else {
+            clearSelectedScheme();
         }
     }
 

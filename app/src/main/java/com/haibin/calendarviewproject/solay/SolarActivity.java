@@ -72,7 +72,7 @@ public class SolarActivity extends BaseActivity implements
             @Override
             public void onClick(View v) {
                 if (!mCalendarLayout.isExpand()) {
-                    mCalendarView.showYearSelectLayout(mYear);
+                    mCalendarLayout.expand();
                     return;
                 }
                 mCalendarView.showYearSelectLayout(mYear);

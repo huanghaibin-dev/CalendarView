@@ -86,7 +86,7 @@
                 app:current_month_text_color="#4f4f4f"
                 app:day_text_size="18sp"
                 app:max_select_range="-1"
-                app:min_select_range="3"
+                app:min_select_range="-1"
                 app:min_year="2004"
                 app:month_view="com.haibin.calendarviewproject.range.CustomRangeMonthView"
                 app:month_view_show_mode="mode_only_current"

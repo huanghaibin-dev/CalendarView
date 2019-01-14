@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.lang.reflect.Constructor;
+import java.util.List;
 
 
 /**
@@ -342,6 +343,19 @@ public final class MonthViewPager extends ViewPager {
     }
 
     /**
+     * 获取当前月份数据
+     *
+     * @return 获取当前月份数据
+     */
+    List<Calendar> getCurrentMonthCalendars() {
+        BaseMonthView view = (BaseMonthView) findViewWithTag(getCurrentItem());
+        if (view == null) {
+            return null;
+        }
+        return view.mItems;
+    }
+
+    /**
      * 更新为默认选择模式
      */
     void updateDefaultSelect() {
@@ -474,6 +488,16 @@ public final class MonthViewPager extends ViewPager {
         }
     }
 
+    /**
+     * 清除选择范围
+     */
+    final void clearSelect() {
+        for (int i = 0; i < getChildCount(); i++) {
+            BaseMonthView view = (BaseMonthView) getChildAt(i);
+            view.mCurrentItem = -1;
+            view.invalidate();
+        }
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
