@@ -24,6 +24,7 @@ import android.util.AttributeSet;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -88,6 +89,11 @@ final class CalendarViewDelegate {
      * 范围选择模式
      */
     static final int SELECT_MODE_RANGE = 2;
+
+    /**
+     * 多选模式
+     */
+    static final int SELECT_MODE_MULTI = 3;
 
     /**
      * 选择模式
@@ -294,6 +300,12 @@ final class CalendarViewDelegate {
      */
     CalendarView.OnCalendarRangeSelectListener mCalendarRangeSelectListener;
 
+
+    /**
+     * 多选选择事件
+     */
+    CalendarView.OnCalendarMultiSelectListener mCalendarMultiSelectListener;
+
     /**
      * 外部日期长按事件
      */
@@ -335,6 +347,12 @@ final class CalendarViewDelegate {
      */
     Calendar mIndexCalendar;
 
+    /**
+     * 多选日历
+     */
+    Map<String, Calendar> mSelectedCalendars = new HashMap<>();
+
+    private int mMaxMultiSelectSize;
 
     /**
      * 选择范围日历
@@ -376,6 +394,7 @@ final class CalendarViewDelegate {
         mMonthViewShowMode = array.getInt(R.styleable.CalendarView_month_view_show_mode, MODE_ALL_MONTH);
         mWeekStart = array.getInt(R.styleable.CalendarView_week_start_with, WEEK_START_WITH_SUN);
         mSelectMode = array.getInt(R.styleable.CalendarView_select_mode, SELECT_MODE_DEFAULT);
+        mMaxMultiSelectSize = array.getInt(R.styleable.CalendarView_max_multi_select_size, Integer.MAX_VALUE);
         mMinSelectRange = array.getInt(R.styleable.CalendarView_min_select_range, -1);
         mMaxSelectRange = array.getInt(R.styleable.CalendarView_max_select_range, -1);
         setSelectRange(mMinSelectRange, mMaxSelectRange);
@@ -470,8 +489,8 @@ final class CalendarViewDelegate {
             e.printStackTrace();
         }
         try {
-            mWeekViewClass =TextUtils.isEmpty(mWeekViewClassPath) ?
-                    DefaultWeekView.class :  Class.forName(mWeekViewClassPath);
+            mWeekViewClass = TextUtils.isEmpty(mWeekViewClassPath) ?
+                    DefaultWeekView.class : Class.forName(mWeekViewClassPath);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -784,6 +803,14 @@ final class CalendarViewDelegate {
 
     int getMaxSelectRange() {
         return mMaxSelectRange;
+    }
+
+    int getMaxMultiSelectSize() {
+        return mMaxMultiSelectSize;
+    }
+
+    void setMaxMultiSelectSize(int maxMultiSelectSize) {
+        this.mMaxMultiSelectSize = maxMultiSelectSize;
     }
 
     final void setSelectRange(int minRange, int maxRange) {

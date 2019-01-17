@@ -20,15 +20,14 @@ import android.graphics.Canvas;
 import android.view.View;
 
 /**
- * 范围选择月视图
+ * 多选月视图
  * Created by huanghaibin on 2018/9/11.
  */
-public abstract class RangeMonthView extends BaseMonthView {
+public abstract class MultiMonthView extends BaseMonthView {
 
-    public RangeMonthView(Context context) {
+    public MultiMonthView(Context context) {
         super(context);
     }
-
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -103,17 +102,7 @@ public abstract class RangeMonthView extends BaseMonthView {
      * @return 日历是否被选中
      */
     protected boolean isCalendarSelected(Calendar calendar) {
-        if (mDelegate.mSelectedStartRangeCalendar == null) {
-            return false;
-        }
-        if (onCalendarIntercept(calendar)) {
-            return false;
-        }
-        if (mDelegate.mSelectedEndRangeCalendar == null) {
-            return calendar.compareTo(mDelegate.mSelectedStartRangeCalendar) == 0;
-        }
-        return calendar.compareTo(mDelegate.mSelectedStartRangeCalendar) >= 0 &&
-                calendar.compareTo(mDelegate.mSelectedEndRangeCalendar) <= 0;
+        return !onCalendarIntercept(calendar) && mDelegate.mSelectedCalendars.containsKey(calendar.toString());
     }
 
     @Override
@@ -138,47 +127,25 @@ public abstract class RangeMonthView extends BaseMonthView {
         }
 
         if (!isInRange(calendar)) {
-            if (mDelegate.mCalendarRangeSelectListener != null) {
-                mDelegate.mCalendarRangeSelectListener.onCalendarSelectOutOfRange(calendar);
+            if (mDelegate.mCalendarMultiSelectListener != null) {
+                mDelegate.mCalendarMultiSelectListener.onCalendarMultiSelectOutOfRange(calendar);
             }
             return;
         }
 
-        //优先判断各种直接return的情况，减少代码深度
-        if (mDelegate.mSelectedStartRangeCalendar != null && mDelegate.mSelectedEndRangeCalendar == null) {
-            int minDiffer = CalendarUtil.differ(calendar, mDelegate.mSelectedStartRangeCalendar);
-            if (minDiffer >= 0 && mDelegate.getMinSelectRange() != -1 && mDelegate.getMinSelectRange() > minDiffer + 1) {
-                if (mDelegate.mCalendarRangeSelectListener != null) {
-                    mDelegate.mCalendarRangeSelectListener.onSelectOutOfRange(calendar, true);
-                }
-                return;
-            } else if (mDelegate.getMaxSelectRange() != -1 && mDelegate.getMaxSelectRange() <
-                    CalendarUtil.differ(calendar, mDelegate.mSelectedStartRangeCalendar) + 1) {
-                if (mDelegate.mCalendarRangeSelectListener != null) {
-                    mDelegate.mCalendarRangeSelectListener.onSelectOutOfRange(calendar, false);
-                }
-                return;
-            }
-        }
+        String key = calendar.toString();
 
-        if (mDelegate.mSelectedStartRangeCalendar == null || mDelegate.mSelectedEndRangeCalendar != null) {
-            mDelegate.mSelectedStartRangeCalendar = calendar;
-            mDelegate.mSelectedEndRangeCalendar = null;
+        if (mDelegate.mSelectedCalendars.containsKey(key)) {
+            mDelegate.mSelectedCalendars.remove(key);
         } else {
-            int compare = calendar.compareTo(mDelegate.mSelectedStartRangeCalendar);
-            if (mDelegate.getMinSelectRange() == -1 && compare <= 0) {
-                mDelegate.mSelectedStartRangeCalendar = calendar;
-                mDelegate.mSelectedEndRangeCalendar = null;
-            } else if (compare < 0) {
-                mDelegate.mSelectedStartRangeCalendar = calendar;
-                mDelegate.mSelectedEndRangeCalendar = null;
-            } else if (compare == 0 &&
-                    mDelegate.getMinSelectRange() == 1) {
-                mDelegate.mSelectedEndRangeCalendar = calendar;
-            } else {
-                mDelegate.mSelectedEndRangeCalendar = calendar;
+            if (mDelegate.mSelectedCalendars.size() >= mDelegate.getMaxMultiSelectSize()) {
+                if (mDelegate.mCalendarMultiSelectListener != null) {
+                    mDelegate.mCalendarMultiSelectListener.onMultiSelectOutOfSize(calendar,
+                            mDelegate.getMaxMultiSelectSize());
+                }
+                return;
             }
-
+            mDelegate.mSelectedCalendars.put(key, calendar);
         }
 
         mCurrentItem = mItems.indexOf(calendar);
@@ -200,9 +167,11 @@ public abstract class RangeMonthView extends BaseMonthView {
                 mParentLayout.updateSelectWeek(CalendarUtil.getWeekFromDayInMonth(calendar, mDelegate.getWeekStart()));
             }
         }
-        if (mDelegate.mCalendarRangeSelectListener != null) {
-            mDelegate.mCalendarRangeSelectListener.onCalendarRangeSelect(calendar,
-                    mDelegate.mSelectedEndRangeCalendar != null);
+        if (mDelegate.mCalendarMultiSelectListener != null) {
+            mDelegate.mCalendarMultiSelectListener.onCalendarMultiSelect(
+                    calendar,
+                    mDelegate.mSelectedCalendars.size(),
+                    mDelegate.getMaxMultiSelectSize());
         }
     }
 
@@ -218,8 +187,7 @@ public abstract class RangeMonthView extends BaseMonthView {
      * @return 上一个日期是否选中
      */
     protected final boolean isSelectPreCalendar(Calendar calendar) {
-        return mDelegate.mSelectedStartRangeCalendar != null &&
-                !onCalendarIntercept(calendar) &&
+        return !onCalendarIntercept(calendar) &&
                 isCalendarSelected(CalendarUtil.getPreCalendar(calendar));
     }
 
@@ -230,8 +198,7 @@ public abstract class RangeMonthView extends BaseMonthView {
      * @return 下一个日期是否选中
      */
     protected final boolean isSelectNextCalendar(Calendar calendar) {
-        return mDelegate.mSelectedStartRangeCalendar != null &&
-                !onCalendarIntercept(calendar) &&
+        return !onCalendarIntercept(calendar) &&
                 isCalendarSelected(CalendarUtil.getNextCalendar(calendar));
     }
 

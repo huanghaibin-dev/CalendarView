@@ -587,7 +587,7 @@ final class SolarTermUtil {
         double jd = 365.2422 * (year - 2000), q;
         for (int i = 0; i < 19; i++) {
             q = getTimeFromAngle(jd + i * 15.2, i * 15, 0);
-            q = q + J2000 + (double) 8 / 24; // 计算第i个节气(i=0是春风),结果转为北京时
+            q = q + J2000 + (double) 8 / 24; // 计算第i个节气(i=0是春分),结果转为北京时
             Time time = setFromJulian(q, true);
             solarTerms[i + 3] = time.toString() + SOLAR_TERMS[i];
         }

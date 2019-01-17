@@ -86,6 +86,8 @@ public class CalendarLayout extends LinearLayout {
      */
     private int mDefaultStatus;
 
+    private boolean isWeekView;
+
     /**
      * 星期栏
      */
@@ -274,7 +276,6 @@ public class CalendarLayout extends LinearLayout {
         mVelocityTracker.addMovement(event);
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-
                 int index = MotionEventCompat.getActionIndex(event);
                 mActivePointerId = MotionEventCompat.getPointerId(event, index);
                 mLastY = downY = y;
@@ -348,6 +349,7 @@ public class CalendarLayout extends LinearLayout {
                 float mYVelocity = velocityTracker.getYVelocity();
                 if (mContentView.getTranslationY() == 0
                         || mContentView.getTranslationY() == mContentViewTranslateY) {
+                    expand();
                     break;
                 }
                 if (Math.abs(mYVelocity) >= 800) {
@@ -395,6 +397,7 @@ public class CalendarLayout extends LinearLayout {
         float y = ev.getY();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
+                isWeekView = !isExpand();
                 int index = MotionEventCompat.getActionIndex(ev);
                 mActivePointerId = MotionEventCompat.getPointerId(ev, index);
                 mLastY = downY = y;
@@ -562,9 +565,11 @@ public class CalendarLayout extends LinearLayout {
         return expand(240);
     }
 
+
     /**
      * 展开
      *
+     * @param duration 时长
      * @return 展开是否成功
      */
     public boolean expand(int duration) {
@@ -595,7 +600,7 @@ public class CalendarLayout extends LinearLayout {
                 super.onAnimationEnd(animation);
                 isAnimating = false;
                 hideWeek(true);
-                if (mDelegate.mViewChangeListener != null) {
+                if (mDelegate.mViewChangeListener != null && isWeekView) {
                     mDelegate.mViewChangeListener.onViewChange(true);
                 }
 
@@ -613,6 +618,7 @@ public class CalendarLayout extends LinearLayout {
     /**
      * 收缩
      *
+     * @param duration 时长
      * @return 成功或者失败
      */
     public boolean shrink(int duration) {
@@ -637,6 +643,7 @@ public class CalendarLayout extends LinearLayout {
                 super.onAnimationEnd(animation);
                 isAnimating = false;
                 showWeek();
+                isWeekView = true;
 
             }
         });
@@ -722,7 +729,7 @@ public class CalendarLayout extends LinearLayout {
         if (mWeekPager.getVisibility() == VISIBLE) {
             return;
         }
-        if (mDelegate.mViewChangeListener != null) {
+        if (mDelegate.mViewChangeListener != null && !isWeekView) {
             mDelegate.mViewChangeListener.onViewChange(false);
         }
     }
@@ -735,7 +742,7 @@ public class CalendarLayout extends LinearLayout {
         if (mMonthView.getVisibility() == VISIBLE) {
             return;
         }
-        if (mDelegate.mViewChangeListener != null) {
+        if (mDelegate.mViewChangeListener != null && isWeekView) {
             mDelegate.mViewChangeListener.onViewChange(true);
         }
     }

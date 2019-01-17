@@ -30,6 +30,8 @@ import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -202,13 +204,13 @@ public class CalendarView extends FrameLayout {
         };
 
 
-        if(mDelegate.getSelectMode() == CalendarViewDelegate.SELECT_MODE_DEFAULT){
+        if (mDelegate.getSelectMode() == CalendarViewDelegate.SELECT_MODE_DEFAULT) {
             if (isInRange(mDelegate.getCurrentDay())) {
                 mDelegate.mSelectedCalendar = mDelegate.createCurrentDate();
             } else {
                 mDelegate.mSelectedCalendar = mDelegate.getMinRangeCalendar();
             }
-        }else {
+        } else {
             mDelegate.mSelectedCalendar = new Calendar();
         }
 
@@ -409,13 +411,13 @@ public class CalendarView extends FrameLayout {
 
                         if (mParentLayout != null) {
                             mParentLayout.showContentView();
-                            if(mParentLayout.isExpand()){
+                            if (mParentLayout.isExpand()) {
                                 mMonthPager.setVisibility(VISIBLE);
-                            }else {
+                            } else {
                                 mWeekPager.setVisibility(VISIBLE);
                                 mParentLayout.shrink();
                             }
-                        }else {
+                        } else {
                             mMonthPager.setVisibility(VISIBLE);
                         }
                         mMonthPager.clearAnimation();
@@ -611,7 +613,7 @@ public class CalendarView extends FrameLayout {
     }
 
     /**
-     * 清除选择
+     * 清除选择范围
      */
     public final void clearSelectRange() {
         mDelegate.clearSelectRange();
@@ -619,10 +621,71 @@ public class CalendarView extends FrameLayout {
         mWeekPager.clearSelectRange();
     }
 
-    public final void clearSelect(){
+    /**
+     * 清除单选
+     */
+    public final void clearSingleSelect() {
         mDelegate.mSelectedCalendar = new Calendar();
-        mMonthPager.clearSelect();
-        mWeekPager.clearSelect();
+        mMonthPager.clearSingleSelect();
+        mWeekPager.clearSingleSelect();
+    }
+
+    /**
+     * 清除多选
+     */
+    public final void clearMultiSelect() {
+        mDelegate.mSelectedCalendars.clear();
+        mMonthPager.clearMultiSelect();
+        mWeekPager.clearMultiSelect();
+    }
+
+    /**
+     * 添加选择
+     *
+     * @param calendars calendars
+     */
+    public final void putMultiSelect(Calendar... calendars) {
+        if (calendars == null || calendars.length == 0) {
+            return;
+        }
+        for (Calendar calendar : calendars) {
+            if (calendar == null || mDelegate.mSelectedCalendars.containsKey(calendar.toString())) {
+                continue;
+            }
+            mDelegate.mSelectedCalendars.put(calendar.toString(), calendar);
+        }
+        update();
+    }
+
+    /**
+     * 清楚一些多选日期
+     *
+     * @param calendars calendars
+     */
+    public final void removeMultiSelect(Calendar... calendars) {
+        if (calendars == null || calendars.length == 0) {
+            return;
+        }
+        for (Calendar calendar : calendars) {
+            if (calendar == null) {
+                continue;
+            }
+            if (mDelegate.mSelectedCalendars.containsKey(calendar.toString())) {
+                mDelegate.mSelectedCalendars.remove(calendar.toString());
+            }
+        }
+        update();
+    }
+
+
+    public final List<Calendar> getMultiSelectCalendars(){
+        List<Calendar> calendars = new ArrayList<>();
+        if(mDelegate.mSelectedCalendars.size() == 0){
+            return calendars;
+        }
+        calendars.addAll(mDelegate.mSelectedCalendars.values());
+        Collections.sort(calendars);
+        return calendars;
     }
 
     /**
@@ -792,13 +855,6 @@ public class CalendarView extends FrameLayout {
             return;
         }
         mDelegate.updateSelectCalendarScheme();
-//        post(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//                mDelegate.mCalendarSelectListener.onCalendarSelect(mDelegate.mSelectedCalendar, false);
-//            }
-//        });
     }
 
 
@@ -809,6 +865,15 @@ public class CalendarView extends FrameLayout {
      */
     public final void setOnCalendarRangeSelectListener(OnCalendarRangeSelectListener listener) {
         this.mDelegate.mCalendarRangeSelectListener = listener;
+    }
+
+    /**
+     * 日期多选事件
+     *
+     * @param listener listener
+     */
+    public final void setOnCalendarMultiSelectListener(OnCalendarMultiSelectListener listener) {
+        this.mDelegate.mCalendarMultiSelectListener = listener;
     }
 
     /**
@@ -988,6 +1053,25 @@ public class CalendarView extends FrameLayout {
                 mDelegate.mCalendarInterceptListener.onCalendarIntercept(calendar);
     }
 
+
+    /**
+     * 获得最大多选数量
+     *
+     * @return 获得最大多选数量
+     */
+    public final int getMaxMultiSelectSize() {
+        return mDelegate.getMaxMultiSelectSize();
+    }
+
+    /**
+     * 设置最大多选数量
+     *
+     * @param maxMultiSelectSize 最大多选数量
+     */
+    public final void setMaxMultiSelectSize(int maxMultiSelectSize) {
+        mDelegate.setMaxMultiSelectSize(maxMultiSelectSize);
+    }
+
     /**
      * 最小选择范围
      *
@@ -1035,33 +1119,42 @@ public class CalendarView extends FrameLayout {
         this.mDelegate.mViewChangeListener = listener;
     }
 
+    /**
+     * 保持状态
+     *
+     * @return 状态
+     */
     @Nullable
     @Override
     protected Parcelable onSaveInstanceState() {
-        if(mDelegate ==null){
+        if (mDelegate == null) {
             return super.onSaveInstanceState();
         }
         Bundle bundle = new Bundle();
         Parcelable parcelable = super.onSaveInstanceState();
         bundle.putParcelable("super", parcelable);
-        bundle.putSerializable("selected_calendar",mDelegate.mSelectedCalendar);
-        bundle.putSerializable("index_calendar",mDelegate.mIndexCalendar);
+        bundle.putSerializable("selected_calendar", mDelegate.mSelectedCalendar);
+        bundle.putSerializable("index_calendar", mDelegate.mIndexCalendar);
         return bundle;
     }
 
+    /**
+     * 恢复状态
+     *
+     * @param state 状态
+     */
     @Override
     protected void onRestoreInstanceState(Parcelable state) {
         Bundle bundle = (Bundle) state;
         Parcelable superData = bundle.getParcelable("super");
         mDelegate.mSelectedCalendar = (Calendar) bundle.getSerializable("selected_calendar");
         mDelegate.mIndexCalendar = (Calendar) bundle.getSerializable("index_calendar");
-        if(mDelegate.mCalendarSelectListener!= null){
-            mDelegate.mCalendarSelectListener.onCalendarSelect(mDelegate.mSelectedCalendar,false);
+        if (mDelegate.mCalendarSelectListener != null) {
+            mDelegate.mCalendarSelectListener.onCalendarSelect(mDelegate.mSelectedCalendar, false);
         }
         update();
         super.onRestoreInstanceState(superData);
     }
-
 
 
     /**
@@ -1160,7 +1253,8 @@ public class CalendarView extends FrameLayout {
             int otherMonthColor,
             int curMonthLunarTextColor,
             int otherMonthLunarTextColor) {
-        mDelegate.setTextColor(currentDayTextColor, curMonthTextColor, otherMonthColor, curMonthLunarTextColor, otherMonthLunarTextColor);
+        mDelegate.setTextColor(currentDayTextColor, curMonthTextColor,
+                otherMonthColor, curMonthLunarTextColor, otherMonthLunarTextColor);
     }
 
     /**
@@ -1233,7 +1327,7 @@ public class CalendarView extends FrameLayout {
     }
 
     /**
-     * 单选模式
+     * 范围模式
      */
     public void setSelectRangeMode() {
         if (mDelegate.getSelectMode() == CalendarViewDelegate.SELECT_MODE_RANGE) {
@@ -1241,6 +1335,17 @@ public class CalendarView extends FrameLayout {
         }
         mDelegate.setSelectMode(CalendarViewDelegate.SELECT_MODE_RANGE);
         clearSelectRange();
+    }
+
+    /**
+     * 多选模式
+     */
+    public void setSelectMultiMode() {
+        if (mDelegate.getSelectMode() == CalendarViewDelegate.SELECT_MODE_MULTI) {
+            return;
+        }
+        mDelegate.setSelectMode(CalendarViewDelegate.SELECT_MODE_MULTI);
+        clearMultiSelect();
     }
 
     /**
@@ -1526,6 +1631,36 @@ public class CalendarView extends FrameLayout {
          * @param isEnd    是否结束
          */
         void onCalendarRangeSelect(Calendar calendar, boolean isEnd);
+    }
+
+
+    /**
+     * 日历多选事件
+     */
+    public interface OnCalendarMultiSelectListener {
+
+        /**
+         * 多选超出范围越界
+         *
+         * @param calendar calendar
+         */
+        void onCalendarMultiSelectOutOfRange(Calendar calendar);
+
+        /**
+         * 多选超出大小
+         *
+         * @param maxSize 最大大小
+         * @param calendar calendar
+         */
+        void onMultiSelectOutOfSize(Calendar calendar, int maxSize);
+
+        /**
+         * 多选事件
+         * @param calendar calendar
+         * @param curSize curSize
+         * @param maxSize maxSize
+         */
+        void onCalendarMultiSelect(Calendar calendar, int curSize, int maxSize);
     }
 
     /**

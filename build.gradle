@@ -7,6 +7,7 @@ buildscript {
     dependencies {
         //noinspection GradleDependency
         classpath 'com.android.tools.build:gradle:2.2.0'
+        //noinspection GradleDependency
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
         // NOTE: Do not place your application dependencies here; they belong

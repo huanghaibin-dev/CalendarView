@@ -54,7 +54,8 @@ public abstract class WeekView extends BaseWeekView {
                 }
                 if (isDrawSelected || !isSelected) {
                     //将画笔设置为标记颜色
-                    mSchemePaint.setColor(calendar.getSchemeColor() != 0 ? calendar.getSchemeColor() : mDelegate.getSchemeThemeColor());
+                    mSchemePaint.setColor(calendar.getSchemeColor() != 0 ?
+                            calendar.getSchemeColor() : mDelegate.getSchemeThemeColor());
                     onDrawScheme(canvas, calendar, x);
                 }
             } else {

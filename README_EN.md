@@ -5,7 +5,7 @@ This widget has obvious advantages of memory and efficiency, adapt to many scene
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.4.9'
+compile 'com.haibin:calendarview:3.5.0'
 ```
 ```
 <dependency>
@@ -202,8 +202,10 @@ app:week_bar_view="com.haibin.calendarviewproject.EnglishWeekBar"
               <enum name="default_mode" value="0" />
               <enum name="single_mode" value="1" />
               <enum name="range_mode" value="2" />
+              <enum name="multi_mode" value="3" />
         </attr>
-
+        <!-- when select_mode = multi_mode -->
+        <attr name="max_multi_select_size" format="integer" />
         <!-- when select_mode=range_mode -->
         <attr name="min_select_range" format="integer" />
         <attr name="max_select_range" format="integer" />

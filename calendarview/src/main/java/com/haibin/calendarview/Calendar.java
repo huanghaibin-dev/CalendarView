@@ -19,14 +19,16 @@ import android.text.TextUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
  * 日历对象、
  */
 @SuppressWarnings("all")
-public final class Calendar implements Serializable {
+public final class Calendar implements Serializable, Comparable<Calendar> {
     private static final long serialVersionUID = 141315161718191143L;
+
 
     /**
      * 年
@@ -379,6 +381,14 @@ public final class Calendar implements Serializable {
         return year + "" + (month < 10 ? "0" + month : month) + "" + (day < 10 ? "0" + day : day);
     }
 
+//    @Override
+//    public int compare(Calendar lhs, Calendar rhs) {
+//        if (lhs == null || rhs == null) {
+//            return 0;
+//        }
+//        int result = lhs.compareTo(rhs);
+//        return result;
+//    }
 
     final void mergeScheme(Calendar calendar, String defaultScheme) {
         if (calendar == null)

@@ -489,9 +489,20 @@ public final class MonthViewPager extends ViewPager {
     }
 
     /**
-     * 清除选择范围
+     * 清除单选选择
      */
-    final void clearSelect() {
+    final void clearSingleSelect() {
+        for (int i = 0; i < getChildCount(); i++) {
+            BaseMonthView view = (BaseMonthView) getChildAt(i);
+            view.mCurrentItem = -1;
+            view.invalidate();
+        }
+    }
+
+    /**
+     * 清除单选选择
+     */
+    final void clearMultiSelect() {
         for (int i = 0; i < getChildCount(); i++) {
             BaseMonthView view = (BaseMonthView) getChildAt(i);
             view.mCurrentItem = -1;

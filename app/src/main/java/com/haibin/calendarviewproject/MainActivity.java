@@ -20,6 +20,7 @@ import com.haibin.calendarviewproject.index.IndexActivity;
 import com.haibin.calendarviewproject.meizu.MeiZuActivity;
 import com.haibin.calendarviewproject.meizu.MeiZuMonthView;
 import com.haibin.calendarviewproject.meizu.MeizuWeekView;
+import com.haibin.calendarviewproject.multi.MultiActivity;
 import com.haibin.calendarviewproject.pager.ViewPagerActivity;
 import com.haibin.calendarviewproject.progress.ProgressActivity;
 import com.haibin.calendarviewproject.range.RangeActivity;
@@ -123,7 +124,7 @@ public class MainActivity extends BaseActivity implements
                                 //mCalendarView.scrollToCalendar(2018,8,30);
                                 break;
                             case 5:
-                                mCalendarView.setRange(2016,7,1,2016,9,28);
+                                mCalendarView.setRange(2016, 7, 1, 2016, 9, 28);
 //                                mCalendarView.setRange(mCalendarView.getCurYear(), mCalendarView.getCurMonth(), 6,
 //                                        mCalendarView.getCurYear(), mCalendarView.getCurMonth(), 23);
                                 break;
@@ -257,6 +258,7 @@ public class MainActivity extends BaseActivity implements
         findViewById(R.id.ll_index).setOnClickListener(this);
         findViewById(R.id.ll_tab).setOnClickListener(this);
         findViewById(R.id.ll_single).setOnClickListener(this);
+        findViewById(R.id.ll_multi).setOnClickListener(this);
         findViewById(R.id.ll_solar_system).setOnClickListener(this);
         findViewById(R.id.ll_progress).setOnClickListener(this);
         findViewById(R.id.ll_custom).setOnClickListener(this);
@@ -306,8 +308,8 @@ public class MainActivity extends BaseActivity implements
                 MeiZuActivity.show(this);
                 Log.e("onDateSelected",
                         "  --  " + mCalendarView.getSelectedCalendar().getScheme() +
-                                "  --  "  + mCalendarView.getSelectedCalendar().toString() +
-                        "  --  " + mCalendarView.getSelectedCalendar().hasScheme());
+                                "  --  " + mCalendarView.getSelectedCalendar().toString() +
+                                "  --  " + mCalendarView.getSelectedCalendar().hasScheme());
                 break;
             case R.id.ll_custom:
                 CustomActivity.show(this);
@@ -329,6 +331,9 @@ public class MainActivity extends BaseActivity implements
                 break;
             case R.id.ll_single:
                 SingleActivity.show(this);
+                break;
+            case R.id.ll_multi:
+                MultiActivity.show(this);
                 break;
             case R.id.ll_solar_system:
                 SolarActivity.show(this);

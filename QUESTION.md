@@ -12,7 +12,7 @@
 
 - 基于Canvas绘制，极速性能
 - 热插拔思想，任意定制周视图、月视图，即插即用！
-- 支持单选、多选、国内手机日历默认自动选择等选择模式
+- 支持单选、多选、范围选择、国内手机日历默认自动选择等选择模式
 - 支持静态、动态设置周起始，一行代码搞定
 - 支持静态、动态设置日历项高度、日历填充模式
 - 支持设置任意日期范围、任意拦截日期
@@ -26,9 +26,8 @@
 ```java
 /**
  * 定制高仿魅族日历界面，按你的想象力绘制出各种各样的界面
- * Created by huanghaibin on 2017/11/15.
+ *
  */
-
 public class MeiZuMonthView extends MonthView {
 
     /**
@@ -369,7 +368,11 @@ int differ(Calendar calendar);//日期运算，相差多少天
               <enum name="default_mode" value="0" />
               <enum name="single_mode" value="1" />
               <enum name="range_mode" value="2" />
+              <enum name="multi_mode" value="3" />
         </attr>
+
+        <!-- when select_mode = multi_mode -->
+        <attr name="max_multi_select_size" format="integer" />
 
         <!-- 当 select_mode=range_mode -->
         <attr name="min_select_range" format="integer" />
