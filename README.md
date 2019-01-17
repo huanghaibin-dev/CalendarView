@@ -27,7 +27,7 @@ compile 'com.haibin:calendarview:3.5.0'
 }
 ```
 
-### 或者针对性的使用混淆
+### 或者针对性的使用混淆，请自行配置测试！
 ``` java
 -keep class your project path.MonthView {
     public <init>(android.content.Context);
@@ -36,6 +36,9 @@ compile 'com.haibin:calendarview:3.5.0'
     public <init>(android.content.Context);
 }
 -keep class your project path.WeekView {
+    public <init>(android.content.Context);
+}
+-keep class your project path.YearView {
     public <init>(android.content.Context);
 }
 ```
