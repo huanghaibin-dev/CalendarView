@@ -71,7 +71,6 @@
             android:tint="#333333"
             android:src="@mipmap/ic_func" />
 
-
         <FrameLayout
             android:id="@+id/fl_current"
             android:layout_width="32dp"

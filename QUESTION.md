@@ -19,7 +19,11 @@
 - 支持多点触控、手指平滑切换过渡，拒绝界面抖动
 - 既然这么多支持，那一定支持英语、繁体、简体，任意定制实现
 
-### 接下来请看**CalendarView**操作，看看它可以怎样调教
+### **注意：** 框架本身只是实现各自逻辑，不实现UI，UI如同一张白纸，任凭客户端自行通过Canvas绘制实现，如果不熟悉Canvas的，请自行了解各自Canvas.drawXXX方法，UI都靠Canvas实现，坐标都已经计算好了，因此怎么隐藏农历，怎么换某些日期的字，这些都不属于框架范畴，只要你想换，都能随便换。
+
+### **再次注意：** app Demo只是Demo，只是示例如何使用，与框架本身没有关联，不属于框架一部分
+
+### 接下来请看**CalendarView**操作，前方高能
 
 - 你这样继承自己的月视图和周视图，只需要依次实现绘制选中：**onDrawSelected**、绘制事务：**onDrawScheme**、绘制文本：**onDrawText** 这三个回调即可，参数和坐标都已经在回调函数上实现好，周视图也是一样的逻辑，只是不需要y参数
 
@@ -88,7 +92,21 @@ app:week_view="com.haibin.calendarviewproject.MeiZuWeekView"
 
 ```
 
-- 但这种静态模式可能无法满足你的需求，你可能需要动态变换定制的视图界面，于是你可以使用热插拔特性，即插即用，不爽就换：
+- 视图有多种模式可供选择，几乎涵盖了各种需求，看各自的需求自行继承
+
+```xml
+
+如果继承这2个，MonthView、WeekView，即select_mode="default_mode"，这是默认的手机自带的日历模式，会自动选择月的第一天，不支持拦截器，
+也可以设置select_mode="single_mode"，即单选模式，支持拦截器
+
+如果继承这2个，RangeMonthView、RangeWeekView，即select_mode="range_mode"，这是范围选择模式，支持拦截器
+
+如果继承这2个，MultiMonthView、MultiWeekView，即select_mode="multi_mode"，这是多选模式，支持拦截器
+
+```xml
+
+
+- 如果静态模式无法满足你的需求，你可能需要动态变换定制的视图界面，你可以使用热插拔特性，即插即用，不爽就换：
 
 ```java
 
@@ -138,6 +156,14 @@ mCalendarView.setMonthView(MeiZuMonthView.class);
             android:layout_height="match_parent"
             android:background="#ffffff" />
     </com.haibin.calendarview.CalendarLayout>
+```
+
+- 使用可收缩的日历你可以使用监听器，监听视图变换
+
+```java
+
+public void setOnViewChangeListener(OnViewChangeListener listener);
+
 ```
 
 - 当然 **CalendarLayout** 有很多特性可提供周月视图无缝切换，而且，平滑手势不抖动！使用 **CalendarLayout**，你需要指定 **calendar_content_view_id**，用他来平移收缩月视图，更多特性如下：
@@ -381,4 +407,5 @@ int differ(Calendar calendar);//日期运算，相差多少天
 
 ```
 
-### 写在最后，其它各种场景姿势就不多说了，你得自己去解锁，框架本身是为了解决各种各样的场景而设计的，UI本身是靠自己绘制的，非常简单，如果还不懂的请优先看Demo，你可以自由发挥想象力定制最喜欢的日历，只有你想不到，Demo基本给出了各种场景的实现思路。觉得可以的请给个star或者留下你宝贵的意见。
+### 写在最后，其它各种场景姿势就不多说了，看自己需求去实现。**再次注意：Demo只是Demo，只是示例如何使用，与框架本身没有关联，不属于框架一部分**
+### 框架本身是为了解决各种各样的场景而设计的，UI本身是靠自己绘制的，非常简单，如果还不懂的请优先看Demo，你可以自由发挥想象力定制最喜欢的日历，只有你想不到，Demo基本给出了各种场景的实现思路。觉得可以的请给个star或者留下你宝贵的意见。

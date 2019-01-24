@@ -580,6 +580,7 @@ public class CalendarLayout extends LinearLayout {
         if (mMonthView.getVisibility() != VISIBLE) {
             mWeekPager.setVisibility(GONE);
             onShowMonthView();
+            isWeekView = false;
             mMonthView.setVisibility(VISIBLE);
         }
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(mContentView,
@@ -603,6 +604,7 @@ public class CalendarLayout extends LinearLayout {
                 if (mDelegate.mViewChangeListener != null && isWeekView) {
                     mDelegate.mViewChangeListener.onViewChange(true);
                 }
+                isWeekView = false;
 
             }
         });

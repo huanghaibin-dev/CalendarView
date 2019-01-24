@@ -1152,6 +1152,11 @@ public class CalendarView extends FrameLayout {
         if (mDelegate.mCalendarSelectListener != null) {
             mDelegate.mCalendarSelectListener.onCalendarSelect(mDelegate.mSelectedCalendar, false);
         }
+        if(mDelegate.mIndexCalendar!= null){
+            scrollToCalendar(mDelegate.mIndexCalendar.getYear(),
+                    mDelegate.mIndexCalendar.getMonth(),
+                    mDelegate.mIndexCalendar.getDay());
+        }
         update();
         super.onRestoreInstanceState(superData);
     }

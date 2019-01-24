@@ -73,6 +73,7 @@ public class MainActivity extends BaseActivity implements
         mTextMonthDay = (TextView) findViewById(R.id.tv_month_day);
         mTextYear = (TextView) findViewById(R.id.tv_year);
         mTextLunar = (TextView) findViewById(R.id.tv_lunar);
+
         mRelativeTool = (RelativeLayout) findViewById(R.id.rl_tool);
         mCalendarView = (CalendarView) findViewById(R.id.calendarView);
         mTextCurrentDay = (TextView) findViewById(R.id.tv_current_day);
@@ -80,7 +81,7 @@ public class MainActivity extends BaseActivity implements
             @Override
             public void onClick(View v) {
                 if (!mCalendarLayout.isExpand()) {
-                    mCalendarLayout.expand(0);
+                    mCalendarLayout.expand();
                     return;
                 }
                 mCalendarView.showYearSelectLayout(mYear);

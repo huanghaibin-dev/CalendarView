@@ -16,6 +16,7 @@ public class TestActivity extends BaseActivity {
 
     private FrameLayout mLayout;
 
+
     public static void show(Context context) {
         context.startActivity(new Intent(context, TestActivity.class));
     }
