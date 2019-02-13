@@ -345,6 +345,9 @@ public class CalendarView extends FrameLayout {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         super.onAnimationEnd(animation);
+                        if (mDelegate.mYearViewChangeListener != null) {
+                            mDelegate.mYearViewChangeListener.onYearViewChange(false);
+                        }
                     }
                 });
     }
@@ -408,7 +411,9 @@ public class CalendarView extends FrameLayout {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         super.onAnimationEnd(animation);
-
+                        if (mDelegate.mYearViewChangeListener != null) {
+                            mDelegate.mYearViewChangeListener.onYearViewChange(true);
+                        }
                         if (mParentLayout != null) {
                             mParentLayout.showContentView();
                             if (mParentLayout.isExpand()) {
@@ -545,6 +550,9 @@ public class CalendarView extends FrameLayout {
         calendar.setYear(year);
         calendar.setMonth(month);
         calendar.setDay(day);
+        if (!calendar.isAvailable()) {
+            return;
+        }
         if (!isInRange(calendar)) {
             return;
         }
@@ -678,9 +686,9 @@ public class CalendarView extends FrameLayout {
     }
 
 
-    public final List<Calendar> getMultiSelectCalendars(){
+    public final List<Calendar> getMultiSelectCalendars() {
         List<Calendar> calendars = new ArrayList<>();
-        if(mDelegate.mSelectedCalendars.size() == 0){
+        if (mDelegate.mSelectedCalendars.size() == 0) {
             return calendars;
         }
         calendars.addAll(mDelegate.mSelectedCalendars.values());
@@ -1119,6 +1127,11 @@ public class CalendarView extends FrameLayout {
         this.mDelegate.mViewChangeListener = listener;
     }
 
+
+    public void setOnYearViewChangeListener(OnYearViewChangeListener listener) {
+        this.mDelegate.mYearViewChangeListener = listener;
+    }
+
     /**
      * 保持状态
      *
@@ -1152,7 +1165,7 @@ public class CalendarView extends FrameLayout {
         if (mDelegate.mCalendarSelectListener != null) {
             mDelegate.mCalendarSelectListener.onCalendarSelect(mDelegate.mSelectedCalendar, false);
         }
-        if(mDelegate.mIndexCalendar!= null){
+        if (mDelegate.mIndexCalendar != null) {
             scrollToCalendar(mDelegate.mIndexCalendar.getYear(),
                     mDelegate.mIndexCalendar.getMonth(),
                     mDelegate.mIndexCalendar.getDay());
@@ -1654,16 +1667,17 @@ public class CalendarView extends FrameLayout {
         /**
          * 多选超出大小
          *
-         * @param maxSize 最大大小
+         * @param maxSize  最大大小
          * @param calendar calendar
          */
         void onMultiSelectOutOfSize(Calendar calendar, int maxSize);
 
         /**
          * 多选事件
+         *
          * @param calendar calendar
-         * @param curSize curSize
-         * @param maxSize maxSize
+         * @param curSize  curSize
+         * @param maxSize  maxSize
          */
         void onCalendarMultiSelect(Calendar calendar, int curSize, int maxSize);
     }
@@ -1718,6 +1732,17 @@ public class CalendarView extends FrameLayout {
         void onViewChange(boolean isMonthView);
     }
 
+    /**
+     * 年视图改变事件
+     */
+    public interface OnYearViewChangeListener {
+        /**
+         * 年视图变化
+         *
+         * @param isClose 是否关闭
+         */
+        void onYearViewChange(boolean isClose);
+    }
 
     /**
      * 拦截日期是否可用事件

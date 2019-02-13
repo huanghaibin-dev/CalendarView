@@ -17,6 +17,7 @@ package com.haibin.calendarview;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -43,16 +44,20 @@ final class YearViewAdapter extends BaseRecyclerAdapter<Month> {
     @Override
     RecyclerView.ViewHolder onCreateDefaultViewHolder(ViewGroup parent, int type) {
         YearView yearView;
-        try {
-            Constructor constructor = mDelegate.getYearViewClass().getConstructor(Context.class);
-            yearView = (YearView) constructor.newInstance(mContext);
-            RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT,
-                    RecyclerView.LayoutParams.MATCH_PARENT);
-            yearView.setLayoutParams(params);
-        } catch (Exception e) {
-            e.printStackTrace();
-            yearView = null;
+        if (TextUtils.isEmpty(mDelegate.getYearViewClassPath())) {
+            yearView = new DefaultYearView(mContext);
+        } else {
+            try {
+                Constructor constructor = mDelegate.getYearViewClass().getConstructor(Context.class);
+                yearView = (YearView) constructor.newInstance(mContext);
+            } catch (Exception e) {
+                e.printStackTrace();
+                yearView = new DefaultYearView(mContext);
+            }
         }
+        RecyclerView.LayoutParams params = new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT,
+                RecyclerView.LayoutParams.MATCH_PARENT);
+        yearView.setLayoutParams(params);
         return new YearViewHolder(yearView, mDelegate);
     }
 

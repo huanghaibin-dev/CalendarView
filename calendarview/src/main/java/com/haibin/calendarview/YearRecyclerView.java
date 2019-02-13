@@ -52,6 +52,9 @@ public final class YearRecyclerView extends RecyclerView {
                         return;
                     }
                     mListener.onMonthSelected(month.getYear(), month.getMonth());
+                    if (mDelegate.mYearViewChangeListener != null) {
+                        mDelegate.mYearViewChangeListener.onYearViewChange(true);
+                    }
                 }
             }
         });

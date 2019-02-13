@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.CalendarLayout;
 import com.haibin.calendarview.CalendarView;
+import com.haibin.calendarview.TrunkBranchAnnals;
 import com.haibin.calendarviewproject.base.activity.BaseActivity;
 import com.haibin.calendarviewproject.colorful.ColorfulActivity;
 import com.haibin.calendarviewproject.custom.CustomActivity;
@@ -40,6 +41,7 @@ public class MainActivity extends BaseActivity implements
         CalendarView.OnWeekChangeListener,
         CalendarView.OnViewChangeListener,
         CalendarView.OnCalendarInterceptListener,
+        CalendarView.OnYearViewChangeListener,
         DialogInterface.OnClickListener,
         View.OnClickListener {
 
@@ -165,6 +167,7 @@ public class MainActivity extends BaseActivity implements
         mCalendarView.setOnMonthChangeListener(this);
         mCalendarView.setOnCalendarLongClickListener(this, true);
         mCalendarView.setOnWeekChangeListener(this);
+        mCalendarView.setOnYearViewChangeListener(this);
 
         //设置日期拦截事件，仅适用单选模式，当前无效
         mCalendarView.setOnCalendarInterceptListener(this);
@@ -383,6 +386,7 @@ public class MainActivity extends BaseActivity implements
                 "  --  " + isClick + "  --   " + calendar.getScheme());
         Log.e("onDateSelected", "  " + mCalendarView.getSelectedCalendar().getScheme() +
                 "  --  " + mCalendarView.getSelectedCalendar().isCurrentDay());
+        Log.e("干支年纪 ： ", " -- " + TrunkBranchAnnals.getTrunkBranchYear(calendar.getLunarCalendar().getYear()));
     }
 
     @Override
@@ -429,6 +433,11 @@ public class MainActivity extends BaseActivity implements
         for (Calendar calendar : weekCalendars) {
             Log.e("onWeekChange", calendar.toString());
         }
+    }
+
+    @Override
+    public void onYearViewChange(boolean isClose) {
+        Log.e("onYearViewChange", "年视图 -- " + (isClose ? "关闭" : "打开"));
     }
 
     /**

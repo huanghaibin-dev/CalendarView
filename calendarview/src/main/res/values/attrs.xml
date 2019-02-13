@@ -41,7 +41,9 @@
         <attr name="year_view_month_text_size" format="dimension" />
         <attr name="year_view_day_text_size" format="dimension" />
         <attr name="year_view_month_text_color" format="color" />
+        <attr name="year_view_current_day_text_color" format="color" />
         <attr name="year_view_day_text_color" format="color" />
+        <attr name="year_view_select_text_color" format="color" />
         <attr name="year_view_scheme_color" format="color" />
         <attr name="year_view_background" format="color" />
         <attr name="year_view_month_height" format="dimension" />

@@ -187,10 +187,10 @@ public class SingleActivity extends BaseActivity implements
         mTextYear.setText(String.valueOf(calendar.getYear()));
         mTextLunar.setText(calendar.getLunar());
         mYear = calendar.getYear();
-//        Log.e("onDateSelected", "  -- " + calendar.getYear() +
-//                "  --  " + calendar.getMonth() +
-//                "  -- " + calendar.getDay() +
-//                "  --  " + isClick);
+        Log.e("onDateSelected", "  -- " + calendar.getYear() +
+                "  --  " + calendar.getMonth() +
+                "  -- " + calendar.getDay() +
+                "  --  " + isClick);
         if (!calendar.isAvailable()) {
             mTextLunar.setText("");
             mTextYear.setText("");

@@ -158,6 +158,8 @@ final class CalendarViewDelegate {
     private int mYearViewMonthTextColor,
             mYearViewDayTextColor,
             mYearViewSchemeTextColor,
+            mYearViewSelectTextColor,
+            mYearViewCurDayTextColor,
             mYearViewWeekTextColor;
 
     /**
@@ -337,6 +339,12 @@ final class CalendarViewDelegate {
      */
     CalendarView.OnViewChangeListener mViewChangeListener;
 
+
+    /**
+     * 年视图改变事件
+     */
+    CalendarView.OnYearViewChangeListener mYearViewChangeListener;
+
     /**
      * 保存选中的日期
      */
@@ -439,6 +447,8 @@ final class CalendarViewDelegate {
         mYearViewDayTextColor = array.getColor(R.styleable.CalendarView_year_view_day_text_color, 0xFF111111);
         mYearViewSchemeTextColor = array.getColor(R.styleable.CalendarView_year_view_scheme_color, mSchemeThemeColor);
         mYearViewWeekTextColor = array.getColor(R.styleable.CalendarView_year_view_week_text_color, 0xFF333333);
+        mYearViewCurDayTextColor = array.getColor(R.styleable.CalendarView_year_view_current_day_text_color, mCurDayTextColor);
+        mYearViewSelectTextColor = array.getColor(R.styleable.CalendarView_year_view_select_text_color, 0xFF333333);
         mYearViewWeekTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_year_view_week_text_size,
                 CalendarUtil.dipToPx(context, 8));
         mYearViewMonthHeight = array.getDimensionPixelSize(R.styleable.CalendarView_year_view_month_height,
@@ -619,6 +629,10 @@ final class CalendarViewDelegate {
         return mYearViewClass;
     }
 
+    String getYearViewClassPath() {
+        return mYearViewClassPath;
+    }
+
     int getWeekBarHeight() {
         return mWeekBarHeight;
     }
@@ -670,6 +684,14 @@ final class CalendarViewDelegate {
 
     int getYearViewWeekTextColor() {
         return mYearViewWeekTextColor;
+    }
+
+    int getYearViewSelectTextColor() {
+        return mYearViewSelectTextColor;
+    }
+
+    int getYearViewCurDayTextColor() {
+        return mYearViewCurDayTextColor;
     }
 
     int getYearViewPadding() {

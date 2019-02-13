@@ -103,7 +103,7 @@ app:week_view="com.haibin.calendarviewproject.MeiZuWeekView"
 
 如果继承这2个，MultiMonthView、MultiWeekView，即select_mode="multi_mode"，这是多选模式，支持拦截器
 
-```xml
+```
 
 
 - 如果静态模式无法满足你的需求，你可能需要动态变换定制的视图界面，你可以使用热插拔特性，即插即用，不爽就换：

@@ -154,4 +154,62 @@
         <item>NOV</item>
         <item>DEC</item>
     </string-array>
+
+    <integer-array name="trunk_integer_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+
+    </integer-array>
+
+    <string-array name="trunk_string_array">
+        <item>辛</item>
+        <item>壬</item>
+        <item>癸</item>
+        <item>甲</item>
+        <item>乙</item>
+        <item>丙</item>
+        <item>丁</item>
+        <item>戊</item>
+        <item>己</item>
+        <item>庚</item>
+    </string-array>
+
+    <integer-array name="branch_integer_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </integer-array>
+
+    <string-array name="branch_string_array">
+        <item>酉</item>
+        <item>戌</item>
+        <item>亥</item>
+        <item>子</item>
+        <item>丑</item>
+        <item>寅</item>
+        <item>卯</item>
+        <item>辰</item>
+        <item>巳</item>
+        <item>午</item>
+        <item>未</item>
+        <item>申</item>
+
+    </string-array>
 </resources>

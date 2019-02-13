@@ -29,6 +29,7 @@ final class LunarCalendar {
         if (MONTH_STR != null) {
             return;
         }
+        TrunkBranchAnnals.init(context);
         SolarTermUtil.init(context);
         MONTH_STR = context.getResources().getStringArray(R.array.lunar_first_of_month);
         TRADITION_FESTIVAL_STR = context.getResources().getStringArray(R.array.tradition_festival);

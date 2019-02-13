@@ -27,6 +27,7 @@ public class MultiActivity extends BaseActivity implements
         CalendarView.OnCalendarMultiSelectListener,
         CalendarView.OnCalendarInterceptListener,
         CalendarView.OnYearChangeListener,
+        CalendarView.OnCalendarSelectListener,
         View.OnClickListener {
 
     TextView mTextMonthDay;
@@ -94,6 +95,7 @@ public class MultiActivity extends BaseActivity implements
         mCalendarLayout = (CalendarLayout) findViewById(R.id.calendarLayout);
         mCalendarView.setOnCalendarMultiSelectListener(this);
         mCalendarView.setOnYearChangeListener(this);
+        mCalendarView.setOnCalendarSelectListener(this);
         //设置日期拦截事件，当前有效
         mCalendarView.setOnCalendarInterceptListener(this);
         mTextYear.setText(String.valueOf(mCalendarView.getCurYear()));
@@ -183,6 +185,10 @@ public class MultiActivity extends BaseActivity implements
         mTextYear.setText(String.valueOf(calendar.getYear()));
         mTextLunar.setText(calendar.getLunar());
         mYear = calendar.getYear();
+        Log.e("onDateSelected", "  -- " + calendar.getYear() +
+                "  --  " + calendar.getMonth() +
+                "  -- " + calendar.getDay() +
+                "  --  " + "  --   " + calendar.getScheme());
     }
 
 
@@ -214,4 +220,16 @@ public class MultiActivity extends BaseActivity implements
                 Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onCalendarOutOfRange(Calendar calendar) {
+
+    }
+
+    @Override
+    public void onCalendarSelect(Calendar calendar, boolean isClick) {
+        Log.e("onDateSelected", "  -- " + calendar.getYear() +
+                "  --  " + calendar.getMonth() +
+                "  -- " + calendar.getDay() +
+                "  --  " + isClick + "  --   " + calendar.getScheme());
+    }
 }
