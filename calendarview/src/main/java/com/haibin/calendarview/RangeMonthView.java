@@ -218,9 +218,10 @@ public abstract class RangeMonthView extends BaseMonthView {
      * @return 上一个日期是否选中
      */
     protected final boolean isSelectPreCalendar(Calendar calendar) {
+        Calendar preCalendar = CalendarUtil.getPreCalendar(calendar);
         return mDelegate.mSelectedStartRangeCalendar != null &&
-                !onCalendarIntercept(calendar) &&
-                isCalendarSelected(CalendarUtil.getPreCalendar(calendar));
+                !onCalendarIntercept(preCalendar) &&
+                isCalendarSelected(preCalendar);
     }
 
     /**
@@ -230,9 +231,10 @@ public abstract class RangeMonthView extends BaseMonthView {
      * @return 下一个日期是否选中
      */
     protected final boolean isSelectNextCalendar(Calendar calendar) {
+        Calendar nextCalendar = CalendarUtil.getNextCalendar(calendar);
         return mDelegate.mSelectedStartRangeCalendar != null &&
-                !onCalendarIntercept(calendar) &&
-                isCalendarSelected(CalendarUtil.getNextCalendar(calendar));
+                !onCalendarIntercept(nextCalendar) &&
+                isCalendarSelected(nextCalendar);
     }
 
     /**

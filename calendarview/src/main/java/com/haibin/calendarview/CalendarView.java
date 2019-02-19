@@ -824,16 +824,6 @@ public class CalendarView extends FrameLayout {
      */
     public void setOnMonthChangeListener(OnMonthChangeListener listener) {
         this.mDelegate.mMonthChangeListener = listener;
-        if (mDelegate.mMonthChangeListener == null) {
-            return;
-        }
-        post(new Runnable() {
-            @Override
-            public void run() {
-                mDelegate.mMonthChangeListener.onMonthChange(mDelegate.mSelectedCalendar.getYear(),
-                        mDelegate.mSelectedCalendar.getMonth());
-            }
-        });
     }
 
 

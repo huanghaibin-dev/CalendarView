@@ -19,11 +19,11 @@ public final class TrunkBranchAnnals {
      */
     private static String[] BRANCH_STR = null;
 
-
-    private static Trunk[] TRUNKS = new Trunk[10];
-    private static Branch[] BRANCHES = new Branch[12];
-
-    static void init(Context context) {
+    /**
+     * 单独使用请先调用这个方法
+     * @param context context
+     */
+    public static void init(Context context) {
         if (TRUNK_STR != null) {
             return;
         }
@@ -86,47 +86,5 @@ public final class TrunkBranchAnnals {
      */
     public static String getTrunkBranchYear(int year) {
         return String.format("%s%s", getTrunkString(year), getBranchString(year));
-    }
-
-    private static class Trunk {
-        private String trunkStr;
-        private int trunkInt;
-
-        private String getTrunkStr() {
-            return trunkStr;
-        }
-
-        private void setTrunkStr(String trunkStr) {
-            this.trunkStr = trunkStr;
-        }
-
-        private int getTrunkInt() {
-            return trunkInt;
-        }
-
-        private void setTrunkInt(int trunkInt) {
-            this.trunkInt = trunkInt;
-        }
-    }
-
-    private static class Branch {
-        private String branchStr;
-        private int branchInt;
-
-        private String getBranchStr() {
-            return branchStr;
-        }
-
-        private void setBranchStr(String branchStr) {
-            this.branchStr = branchStr;
-        }
-
-        private int getBranchInt() {
-            return branchInt;
-        }
-
-        private void setBranchInt(int branchInt) {
-            this.branchInt = branchInt;
-        }
     }
 }

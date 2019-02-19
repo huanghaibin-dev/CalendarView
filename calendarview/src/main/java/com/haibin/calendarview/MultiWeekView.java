@@ -147,8 +147,9 @@ public abstract class MultiWeekView extends BaseWeekView {
      * @return 上一个日期是否选中
      */
     protected final boolean isSelectPreCalendar(Calendar calendar) {
-        return !onCalendarIntercept(calendar) &&
-                isCalendarSelected(CalendarUtil.getPreCalendar(calendar));
+        Calendar preCalendar = CalendarUtil.getPreCalendar(calendar);
+        return !onCalendarIntercept(preCalendar) &&
+                isCalendarSelected(preCalendar);
     }
 
     /**
@@ -158,8 +159,9 @@ public abstract class MultiWeekView extends BaseWeekView {
      * @return 下一个日期是否选中
      */
     protected final boolean isSelectNextCalendar(Calendar calendar) {
-        return !onCalendarIntercept(calendar) &&
-                isCalendarSelected(CalendarUtil.getNextCalendar(calendar));
+        Calendar nextCalendar = CalendarUtil.getNextCalendar(calendar);
+        return !onCalendarIntercept(nextCalendar) &&
+                isCalendarSelected(nextCalendar);
     }
 
     /**

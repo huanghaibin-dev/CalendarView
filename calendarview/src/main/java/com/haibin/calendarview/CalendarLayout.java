@@ -262,7 +262,6 @@ public class CalendarLayout extends LinearLayout {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-
         if (mDelegate.isShowYearSelectedLayout) {
             return false;
         }
@@ -303,12 +302,11 @@ public class CalendarLayout extends LinearLayout {
                     mLastY = y;
                     mActivePointerId = ACTIVE_POINTER;
                 }
-
                 float dy = y - mLastY;
+
                 //向上滑动，并且contentView平移到最大距离，显示周视图
                 if (dy < 0 && mContentView.getTranslationY() == -mContentViewTranslateY) {
                     //mContentView.onTouchEvent(event);
-                    //showWeek();
                     mLastY = y;
                     return false;
                 }
@@ -369,7 +367,6 @@ public class CalendarLayout extends LinearLayout {
         }
         return super.onTouchEvent(event);
     }
-
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {

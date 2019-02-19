@@ -412,7 +412,7 @@ public class MainActivity extends BaseActivity implements
     @SuppressLint("SetTextI18n")
     @Override
     public void onMonthChange(int year, int month) {
-        //Log.e("onMonthChange", "  -- " + year + "  --  " + month);
+        Log.e("onMonthChange", "  -- " + year + "  --  " + month);
         Calendar calendar = mCalendarView.getSelectedCalendar();
         mTextLunar.setVisibility(View.VISIBLE);
         mTextYear.setVisibility(View.VISIBLE);
