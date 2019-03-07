@@ -659,12 +659,12 @@ final class SolarTermUtil {
 
         @Override
         public String toString() {
-            return String.format("%s%s%s", doubleToString(year), doubleToString(month), doubleToString(day));
+            return  doubleToString(year) + doubleToString(month) + doubleToString(day);
         }
     }
 
     private static String doubleToString(double value) {
         int v = (int) value;
-        return value < 10 ? String.format("0%s", v) : String.valueOf(v);
+        return value < 10 ? "0" + v : String.valueOf(v);
     }
 }

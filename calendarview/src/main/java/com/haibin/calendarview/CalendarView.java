@@ -1181,6 +1181,18 @@ public class CalendarView extends FrameLayout {
         }
     }
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int height = MeasureSpec.getSize(heightMeasureSpec);
+        if (mDelegate == null || height == 0 ||
+                !mDelegate.isFullScreenCalendar()) {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+            return;
+        }
+        setCalendarItemHeight((height -
+                mDelegate.getWeekBarHeight() ) / 6);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
 
     /**
      * 标记哪些日期有事件

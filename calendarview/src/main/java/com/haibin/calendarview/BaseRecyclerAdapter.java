@@ -29,6 +29,7 @@ import java.util.List;
  */
 abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
 
+    @SuppressWarnings("all")
     LayoutInflater mInflater;
     private List<T> mItems;
     private OnItemClickListener onItemClickListener;

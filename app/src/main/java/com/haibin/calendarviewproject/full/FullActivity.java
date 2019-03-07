@@ -1,33 +1,33 @@
-package com.haibin.calendarviewproject.multi;
+package com.haibin.calendarviewproject.full;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.haibin.calendarview.Calendar;
-import com.haibin.calendarview.CalendarLayout;
 import com.haibin.calendarview.CalendarView;
-import com.haibin.calendarviewproject.Article;
-import com.haibin.calendarviewproject.ArticleAdapter;
 import com.haibin.calendarviewproject.R;
 import com.haibin.calendarviewproject.base.activity.BaseActivity;
-import com.haibin.calendarviewproject.group.GroupItemDecoration;
-import com.haibin.calendarviewproject.group.GroupRecyclerView;
+import com.haibin.calendarviewproject.colorful.ColorfulActivity;
+import com.haibin.calendarviewproject.custom.CustomActivity;
+import com.haibin.calendarviewproject.index.IndexActivity;
+import com.haibin.calendarviewproject.simple.SimpleActivity;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class MultiActivity extends BaseActivity implements
-        CalendarView.OnCalendarMultiSelectListener,
-        CalendarView.OnCalendarInterceptListener,
-        CalendarView.OnYearChangeListener,
+/**
+ * 全屏日历,因为月份大小不同的关系，需要 app:month_view_show_mode="mode_all"，
+ * 一般地，既然使用全屏日历，那也不必要
+ * Created by huanghaibin on 2019/3/7.
+ */
+
+public class FullActivity extends BaseActivity implements
         CalendarView.OnCalendarSelectListener,
+        CalendarView.OnYearChangeListener,
         View.OnClickListener {
 
     TextView mTextMonthDay;
@@ -38,21 +38,17 @@ public class MultiActivity extends BaseActivity implements
 
     TextView mTextCurrentDay;
 
+    private int mYear;
+
     CalendarView mCalendarView;
 
-    RelativeLayout mRelativeTool;
-    private int mYear;
-    CalendarLayout mCalendarLayout;
-    GroupRecyclerView mRecyclerView;
-
     public static void show(Context context) {
-        context.startActivity(new Intent(context, MultiActivity.class));
+        context.startActivity(new Intent(context, FullActivity.class));
     }
-
 
     @Override
     protected int getLayoutId() {
-        return R.layout.activity_multi;
+        return R.layout.activity_full;
     }
 
     @SuppressLint("SetTextI18n")
@@ -62,16 +58,11 @@ public class MultiActivity extends BaseActivity implements
         mTextMonthDay = (TextView) findViewById(R.id.tv_month_day);
         mTextYear = (TextView) findViewById(R.id.tv_year);
         mTextLunar = (TextView) findViewById(R.id.tv_lunar);
-        mRelativeTool = (RelativeLayout) findViewById(R.id.rl_tool);
-        mCalendarView = (CalendarView) findViewById(R.id.calendarView);
         mTextCurrentDay = (TextView) findViewById(R.id.tv_current_day);
+        mCalendarView = (CalendarView) findViewById(R.id.calendarView);
         mTextMonthDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!mCalendarLayout.isExpand()) {
-                    mCalendarLayout.expand();
-                    return;
-                }
                 mCalendarView.showYearSelectLayout(mYear);
                 mTextLunar.setVisibility(View.GONE);
                 mTextYear.setVisibility(View.GONE);
@@ -82,33 +73,16 @@ public class MultiActivity extends BaseActivity implements
             @Override
             public void onClick(View v) {
                 mCalendarView.scrollToCurrent();
-                //mCalendarView.setMaxMultiSelectSize(9);
-//                Calendar calendar = new Calendar();
-//                calendar.setYear(mCalendarView.getCurYear());
-//                calendar.setMonth(mCalendarView.getCurMonth());
-//                calendar.setDay(mCalendarView.getCurDay());
-//                mCalendarView.putMultiSelect(calendar);
-//                mCalendarView.removeMultiSelect(calendar);
-//                mCalendarView.getMultiSelectCalendars();
             }
         });
-        mCalendarLayout = (CalendarLayout) findViewById(R.id.calendarLayout);
-        mCalendarView.setOnCalendarMultiSelectListener(this);
-        mCalendarView.setOnYearChangeListener(this);
+
         mCalendarView.setOnCalendarSelectListener(this);
-        //设置日期拦截事件，当前有效
-        mCalendarView.setOnCalendarInterceptListener(this);
+        mCalendarView.setOnYearChangeListener(this);
         mTextYear.setText(String.valueOf(mCalendarView.getCurYear()));
         mYear = mCalendarView.getCurYear();
         mTextMonthDay.setText(mCalendarView.getCurMonth() + "月" + mCalendarView.getCurDay() + "日");
         mTextLunar.setText("今日");
         mTextCurrentDay.setText(String.valueOf(mCalendarView.getCurDay()));
-        findViewById(R.id.iv_clear).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCalendarView.clearMultiSelect();
-            }
-        });
     }
 
     @Override
@@ -131,25 +105,14 @@ public class MultiActivity extends BaseActivity implements
                 getSchemeCalendar(year, month, 15, 0xFFaacc44, "假"));
         map.put(getSchemeCalendar(year, month, 18, 0xFFbc13f0, "记").toString(),
                 getSchemeCalendar(year, month, 18, 0xFFbc13f0, "记"));
+        map.put(getSchemeCalendar(year, month, 22, 0xFFdf1356, "议").toString(),
+                getSchemeCalendar(year, month, 22, 0xFFdf1356, "议"));
         map.put(getSchemeCalendar(year, month, 25, 0xFF13acf0, "假").toString(),
                 getSchemeCalendar(year, month, 25, 0xFF13acf0, "假"));
         map.put(getSchemeCalendar(year, month, 27, 0xFF13acf0, "多").toString(),
                 getSchemeCalendar(year, month, 27, 0xFF13acf0, "多"));
         //此方法在巨大的数据量上不影响遍历性能，推荐使用
         mCalendarView.setSchemeDate(map);
-
-
-        mRecyclerView = (GroupRecyclerView) findViewById(R.id.recyclerView);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.addItemDecoration(new GroupItemDecoration<String, Article>());
-        mRecyclerView.setAdapter(new ArticleAdapter(this));
-        mRecyclerView.notifyDataSetChanged();
-    }
-
-
-    @Override
-    public void onClick(View v) {
-
     }
 
     private Calendar getSchemeCalendar(int year, int month, int day, int color, String text) {
@@ -159,66 +122,28 @@ public class MultiActivity extends BaseActivity implements
         calendar.setDay(day);
         calendar.setSchemeColor(color);//如果单独标记颜色、则会使用这个颜色
         calendar.setScheme(text);
-        calendar.addScheme(new Calendar.Scheme());
-        calendar.addScheme(0xFF008800, "假");
-        calendar.addScheme(0xFF008800, "节");
+        calendar.addScheme(color, "假");
+        calendar.addScheme(day%2 == 0 ? 0xFF00CD00 : 0xFFD15FEE, "节");
+        calendar.addScheme(day%2 == 0 ? 0xFF660000 : 0xFF4169E1, "记");
         return calendar;
     }
 
-
     @Override
-    public void onCalendarMultiSelectOutOfRange(Calendar calendar) {
-        Log.e("OutOfRange", "OutOfRange" + calendar);
-    }
-
-    @Override
-    public void onMultiSelectOutOfSize(Calendar calendar, int maxSize) {
-        Toast.makeText(this, "超过最大选择数量 ：" + maxSize, Toast.LENGTH_SHORT).show();
-    }
-
-    @SuppressLint("SetTextI18n")
-    @Override
-    public void onCalendarMultiSelect(Calendar calendar, int curSize, int maxSize) {
-        mTextLunar.setVisibility(View.VISIBLE);
-        mTextYear.setVisibility(View.VISIBLE);
-        mTextMonthDay.setText(calendar.getMonth() + "月" + calendar.getDay() + "日");
-        mTextYear.setText(String.valueOf(calendar.getYear()));
-        mTextLunar.setText(calendar.getLunar());
-        mYear = calendar.getYear();
-        Log.e("onDateSelected", "  -- " + calendar.getYear() +
-                "  --  " + calendar.getMonth() +
-                "  -- " + calendar.getDay() +
-                "  --  " + "  --   " + calendar.getScheme());
-    }
-
-
-    @Override
-    public void onYearChange(int year) {
-        mTextMonthDay.setText(String.valueOf(year));
-    }
-
-
-    /**
-     * 屏蔽某些不可点击的日期，可根据自己的业务自行修改
-     * 如 calendar > 2018年1月1日 && calendar <= 2020年12月31日
-     *
-     * @param calendar calendar
-     * @return 是否屏蔽某些不可点击的日期，MonthView和WeekView有类似的API可调用
-     */
-    @Override
-    public boolean onCalendarIntercept(Calendar calendar) {
-        //Log.e("onCalendarIntercept", calendar.toString());
-        int day = calendar.getDay();
-//        return day == 1 || day == 3 || day == 6 || day == 11 ||
-//                day == 12 || day == 15 || day == 20 || day == 26;
-        return calendar.hasScheme();
-    }
-
-    @Override
-    public void onCalendarInterceptClick(Calendar calendar, boolean isClick) {
-        Toast.makeText(this,
-                calendar.toString() + (isClick ? "拦截不可点击" : "拦截设定为无效日期"),
-                Toast.LENGTH_SHORT).show();
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.ll_flyme:
+                CustomActivity.show(this);
+                break;
+            case R.id.ll_simple:
+                SimpleActivity.show(this);
+                break;
+            case R.id.ll_colorful:
+                ColorfulActivity.show(this);
+                break;
+            case R.id.ll_index:
+                IndexActivity.show(this);
+                break;
+        }
     }
 
     @Override
@@ -226,11 +151,24 @@ public class MultiActivity extends BaseActivity implements
 
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onCalendarSelect(Calendar calendar, boolean isClick) {
+        mTextLunar.setVisibility(View.VISIBLE);
+        mTextYear.setVisibility(View.VISIBLE);
+        mTextMonthDay.setText(calendar.getMonth() + "月" + calendar.getDay() + "日");
+        mTextYear.setText(String.valueOf(calendar.getYear()));
+        mTextLunar.setText(calendar.getLunar());
+        mYear = calendar.getYear();
+
         Log.e("onDateSelected", "  -- " + calendar.getYear() +
                 "  --  " + calendar.getMonth() +
                 "  -- " + calendar.getDay() +
                 "  --  " + isClick + "  --   " + calendar.getScheme());
+    }
+
+    @Override
+    public void onYearChange(int year) {
+        mTextMonthDay.setText(String.valueOf(year));
     }
 }

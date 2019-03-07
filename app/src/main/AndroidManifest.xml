@@ -31,6 +31,7 @@
         <activity android:name=".progress.ProgressActivity" />
         <activity android:name=".custom.CustomActivity" />
         <activity android:name=".pager.ViewPagerActivity" />
+        <activity android:name=".full.FullActivity" />
         <activity android:name=".TestActivity" />
     </application>
 

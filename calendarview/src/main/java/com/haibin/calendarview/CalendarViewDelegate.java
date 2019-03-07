@@ -263,6 +263,11 @@ final class CalendarViewDelegate {
     private int mCalendarItemHeight;
 
     /**
+     * 是否是全屏日历
+     */
+    private boolean isFullScreenCalendar;
+
+    /**
      * 星期栏的高度
      */
     private int mWeekBarHeight;
@@ -437,6 +442,7 @@ final class CalendarViewDelegate {
                 CalendarUtil.dipToPx(context, 10));
         mCalendarItemHeight = (int) array.getDimension(R.styleable.CalendarView_calendar_height,
                 CalendarUtil.dipToPx(context, 56));
+        isFullScreenCalendar = array.getBoolean(R.styleable.CalendarView_calendar_match_parent, false);
 
         //年视图相关
         mYearViewMonthTextSize = array.getDimensionPixelSize(R.styleable.CalendarView_year_view_month_text_size,
@@ -902,6 +908,10 @@ final class CalendarViewDelegate {
         return mMaxYearDay;
     }
 
+    boolean isFullScreenCalendar() {
+        return isFullScreenCalendar;
+    }
+
     final void updateSelectCalendarScheme() {
         if (mSchemeDatesMap != null && mSchemeDatesMap.size() > 0) {
             String key = mSelectedCalendar.toString();
@@ -911,6 +921,20 @@ final class CalendarViewDelegate {
             }
         } else {
             clearSelectedScheme();
+        }
+    }
+
+    final void updateCalendarScheme(Calendar targetCalendar) {
+        if (targetCalendar == null) {
+            return;
+        }
+        if (mSchemeDatesMap == null || mSchemeDatesMap.size() == 0) {
+            return;
+        }
+        String key = targetCalendar.toString();
+        if (mSchemeDatesMap.containsKey(key)) {
+            Calendar d = mSchemeDatesMap.get(key);
+            targetCalendar.mergeScheme(d, getSchemeText());
         }
     }
 

@@ -188,8 +188,8 @@ public abstract class MultiMonthView extends BaseMonthView {
      */
     protected final boolean isSelectPreCalendar(Calendar calendar) {
         Calendar preCalendar = CalendarUtil.getPreCalendar(calendar);
-        return !onCalendarIntercept(preCalendar) &&
-                isCalendarSelected(preCalendar);
+        mDelegate.updateCalendarScheme(preCalendar);
+        return isCalendarSelected(preCalendar);
     }
 
     /**
@@ -200,8 +200,8 @@ public abstract class MultiMonthView extends BaseMonthView {
      */
     protected final boolean isSelectNextCalendar(Calendar calendar) {
         Calendar nextCalendar = CalendarUtil.getNextCalendar(calendar);
-        return !onCalendarIntercept(nextCalendar) &&
-                isCalendarSelected(nextCalendar);
+        mDelegate.updateCalendarScheme(nextCalendar);
+        return isCalendarSelected(nextCalendar);
     }
 
     /**

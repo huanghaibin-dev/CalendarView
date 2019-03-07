@@ -17,6 +17,7 @@ import com.haibin.calendarview.TrunkBranchAnnals;
 import com.haibin.calendarviewproject.base.activity.BaseActivity;
 import com.haibin.calendarviewproject.colorful.ColorfulActivity;
 import com.haibin.calendarviewproject.custom.CustomActivity;
+import com.haibin.calendarviewproject.full.FullActivity;
 import com.haibin.calendarviewproject.index.IndexActivity;
 import com.haibin.calendarviewproject.meizu.MeiZuActivity;
 import com.haibin.calendarviewproject.meizu.MeiZuMonthView;
@@ -266,7 +267,7 @@ public class MainActivity extends BaseActivity implements
         findViewById(R.id.ll_solar_system).setOnClickListener(this);
         findViewById(R.id.ll_progress).setOnClickListener(this);
         findViewById(R.id.ll_custom).setOnClickListener(this);
-
+        findViewById(R.id.ll_full).setOnClickListener(this);
     }
 
     @Override
@@ -310,13 +311,12 @@ public class MainActivity extends BaseActivity implements
         switch (v.getId()) {
             case R.id.ll_flyme:
                 MeiZuActivity.show(this);
-                Log.e("onDateSelected",
-                        "  --  " + mCalendarView.getSelectedCalendar().getScheme() +
-                                "  --  " + mCalendarView.getSelectedCalendar().toString() +
-                                "  --  " + mCalendarView.getSelectedCalendar().hasScheme());
                 break;
             case R.id.ll_custom:
                 CustomActivity.show(this);
+                break;
+            case R.id.ll_full:
+                FullActivity.show(this);
                 break;
             case R.id.ll_range:
                 RangeActivity.show(this);

@@ -111,7 +111,9 @@ public final class MonthViewPager extends ViewPager {
             @Override
             public void onPageSelected(int position) {
                 Calendar calendar = CalendarUtil.getFirstCalendarFromMonthViewPager(position, mDelegate);
-                mDelegate.mIndexCalendar = calendar;
+                if(getVisibility() == VISIBLE){
+                    mDelegate.mIndexCalendar = calendar;
+                }
                 //月份改变事件
                 if (mDelegate.mMonthChangeListener != null) {
                     mDelegate.mMonthChangeListener.onMonthChange(calendar.getYear(), calendar.getMonth());

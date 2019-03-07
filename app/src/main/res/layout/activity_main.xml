@@ -68,8 +68,8 @@
             android:layout_toLeftOf="@+id/iv_more"
             android:background="@drawable/bg_ripple"
             android:padding="4dp"
-            android:tint="#333333"
-            android:src="@mipmap/ic_func" />
+            android:src="@mipmap/ic_func"
+            android:tint="#333333" />
 
         <FrameLayout
             android:id="@+id/fl_current"
@@ -125,9 +125,9 @@
         android:layout_height="match_parent"
         android:background="#fff"
         android:orientation="vertical"
-        app:calendar_show_mode="both_month_week_view"
         app:calendar_content_view_id="@+id/nestedScrollView"
-        app:default_status="expand">
+        app:calendar_show_mode="both_month_week_view"
+        app:default_status="shrink">
 
         <com.haibin.calendarview.CalendarView
             android:id="@+id/calendarView"
@@ -141,11 +141,12 @@
             app:current_month_text_color="#333333"
             app:lunar_text_size="10sp"
             app:max_year="2030"
-            app:max_year_month="12"
             app:max_year_day="31"
+            app:max_year_month="12"
             app:min_year="2000"
-            app:min_year_month="1"
             app:min_year_day="1"
+            app:min_year_month="1"
+            app:month_view="com.haibin.calendarviewproject.custom.CustomMonthView"
             app:month_view_show_mode="mode_only_current"
             app:other_month_lunar_text_color="#e1e1e1"
             app:other_month_text_color="#e1e1e1"
@@ -158,22 +159,21 @@
             app:selected_theme_color="#80cfcfcf"
             app:week_background="#fff"
             app:week_bar_height="46dp"
-            app:month_view="com.haibin.calendarviewproject.custom.CustomMonthView"
-            app:week_view="com.haibin.calendarviewproject.custom.CustomWeekView"
             app:week_bar_view="com.haibin.calendarviewproject.custom.CustomWeekBar"
             app:week_line_background="#00000000"
             app:week_line_margin="16dp"
             app:week_start_with="mon"
             app:week_text_size="10sp"
-            app:year_view_week_height="0dp"
-            app:year_view_week_text_color="#666666"
-            app:year_view_week_text_size="7sp"
+            app:week_view="com.haibin.calendarviewproject.custom.CustomWeekView"
             app:year_view_background="#f6f6f6"
             app:year_view_day_text_color="#333333"
             app:year_view_day_text_size="8sp"
             app:year_view_month_text_color="#ff0000"
             app:year_view_month_text_size="20sp"
-            app:year_view_scheme_color="#f17706" />
+            app:year_view_scheme_color="#f17706"
+            app:year_view_week_height="0dp"
+            app:year_view_week_text_color="#666666"
+            app:year_view_week_text_size="7sp" />
 
 
         <android.support.v4.widget.NestedScrollView
@@ -277,6 +277,49 @@
                     android:background="@color/line_color" />
 
                 <LinearLayout
+                    android:id="@+id/ll_full"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="39dp"
+                        android:layout_height="39dp"
+                        android:layout_margin="16dp"
+                        android:contentDescription="progress"
+                        android:src="@mipmap/ic_full" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="16dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="全屏风格日历"
+                            android:textColor="#333333"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="演示一个全屏风格的精美日历"
+                            android:textColor="#666666"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/line_color" />
+
+                <LinearLayout
                     android:id="@+id/ll_range"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -286,8 +329,8 @@
                         android:layout_width="39dp"
                         android:layout_height="39dp"
                         android:layout_margin="16dp"
-                        android:padding="6dp"
                         android:contentDescription="flyme"
+                        android:padding="6dp"
                         android:src="@mipmap/ic_range" />
 
                     <LinearLayout
@@ -330,8 +373,8 @@
                         android:layout_width="39dp"
                         android:layout_height="39dp"
                         android:layout_margin="16dp"
-                        android:padding="6dp"
                         android:contentDescription="flyme"
+                        android:padding="6dp"
                         android:src="@mipmap/ic_multi" />
 
                     <LinearLayout

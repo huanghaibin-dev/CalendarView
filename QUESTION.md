@@ -186,6 +186,10 @@ public void setOnViewChangeListener(OnViewChangeListener listener);
 
 ```
 
+- **CalendarView** 可以设置全屏，只需设置 app:calendar_match_parent="true"即可，全屏**CalendarView**是不需要周视图的，不必嵌套CalendarLayout
+
+<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/full_calendar.png" width="400"/>
+
 
 - **CalendarView** 也提供了高效便利的年视图，可以快速切换年份、月份，十分便利
 

@@ -219,8 +219,8 @@ public abstract class RangeMonthView extends BaseMonthView {
      */
     protected final boolean isSelectPreCalendar(Calendar calendar) {
         Calendar preCalendar = CalendarUtil.getPreCalendar(calendar);
+        mDelegate.updateCalendarScheme(preCalendar);
         return mDelegate.mSelectedStartRangeCalendar != null &&
-                !onCalendarIntercept(preCalendar) &&
                 isCalendarSelected(preCalendar);
     }
 
@@ -232,8 +232,8 @@ public abstract class RangeMonthView extends BaseMonthView {
      */
     protected final boolean isSelectNextCalendar(Calendar calendar) {
         Calendar nextCalendar = CalendarUtil.getNextCalendar(calendar);
+        mDelegate.updateCalendarScheme(nextCalendar);
         return mDelegate.mSelectedStartRangeCalendar != null &&
-                !onCalendarIntercept(nextCalendar) &&
                 isCalendarSelected(nextCalendar);
     }
 

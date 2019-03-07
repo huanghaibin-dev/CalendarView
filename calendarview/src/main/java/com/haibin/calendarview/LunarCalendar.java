@@ -111,7 +111,7 @@ final class LunarCalendar {
      */
     private static String numToChineseMonth(int month, int leap) {
         if (leap == 1) {
-            return String.format("闰%s", MONTH_STR[month - 1]);
+            return "闰" + MONTH_STR[month - 1];
         }
         return MONTH_STR[month - 1];
     }
@@ -217,7 +217,7 @@ final class LunarCalendar {
             SOLAR_TERMS.put(year, SolarTermUtil.getSolarTerms(year));
         }
         String[] solarTerm = SOLAR_TERMS.get(year);
-        String text = String.format("%s%s", year, getString(month, day));
+        String text = year + getString(month, day);
         String solar = "";
         for (String solarTermName : solarTerm) {
             if (solarTermName.contains(text)) {
@@ -267,7 +267,7 @@ final class LunarCalendar {
             SPECIAL_FESTIVAL.put(year, getSpecialFestivals(year));
         }
         String[] specialFestivals = SPECIAL_FESTIVAL.get(year);
-        String text = String.format("%s%s", year, getString(month, day));
+        String text = year + getString(month, day);
         String solar = "";
         for (String special : specialFestivals) {
             if (special.contains(text)) {
@@ -319,7 +319,7 @@ final class LunarCalendar {
 
 
     private static String dateToString(int year, int month, int day) {
-        return String.format("%s%s", year, getString(month, day));
+        return year + getString(month, day);
     }
 
     /**
