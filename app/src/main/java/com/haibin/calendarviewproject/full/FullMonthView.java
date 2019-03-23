@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.View;
 
 import com.haibin.calendarview.Calendar;
@@ -41,6 +42,18 @@ public class FullMonthView extends MonthView {
         setLayerType(View.LAYER_TYPE_SOFTWARE, mSchemeBasicPaint);
         //4.0以上硬件加速会导致无效
         mSelectedPaint.setMaskFilter(new BlurMaskFilter(50, BlurMaskFilter.Blur.SOLID));
+    }
+
+    @Override
+    public void invalidate() {
+        super.invalidate();
+        Log.e("invalidate","invalidate");
+    }
+
+    @Override
+    protected void onPreviewHook() {
+        super.onPreviewHook();
+        Log.e("onPreviewHook","  --  " + getHeight());
     }
 
     /**

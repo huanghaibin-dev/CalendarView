@@ -20,11 +20,12 @@ import android.content.Context;
 
 /**
  * 月视图基础控件,可自由继承实现
- * 可通过此扩展各种视图如：MonthView、RangeMonthView
+ * 可通过此扩展各种视图如：MonthView、RangeMonthView、MultiMonthView
  */
 public abstract class BaseMonthView extends BaseView {
 
     MonthViewPager mMonthViewPager;
+
     /**
      * 当前日历卡年份
      */
@@ -113,6 +114,9 @@ public abstract class BaseMonthView extends BaseView {
      * @return return
      */
     protected Calendar getIndex() {
+        if (mItemWidth == 0 || mItemHeight == 0) {
+            return null;
+        }
         int indexX = (int) (mX - mDelegate.getCalendarPadding()) / mItemWidth;
         if (indexX >= 7) {
             indexX = 6;
@@ -168,7 +172,6 @@ public abstract class BaseMonthView extends BaseView {
             mHeight = CalendarUtil.getMonthViewHeight(mYear, mMonth, mItemHeight, mDelegate.getWeekStart());
         }
     }
-
 
 
     @Override

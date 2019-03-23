@@ -61,7 +61,10 @@ public abstract class BaseWeekView extends BaseView {
      * @param isNotice isNotice
      */
     final void performClickCalendar(Calendar calendar, boolean isNotice) {
-        if (mParentLayout == null || mDelegate.mInnerListener == null || mItems == null || mItems.size() == 0) {
+
+        if (mParentLayout == null ||
+                mDelegate.mInnerListener == null ||
+                mItems == null || mItems.size() == 0) {
             return;
         }
 
@@ -103,6 +106,14 @@ public abstract class BaseWeekView extends BaseView {
         if (mDelegate.getSelectMode() == CalendarViewDelegate.SELECT_MODE_DEFAULT) {
             mCurrentItem = curIndex;
         }
+
+        if (!mDelegate.isShowYearSelectedLayout &&
+                mDelegate.mIndexCalendar != null &&
+                calendar.getYear() != mDelegate.mIndexCalendar.getYear() &&
+                mDelegate.mYearChangeListener != null) {
+            mDelegate.mYearChangeListener.onYearChange(mDelegate.mIndexCalendar.getYear());
+        }
+
         mDelegate.mIndexCalendar = currentCalendar;
         invalidate();
     }

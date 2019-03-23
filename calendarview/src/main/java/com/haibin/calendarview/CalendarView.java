@@ -224,8 +224,8 @@ public class CalendarView extends FrameLayout {
             @Override
             public void onMonthSelected(int year, int month) {
                 int position = 12 * (year - mDelegate.getMinYear()) + month - mDelegate.getMinYearMonth();
-                mDelegate.isShowYearSelectedLayout = false;
                 closeSelectLayout(position);
+                mDelegate.isShowYearSelectedLayout = false;
             }
         });
         mYearViewPager.setup(mDelegate);

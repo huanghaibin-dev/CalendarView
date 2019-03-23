@@ -29,6 +29,7 @@ import java.util.Map;
 public class SingleActivity extends BaseActivity implements
         CalendarView.OnCalendarSelectListener,
         CalendarView.OnYearChangeListener,
+        CalendarView.OnMonthChangeListener,
         CalendarView.OnCalendarInterceptListener,
         View.OnClickListener {
 
@@ -90,13 +91,14 @@ public class SingleActivity extends BaseActivity implements
                 mCalendarView.scrollToCurrent();
                 Log.e("onDateSelected",
                         "  --  " + mCalendarView.getSelectedCalendar().getScheme() +
-                                "  --  "  + mCalendarView.getSelectedCalendar().toString() +
+                                "  --  " + mCalendarView.getSelectedCalendar().toString() +
                                 "  --  " + mCalendarView.getSelectedCalendar().hasScheme());
             }
         });
         mCalendarLayout = (CalendarLayout) findViewById(R.id.calendarLayout);
         mCalendarView.setOnCalendarSelectListener(this);
         mCalendarView.setOnYearChangeListener(this);
+        mCalendarView.setOnMonthChangeListener(this);
 
         //设置日期拦截事件，仅适用单选模式，当前有效
         mCalendarView.setOnCalendarInterceptListener(this);
@@ -198,6 +200,10 @@ public class SingleActivity extends BaseActivity implements
         }
     }
 
+    @Override
+    public void onMonthChange(int year, int month) {
+        Log.e("onMonthChange", " -- " + year + "  --  " + month);
+    }
 
     /**
      * 屏蔽某些不可点击的日期，可根据自己的业务自行修改
@@ -211,7 +217,7 @@ public class SingleActivity extends BaseActivity implements
         //Log.e("onCalendarIntercept", calendar.toString());
         int day = calendar.getDay();
         return day == 1 || day == 3 || day == 6 || day == 11 ||
-                day == 12 || day == 15 || day == 20 || day == 26 ;
+                day == 12 || day == 15 || day == 20 || day == 26;
     }
 
     @Override
@@ -225,6 +231,7 @@ public class SingleActivity extends BaseActivity implements
     @Override
     public void onYearChange(int year) {
         mTextMonthDay.setText(String.valueOf(year));
+        Log.e("onYearChange", " 年份变化 " + year);
     }
 
 

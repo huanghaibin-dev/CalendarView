@@ -45,4 +45,41 @@
         <item>Limit calendar range</item>
         <item>Show range</item>
     </string-array>
+
+
+    <string name="flyme">Flyme</string>
+    <string name="flyme_desc">Meizu mobile phone calendar</string>
+
+    <string name="custom_china">Beautiful Chinese style</string>
+    <string name="custom_china_desc">Beautiful Chinese style custom</string>
+
+    <string name="full">Full screen style</string>
+    <string name="full_desc">If you need a full screen calendar</string>
+
+    <string name="range">Range selection</string>
+    <string name="range_desc">Range selection style if you need</string>
+
+    <string name="multi">Multiple selection</string>
+    <string name="multi_desc">Multiple selection style if you need</string>
+
+    <string name="colorful">Colorful style</string>
+    <string name="colorful_desc">Everything what you need</string>
+
+    <string name="view_pager">ViewPager style</string>
+    <string name="view_pager_desc">ViewPager content </string>
+
+    <string name="single">Radio style</string>
+    <string name="single_desc">Radio style may be very popular</string>
+
+    <string name="progress">Progress bar style</string>
+    <string name="progress_desc">If you are developing a todo application</string>
+
+    <string name="index">Subscript style</string>
+    <string name="index_desc">Everything depends on how you draw</string>
+
+    <string name="galaxy">Galaxy style</string>
+    <string name="galaxy_desc">So easy to customize</string>
+
+    <string name="simple">Simple style</string>
+    <string name="simple_desc">Simple calendar</string>
 </resources>

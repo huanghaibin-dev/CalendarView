@@ -258,6 +258,8 @@ public abstract class BaseView extends View implements View.OnClickListener, Vie
         this.mSelectedPaint.setColor(delegate.getSelectedThemeColor());
 
         updateItemHeight();
+
+        initPaint();
     }
 
     void updateItemHeight() {
@@ -392,4 +394,11 @@ public abstract class BaseView extends View implements View.OnClickListener, Vie
      * 销毁
      */
     protected abstract void onDestroy();
+
+    /**
+     * 初始化画笔相关
+     */
+    protected void initPaint() {
+
+    }
 }

@@ -108,6 +108,21 @@ final class CalendarUtil {
         return (preDiff + monthDaysCount + nextDiff) / 7 * itemHeight;
     }
 
+    /**
+     * 获取月视图的确切高度
+     * Test pass
+     *
+     * @param year       年
+     * @param month      月
+     * @param itemHeight 每项的高度
+     * @return 不需要多余行的高度
+     */
+    static int getMonthViewHeight(int year, int month, int itemHeight, int weekStartWith, int mode) {
+        if (mode == CalendarViewDelegate.MODE_ALL_MONTH) {
+            return itemHeight * 6;
+        }
+        return getMonthViewHeight(year, month, itemHeight, weekStartWith);
+    }
 
     /**
      * 获取某天在该月的第几周,换言之就是获取这一天在该月视图的第几行,第几周，根据周起始动态获取
@@ -473,6 +488,7 @@ final class CalendarUtil {
     /**
      * 运算 calendar1 - calendar2
      * test Pass
+     *
      * @param calendar1 calendar1
      * @param calendar2 calendar2
      * @return calendar1 - calendar2

@@ -45,4 +45,41 @@
         <item>限制日期范围</item>
         <item>显示日期范围</item>
     </string-array>
+
+
+    <string name="flyme">Flyme手机日历</string>
+    <string name="flyme_desc">国内手机日历风格，自动选择第一天</string>
+
+    <string name="custom_china">精美定制中国风</string>
+    <string name="custom_china_desc">周末变色、圆点事件+文本标记</string>
+
+    <string name="full">全屏风格</string>
+    <string name="full_desc">如果你需要的话，分分钟的事</string>
+
+    <string name="range">范围选择</string>
+    <string name="range_desc">如果你需要范围选择的日历</string>
+
+    <string name="multi">多选风格</string>
+    <string name="multi_desc">如果你需要多选风格的日历</string>
+
+    <string name="colorful">多彩风格</string>
+    <string name="colorful_desc">取决于你怎么绘制</string>
+
+    <string name="view_pager">ViewPager风格</string>
+    <string name="view_pager_desc">如果内容是ViewPager的话</string>
+
+    <string name="single">单选风格</string>
+    <string name="single_desc">单选风格是比较受欢迎</string>
+
+    <string name="progress">进度条风格</string>
+    <string name="progress_desc">如果你正在开发todo APP的话</string>
+
+    <string name="index">下标订阅风格</string>
+    <string name="index_desc">只要你想画，就能画</string>
+
+    <string name="galaxy">星系风格</string>
+    <string name="galaxy_desc">很简单就能定制</string>
+
+    <string name="simple">简单风格</string>
+    <string name="simple_desc">这是最简单的日历</string>
 </resources>

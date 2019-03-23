@@ -111,7 +111,13 @@ public final class MonthViewPager extends ViewPager {
             @Override
             public void onPageSelected(int position) {
                 Calendar calendar = CalendarUtil.getFirstCalendarFromMonthViewPager(position, mDelegate);
-                if(getVisibility() == VISIBLE){
+                if (getVisibility() == VISIBLE) {
+                    if (!mDelegate.isShowYearSelectedLayout &&
+                            mDelegate.mIndexCalendar != null &&
+                            calendar.getYear() != mDelegate.mIndexCalendar.getYear() &&
+                            mDelegate.mYearChangeListener != null) {
+                        mDelegate.mYearChangeListener.onYearChange(calendar.getYear());
+                    }
                     mDelegate.mIndexCalendar = calendar;
                 }
                 //月份改变事件
@@ -536,7 +542,6 @@ public final class MonthViewPager extends ViewPager {
             super.setCurrentItem(item, smoothScroll);
         }
     }
-
 
     /**
      * 日历卡月份Adapter

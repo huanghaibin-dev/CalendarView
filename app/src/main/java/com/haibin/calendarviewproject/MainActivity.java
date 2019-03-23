@@ -124,8 +124,8 @@ public class MainActivity extends BaseActivity implements
                                 mCalendarView.scrollToNext(true);
                                 break;
                             case 4:
-                                mCalendarView.scrollToCurrent(true);
-                                //mCalendarView.scrollToCalendar(2018,8,30);
+                                //mCalendarView.scrollToCurrent(true);
+                                mCalendarView.scrollToCalendar(2018,12,30);
                                 break;
                             case 5:
                                 mCalendarView.setRange(2016, 7, 1, 2016, 9, 28);
@@ -461,6 +461,7 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void onYearChange(int year) {
         mTextMonthDay.setText(String.valueOf(year));
+        Log.e("onYearChange", " 年份变化 " + year);
     }
 
 }
