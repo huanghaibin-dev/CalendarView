@@ -82,6 +82,20 @@ public final class YearViewPager extends ViewPager {
         setCurrentItem(mDelegate.getCurrentDay().getYear() - mDelegate.getMinYear());
     }
 
+    @Override
+    public void setCurrentItem(int item) {
+        setCurrentItem(item, false);
+    }
+
+    @Override
+    public void setCurrentItem(int item, boolean smoothScroll) {
+        if (Math.abs(getCurrentItem() - item) > 1) {
+            super.setCurrentItem(item, false);
+        } else {
+            super.setCurrentItem(item, smoothScroll);
+        }
+    }
+
     /**
      * 通知刷新
      */

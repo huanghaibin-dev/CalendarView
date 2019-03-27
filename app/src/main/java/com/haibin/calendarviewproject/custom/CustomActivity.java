@@ -81,12 +81,12 @@ public class CustomActivity extends BaseActivity implements
         findViewById(R.id.fl_current).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //mCalendarView.scrollToCurrent();
-                if(mCalendarLayout.isExpand()){
-                    mCalendarLayout.shrink();
-                }else {
-                    mCalendarLayout.expand();
-                }
+                mCalendarView.scrollToCurrent();
+//                if(mCalendarLayout.isExpand()){
+//                    mCalendarLayout.shrink();
+//                }else {
+//                    mCalendarLayout.expand();
+//                }
             }
         });
         mCalendarLayout = (CalendarLayout) findViewById(R.id.calendarLayout);

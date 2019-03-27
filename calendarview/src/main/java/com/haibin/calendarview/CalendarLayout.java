@@ -520,14 +520,10 @@ public class CalendarLayout extends LinearLayout {
             if (isExpand()) {
                 h = height - monthHeight;
             } else {
-                h = height -
-                        CalendarUtil.dipToPx(getContext(), 1)
-                        - weekBarHeight;
+                h = height - weekBarHeight - mItemHeight;
             }
         } else {
-            h = height - mItemHeight
-                    - (mDelegate != null ? mDelegate.getWeekBarHeight() :
-                    weekBarHeight);
+            h = height - weekBarHeight - mItemHeight;
         }
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int heightSpec = MeasureSpec.makeMeasureSpec(h,
@@ -710,7 +706,6 @@ public class CalendarLayout extends LinearLayout {
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 isAnimating = false;
-
                 showWeek();
                 isWeekView = true;
 
