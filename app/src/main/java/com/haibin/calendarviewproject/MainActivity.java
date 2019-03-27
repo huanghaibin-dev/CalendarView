@@ -79,6 +79,7 @@ public class MainActivity extends BaseActivity implements
 
         mRelativeTool = (RelativeLayout) findViewById(R.id.rl_tool);
         mCalendarView = (CalendarView) findViewById(R.id.calendarView);
+        //mCalendarView.setRange(2018, 7, 1, 2019, 4, 28);
         mTextCurrentDay = (TextView) findViewById(R.id.tv_current_day);
         mTextMonthDay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,7 +129,7 @@ public class MainActivity extends BaseActivity implements
                                 mCalendarView.scrollToCalendar(2018,12,30);
                                 break;
                             case 5:
-                                mCalendarView.setRange(2016, 7, 1, 2016, 9, 28);
+                                mCalendarView.setRange(2018, 7, 1, 2019, 4, 28);
 //                                mCalendarView.setRange(mCalendarView.getCurYear(), mCalendarView.getCurMonth(), 6,
 //                                        mCalendarView.getCurYear(), mCalendarView.getCurMonth(), 23);
                                 break;

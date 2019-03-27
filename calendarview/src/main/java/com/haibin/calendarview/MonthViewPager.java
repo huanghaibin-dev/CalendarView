@@ -244,7 +244,7 @@ public final class MonthViewPager extends ViewPager {
         if (getVisibility() != VISIBLE) {
             return;
         }
-        isUsingScrollToCalendar = true;
+        isUsingScrollToCalendar = false;
         Calendar calendar = mDelegate.mSelectedCalendar;
         int y = calendar.getYear() - mDelegate.getMinYear();
         int position = 12 * y + calendar.getMonth() - mDelegate.getMinYearMonth();

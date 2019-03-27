@@ -44,18 +44,6 @@ public class FullMonthView extends MonthView {
         mSelectedPaint.setMaskFilter(new BlurMaskFilter(50, BlurMaskFilter.Blur.SOLID));
     }
 
-    @Override
-    public void invalidate() {
-        super.invalidate();
-        Log.e("invalidate","invalidate");
-    }
-
-    @Override
-    protected void onPreviewHook() {
-        super.onPreviewHook();
-        Log.e("onPreviewHook","  --  " + getHeight());
-    }
-
     /**
      * 绘制选中的日子
      *

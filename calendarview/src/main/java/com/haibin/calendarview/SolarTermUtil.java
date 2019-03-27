@@ -21,7 +21,8 @@ import android.content.Context;
  * http://www.cnblogs.com/moodlxs/archive/2010/12/18/2345392.html
  * 24节气计算公式，参考该博客实现
  */
-final class SolarTermUtil {
+@SuppressWarnings("all")
+public final class SolarTermUtil {
 
 
     static void init(Context context) {
@@ -161,7 +162,6 @@ final class SolarTermUtil {
      * @param UTC UTC
      * @return 公历转儒略日, UTC=1表示原日期是UTC
      */
-    @SuppressWarnings("all")
     private static double toJulian(Time time, boolean UTC) {
         double y = time.year; // 取出年月
         double m = time.month;
@@ -539,7 +539,6 @@ final class SolarTermUtil {
      *              lx=1是日月角距达某角度的时刻计算(用于定朔望等)
      * @return 已知位置反求时间
      */
-    @SuppressWarnings("all")
     private static double getTimeFromAngle(double t1, double angle, int lx) {
         double t2 = t1, t = 0, v;
         if (lx == 0)
@@ -578,7 +577,8 @@ final class SolarTermUtil {
      * @param year 年
      * @return 24节气
      */
-    static String[] getSolarTerms(int year) {
+
+    public static String[] getSolarTerms(int year) {
         String[] solarTerms = new String[24];
         String[] preOffset = getSolarTermsPreOffset(year - 1);
         String[] nextOffset = getSolarTermsNextOffset(year - 1);
@@ -644,7 +644,6 @@ final class SolarTermUtil {
         /**
          * 交角
          */
-        @SuppressWarnings("unused")
         private double Obl;
     }
 

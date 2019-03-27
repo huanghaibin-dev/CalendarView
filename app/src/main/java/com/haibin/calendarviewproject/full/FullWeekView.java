@@ -9,26 +9,20 @@ import android.view.View;
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.WeekView;
 
+import java.util.List;
+
 /**
  * 魅族周视图
  * Created by huanghaibin on 2017/11/29.
  */
 
 public class FullWeekView extends WeekView {
-    private Paint mTextPaint = new Paint();
     private Paint mRectPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Paint mSchemeBasicPaint = new Paint();
-    private float mRadio;
-    private int mPadding;
-    private float mSchemeBaseLine;
+
 
     public FullWeekView(Context context) {
         super(context);
-
-        mTextPaint.setTextSize(dipToPx(context, 8));
-        mTextPaint.setColor(0xffffffff);
-        mTextPaint.setAntiAlias(true);
-        mTextPaint.setFakeBoldText(true);
 
         mRectPaint.setStyle(Paint.Style.STROKE);
         mRectPaint.setStrokeWidth(dipToPx(context, 0.5f));
@@ -39,15 +33,11 @@ public class FullWeekView extends WeekView {
         mSchemeBasicPaint.setTextAlign(Paint.Align.CENTER);
         mSchemeBasicPaint.setColor(0xffed5353);
         mSchemeBasicPaint.setFakeBoldText(true);
-        mRadio = dipToPx(getContext(), 7);
-        mPadding = dipToPx(getContext(), 4);
-        Paint.FontMetrics metrics = mSchemeBasicPaint.getFontMetrics();
-        mSchemeBaseLine = mRadio - metrics.descent + (metrics.bottom - metrics.top) / 2 + dipToPx(getContext(), 1);
 
         //兼容硬件加速无效的代码
         setLayerType(View.LAYER_TYPE_SOFTWARE, mSchemeBasicPaint);
         //4.0以上硬件加速会导致无效
-        mSchemeBasicPaint.setMaskFilter(new BlurMaskFilter(25, BlurMaskFilter.Blur.SOLID));
+        mSelectedPaint.setMaskFilter(new BlurMaskFilter(50, BlurMaskFilter.Blur.SOLID));
     }
 
     /**
@@ -67,23 +57,31 @@ public class FullWeekView extends WeekView {
     @Override
     protected void onDrawScheme(Canvas canvas, Calendar calendar, int x) {
         mSchemeBasicPaint.setColor(calendar.getSchemeColor());
+        List<Calendar.Scheme> schemes = calendar.getSchemes();
+        if (schemes == null || schemes.size() == 0) {
+            return;
+        }
+        int space = dipToPx(getContext(), 2);
+        int indexY = mItemHeight - 2 * space;
+        int sw = dipToPx(getContext(), mItemWidth / 10);
+        int sh = dipToPx(getContext(), 4);
+        for (Calendar.Scheme scheme : schemes) {
 
-        canvas.drawCircle(x + mItemWidth - mPadding - mRadio / 2, mPadding + mRadio, mRadio, mSchemeBasicPaint);
+            mSchemePaint.setColor(scheme.getShcemeColor());
 
-        canvas.drawText(calendar.getScheme(),
-                x + mItemWidth - mPadding - mRadio / 2 - getTextWidth(calendar.getScheme()) / 2,
-                mPadding + mSchemeBaseLine, mTextPaint);
+            canvas.drawRect(x + mItemWidth - sw -  2 * space,
+
+                    indexY - sh, x + mItemWidth - 2 * space, indexY, mSchemePaint);
+            indexY = indexY - space -sh;
+        }
     }
 
-    private float getTextWidth(String text) {
-        return mTextPaint.measureText(text);
-    }
 
     @Override
     protected void onDrawText(Canvas canvas, Calendar calendar, int x, boolean hasScheme, boolean isSelected) {
-        canvas.drawRect(x, 0, x + mItemWidth, mItemHeight, mRectPaint);
+        canvas.drawRect(x, 0, x + mItemWidth,  mItemHeight, mRectPaint);
         int cx = x + mItemWidth / 2;
-        int top = -mItemHeight / 6;
+        int top = - mItemHeight / 6;
 
         boolean isInRange = isInRange(calendar);
 
@@ -95,12 +93,12 @@ public class FullWeekView extends WeekView {
             canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
                     calendar.isCurrentMonth() && isInRange ? mSchemeTextPaint : mOtherMonthTextPaint);
 
-            canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + mItemHeight / 10, mCurMonthLunarTextPaint);
+            canvas.drawText(calendar.getLunar(), cx, mTextBaseLine  + mItemHeight / 10, mCurMonthLunarTextPaint);
         } else {
             canvas.drawText(String.valueOf(calendar.getDay()), cx, mTextBaseLine + top,
-                    calendar.isCurrentDay() && isInRange ? mCurDayTextPaint :
+                    calendar.isCurrentDay() ? mCurDayTextPaint :
                             calendar.isCurrentMonth() && isInRange ? mCurMonthTextPaint : mOtherMonthTextPaint);
-            canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + mItemHeight / 10,
+            canvas.drawText(calendar.getLunar(), cx, mTextBaseLine  + mItemHeight / 10,
                     calendar.isCurrentDay() && isInRange ? mCurDayLunarTextPaint :
                             calendar.isCurrentMonth() ? mCurMonthLunarTextPaint : mOtherMonthLunarTextPaint);
         }

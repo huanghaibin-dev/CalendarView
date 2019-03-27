@@ -127,7 +127,7 @@
         android:orientation="vertical"
         app:calendar_content_view_id="@+id/nestedScrollView"
         app:calendar_show_mode="both_month_week_view"
-        app:default_status="shrink">
+        app:default_status="expand">
 
         <com.haibin.calendarview.CalendarView
             android:id="@+id/calendarView"
@@ -140,12 +140,12 @@
             app:current_month_lunar_text_color="#CFCFCF"
             app:current_month_text_color="#333333"
             app:lunar_text_size="10sp"
-            app:max_year="2030"
-            app:max_year_day="31"
-            app:max_year_month="12"
-            app:min_year="2000"
+            app:max_year="2019"
+            app:max_year_day="28"
+            app:max_year_month="4"
+            app:min_year="2018"
             app:min_year_day="1"
-            app:min_year_month="1"
+            app:min_year_month="7"
             app:month_view="com.haibin.calendarviewproject.custom.CustomMonthView"
             app:month_view_show_mode="mode_only_current"
             app:other_month_lunar_text_color="#e1e1e1"

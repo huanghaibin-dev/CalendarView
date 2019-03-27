@@ -205,29 +205,6 @@ final class CalendarUtil {
 
     /**
      * DAY_OF_WEEK return  1  2  3 	4  5  6	 7，偏移了一位
-     * 获取日期所在月份的结束偏移量，用于计算两个年份之间总共有多少周，不用于MonthView
-     * Test pass
-     *
-     * @param calendar  calendar
-     * @param weekStart weekStart 星期的起始
-     * @return 获取日期所在月份的结束偏移量 the end diff in Month not MonthView
-     */
-    @SuppressWarnings("unused")
-    static int getMonthEndDiff(Calendar calendar, int weekStart) {
-        java.util.Calendar date = java.util.Calendar.getInstance();
-        date.set(calendar.getYear(), calendar.getMonth() - 1, getMonthDaysCount(calendar.getYear(), calendar.getMonth()));
-        int week = date.get(java.util.Calendar.DAY_OF_WEEK);
-        if (weekStart == CalendarViewDelegate.WEEK_START_WITH_SUN) {
-            return 7 - week;
-        }
-        if (weekStart == CalendarViewDelegate.WEEK_START_WITH_MON) {
-            return week == 1 ? 0 : 7 - week + 1;
-        }
-        return week == CalendarViewDelegate.WEEK_START_WITH_SAT ? 6 : 7 - week - 1;
-    }
-
-    /**
-     * DAY_OF_WEEK return  1  2  3 	4  5  6	 7，偏移了一位
      * 获取日期所在月视图对应的起始偏移量
      * Test pass
      *

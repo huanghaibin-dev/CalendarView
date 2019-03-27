@@ -18,7 +18,7 @@ package com.haibin.calendarview;
 /**
  * 农历计算方法
  */
-final class LunarUtil {
+public final class LunarUtil {
 
 
     private static int[] LUNAR_MONTH_DAYS = {1887, 0x1694, 0x16aa, 0x4ad5, 0xab6, 0xc4b7, 0x4ae, 0xa56, 0xb52a, 0x1d2a,
@@ -71,6 +71,23 @@ final class LunarUtil {
         return 365 * y + y / 4 - y / 100 + y / 400 + (m * 306 + 5) / 10 + (d - 1);
     }
 
+    private static int[] solarFromInt(long g) {
+        long y = (10000 * g + 14780) / 3652425;
+        long ddd = g - (365 * y + y / 4 - y / 100 + y / 400);
+        if (ddd < 0) {
+            y--;
+            ddd = g - (365 * y + y / 4 - y / 100 + y / 400);
+        }
+        long mi = (100 * ddd + 52) / 3060;
+        long mm = (mi + 2) % 12 + 1;
+        y = y + (mi + 2) / 12;
+        long dd = ddd - (mi * 306 + 5) / 10 + 1;
+        int[] solar = new int[4];
+        solar[0] = (int) y;
+        solar[1] = (int) mm;
+        solar[2] = (int) dd;
+        return solar;
+    }
 
     /**
      * 公历转农历 Solar To Lunar
@@ -80,7 +97,8 @@ final class LunarUtil {
      * @param day   公历日
      * @return [0]农历年 [1]农历月 [2]农历日 [3]是否闰月 0 false : 1 true
      */
-    static int[] solarToLunar(int year, int month, int day) {
+    @SuppressWarnings("all")
+    public static int[] solarToLunar(int year, int month, int day) {
         int[] lunarInt = new int[4];
         int index = year - SOLAR[0];
         int data = (year << 9) | (month << 5) | (day);
@@ -124,5 +142,42 @@ final class LunarUtil {
         }
         lunarInt[2] = lunarD;
         return lunarInt;
+    }
+
+
+    /**
+     * 农历转公历
+     *
+     * @param lunarYear  农历年
+     * @param lunarMonth 农历月
+     * @param lunarDay   农历天
+     * @param isLeap     是否是闰年 0 false : 1 true
+     * @return [0]新历年 [1]新历月 [2]新历日 [3]是否闰月 0 false : 1 true
+     */
+    @SuppressWarnings("unused")
+    public static int[] lunarToSolar(int lunarYear, int lunarMonth, int lunarDay, boolean isLeap) {
+        int days = LUNAR_MONTH_DAYS[lunarYear - LUNAR_MONTH_DAYS[0]];
+        int leap = getBitInt(days, 4, 13);
+        int offset = 0;
+        int loop = leap;
+        if (!isLeap) {
+            if (lunarMonth <= leap || leap == 0) {
+                loop = lunarMonth - 1;
+            } else {
+                loop = lunarMonth;
+            }
+        }
+        for (int i = 0; i < loop; i++) {
+            offset += getBitInt(days, 1, 12 - i) == 1 ? 30 : 29;
+        }
+        offset += lunarDay;
+
+        int solar11 = SOLAR[lunarYear - SOLAR[0]];
+
+        int y = getBitInt(solar11, 12, 9);
+        int m = getBitInt(solar11, 4, 5);
+        int d = getBitInt(solar11, 5, 0);
+
+        return solarFromInt(solarToInt(y, m, d) + offset - 1);
     }
 }

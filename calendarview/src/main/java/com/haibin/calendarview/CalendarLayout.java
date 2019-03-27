@@ -476,7 +476,7 @@ public class CalendarLayout extends LinearLayout {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 
-        if (mContentView == null || mCalendarView == null) {
+        if (mContentView == null || mCalendarView == null ) {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
             return;
         }
@@ -493,6 +493,15 @@ public class CalendarLayout extends LinearLayout {
                 + weekBarHeight;
 
         int height = MeasureSpec.getSize(heightMeasureSpec);
+
+        if(mDelegate.isFullScreenCalendar()){
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+            int heightSpec = MeasureSpec.makeMeasureSpec(height - weekBarHeight - mDelegate.getCalendarItemHeight(),
+                    MeasureSpec.EXACTLY);
+            mContentView.measure(widthMeasureSpec, heightSpec);
+            mContentView.layout(mContentView.getLeft(), mContentView.getTop(), mContentView.getRight(), mContentView.getBottom());
+            return;
+        }
 
         if (monthHeight >= height && mMonthView.getHeight() > 0) {
             height = monthHeight;

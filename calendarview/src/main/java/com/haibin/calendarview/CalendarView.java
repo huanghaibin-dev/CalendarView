@@ -1184,13 +1184,14 @@ public class CalendarView extends FrameLayout {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int height = MeasureSpec.getSize(heightMeasureSpec);
-        if (mDelegate == null || height == 0 ||
+        if (mDelegate == null ||
                 !mDelegate.isFullScreenCalendar()) {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
             return;
         }
         setCalendarItemHeight((height -
-                mDelegate.getWeekBarHeight() ) / 6);
+                mDelegate.getWeekBarHeight()) / 6);
+
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
