@@ -34,6 +34,6 @@ dependencies {
     //noinspection GradleDependency
     compile 'com.github.bumptech.glide:glide:3.7.0'
     testCompile 'junit:junit:4.12'
-    compile 'com.haibin:calendarview:3.5.8'
+    compile 'com.haibin:calendarview:3.5.9'
     //compile project(':calendarview')
 }

@@ -312,6 +312,7 @@ public class MainActivity extends BaseActivity implements
         switch (v.getId()) {
             case R.id.ll_flyme:
                 MeiZuActivity.show(this);
+                //TestActivity.show(this);
                 break;
             case R.id.ll_custom:
                 CustomActivity.show(this);

@@ -5,10 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.haibin.calendarview.Calendar;
@@ -65,6 +61,7 @@ public class FullActivity extends BaseActivity implements
         mTextLunar = (TextView) findViewById(R.id.tv_lunar);
         mTextCurrentDay = (TextView) findViewById(R.id.tv_current_day);
         mCalendarView = (CalendarView) findViewById(R.id.calendarView);
+        //mCalendarView.scrollToCalendar(2019,3,13);
         mTextMonthDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

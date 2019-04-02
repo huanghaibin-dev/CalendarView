@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.haibin.calendarview.CalendarView;
 import com.haibin.calendarviewproject.base.activity.BaseActivity;
 
 /**
@@ -12,11 +13,9 @@ import com.haibin.calendarviewproject.base.activity.BaseActivity;
  * Created by huanghaibin on 2018/8/7.
  */
 
-public class TestActivity extends BaseActivity {
+public class TestActivity extends BaseActivity implements View.OnClickListener {
 
-    private FrameLayout mLayout;
-
-
+    private CalendarView mCalendarView;
     public static void show(Context context) {
         context.startActivity(new Intent(context, TestActivity.class));
     }
@@ -29,18 +28,25 @@ public class TestActivity extends BaseActivity {
     @Override
     protected void initView() {
         setStatusBarDarkMode();
-        mLayout = (FrameLayout) findViewById(R.id.customLayout);
+        findViewById(R.id.iv_next).setOnClickListener(this);
+        findViewById(R.id.iv_pre).setOnClickListener(this);
+        mCalendarView = (CalendarView) findViewById(R.id.calendar_view);
     }
 
     @Override
     protected void initData() {
-        mLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                View view = findViewById(R.id.emptyView);
-                view.requestLayout();
 
-            }
-        });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.iv_next:
+                mCalendarView.scrollToNext(false);
+                break;
+            case R.id.iv_pre:
+                mCalendarView.scrollToPre(false);
+                break;
+        }
     }
 }

@@ -122,7 +122,7 @@
     <com.haibin.calendarview.CalendarLayout
         android:id="@+id/calendarLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="#fff"
         android:orientation="vertical"
         app:calendar_content_view_id="@+id/nestedScrollView"
@@ -162,7 +162,7 @@
             app:week_bar_view="com.haibin.calendarviewproject.custom.CustomWeekBar"
             app:week_line_background="#00000000"
             app:week_line_margin="16dp"
-            app:week_start_with="mon"
+            app:week_start_with="sun"
             app:week_text_size="10sp"
             app:week_view="com.haibin.calendarviewproject.custom.CustomWeekView"
             app:year_view_background="#f6f6f6"

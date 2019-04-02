@@ -90,6 +90,16 @@ final class CalendarUtil {
     }
 
 
+    static int getMonthViewLineCount(int year, int month, int weekStartWith, int mode) {
+        if (mode == CalendarViewDelegate.MODE_ALL_MONTH) {
+            return 6;
+        }
+        int nextDiff = CalendarUtil.getMonthEndDiff(year, month, weekStartWith);
+        int preDiff = CalendarUtil.getMonthViewStartDiff(year, month, weekStartWith);
+        int monthDayCount = CalendarUtil.getMonthDaysCount(year, month);
+        return (preDiff + monthDayCount + nextDiff) / 7;
+    }
+
     /**
      * 获取月视图的确切高度
      * Test pass

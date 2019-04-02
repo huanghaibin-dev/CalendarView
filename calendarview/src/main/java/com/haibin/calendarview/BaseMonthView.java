@@ -67,11 +67,8 @@ public abstract class BaseMonthView extends BaseView {
         mYear = year;
         mMonth = month;
         initCalendar();
-        if (mDelegate.getMonthViewShowMode() == CalendarViewDelegate.MODE_ALL_MONTH) {
-            mHeight = mItemHeight * mLineCount;
-        } else {
-            mHeight = CalendarUtil.getMonthViewHeight(year, month, mItemHeight, mDelegate.getWeekStart());
-        }
+        mHeight = CalendarUtil.getMonthViewHeight(year, month, mItemHeight, mDelegate.getWeekStart(),
+                mDelegate.getMonthViewShowMode());
 
     }
 
@@ -142,12 +139,10 @@ public abstract class BaseMonthView extends BaseView {
      * 更新显示模式
      */
     final void updateShowMode() {
-        if (mDelegate.getMonthViewShowMode() == CalendarViewDelegate.MODE_ALL_MONTH) {
-            mLineCount = 6;
-            mHeight = mItemHeight * mLineCount;
-        } else {
-            mHeight = CalendarUtil.getMonthViewHeight(mYear, mMonth, mItemHeight, mDelegate.getWeekStart());
-        }
+        mLineCount = CalendarUtil.getMonthViewLineCount(mYear, mMonth,
+                mDelegate.getWeekStart(),mDelegate.getMonthViewShowMode());
+        mHeight = CalendarUtil.getMonthViewHeight(mYear, mMonth, mItemHeight, mDelegate.getWeekStart(),
+                mDelegate.getMonthViewShowMode());
         invalidate();
     }
 
@@ -156,21 +151,15 @@ public abstract class BaseMonthView extends BaseView {
      */
     final void updateWeekStart() {
         initCalendar();
-        if (mDelegate.getMonthViewShowMode() == CalendarViewDelegate.MODE_ALL_MONTH) {
-            mHeight = mItemHeight * mLineCount;
-        } else {
-            mHeight = CalendarUtil.getMonthViewHeight(mYear, mMonth, mItemHeight, mDelegate.getWeekStart());
-        }
+        mHeight = CalendarUtil.getMonthViewHeight(mYear, mMonth, mItemHeight, mDelegate.getWeekStart(),
+                mDelegate.getMonthViewShowMode());
     }
 
     @Override
     void updateItemHeight() {
         super.updateItemHeight();
-        if (mDelegate.getMonthViewShowMode() == CalendarViewDelegate.MODE_ALL_MONTH) {
-            mHeight = mItemHeight * mLineCount;
-        } else {
-            mHeight = CalendarUtil.getMonthViewHeight(mYear, mMonth, mItemHeight, mDelegate.getWeekStart());
-        }
+        mHeight = CalendarUtil.getMonthViewHeight(mYear, mMonth, mItemHeight, mDelegate.getWeekStart(),
+                mDelegate.getMonthViewShowMode());
     }
 
 

@@ -190,27 +190,43 @@ public final class MonthViewPager extends ViewPager {
     private void updateMonthViewHeight(int year, int month) {
         if (mDelegate.getMonthViewShowMode() == CalendarViewDelegate.MODE_ALL_MONTH) {//非动态高度就不需要了
             mCurrentViewHeight = 6 * mDelegate.getCalendarItemHeight();
+            ViewGroup.LayoutParams params = getLayoutParams();
+            params.height = mCurrentViewHeight;
             return;
         }
 
         if (mParentLayout != null) {
             if (getVisibility() != VISIBLE) {//如果已经显示周视图，则需要动态改变月视图高度，否则显示就有bug
                 ViewGroup.LayoutParams params = getLayoutParams();
-                params.height = CalendarUtil.getMonthViewHeight(year, month, mDelegate.getCalendarItemHeight(), mDelegate.getWeekStart());
+                params.height = CalendarUtil.getMonthViewHeight(year, month,
+                        mDelegate.getCalendarItemHeight(), mDelegate.getWeekStart(),
+                        mDelegate.getMonthViewShowMode());
                 setLayoutParams(params);
             }
             mParentLayout.updateContentViewTranslateY();
         }
-        mCurrentViewHeight = CalendarUtil.getMonthViewHeight(year, month, mDelegate.getCalendarItemHeight(), mDelegate.getWeekStart());
+        mCurrentViewHeight = CalendarUtil.getMonthViewHeight(year, month,
+                mDelegate.getCalendarItemHeight(), mDelegate.getWeekStart(),
+                mDelegate.getMonthViewShowMode());
         if (month == 1) {
-            mPreViewHeight = CalendarUtil.getMonthViewHeight(year - 1, 12, mDelegate.getCalendarItemHeight(), mDelegate.getWeekStart());
-            mNextViewHeight = CalendarUtil.getMonthViewHeight(year, 2, mDelegate.getCalendarItemHeight(), mDelegate.getWeekStart());
+            mPreViewHeight = CalendarUtil.getMonthViewHeight(year - 1, 12,
+                    mDelegate.getCalendarItemHeight(), mDelegate.getWeekStart(),
+                    mDelegate.getMonthViewShowMode());
+            mNextViewHeight = CalendarUtil.getMonthViewHeight(year, 2,
+                    mDelegate.getCalendarItemHeight(), mDelegate.getWeekStart(),
+                    mDelegate.getMonthViewShowMode());
         } else {
-            mPreViewHeight = CalendarUtil.getMonthViewHeight(year, month - 1, mDelegate.getCalendarItemHeight(), mDelegate.getWeekStart());
+            mPreViewHeight = CalendarUtil.getMonthViewHeight(year, month - 1,
+                    mDelegate.getCalendarItemHeight(), mDelegate.getWeekStart(),
+                    mDelegate.getMonthViewShowMode());
             if (month == 12) {
-                mNextViewHeight = CalendarUtil.getMonthViewHeight(year + 1, 1, mDelegate.getCalendarItemHeight(), mDelegate.getWeekStart());
+                mNextViewHeight = CalendarUtil.getMonthViewHeight(year + 1, 1,
+                        mDelegate.getCalendarItemHeight(), mDelegate.getWeekStart(),
+                        mDelegate.getMonthViewShowMode());
             } else {
-                mNextViewHeight = CalendarUtil.getMonthViewHeight(year, month + 1, mDelegate.getCalendarItemHeight(), mDelegate.getWeekStart());
+                mNextViewHeight = CalendarUtil.getMonthViewHeight(year, month + 1,
+                        mDelegate.getCalendarItemHeight(), mDelegate.getWeekStart(),
+                        mDelegate.getMonthViewShowMode());
             }
         }
     }
@@ -469,16 +485,27 @@ public final class MonthViewPager extends ViewPager {
         int year = mDelegate.mIndexCalendar.getYear();
         int month = mDelegate.mIndexCalendar.getMonth();
         mCurrentViewHeight = CalendarUtil.getMonthViewHeight(year, month,
-                mDelegate.getCalendarItemHeight(), mDelegate.getWeekStart());
+                mDelegate.getCalendarItemHeight(), mDelegate.getWeekStart(),
+                mDelegate.getMonthViewShowMode());
         if (month == 1) {
-            mPreViewHeight = CalendarUtil.getMonthViewHeight(year - 1, 12, mDelegate.getCalendarItemHeight(), mDelegate.getWeekStart());
-            mNextViewHeight = CalendarUtil.getMonthViewHeight(year, 2, mDelegate.getCalendarItemHeight(), mDelegate.getWeekStart());
+            mPreViewHeight = CalendarUtil.getMonthViewHeight(year - 1, 12,
+                    mDelegate.getCalendarItemHeight(), mDelegate.getWeekStart(),
+                    mDelegate.getMonthViewShowMode());
+            mNextViewHeight = CalendarUtil.getMonthViewHeight(year, 2,
+                    mDelegate.getCalendarItemHeight(), mDelegate.getWeekStart(),
+                    mDelegate.getMonthViewShowMode());
         } else {
-            mPreViewHeight = CalendarUtil.getMonthViewHeight(year, month - 1, mDelegate.getCalendarItemHeight(), mDelegate.getWeekStart());
+            mPreViewHeight = CalendarUtil.getMonthViewHeight(year, month - 1,
+                    mDelegate.getCalendarItemHeight(), mDelegate.getWeekStart(),
+                    mDelegate.getMonthViewShowMode());
             if (month == 12) {
-                mNextViewHeight = CalendarUtil.getMonthViewHeight(year + 1, 1, mDelegate.getCalendarItemHeight(), mDelegate.getWeekStart());
+                mNextViewHeight = CalendarUtil.getMonthViewHeight(year + 1, 1,
+                        mDelegate.getCalendarItemHeight(), mDelegate.getWeekStart(),
+                        mDelegate.getMonthViewShowMode());
             } else {
-                mNextViewHeight = CalendarUtil.getMonthViewHeight(year, month + 1, mDelegate.getCalendarItemHeight(), mDelegate.getWeekStart());
+                mNextViewHeight = CalendarUtil.getMonthViewHeight(year, month + 1,
+                        mDelegate.getCalendarItemHeight(), mDelegate.getWeekStart(),
+                        mDelegate.getMonthViewShowMode());
             }
         }
         ViewGroup.LayoutParams params = getLayoutParams();

@@ -232,7 +232,8 @@ public class CalendarLayout extends LinearLayout {
         if (mDelegate.getMonthViewShowMode() == CalendarViewDelegate.MODE_ALL_MONTH) {
             mContentViewTranslateY = 5 * mItemHeight;
         } else {
-            mContentViewTranslateY = CalendarUtil.getMonthViewHeight(calendar.getYear(), calendar.getMonth(), mItemHeight, mDelegate.getWeekStart())
+            mContentViewTranslateY = CalendarUtil.getMonthViewHeight(calendar.getYear(),
+                    calendar.getMonth(), mItemHeight, mDelegate.getWeekStart())
                     - mItemHeight;
         }
         //已经显示周视图，则需要动态平移contentView的高度
