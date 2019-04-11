@@ -121,7 +121,6 @@
             <enum name="only_week_view" value="1" />
             <enum name="only_month_view" value="2" />
         </attr>
-
         <attr name="calendar_content_view_id" format="integer" />
     </declare-styleable>
 

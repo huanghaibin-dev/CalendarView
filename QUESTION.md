@@ -9,6 +9,7 @@
 - Support for static or dynamic setting of calendar item height
 - Support date interceptor and range
 - Support multi-touch, smooth scrolling calendar
+- Support like NestedScrolling
 - All UI depends on your drawing
 
 

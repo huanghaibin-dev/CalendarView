@@ -61,7 +61,6 @@ public class FullActivity extends BaseActivity implements
         mTextLunar = (TextView) findViewById(R.id.tv_lunar);
         mTextCurrentDay = (TextView) findViewById(R.id.tv_current_day);
         mCalendarView = (CalendarView) findViewById(R.id.calendarView);
-        //mCalendarView.scrollToCalendar(2019,3,13);
         mTextMonthDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,18 +84,6 @@ public class FullActivity extends BaseActivity implements
         mTextMonthDay.setText(mCalendarView.getCurMonth() + "月" + mCalendarView.getCurDay() + "日");
         mTextLunar.setText("今日");
         mTextCurrentDay.setText(String.valueOf(mCalendarView.getCurDay()));
-
-        mCalendarView.post(new Runnable() {
-            @Override
-            public void run() {
-                //FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mCalendarView.getMonthViewPager().getLayoutParams();
-                //params.height = 3324;
-                //mCalendarView.setLayoutParams(params);
-                //mCalendarView.getMonthViewPager().setBackgroundColor(0xFF00FF00);
-            }
-        });
-//        mCalendarView.measure(View.MeasureSpec.makeMeasureSpec(1080, View.MeasureSpec.EXACTLY),
-//                View.MeasureSpec.makeMeasureSpec(3324, View.MeasureSpec.EXACTLY));
     }
 
     @Override
