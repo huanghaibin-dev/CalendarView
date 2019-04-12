@@ -20,6 +20,7 @@ import java.util.Map;
 public class RangeActivity extends BaseActivity implements
         CalendarView.OnCalendarInterceptListener,
         CalendarView.OnCalendarRangeSelectListener,
+        CalendarView.OnMonthChangeListener,
         View.OnClickListener {
 
     TextView mTextLeftDate;
@@ -59,7 +60,7 @@ public class RangeActivity extends BaseActivity implements
 
         mCalendarView = (CalendarView) findViewById(R.id.calendarView);
         mCalendarView.setOnCalendarRangeSelectListener(this);
-
+        mCalendarView.setOnMonthChangeListener(this);
         //设置日期拦截事件，当前有效
         mCalendarView.setOnCalendarInterceptListener(this);
 
@@ -197,6 +198,10 @@ public class RangeActivity extends BaseActivity implements
                 Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onMonthChange(int year, int month) {
+        Log.e("onMonthChange", "  -- " + year + "  --  " + month);
+    }
 
     @Override
     public void onCalendarSelectOutOfRange(Calendar calendar) {

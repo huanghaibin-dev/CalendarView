@@ -27,6 +27,7 @@ public class MultiActivity extends BaseActivity implements
         CalendarView.OnCalendarMultiSelectListener,
         CalendarView.OnCalendarInterceptListener,
         CalendarView.OnYearChangeListener,
+        CalendarView.OnMonthChangeListener,
         CalendarView.OnCalendarSelectListener,
         View.OnClickListener {
 
@@ -98,6 +99,7 @@ public class MultiActivity extends BaseActivity implements
         mCalendarView.setOnCalendarSelectListener(this);
         //设置日期拦截事件，当前有效
         mCalendarView.setOnCalendarInterceptListener(this);
+        mCalendarView.setOnMonthChangeListener(this);
         mTextYear.setText(String.valueOf(mCalendarView.getCurYear()));
         mYear = mCalendarView.getCurYear();
         mTextMonthDay.setText(mCalendarView.getCurMonth() + "月" + mCalendarView.getCurDay() + "日");
@@ -197,6 +199,11 @@ public class MultiActivity extends BaseActivity implements
         mTextMonthDay.setText(String.valueOf(year));
     }
 
+
+    @Override
+    public void onMonthChange(int year, int month) {
+        Log.e("onMonthChange", "  -- " + year + "  --  " + month);
+    }
 
     /**
      * 屏蔽某些不可点击的日期，可根据自己的业务自行修改

@@ -119,10 +119,10 @@ public class MainActivity extends BaseActivity implements
                                 mCalendarLayout.shrink();
                                 break;
                             case 2:
-                                mCalendarView.scrollToPre(true);
+                                mCalendarView.scrollToPre(false);
                                 break;
                             case 3:
-                                mCalendarView.scrollToNext(true);
+                                mCalendarView.scrollToNext(false);
                                 break;
                             case 4:
                                 //mCalendarView.scrollToCurrent(true);
