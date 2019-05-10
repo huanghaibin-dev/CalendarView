@@ -70,7 +70,6 @@ public class RangeActivity extends BaseActivity implements
         findViewById(R.id.tv_commit).setOnClickListener(this);
 
         mCalendarHeight = dipToPx(this, 46);
-
 //        mCalendarView.setRange(mCalendarView.getCurYear(), mCalendarView.getCurMonth(), mCalendarView.getCurDay(),
 //                mCalendarView.getCurYear() + 2, 12, 31);
     }

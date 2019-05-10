@@ -82,11 +82,19 @@ public class CustomActivity extends BaseActivity implements
             @Override
             public void onClick(View v) {
                 mCalendarView.scrollToCurrent();
-//                if(mCalendarLayout.isExpand()){
-//                    mCalendarLayout.shrink();
-//                }else {
-//                    mCalendarLayout.expand();
-//                }
+                //mCalendarView.addSchemeDate(getSchemeCalendar(2019, 6, 1, 0xFF40db25, "假"));
+//                int year = 2019;
+//                int month = 6;
+//                Map<String, Calendar> map = new HashMap<>();
+//                map.put(getSchemeCalendar(year, month, 3, 0xFF40db25, "假").toString(),
+//                        getSchemeCalendar(year, month, 3, 0xFF40db25, "假"));
+//                map.put(getSchemeCalendar(year, month, 6, 0xFFe69138, "事").toString(),
+//                        getSchemeCalendar(year, month, 6, 0xFFe69138, "事"));
+//                map.put(getSchemeCalendar(year, month, 9, 0xFFdf1356, "议").toString(),
+//                        getSchemeCalendar(year, month, 9, 0xFFdf1356, "议"));
+//                map.put(getSchemeCalendar(year, month, 13, 0xFFedc56d, "记").toString(),
+//                        getSchemeCalendar(year, month, 13, 0xFFedc56d, "记"));
+//                mCalendarView.addSchemeDate(map);
             }
         });
         mCalendarLayout = (CalendarLayout) findViewById(R.id.calendarLayout);

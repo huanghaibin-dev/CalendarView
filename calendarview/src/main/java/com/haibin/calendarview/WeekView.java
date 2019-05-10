@@ -41,7 +41,7 @@ public abstract class WeekView extends BaseWeekView {
         mItemWidth = (getWidth() - 2 * mDelegate.getCalendarPadding()) / 7;
         onPreviewHook();
 
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < mItems.size(); i++) {
             int x = i * mItemWidth + mDelegate.getCalendarPadding();
             onLoopStart(x);
             Calendar calendar = mItems.get(i);

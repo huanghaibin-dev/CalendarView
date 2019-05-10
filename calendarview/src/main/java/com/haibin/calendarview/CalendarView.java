@@ -32,6 +32,7 @@ import android.widget.FrameLayout;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -1219,6 +1220,44 @@ public class CalendarView extends FrameLayout {
         mWeekPager.updateScheme();
     }
 
+    /**
+     * 添加事物标记
+     * @param calendar calendar
+     */
+    public final void addSchemeDate(Calendar calendar) {
+        if (calendar == null || !calendar.isAvailable()) {
+            return;
+        }
+        if (mDelegate.mSchemeDatesMap == null) {
+            mDelegate.mSchemeDatesMap = new HashMap<>();
+        }
+        if (mDelegate.mSchemeDatesMap.containsKey(calendar.toString())) {
+            mDelegate.mSchemeDatesMap.remove(calendar.toString());
+        }
+        mDelegate.mSchemeDatesMap.put(calendar.toString(), calendar);
+        this.mDelegate.updateSelectCalendarScheme();
+        this.mYearViewPager.update();
+        this.mMonthPager.updateScheme();
+        this.mWeekPager.updateScheme();
+    }
+
+    /**
+     * 添加事物标记
+     * @param mSchemeDates mSchemeDates
+     */
+    public final void addSchemeDate(Map<String, Calendar> mSchemeDates) {
+        if (this.mDelegate == null || mSchemeDates == null || mSchemeDates.size() == 0) {
+            return;
+        }
+        if (this.mDelegate.mSchemeDatesMap == null) {
+            this.mDelegate.mSchemeDatesMap = new HashMap<>();
+        }
+        this.mDelegate.addSchemes(mSchemeDates);
+        this.mDelegate.updateSelectCalendarScheme();
+        this.mYearViewPager.update();
+        this.mMonthPager.updateScheme();
+        this.mWeekPager.updateScheme();
+    }
 
     /**
      * 移除某天的标记

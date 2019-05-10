@@ -992,6 +992,25 @@ final class CalendarViewDelegate {
     }
 
     /**
+     * 添加数据
+     * @param mSchemeDates mSchemeDates
+     */
+    final void addSchemes(Map<String, Calendar> mSchemeDates) {
+        if (mSchemeDates == null || mSchemeDates.size() == 0) {
+            return;
+        }
+        if (this.mSchemeDatesMap == null) {
+            this.mSchemeDatesMap = new HashMap<>();
+        }
+        for (String key : mSchemeDates.keySet()) {
+            if (this.mSchemeDatesMap.containsKey(key)) {
+                this.mSchemeDatesMap.remove(key);
+            }
+            this.mSchemeDatesMap.put(key, mSchemeDates.get(key));
+        }
+    }
+
+    /**
      * 清楚选择
      */
     final void clearSelectRange() {

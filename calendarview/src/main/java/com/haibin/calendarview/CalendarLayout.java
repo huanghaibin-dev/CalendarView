@@ -340,7 +340,7 @@ public class CalendarLayout extends LinearLayout {
                     dispatchTouchEvent(event);
                     mWeekPager.setVisibility(VISIBLE);
                     mMonthView.setVisibility(INVISIBLE);
-                    if(!isWeekView && mDelegate.mViewChangeListener!= null){
+                    if (!isWeekView && mDelegate.mViewChangeListener != null) {
                         mDelegate.mViewChangeListener.onViewChange(false);
                     }
                     isWeekView = true;
@@ -800,7 +800,12 @@ public class CalendarLayout extends LinearLayout {
                         public void onAnimationEnd(Animator animation) {
                             super.onAnimationEnd(animation);
                             isAnimating = false;
+                            isWeekView = true;
                             showWeek();
+                            if (mDelegate == null || mDelegate.mViewChangeListener == null) {
+                                return;
+                            }
+                            mDelegate.mViewChangeListener.onViewChange(false);
 
                         }
                     });
@@ -848,7 +853,7 @@ public class CalendarLayout extends LinearLayout {
         if (mWeekPager.getVisibility() == VISIBLE) {
             return;
         }
-        if (mDelegate.mViewChangeListener != null && !isWeekView) {
+        if (mDelegate != null && mDelegate.mViewChangeListener != null && !isWeekView) {
             mDelegate.mViewChangeListener.onViewChange(false);
         }
     }
@@ -861,7 +866,7 @@ public class CalendarLayout extends LinearLayout {
         if (mMonthView.getVisibility() == VISIBLE) {
             return;
         }
-        if (mDelegate.mViewChangeListener != null && isWeekView) {
+        if (mDelegate != null && mDelegate.mViewChangeListener != null && isWeekView) {
             mDelegate.mViewChangeListener.onViewChange(true);
         }
     }

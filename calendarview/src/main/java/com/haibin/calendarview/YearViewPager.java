@@ -92,7 +92,7 @@ public final class YearViewPager extends ViewPager {
         if (Math.abs(getCurrentItem() - item) > 1) {
             super.setCurrentItem(item, false);
         } else {
-            super.setCurrentItem(item, smoothScroll);
+            super.setCurrentItem(item, false);
         }
     }
 
