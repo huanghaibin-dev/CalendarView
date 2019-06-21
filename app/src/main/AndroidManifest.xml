@@ -33,6 +33,7 @@
         <activity android:name=".pager.ViewPagerActivity" />
         <activity android:name=".full.FullActivity" />
         <activity android:name=".TestActivity" />
+        <activity android:name=".CalendarActivity" />
     </application>
 
 </manifest>

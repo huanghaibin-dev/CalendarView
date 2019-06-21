@@ -407,6 +407,17 @@ public final class MonthViewPager extends ViewPager {
     }
 
     /**
+     * 更新字体颜色大小
+     */
+    final void updateStyle(){
+        for (int i = 0; i < getChildCount(); i++) {
+            BaseMonthView view = (BaseMonthView) getChildAt(i);
+            view.updateStyle();
+            view.invalidate();
+        }
+    }
+
+    /**
      * 更新标记日期
      */
     void updateScheme() {

@@ -344,7 +344,6 @@ public class CalendarLayout extends LinearLayout {
                         mDelegate.mViewChangeListener.onViewChange(false);
                     }
                     isWeekView = true;
-                    //shrink(0);
                     return false;
                 }
                 hideWeek(false);

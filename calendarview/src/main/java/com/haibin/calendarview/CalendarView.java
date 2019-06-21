@@ -1222,6 +1222,7 @@ public class CalendarView extends FrameLayout {
 
     /**
      * 添加事物标记
+     *
      * @param calendar calendar
      */
     public final void addSchemeDate(Calendar calendar) {
@@ -1243,6 +1244,7 @@ public class CalendarView extends FrameLayout {
 
     /**
      * 添加事物标记
+     *
      * @param mSchemeDates mSchemeDates
      */
     public final void addSchemeDate(Map<String, Calendar> mSchemeDates) {
@@ -1313,8 +1315,13 @@ public class CalendarView extends FrameLayout {
             int otherMonthColor,
             int curMonthLunarTextColor,
             int otherMonthLunarTextColor) {
+        if (mDelegate == null || mMonthPager == null || mWeekPager == null) {
+            return;
+        }
         mDelegate.setTextColor(currentDayTextColor, curMonthTextColor,
                 otherMonthColor, curMonthLunarTextColor, otherMonthLunarTextColor);
+        mMonthPager.updateStyle();
+        mWeekPager.updateStyle();
     }
 
     /**
@@ -1325,7 +1332,12 @@ public class CalendarView extends FrameLayout {
      * @param selectedLunarTextColor 选中的农历字体颜色
      */
     public void setSelectedColor(int selectedThemeColor, int selectedTextColor, int selectedLunarTextColor) {
+        if (mDelegate == null || mMonthPager == null || mWeekPager == null) {
+            return;
+        }
         mDelegate.setSelectColor(selectedThemeColor, selectedTextColor, selectedLunarTextColor);
+        mMonthPager.updateStyle();
+        mWeekPager.updateStyle();
     }
 
     /**
@@ -1335,7 +1347,12 @@ public class CalendarView extends FrameLayout {
      * @param schemeColor        标记背景色
      */
     public void setThemeColor(int selectedThemeColor, int schemeColor) {
+        if (mDelegate == null || mMonthPager == null || mWeekPager == null) {
+            return;
+        }
         mDelegate.setThemeColor(selectedThemeColor, schemeColor);
+        mMonthPager.updateStyle();
+        mWeekPager.updateStyle();
     }
 
     /**
@@ -1346,7 +1363,12 @@ public class CalendarView extends FrameLayout {
      * @param schemeTextColor      标记字体颜色
      */
     public void setSchemeColor(int schemeColor, int schemeTextColor, int schemeLunarTextColor) {
+        if (mDelegate == null || mMonthPager == null || mWeekPager == null) {
+            return;
+        }
         mDelegate.setSchemeColor(schemeColor, schemeTextColor, schemeLunarTextColor);
+        mMonthPager.updateStyle();
+        mWeekPager.updateStyle();
     }
 
     /**
@@ -1357,7 +1379,11 @@ public class CalendarView extends FrameLayout {
      * @param yarViewSchemeTextColor 年视图标记颜色
      */
     public void setYearViewTextColor(int yearViewMonthTextColor, int yearViewDayTextColor, int yarViewSchemeTextColor) {
+        if (mDelegate == null || mYearViewPager == null) {
+            return;
+        }
         mDelegate.setYearViewTextColor(yearViewMonthTextColor, yearViewDayTextColor, yarViewSchemeTextColor);
+        mYearViewPager.updateStyle();
     }
 
     /**
@@ -1367,6 +1393,9 @@ public class CalendarView extends FrameLayout {
      * @param weekTextColor  字体颜色
      */
     public void setWeeColor(int weekBackground, int weekTextColor) {
+        if (mWeekBar == null) {
+            return;
+        }
         mWeekBar.setBackgroundColor(weekBackground);
         mWeekBar.setTextColor(weekTextColor);
     }
@@ -1538,6 +1567,14 @@ public class CalendarView extends FrameLayout {
      * 更新当前日期
      */
     public final void updateCurrentDate() {
+        if (mDelegate == null || mMonthPager == null || mWeekPager == null) {
+            return;
+        }
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+        int day = calendar.get(java.util.Calendar.DAY_OF_MONTH);
+        if (getCurDay() == day) {
+            return;
+        }
         mDelegate.updateCurrentDay();
         mMonthPager.updateCurrentDate();
         mWeekPager.updateCurrentDate();

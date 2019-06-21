@@ -99,6 +99,17 @@ public final class YearRecyclerView extends RecyclerView {
     }
 
     /**
+     * 更新字体颜色大小
+     */
+    final void updateStyle(){
+        for (int i = 0; i < getChildCount(); i++) {
+            YearView view = (YearView) getChildAt(i);
+            view.updateStyle();
+            view.invalidate();
+        }
+    }
+
+    /**
      * 月份选择事件
      *
      * @param listener listener

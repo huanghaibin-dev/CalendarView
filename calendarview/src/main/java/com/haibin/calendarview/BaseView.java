@@ -225,41 +225,44 @@ public abstract class BaseView extends View implements View.OnClickListener, Vie
      *
      * @param delegate delegate
      */
-    void setup(CalendarViewDelegate delegate) {
+   final void setup(CalendarViewDelegate delegate) {
         this.mDelegate = delegate;
-
-        this.mCurDayTextPaint.setColor(delegate.getCurDayTextColor());
-        this.mCurDayLunarTextPaint.setColor(delegate.getCurDayLunarTextColor());
-        this.mCurMonthTextPaint.setColor(delegate.getCurrentMonthTextColor());
-        this.mOtherMonthTextPaint.setColor(delegate.getOtherMonthTextColor());
-        this.mCurMonthLunarTextPaint.setColor(delegate.getCurrentMonthLunarTextColor());
-        this.mSelectedLunarTextPaint.setColor(delegate.getSelectedLunarTextColor());
-        this.mSelectTextPaint.setColor(delegate.getSelectedTextColor());
-        this.mOtherMonthLunarTextPaint.setColor(delegate.getOtherMonthLunarTextColor());
-        this.mSchemeLunarTextPaint.setColor(delegate.getSchemeLunarTextColor());
-
-        this.mSchemePaint.setColor(delegate.getSchemeThemeColor());
-        this.mSchemeTextPaint.setColor(delegate.getSchemeTextColor());
-
-
-        this.mCurMonthTextPaint.setTextSize(delegate.getDayTextSize());
-        this.mOtherMonthTextPaint.setTextSize(delegate.getDayTextSize());
-        this.mCurDayTextPaint.setTextSize(delegate.getDayTextSize());
-        this.mSchemeTextPaint.setTextSize(delegate.getDayTextSize());
-        this.mSelectTextPaint.setTextSize(delegate.getDayTextSize());
-
-        this.mCurMonthLunarTextPaint.setTextSize(delegate.getLunarTextSize());
-        this.mSelectedLunarTextPaint.setTextSize(delegate.getLunarTextSize());
-        this.mCurDayLunarTextPaint.setTextSize(delegate.getLunarTextSize());
-        this.mOtherMonthLunarTextPaint.setTextSize(delegate.getLunarTextSize());
-        this.mSchemeLunarTextPaint.setTextSize(delegate.getLunarTextSize());
-
-        this.mSelectedPaint.setStyle(Paint.Style.FILL);
-        this.mSelectedPaint.setColor(delegate.getSelectedThemeColor());
-
+        updateStyle();
         updateItemHeight();
 
         initPaint();
+    }
+
+
+    final void updateStyle(){
+        if(mDelegate == null){
+            return;
+        }
+        this.mCurDayTextPaint.setColor(mDelegate.getCurDayTextColor());
+        this.mCurDayLunarTextPaint.setColor(mDelegate.getCurDayLunarTextColor());
+        this.mCurMonthTextPaint.setColor(mDelegate.getCurrentMonthTextColor());
+        this.mOtherMonthTextPaint.setColor(mDelegate.getOtherMonthTextColor());
+        this.mCurMonthLunarTextPaint.setColor(mDelegate.getCurrentMonthLunarTextColor());
+        this.mSelectedLunarTextPaint.setColor(mDelegate.getSelectedLunarTextColor());
+        this.mSelectTextPaint.setColor(mDelegate.getSelectedTextColor());
+        this.mOtherMonthLunarTextPaint.setColor(mDelegate.getOtherMonthLunarTextColor());
+        this.mSchemeLunarTextPaint.setColor(mDelegate.getSchemeLunarTextColor());
+        this.mSchemePaint.setColor(mDelegate.getSchemeThemeColor());
+        this.mSchemeTextPaint.setColor(mDelegate.getSchemeTextColor());
+        this.mCurMonthTextPaint.setTextSize(mDelegate.getDayTextSize());
+        this.mOtherMonthTextPaint.setTextSize(mDelegate.getDayTextSize());
+        this.mCurDayTextPaint.setTextSize(mDelegate.getDayTextSize());
+        this.mSchemeTextPaint.setTextSize(mDelegate.getDayTextSize());
+        this.mSelectTextPaint.setTextSize(mDelegate.getDayTextSize());
+
+        this.mCurMonthLunarTextPaint.setTextSize(mDelegate.getLunarTextSize());
+        this.mSelectedLunarTextPaint.setTextSize(mDelegate.getLunarTextSize());
+        this.mCurDayLunarTextPaint.setTextSize(mDelegate.getLunarTextSize());
+        this.mOtherMonthLunarTextPaint.setTextSize(mDelegate.getLunarTextSize());
+        this.mSchemeLunarTextPaint.setTextSize(mDelegate.getLunarTextSize());
+
+        this.mSelectedPaint.setStyle(Paint.Style.FILL);
+        this.mSelectedPaint.setColor(mDelegate.getSelectedThemeColor());
     }
 
     void updateItemHeight() {

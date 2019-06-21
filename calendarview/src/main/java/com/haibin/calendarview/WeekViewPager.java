@@ -285,6 +285,16 @@ public final class WeekViewPager extends ViewPager {
         }
     }
 
+    /**
+     * 更新字体颜色大小
+     */
+    final void updateStyle(){
+        for (int i = 0; i < getChildCount(); i++) {
+            BaseWeekView view = (BaseWeekView) getChildAt(i);
+            view.updateStyle();
+            view.invalidate();
+        }
+    }
 
     /**
      * 更新标记日期

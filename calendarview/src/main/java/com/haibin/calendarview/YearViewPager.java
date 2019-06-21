@@ -145,6 +145,16 @@ public final class YearViewPager extends ViewPager {
         }
     }
 
+    /**
+     * 更新字体颜色大小
+     */
+    final void updateStyle(){
+        for (int i = 0; i < getChildCount(); i++) {
+            YearRecyclerView view = (YearRecyclerView) getChildAt(i);
+            view.updateStyle();
+        }
+    }
+
     final void setOnMonthSelectedListener(YearRecyclerView.OnMonthSelectedListener listener) {
         this.mListener = listener;
     }

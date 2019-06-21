@@ -34,6 +34,18 @@ public class LunarCalendarTest {
 
     }
 
+
+    /**
+     * 测试每个月农历有多少天，也可适用于除夕算法
+     *
+     * @throws Exception Exception
+     */
+    @Test
+    public void daysInLunarMonth() throws Exception {
+        int d = LunarCalendar.daysInLunarMonth(2019,12);
+        assertEquals(30,d);
+    }
+
     /**
      * 测试每年冬至是具体几日
      *

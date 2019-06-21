@@ -126,8 +126,7 @@
         android:background="#fff"
         android:orientation="vertical"
         app:calendar_content_view_id="@+id/nestedScrollView"
-        app:calendar_show_mode="both_month_week_view"
-        app:default_status="shrink">
+        app:calendar_show_mode="both_month_week_view">
 
         <com.haibin.calendarview.CalendarView
             android:id="@+id/calendarView"

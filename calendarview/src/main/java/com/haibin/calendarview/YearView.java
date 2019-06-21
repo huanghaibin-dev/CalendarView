@@ -243,21 +243,28 @@ public abstract class YearView extends View {
      */
     final void setup(CalendarViewDelegate delegate) {
         this.mDelegate = delegate;
-        this.mCurMonthTextPaint.setTextSize(delegate.getYearViewDayTextSize());
-        this.mSchemeTextPaint.setTextSize(delegate.getYearViewDayTextSize());
-        this.mOtherMonthTextPaint.setTextSize(delegate.getYearViewDayTextSize());
-        this.mCurDayTextPaint.setTextSize(delegate.getYearViewDayTextSize());
-        this.mSelectTextPaint.setTextSize(delegate.getYearViewDayTextSize());
+        updateStyle();
+    }
 
-        this.mSchemeTextPaint.setColor(delegate.getYearViewSchemeTextColor());
-        this.mCurMonthTextPaint.setColor(delegate.getYearViewDayTextColor());
-        this.mOtherMonthTextPaint.setColor(delegate.getYearViewDayTextColor());
-        this.mCurDayTextPaint.setColor(delegate.getYearViewCurDayTextColor());
-        this.mSelectTextPaint.setColor(delegate.getYearViewSelectTextColor());
-        this.mMonthTextPaint.setTextSize(delegate.getYearViewMonthTextSize());
-        this.mMonthTextPaint.setColor(delegate.getYearViewMonthTextColor());
-        this.mWeekTextPaint.setColor(delegate.getYearViewWeekTextColor());
-        this.mWeekTextPaint.setTextSize(delegate.getYearViewWeekTextSize());
+    final void updateStyle(){
+        if(mDelegate == null){
+            return;
+        }
+        this.mCurMonthTextPaint.setTextSize(mDelegate.getYearViewDayTextSize());
+        this.mSchemeTextPaint.setTextSize(mDelegate.getYearViewDayTextSize());
+        this.mOtherMonthTextPaint.setTextSize(mDelegate.getYearViewDayTextSize());
+        this.mCurDayTextPaint.setTextSize(mDelegate.getYearViewDayTextSize());
+        this.mSelectTextPaint.setTextSize(mDelegate.getYearViewDayTextSize());
+
+        this.mSchemeTextPaint.setColor(mDelegate.getYearViewSchemeTextColor());
+        this.mCurMonthTextPaint.setColor(mDelegate.getYearViewDayTextColor());
+        this.mOtherMonthTextPaint.setColor(mDelegate.getYearViewDayTextColor());
+        this.mCurDayTextPaint.setColor(mDelegate.getYearViewCurDayTextColor());
+        this.mSelectTextPaint.setColor(mDelegate.getYearViewSelectTextColor());
+        this.mMonthTextPaint.setTextSize(mDelegate.getYearViewMonthTextSize());
+        this.mMonthTextPaint.setColor(mDelegate.getYearViewMonthTextColor());
+        this.mWeekTextPaint.setColor(mDelegate.getYearViewWeekTextColor());
+        this.mWeekTextPaint.setTextSize(mDelegate.getYearViewWeekTextSize());
     }
 
     /**
