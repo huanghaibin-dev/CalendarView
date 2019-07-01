@@ -49,6 +49,18 @@ final class CalendarViewDelegate {
      */
     static final int WEEK_START_WITH_SAT = 7;
 
+    /**
+     * 默认选择日期1号
+     */
+    static final int DEFAULT_MONTH_VIEW_SELECT_DAY = 0;
+
+    /**
+     * 跟随上个月
+     */
+    static final int LAST_MONTH_VIEW_SELECT_DAY = 1;
+
+
+    private int mDefaultCalendarSelectDay;
 
     /**
      * 周起始
@@ -403,6 +415,8 @@ final class CalendarViewDelegate {
         mWeekViewScrollable = array.getBoolean(R.styleable.CalendarView_week_view_scrollable, true);
         mYearViewScrollable = array.getBoolean(R.styleable.CalendarView_year_view_scrollable, true);
 
+        mDefaultCalendarSelectDay = array.getInt(R.styleable.CalendarView_month_view_auto_select_day,
+                1);
 
         mMonthViewShowMode = array.getInt(R.styleable.CalendarView_month_view_show_mode, MODE_ALL_MONTH);
         mWeekStart = array.getInt(R.styleable.CalendarView_week_start_with, WEEK_START_WITH_SUN);
@@ -803,6 +817,14 @@ final class CalendarViewDelegate {
         this.mWeekStart = mWeekStart;
     }
 
+    void setDefaultCalendarSelectDay(int defaultCalendarSelect) {
+        this.mDefaultCalendarSelectDay = defaultCalendarSelect;
+    }
+
+    int getDefaultCalendarSelectDay() {
+        return mDefaultCalendarSelectDay;
+    }
+
     int getWeekTextSize() {
         return mWeekTextSize;
     }
@@ -993,6 +1015,7 @@ final class CalendarViewDelegate {
 
     /**
      * 添加数据
+     *
      * @param mSchemeDates mSchemeDates
      */
     final void addSchemes(Map<String, Calendar> mSchemeDates) {

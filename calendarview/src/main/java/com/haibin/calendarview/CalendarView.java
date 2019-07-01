@@ -479,6 +479,7 @@ public class CalendarView extends FrameLayout {
      *
      * @param smoothScroll smoothScroll
      */
+    @SuppressWarnings("all")
     public void scrollToNext(boolean smoothScroll) {
         if (isYearSelectLayoutVisible()) {
             mYearViewPager.setCurrentItem(mYearViewPager.getCurrentItem() + 1, smoothScroll);
@@ -502,6 +503,7 @@ public class CalendarView extends FrameLayout {
      *
      * @param smoothScroll smoothScroll
      */
+    @SuppressWarnings("all")
     public void scrollToPre(boolean smoothScroll) {
         if (isYearSelectLayoutVisible()) {
             mYearViewPager.setCurrentItem(mYearViewPager.getCurrentItem() - 1, smoothScroll);
@@ -619,6 +621,15 @@ public class CalendarView extends FrameLayout {
      */
     public final void setYearViewScrollable(boolean yearViewScrollable) {
         mDelegate.setYearViewScrollable(yearViewScrollable);
+    }
+
+
+    public final void setDefaultMonthViewSelectDay(){
+        mDelegate.setDefaultCalendarSelectDay(CalendarViewDelegate.DEFAULT_MONTH_VIEW_SELECT_DAY);
+    }
+
+    public final void setLastMonthViewSelectDay(){
+        mDelegate.setDefaultCalendarSelectDay(CalendarViewDelegate.LAST_MONTH_VIEW_SELECT_DAY);
     }
 
     /**
