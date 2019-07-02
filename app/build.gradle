@@ -2,17 +2,16 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 28
     //noinspection GradleDependency
-    buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.haibin.calendarviewproject"
         minSdkVersion 15
         //noinspection OldTargetApi
-        targetSdkVersion 25
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -23,17 +22,17 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     //noinspection GradleDependency
-    compile 'com.android.support:appcompat-v7:25.2.0'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
     //noinspection GradleDependency
-    compile 'com.android.support:design:25.2.0'
+    implementation 'com.google.android.material:material:1.0.0'
     //noinspection GradleDependency
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    testCompile 'junit:junit:4.12'
-    compile 'com.haibin:calendarview:3.6.3'
-    //compile project(':calendarview')
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    testImplementation 'junit:junit:4.12'
+    //compile 'com.haibin:calendarview:3.6.3'
+    implementation project(':calendarview')
 }
