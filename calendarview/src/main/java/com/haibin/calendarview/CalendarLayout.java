@@ -26,9 +26,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.Nullable;
-import android.support.v4.view.MotionEventCompat;
-import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -38,6 +35,10 @@ import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.AbsListView;
 import android.widget.LinearLayout;
+
+import androidx.annotation.Nullable;
+import androidx.core.view.MotionEventCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 /**

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="DBNavigator.Project.DataEditorManager">
     <record-view-column-sorting-type value="BY_INDEX" />
-    <value-preview-text-wrapping value="true" />
+    <value-preview-text-wrapping value="false" />
     <value-preview-pinned value="false" />
   </component>
   <component name="DBNavigator.Project.DataExportManager">
@@ -16,7 +16,7 @@
       <scope value="GLOBAL" />
       <destination value="FILE" />
       <format value="EXCEL" />
-      <charset value="UTF-8" />
+      <charset value="GBK" />
     </export-instructions>
   </component>
   <component name="DBNavigator.Project.DatabaseBrowserManager">
@@ -24,6 +24,9 @@
     <autoscroll-from-editor value="true" />
     <show-object-properties value="true" />
     <loaded-nodes />
+  </component>
+  <component name="DBNavigator.Project.DatabaseFileManager">
+    <open-files />
   </component>
   <component name="DBNavigator.Project.EditorStateManager">
     <last-used-providers />
@@ -151,11 +154,11 @@
         <data-length-threshold value="100" />
         <popup-delay value="1000" />
       </text-editor-popup>
-      <values-list-popup>
+      <values-actions-popup>
         <show-popup-button value="true" />
         <element-count-threshold value="1000" />
         <data-length-threshold value="250" />
-      </values-list-popup>
+      </values-actions-popup>
       <general>
         <fetch-block-size value="100" />
         <fetch-timeout value="30" />
