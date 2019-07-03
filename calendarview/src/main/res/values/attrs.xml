@@ -102,8 +102,9 @@
 
         <!-- auto select day -->
         <attr name="month_view_auto_select_day">
-            <enum name="first_month_of_day" value="0" />
-            <enum name="last_select" value="1" />
+            <enum name="first_day_of_month" value="0" />
+            <enum name="last_select_day" value="1" />
+            <enum name="last_select_day_ignore_current" value="2" />
         </attr>
     </declare-styleable>
 

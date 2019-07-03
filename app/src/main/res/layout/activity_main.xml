@@ -172,6 +172,7 @@
             app:year_view_scheme_color="#f17706"
             app:year_view_week_height="0dp"
             app:year_view_week_text_color="#666666"
+            app:month_view_auto_select_day="last_select_day_ignore_current"
             app:year_view_week_text_size="7sp" />
 
 

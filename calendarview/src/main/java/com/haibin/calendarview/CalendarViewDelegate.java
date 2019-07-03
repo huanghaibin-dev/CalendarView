@@ -50,15 +50,19 @@ final class CalendarViewDelegate {
     static final int WEEK_START_WITH_SAT = 7;
 
     /**
-     * 默认选择日期1号
+     * 默认选择日期1号first_day_of_month
      */
-    static final int DEFAULT_MONTH_VIEW_SELECT_DAY = 0;
+    static final int FIRST_DAY_OF_MONTH = 0;
 
     /**
-     * 跟随上个月
+     * 跟随上个月last_select_day
      */
     static final int LAST_MONTH_VIEW_SELECT_DAY = 1;
 
+    /**
+     * 跟随上个月last_select_day_ignore_current忽视今天
+     */
+    static final int LAST_MONTH_VIEW_SELECT_DAY_IGNORE_CURRENT = 2;
 
     private int mDefaultCalendarSelectDay;
 
@@ -416,7 +420,7 @@ final class CalendarViewDelegate {
         mYearViewScrollable = array.getBoolean(R.styleable.CalendarView_year_view_scrollable, true);
 
         mDefaultCalendarSelectDay = array.getInt(R.styleable.CalendarView_month_view_auto_select_day,
-                1);
+                FIRST_DAY_OF_MONTH);
 
         mMonthViewShowMode = array.getInt(R.styleable.CalendarView_month_view_show_mode, MODE_ALL_MONTH);
         mWeekStart = array.getInt(R.styleable.CalendarView_week_start_with, WEEK_START_WITH_SUN);
@@ -1075,11 +1079,13 @@ final class CalendarViewDelegate {
             calendar.setYear(date.get(java.util.Calendar.YEAR));
             calendar.setMonth(date.get(java.util.Calendar.MONTH) + 1);
             calendar.setDay(date.get(java.util.Calendar.DAY_OF_MONTH));
+            LunarCalendar.setupLunarCalendar(calendar);
+            updateCalendarScheme(calendar);
             if (mCalendarInterceptListener != null &&
                     mCalendarInterceptListener.onCalendarIntercept(calendar)) {
                 continue;
             }
-            LunarCalendar.setupLunarCalendar(calendar);
+
             calendars.add(calendar);
         }
         addSchemesFromMap(calendars);

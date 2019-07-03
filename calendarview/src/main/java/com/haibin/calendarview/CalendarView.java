@@ -625,11 +625,15 @@ public class CalendarView extends FrameLayout {
 
 
     public final void setDefaultMonthViewSelectDay(){
-        mDelegate.setDefaultCalendarSelectDay(CalendarViewDelegate.DEFAULT_MONTH_VIEW_SELECT_DAY);
+        mDelegate.setDefaultCalendarSelectDay(CalendarViewDelegate.FIRST_DAY_OF_MONTH);
     }
 
     public final void setLastMonthViewSelectDay(){
         mDelegate.setDefaultCalendarSelectDay(CalendarViewDelegate.LAST_MONTH_VIEW_SELECT_DAY);
+    }
+
+    public final void setLastMonthViewSelectDayIgnoreCurrent(){
+        mDelegate.setDefaultCalendarSelectDay(CalendarViewDelegate.LAST_MONTH_VIEW_SELECT_DAY_IGNORE_CURRENT);
     }
 
     /**
