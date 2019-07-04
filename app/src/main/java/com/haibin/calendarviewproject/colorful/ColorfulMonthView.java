@@ -59,6 +59,7 @@ public class ColorfulMonthView extends MonthView {
         canvas.drawCircle(cx, cy, mRadius, mSchemePaint);
     }
 
+    @SuppressWarnings("IntegerDivisionInFloatingPointContext")
     @Override
     protected void onDrawText(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme, boolean isSelected) {
         int cx = x + mItemWidth / 2;

@@ -2,7 +2,9 @@ package com.haibin.calendarviewproject;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+
 import androidx.appcompat.app.AlertDialog;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -73,14 +75,14 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void initView() {
         setStatusBarDarkMode();
-        mTextMonthDay = (TextView) findViewById(R.id.tv_month_day);
-        mTextYear = (TextView) findViewById(R.id.tv_year);
-        mTextLunar = (TextView) findViewById(R.id.tv_lunar);
+        mTextMonthDay = findViewById(R.id.tv_month_day);
+        mTextYear = findViewById(R.id.tv_year);
+        mTextLunar = findViewById(R.id.tv_lunar);
 
-        mRelativeTool = (RelativeLayout) findViewById(R.id.rl_tool);
-        mCalendarView = (CalendarView) findViewById(R.id.calendarView);
+        mRelativeTool = findViewById(R.id.rl_tool);
+        mCalendarView = findViewById(R.id.calendarView);
         //mCalendarView.setRange(2018, 7, 1, 2019, 4, 28);
-        mTextCurrentDay = (TextView) findViewById(R.id.tv_current_day);
+        mTextCurrentDay = findViewById(R.id.tv_current_day);
         mTextMonthDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,7 +118,8 @@ public class MainActivity extends BaseActivity implements
                                 mCalendarLayout.expand();
                                 break;
                             case 1:
-                                mCalendarLayout.shrink();
+                                boolean result = mCalendarLayout.shrink();
+                                Log.e("shrink", " --  " + result);
                                 break;
                             case 2:
                                 mCalendarView.scrollToPre(false);
@@ -126,7 +129,7 @@ public class MainActivity extends BaseActivity implements
                                 break;
                             case 4:
                                 //mCalendarView.scrollToCurrent(true);
-                                mCalendarView.scrollToCalendar(2018,12,30);
+                                mCalendarView.scrollToCalendar(2018, 12, 30);
                                 break;
                             case 5:
                                 mCalendarView.setRange(2018, 7, 1, 2019, 4, 28);
@@ -163,7 +166,7 @@ public class MainActivity extends BaseActivity implements
             }
         });
 
-        mCalendarLayout = (CalendarLayout) findViewById(R.id.calendarLayout);
+        mCalendarLayout = findViewById(R.id.calendarLayout);
         mCalendarView.setOnYearChangeListener(this);
         mCalendarView.setOnCalendarSelectListener(this);
         mCalendarView.setOnMonthChangeListener(this);

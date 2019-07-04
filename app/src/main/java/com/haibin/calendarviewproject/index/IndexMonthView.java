@@ -45,6 +45,7 @@ public class IndexMonthView extends MonthView {
      * @param x        日历Card x起点坐标
      * @param y        日历Card y起点坐标
      */
+    @SuppressWarnings("IntegerDivisionInFloatingPointContext")
     @Override
     protected void onDrawScheme(Canvas canvas, Calendar calendar, int x, int y) {
         mSchemeBasicPaint.setColor(calendar.getSchemeColor());
@@ -54,6 +55,7 @@ public class IndexMonthView extends MonthView {
                 y + mItemHeight - mH - mPadding, mSchemeBasicPaint);
     }
 
+    @SuppressWarnings("IntegerDivisionInFloatingPointContext")
     @Override
     protected void onDrawText(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme, boolean isSelected) {
         int cx = x + mItemWidth / 2;

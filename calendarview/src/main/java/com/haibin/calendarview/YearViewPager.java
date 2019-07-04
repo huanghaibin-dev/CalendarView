@@ -24,6 +24,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
@@ -57,17 +58,18 @@ public final class YearViewPager extends ViewPager {
             }
 
             @Override
-            public int getItemPosition(Object object) {
+            public int getItemPosition(@NonNull Object object) {
                 return isUpdateYearView ? POSITION_NONE : super.getItemPosition(object);
             }
 
             @Override
-            public boolean isViewFromObject(View view, Object object) {
+            public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
                 return view == object;
             }
 
+            @NonNull
             @Override
-            public Object instantiateItem(ViewGroup container, int position) {
+            public Object instantiateItem(@NonNull ViewGroup container, int position) {
                 YearRecyclerView view = new YearRecyclerView(getContext());
                 container.addView(view);
                 view.setup(mDelegate);
@@ -77,7 +79,7 @@ public final class YearViewPager extends ViewPager {
             }
 
             @Override
-            public void destroyItem(ViewGroup container, int position, Object object) {
+            public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
                 container.removeView((View) object);
             }
         });
@@ -103,7 +105,10 @@ public final class YearViewPager extends ViewPager {
      */
     void notifyDataSetChanged() {
         this.mYearCount = mDelegate.getMaxYear() - mDelegate.getMinYear() + 1;
-        getAdapter().notifyDataSetChanged();
+        if(getAdapter() != null){
+            getAdapter().notifyDataSetChanged();
+        }
+
     }
 
     /**
@@ -131,7 +136,7 @@ public final class YearViewPager extends ViewPager {
     final void update() {
         for (int i = 0; i < getChildCount(); i++) {
             YearRecyclerView view = (YearRecyclerView) getChildAt(i);
-            view.getAdapter().notifyDataSetChanged();
+            view.notifyAdapterDataSetChanged();
         }
     }
 
@@ -143,7 +148,7 @@ public final class YearViewPager extends ViewPager {
         for (int i = 0; i < getChildCount(); i++) {
             YearRecyclerView view = (YearRecyclerView) getChildAt(i);
             view.updateWeekStart();
-            view.getAdapter().notifyDataSetChanged();
+            view.notifyAdapterDataSetChanged();
         }
     }
 
@@ -160,6 +165,7 @@ public final class YearViewPager extends ViewPager {
     final void setOnMonthSelectedListener(YearRecyclerView.OnMonthSelectedListener listener) {
         this.mListener = listener;
     }
+
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {

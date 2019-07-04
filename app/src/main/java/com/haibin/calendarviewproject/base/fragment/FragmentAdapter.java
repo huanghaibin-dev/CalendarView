@@ -1,5 +1,6 @@
 package com.haibin.calendarviewproject.base.fragment;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -9,7 +10,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@SuppressWarnings("unused")
 public class FragmentAdapter extends FragmentPagerAdapter {
     private List<Fragment> mFragment = new ArrayList<>();
     private final FragmentManager mFragmentManager;
@@ -31,12 +32,14 @@ public class FragmentAdapter extends FragmentPagerAdapter {
     }
 
     @Override
-    public int getItemPosition(Object object) {
+    public int getItemPosition(@NonNull Object object) {
         return POSITION_NONE;
     }
 
+
+    @NonNull
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(@NonNull ViewGroup container, int position) {
         if (mUpdateFlag) {
             Fragment fragment = (Fragment) super.instantiateItem(container, position);
             String tag = fragment.getTag();
@@ -53,13 +56,13 @@ public class FragmentAdapter extends FragmentPagerAdapter {
         return super.instantiateItem(container, position);
     }
 
-   public void reset(List<Fragment> fragments) {
+    public void reset(List<Fragment> fragments) {
         mFragment.clear();
         mFragment.addAll(fragments);
     }
 
     @Override
-    public void setPrimaryItem(ViewGroup container, int position, Object object) {
+    public void setPrimaryItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         super.setPrimaryItem(container, position, object);
         if (object instanceof Fragment) {
             mCurFragment = (Fragment) object;

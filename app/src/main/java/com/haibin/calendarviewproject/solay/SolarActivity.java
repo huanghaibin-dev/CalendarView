@@ -62,12 +62,12 @@ public class SolarActivity extends BaseActivity implements
         if (Build.VERSION.SDK_INT >= 21) {
             getWindow().setStatusBarColor(getResources().getColor(R.color.solar_background));
         }
-        mTextMonthDay = (TextView) findViewById(R.id.tv_month_day);
-        mTextYear = (TextView) findViewById(R.id.tv_year);
-        mTextLunar = (TextView) findViewById(R.id.tv_lunar);
-        mRelativeTool = (RelativeLayout) findViewById(R.id.rl_tool);
-        mCalendarView = (CalendarView) findViewById(R.id.calendarView);
-        mTextCurrentDay = (TextView) findViewById(R.id.tv_current_day);
+        mTextMonthDay = findViewById(R.id.tv_month_day);
+        mTextYear = findViewById(R.id.tv_year);
+        mTextLunar = findViewById(R.id.tv_lunar);
+        mRelativeTool = findViewById(R.id.rl_tool);
+        mCalendarView = findViewById(R.id.calendarView);
+        mTextCurrentDay = findViewById(R.id.tv_current_day);
         mTextMonthDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -87,7 +87,7 @@ public class SolarActivity extends BaseActivity implements
                 mCalendarView.scrollToCurrent();
             }
         });
-        mCalendarLayout = (CalendarLayout) findViewById(R.id.calendarLayout);
+        mCalendarLayout = findViewById(R.id.calendarLayout);
         mCalendarView.setOnCalendarSelectListener(this);
         mCalendarView.setOnYearChangeListener(this);
         mTextYear.setText(String.valueOf(mCalendarView.getCurYear()));
@@ -125,7 +125,7 @@ public class SolarActivity extends BaseActivity implements
         mCalendarView.setSchemeDate(map);
 
 
-        mRecyclerView = (GroupRecyclerView) findViewById(R.id.recyclerView);
+        mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.addItemDecoration(new GroupItemDecoration<String, Article>());
         mRecyclerView.setAdapter(new ArticleAdapter(this));
@@ -170,6 +170,7 @@ public class SolarActivity extends BaseActivity implements
 
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onCalendarSelect(Calendar calendar, boolean isClick) {
         mTextLunar.setVisibility(View.VISIBLE);

@@ -1007,6 +1007,9 @@ final class CalendarViewDelegate {
         for (Calendar a : mItems) {
             if (mSchemeDatesMap.containsKey(a.toString())) {
                 Calendar d = mSchemeDatesMap.get(a.toString());
+                if(d == null){
+                    continue;
+                }
                 a.setScheme(TextUtils.isEmpty(d.getScheme()) ? getSchemeText() : d.getScheme());
                 a.setSchemeColor(d.getSchemeColor());
                 a.setSchemes(d.getSchemes());
@@ -1031,10 +1034,12 @@ final class CalendarViewDelegate {
             this.mSchemeDatesMap = new HashMap<>();
         }
         for (String key : mSchemeDates.keySet()) {
-            if (this.mSchemeDatesMap.containsKey(key)) {
-                this.mSchemeDatesMap.remove(key);
+            this.mSchemeDatesMap.remove(key);
+            Calendar calendar = mSchemeDates.get(key);
+            if(calendar == null){
+                continue;
             }
-            this.mSchemeDatesMap.put(key, mSchemeDates.get(key));
+            this.mSchemeDatesMap.put(key,calendar);
         }
     }
 

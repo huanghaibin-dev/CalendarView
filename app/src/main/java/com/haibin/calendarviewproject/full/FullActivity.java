@@ -56,11 +56,11 @@ public class FullActivity extends BaseActivity implements
     protected void initView() {
 
         setStatusBarDarkMode();
-        mTextMonthDay = (TextView) findViewById(R.id.tv_month_day);
-        mTextYear = (TextView) findViewById(R.id.tv_year);
-        mTextLunar = (TextView) findViewById(R.id.tv_lunar);
-        mTextCurrentDay = (TextView) findViewById(R.id.tv_current_day);
-        mCalendarView = (CalendarView) findViewById(R.id.calendarView);
+        mTextMonthDay = findViewById(R.id.tv_month_day);
+        mTextYear = findViewById(R.id.tv_year);
+        mTextLunar = findViewById(R.id.tv_lunar);
+        mTextCurrentDay = findViewById(R.id.tv_current_day);
+        mCalendarView = findViewById(R.id.calendarView);
         mTextMonthDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
