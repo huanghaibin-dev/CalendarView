@@ -33,6 +33,6 @@ dependencies {
     //noinspection GradleDependency
     implementation 'com.github.bumptech.glide:glide:3.7.0'
     testImplementation 'junit:junit:4.12'
-    //compile 'com.haibin:calendarview:3.6.3'
     implementation project(':calendarview')
+  
 }
