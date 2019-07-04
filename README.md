@@ -12,14 +12,14 @@ You can't think of the calendar can be so elegant!
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.6.3'
+compile 'com.haibin:calendarview:3.6.4'
 ```
 
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.6.3</version>
+  <version>3.6.4</version>
   <type>pom</type>
 </dependency>
 ```

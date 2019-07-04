@@ -6,19 +6,19 @@ Android上一个优雅、高度自定义、性能高效的日历控件，完美�
 
 插拔式设计：好比插座一样，插上灯泡就会亮，插上风扇就会转，看用户需求什么而不是看插座有什么，只要是电器即可。此框架使用插拔式，既可以在编译时指定年月日视图，如：app:month_view="xxx.xxx.MonthView.class"，也可在运行时动态更换年月日视图，如：CalendarView.setMonthViewClass(MonthView.Class)，从而达到UI即插即用的效果，相当于框架不提供UI实现，让UI都由客户端实现，不至于日历UI都千篇一律，只需遵守插拔式接口即可随意定制，自由化程度非常高。
 
-[**English Version**](https://github.com/huanghaibin-dev/CalendarView/blob/master/QUESTION_ZH.md)
+[**English Version**](https://github.com/huanghaibin-dev/CalendarView/blob/master/QUESTION.md)
 
 [**详细介绍**](https://github.com/huanghaibin-dev/CalendarView/blob/master/QUESTION_ZH.md)
 
 ### Gradle
 ```
-compile 'com.haibin:calendarview:3.6.3
+compile 'com.haibin:calendarview:3.6.4
 ```
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.6.3</version>
+  <version>3.6.4</version>
   <type>pom</type>
 </dependency>
 ```
@@ -54,7 +54,7 @@ compile 'com.haibin:calendarview:3.6.3
 <img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/year_view.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/range.png" height="650"/>
 ### 中国式变态需求风格
 <img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/custom_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/custom_shrink.png" height="650"/>
-### 收缩展开的魅族风格效果
+### 收缩展开的魅族风格效果a
 <img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/meizu_expand.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/meizu_shrink.png" height="650"/>
 ### 全屏和多彩风格
 <img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/full_calendar.png" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/color_expand.png" height="650"/>

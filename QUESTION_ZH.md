@@ -413,6 +413,13 @@ int differ(Calendar calendar);//日期运算，相差多少天
         <!-- 当 select_mode=range_mode -->
         <attr name="min_select_range" format="integer" />
         <attr name="max_select_range" format="integer" />
+        
+        <!-- auto select day -->
+        <attr name="month_view_auto_select_day">
+              <enum name="first_day_of_month" value="0" />
+              <enum name="last_select_day" value="1" />
+              <enum name="last_select_day_ignore_current" value="2" />
+        </attr>
 </declare-styleable>
 
 ```

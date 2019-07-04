@@ -729,7 +729,14 @@ final class CalendarUtil {
         Calendar calendar = new Calendar();
         calendar.setYear((position + delegate.getMinYearMonth() - 1) / 12 + delegate.getMinYear());
         calendar.setMonth((position + delegate.getMinYearMonth() - 1) % 12 + 1);
-        calendar.setDay(1);
+        if (delegate.getDefaultCalendarSelectDay() != CalendarViewDelegate.FIRST_DAY_OF_MONTH) {
+            int monthDays = getMonthDaysCount(calendar.getYear(), calendar.getMonth());
+            Calendar indexCalendar = delegate.mIndexCalendar;
+            calendar.setDay(indexCalendar == null || indexCalendar.getDay() == 0 ? 1 :
+                    monthDays < indexCalendar.getDay() ? monthDays : indexCalendar.getDay());
+        } else {
+            calendar.setDay(1);
+        }
         if (!isCalendarInRange(calendar, delegate)) {
             if (isMinRangeEdge(calendar, delegate)) {
                 calendar = delegate.getMinRangeCalendar();
@@ -753,7 +760,8 @@ final class CalendarUtil {
      * @return 获取边界访问日期
      */
     static Calendar getRangeEdgeCalendar(Calendar calendar, CalendarViewDelegate delegate) {
-        if (CalendarUtil.isCalendarInRange(delegate.getCurrentDay(), delegate)) {
+        if (CalendarUtil.isCalendarInRange(delegate.getCurrentDay(), delegate)
+                && delegate.getDefaultCalendarSelectDay() != CalendarViewDelegate.LAST_MONTH_VIEW_SELECT_DAY_IGNORE_CURRENT) {
             return delegate.createCurrentDate();
         }
         if (isCalendarInRange(calendar, delegate)) {
