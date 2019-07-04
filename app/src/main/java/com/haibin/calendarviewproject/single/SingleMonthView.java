@@ -129,7 +129,6 @@ public class SingleMonthView extends MonthView {
      * @param dpValue dp
      * @return px
      */
-    @SuppressWarnings("all")
     private static int dipToPx(Context context, float dpValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);

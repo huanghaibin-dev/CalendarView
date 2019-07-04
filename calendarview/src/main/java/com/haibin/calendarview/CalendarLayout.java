@@ -37,7 +37,6 @@ import android.widget.AbsListView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
-import androidx.core.view.MotionEventCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 
@@ -305,16 +304,16 @@ public class CalendarLayout extends LinearLayout {
         mVelocityTracker.addMovement(event);
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                int index = MotionEventCompat.getActionIndex(event);
-                mActivePointerId = MotionEventCompat.getPointerId(event, index);
+                int index = event.getActionIndex();
+                mActivePointerId = event.getPointerId(index);
                 mLastY = downY = y;
                 return true;
-            case MotionEventCompat.ACTION_POINTER_DOWN: {
-                final int indexx = MotionEventCompat.getActionIndex(event);
-                mActivePointerId = MotionEventCompat.getPointerId(event, indexx);
+            case MotionEvent.ACTION_POINTER_DOWN: {
+                final int indexx = event.getActionIndex();
+                mActivePointerId = event.getPointerId( indexx);
                 if (mActivePointerId == 0) {
                     //核心代码：就是让下面的 dy = y- mLastY == 0，避免抖动
-                    mLastY = MotionEventCompat.getY(event, mActivePointerId);
+                    mLastY = event.getY( mActivePointerId);
                 }
                 break;
             }
@@ -375,7 +374,7 @@ public class CalendarLayout extends LinearLayout {
                 int pointerIndex = getPointerIndex(event, mActivePointerId);
                 if (mActivePointerId == INVALID_POINTER)
                     break;
-                mLastY = MotionEventCompat.getY(event, pointerIndex);
+                mLastY = event.getY(pointerIndex);
                 break;
             case MotionEvent.ACTION_UP:
 
@@ -430,21 +429,19 @@ public class CalendarLayout extends LinearLayout {
         }
         final int action = ev.getAction();
         float y = ev.getY();
-        switch (action) {
-            case MotionEvent.ACTION_MOVE:
-                float dy = y - mLastY;
-                /*
-                 * 如果向下滚动，有 2 种情况处理 且y在ViewPager下方
-                 * 1、RecyclerView 或者其它滚动的View，当mContentView滚动到顶部时，拦截事件
-                 * 2、非滚动控件，直接拦截事件
-                 */
-                if (dy > 0 && mContentView.getTranslationY() == -mContentViewTranslateY) {
-                    if (isScrollTop()) {
-                        requestDisallowInterceptTouchEvent(false);//父View向子View拦截分发事件
-                        return super.dispatchTouchEvent(ev);
-                    }
+        if (action == MotionEvent.ACTION_MOVE) {
+            float dy = y - mLastY;
+            /*
+             * 如果向下滚动，有 2 种情况处理 且y在ViewPager下方
+             * 1、RecyclerView 或者其它滚动的View，当mContentView滚动到顶部时，拦截事件
+             * 2、非滚动控件，直接拦截事件
+             */
+            if (dy > 0 && mContentView.getTranslationY() == -mContentViewTranslateY) {
+                if (isScrollTop()) {
+                    requestDisallowInterceptTouchEvent(false);//父View向子View拦截分发事件
+                    return super.dispatchTouchEvent(ev);
                 }
-                break;
+            }
         }
         return super.dispatchTouchEvent(ev);
     }
@@ -476,8 +473,8 @@ public class CalendarLayout extends LinearLayout {
         float y = ev.getY();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                int index = MotionEventCompat.getActionIndex(ev);
-                mActivePointerId = MotionEventCompat.getPointerId(ev, index);
+                int index = ev.getActionIndex();
+                mActivePointerId = ev.getPointerId(index);
                 mLastY = downY = y;
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -518,7 +515,7 @@ public class CalendarLayout extends LinearLayout {
 
 
     private int getPointerIndex(MotionEvent ev, int id) {
-        int activePointerIndex = MotionEventCompat.findPointerIndex(ev, id);
+        int activePointerIndex = ev.findPointerIndex(id);
         if (activePointerIndex == -1) {
             mActivePointerId = INVALID_POINTER;
         }
@@ -587,13 +584,13 @@ public class CalendarLayout extends LinearLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mMonthView = (MonthViewPager) findViewById(R.id.vp_month);
-        mWeekPager = (WeekViewPager) findViewById(R.id.vp_week);
+        mMonthView = findViewById(R.id.vp_month);
+        mWeekPager = findViewById(R.id.vp_week);
         if (getChildCount() > 0) {
             mCalendarView = (CalendarView) getChildAt(0);
         }
-        mContentView = (ViewGroup) findViewById(mContentViewId);
-        mYearView = (YearViewPager) findViewById(R.id.selectLayout);
+        mContentView = findViewById(mContentViewId);
+        mYearView = findViewById(R.id.selectLayout);
         if (mContentView != null) {
             mContentView.setOverScrollMode(View.OVER_SCROLL_NEVER);
         }
@@ -723,7 +720,6 @@ public class CalendarLayout extends LinearLayout {
         return true;
     }
 
-
     public boolean shrink() {
         return shrink(240);
     }
@@ -841,8 +837,10 @@ public class CalendarLayout extends LinearLayout {
      */
     private void showWeek() {
         onShowWeekView();
-        mWeekPager.getAdapter().notifyDataSetChanged();
-        mWeekPager.setVisibility(VISIBLE);
+        if(mWeekPager != null && mWeekPager.getAdapter()!= null){
+            mWeekPager.getAdapter().notifyDataSetChanged();
+            mWeekPager.setVisibility(VISIBLE);
+        }
         mMonthView.setVisibility(INVISIBLE);
     }
 

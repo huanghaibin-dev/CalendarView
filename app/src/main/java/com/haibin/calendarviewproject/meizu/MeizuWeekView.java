@@ -75,6 +75,7 @@ public class MeizuWeekView extends WeekView {
         return mTextPaint.measureText(text);
     }
 
+    @SuppressWarnings("IntegerDivisionInFloatingPointContext")
     @Override
     protected void onDrawText(Canvas canvas, Calendar calendar, int x, boolean hasScheme, boolean isSelected) {
         int cx = x + mItemWidth / 2;

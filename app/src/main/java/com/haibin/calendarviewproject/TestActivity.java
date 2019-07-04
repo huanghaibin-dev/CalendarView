@@ -3,7 +3,6 @@ package com.haibin.calendarviewproject;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
-import android.widget.FrameLayout;
 
 import com.haibin.calendarview.CalendarView;
 import com.haibin.calendarviewproject.base.activity.BaseActivity;
@@ -30,7 +29,7 @@ public class TestActivity extends BaseActivity implements View.OnClickListener {
         setStatusBarDarkMode();
         findViewById(R.id.iv_next).setOnClickListener(this);
         findViewById(R.id.iv_pre).setOnClickListener(this);
-        mCalendarView = (CalendarView) findViewById(R.id.calendar_view);
+        mCalendarView =  findViewById(R.id.calendar_view);
     }
 
     @Override

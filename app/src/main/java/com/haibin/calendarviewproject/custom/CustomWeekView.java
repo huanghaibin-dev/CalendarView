@@ -121,6 +121,7 @@ public class CustomWeekView extends WeekView {
         return true;
     }
 
+    @SuppressWarnings("IntegerDivisionInFloatingPointContext")
     @Override
     protected void onDrawScheme(Canvas canvas, Calendar calendar, int x) {
 
@@ -134,6 +135,7 @@ public class CustomWeekView extends WeekView {
         canvas.drawCircle(x + mItemWidth / 2, mItemHeight - 3 * mPadding, mPointRadius, mPointPaint);
     }
 
+    @SuppressWarnings("IntegerDivisionInFloatingPointContext")
     @Override
     protected void onDrawText(Canvas canvas, Calendar calendar, int x, boolean hasScheme, boolean isSelected) {
         int cx = x + mItemWidth / 2;

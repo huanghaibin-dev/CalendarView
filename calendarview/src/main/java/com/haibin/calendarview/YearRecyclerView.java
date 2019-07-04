@@ -120,6 +120,13 @@ public final class YearRecyclerView extends RecyclerView {
     }
 
 
+    void notifyAdapterDataSetChanged(){
+        if(getAdapter() == null){
+            return;
+        }
+        getAdapter().notifyDataSetChanged();
+    }
+
     @Override
     protected void onMeasure(int widthSpec, int heightSpec) {
         super.onMeasure(widthSpec, heightSpec);

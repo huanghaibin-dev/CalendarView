@@ -54,6 +54,7 @@ public class FullWeekView extends WeekView {
         return true;
     }
 
+    @SuppressWarnings("IntegerDivisionInFloatingPointContext")
     @Override
     protected void onDrawScheme(Canvas canvas, Calendar calendar, int x) {
         mSchemeBasicPaint.setColor(calendar.getSchemeColor());
@@ -76,7 +77,7 @@ public class FullWeekView extends WeekView {
         }
     }
 
-
+    @SuppressWarnings("IntegerDivisionInFloatingPointContext")
     @Override
     protected void onDrawText(Canvas canvas, Calendar calendar, int x, boolean hasScheme, boolean isSelected) {
         canvas.drawRect(x, 0, x + mItemWidth,  mItemHeight, mRectPaint);

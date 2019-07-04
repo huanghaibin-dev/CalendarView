@@ -102,6 +102,7 @@ public class MeiZuMonthView extends MonthView {
      * @param hasScheme  是否是标记的日期
      * @param isSelected 是否选中
      */
+    @SuppressWarnings("IntegerDivisionInFloatingPointContext")
     @Override
     protected void onDrawText(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme, boolean isSelected) {
         int cx = x + mItemWidth / 2;

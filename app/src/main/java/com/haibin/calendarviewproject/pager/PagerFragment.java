@@ -14,7 +14,7 @@ public class PagerFragment extends BaseFragment {
     private GroupRecyclerView mRecyclerView;
 
 
-    public static PagerFragment newInstance() {
+    static PagerFragment newInstance() {
         return new PagerFragment();
     }
 
@@ -25,7 +25,7 @@ public class PagerFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-        mRecyclerView = (GroupRecyclerView) mRootView.findViewById(R.id.recyclerView);
+        mRecyclerView = mRootView.findViewById(R.id.recyclerView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mRecyclerView.addItemDecoration(new GroupItemDecoration<String, Article>());
         mRecyclerView.setAdapter(new ArticleAdapter(mContext));
@@ -37,7 +37,7 @@ public class PagerFragment extends BaseFragment {
 
     }
 
-    public boolean isScrollTop() {
+    boolean isScrollTop() {
         return mRecyclerView != null && mRecyclerView.computeVerticalScrollOffset() == 0;
     }
 }

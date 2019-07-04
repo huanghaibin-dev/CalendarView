@@ -84,6 +84,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param dark   是否把状态栏字体及图标颜色设置为深色
      * @return boolean 成功执行返回true
      */
+    @SuppressWarnings("JavaReflectionMemberAccess")
     public static boolean setMeiZuDarkMode(Window window, boolean dark) {
         boolean result = false;
         if (Build.VERSION.SDK_INT >= 24) {

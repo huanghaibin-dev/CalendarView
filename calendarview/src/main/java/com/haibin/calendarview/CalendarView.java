@@ -97,8 +97,8 @@ public class CalendarView extends FrameLayout {
      */
     private void init(Context context) {
         LayoutInflater.from(context).inflate(R.layout.cv_layout_calendar_view, this, true);
-        FrameLayout frameContent = (FrameLayout) findViewById(R.id.frameContent);
-        this.mWeekPager = (WeekViewPager) findViewById(R.id.vp_week);
+        FrameLayout frameContent = findViewById(R.id.frameContent);
+        this.mWeekPager = findViewById(R.id.vp_week);
         this.mWeekPager.setup(mDelegate);
 
         try {
@@ -121,7 +121,7 @@ public class CalendarView extends FrameLayout {
                 0);
         this.mWeekLine.setLayoutParams(lineParams);
 
-        this.mMonthPager = (MonthViewPager) findViewById(R.id.vp_month);
+        this.mMonthPager = findViewById(R.id.vp_month);
         this.mMonthPager.mWeekPager = mWeekPager;
         this.mMonthPager.mWeekBar = mWeekBar;
         LayoutParams params = (LayoutParams) this.mMonthPager.getLayoutParams();
@@ -129,7 +129,7 @@ public class CalendarView extends FrameLayout {
         mWeekPager.setLayoutParams(params);
 
 
-        mYearViewPager = (YearViewPager) findViewById(R.id.selectLayout);
+        mYearViewPager = findViewById(R.id.selectLayout);
         mYearViewPager.setBackgroundColor(mDelegate.getYearViewBackground());
         mYearViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -244,7 +244,6 @@ public class CalendarView extends FrameLayout {
      * @param maxYearMonth 最大月份对应月份
      * @param maxYearDay   最大月份对应天
      */
-    @SuppressWarnings("all")
     public void setRange(int minYear, int minYearMonth, int minYearDay,
                          int maxYear, int maxYearMonth, int maxYearDay) {
         if (CalendarUtil.compareTo(minYear, minYearMonth, minYearDay,
@@ -480,7 +479,6 @@ public class CalendarView extends FrameLayout {
      *
      * @param smoothScroll smoothScroll
      */
-    @SuppressWarnings("all")
     public void scrollToNext(boolean smoothScroll) {
         if (isYearSelectLayoutVisible()) {
             mYearViewPager.setCurrentItem(mYearViewPager.getCurrentItem() + 1, smoothScroll);
@@ -504,7 +502,6 @@ public class CalendarView extends FrameLayout {
      *
      * @param smoothScroll smoothScroll
      */
-    @SuppressWarnings("all")
     public void scrollToPre(boolean smoothScroll) {
         if (isYearSelectLayoutVisible()) {
             mYearViewPager.setCurrentItem(mYearViewPager.getCurrentItem() - 1, smoothScroll);
@@ -547,7 +544,6 @@ public class CalendarView extends FrameLayout {
      * @param day          day
      * @param smoothScroll smoothScroll
      */
-    @SuppressWarnings("all")
     public void scrollToCalendar(int year, int month, int day, boolean smoothScroll) {
 
         Calendar calendar = new Calendar();
@@ -588,7 +584,6 @@ public class CalendarView extends FrameLayout {
      * @param year         快速滚动的年份
      * @param smoothScroll smoothScroll
      */
-    @SuppressWarnings("all")
     public void scrollToYear(int year, boolean smoothScroll) {
         if (mYearViewPager.getVisibility() != VISIBLE) {
             return;
@@ -687,6 +682,7 @@ public class CalendarView extends FrameLayout {
      *
      * @param calendars calendars
      */
+    @SuppressWarnings("RedundantCollectionOperation")
     public final void removeMultiSelect(Calendar... calendars) {
         if (calendars == null || calendars.length == 0) {
             return;
@@ -786,7 +782,7 @@ public class CalendarView extends FrameLayout {
             return;
         }
         mDelegate.setWeekBarClass(cls);
-        FrameLayout frameContent = (FrameLayout) findViewById(R.id.frameContent);
+        FrameLayout frameContent = findViewById(R.id.frameContent);
         frameContent.removeView(mWeekBar);
 
         try {
@@ -1248,9 +1244,7 @@ public class CalendarView extends FrameLayout {
         if (mDelegate.mSchemeDatesMap == null) {
             mDelegate.mSchemeDatesMap = new HashMap<>();
         }
-        if (mDelegate.mSchemeDatesMap.containsKey(calendar.toString())) {
-            mDelegate.mSchemeDatesMap.remove(calendar.toString());
-        }
+        mDelegate.mSchemeDatesMap.remove(calendar.toString());
         mDelegate.mSchemeDatesMap.put(calendar.toString(), calendar);
         this.mDelegate.updateSelectCalendarScheme();
         this.mYearViewPager.update();
@@ -1290,9 +1284,7 @@ public class CalendarView extends FrameLayout {
         if (mDelegate.mSchemeDatesMap == null || mDelegate.mSchemeDatesMap.size() == 0) {
             return;
         }
-        if (mDelegate.mSchemeDatesMap.containsKey(calendar.toString())) {
-            mDelegate.mSchemeDatesMap.remove(calendar.toString());
-        }
+        mDelegate.mSchemeDatesMap.remove(calendar.toString());
         if (mDelegate.mSelectedCalendar.equals(calendar)) {
             mDelegate.clearSelectedScheme();
         }

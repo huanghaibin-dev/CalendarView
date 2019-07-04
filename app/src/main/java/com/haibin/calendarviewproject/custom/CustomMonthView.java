@@ -119,6 +119,7 @@ public class CustomMonthView extends MonthView {
         return true;
     }
 
+    @SuppressWarnings("IntegerDivisionInFloatingPointContext")
     @Override
     protected void onDrawScheme(Canvas canvas, Calendar calendar, int x, int y) {
 
@@ -132,6 +133,7 @@ public class CustomMonthView extends MonthView {
         canvas.drawCircle(x + mItemWidth / 2, y + mItemHeight - 3 * mPadding, mPointRadius, mPointPaint);
     }
 
+    @SuppressWarnings("IntegerDivisionInFloatingPointContext")
     @Override
     protected void onDrawText(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme, boolean isSelected) {
         int cx = x + mItemWidth / 2;

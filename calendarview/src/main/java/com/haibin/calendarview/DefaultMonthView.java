@@ -88,6 +88,7 @@ public final class DefaultMonthView extends MonthView {
         return mTextPaint.measureText(text);
     }
 
+    @SuppressWarnings("IntegerDivisionInFloatingPointContext")
     @Override
     protected void onDrawText(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme, boolean isSelected) {
         int cx = x + mItemWidth / 2;

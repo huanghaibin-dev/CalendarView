@@ -50,15 +50,15 @@ public class RangeActivity extends BaseActivity implements
     @Override
     protected void initView() {
         setStatusBarDarkMode();
-        mTextLeftDate = (TextView) findViewById(R.id.tv_left_date);
-        mTextLeftWeek = (TextView) findViewById(R.id.tv_left_week);
-        mTextRightDate = (TextView) findViewById(R.id.tv_right_date);
-        mTextRightWeek = (TextView) findViewById(R.id.tv_right_week);
+        mTextLeftDate = findViewById(R.id.tv_left_date);
+        mTextLeftWeek = findViewById(R.id.tv_left_week);
+        mTextRightDate = findViewById(R.id.tv_right_date);
+        mTextRightWeek = findViewById(R.id.tv_right_week);
 
-        mTextMinRange = (TextView) findViewById(R.id.tv_min_range);
-        mTextMaxRange = (TextView) findViewById(R.id.tv_max_range);
+        mTextMinRange = findViewById(R.id.tv_min_range);
+        mTextMaxRange = findViewById(R.id.tv_max_range);
 
-        mCalendarView = (CalendarView) findViewById(R.id.calendarView);
+        mCalendarView = findViewById(R.id.calendarView);
         mCalendarView.setOnCalendarRangeSelectListener(this);
         mCalendarView.setOnMonthChangeListener(this);
         //设置日期拦截事件，当前有效

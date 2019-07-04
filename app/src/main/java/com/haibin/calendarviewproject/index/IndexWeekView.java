@@ -42,7 +42,6 @@ public class IndexWeekView extends WeekView {
      * @param calendar  日历日历calendar
      * @param x         日历Card x起点坐标
      * @param hasScheme hasScheme 非标记的日期
-     * @return
      */
     @Override
     protected boolean onDrawSelected(Canvas canvas, Calendar calendar, int x, boolean hasScheme) {
@@ -58,6 +57,7 @@ public class IndexWeekView extends WeekView {
      * @param calendar 日历calendar
      * @param x        日历Card x起点坐标
      */
+    @SuppressWarnings("IntegerDivisionInFloatingPointContext")
     @Override
     protected void onDrawScheme(Canvas canvas, Calendar calendar, int x) {
         mSchemeBasicPaint.setColor(calendar.getSchemeColor());
@@ -67,6 +67,7 @@ public class IndexWeekView extends WeekView {
                 mItemHeight - mH - mPadding, mSchemeBasicPaint);
     }
 
+    @SuppressWarnings("IntegerDivisionInFloatingPointContext")
     @Override
     protected void onDrawText(Canvas canvas, Calendar calendar, int x, boolean hasScheme, boolean isSelected) {
         int cx = x + mItemWidth / 2;

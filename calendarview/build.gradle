@@ -7,8 +7,8 @@ android {
         minSdkVersion 14
         //noinspection OldTargetApi
         targetSdkVersion 28
-        versionCode 364
-        versionName "3.6.4"
+        versionCode 365
+        versionName "3.6.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }

@@ -96,7 +96,6 @@ public abstract class MonthView extends BaseMonthView {
     }
 
 
-    @SuppressWarnings("deprecation")
     @Override
     public void onClick(View v) {
         if (!isClick) {
@@ -152,7 +151,6 @@ public abstract class MonthView extends BaseMonthView {
         }
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public boolean onLongClick(View v) {
         if (mDelegate.mCalendarLongClickListener == null)

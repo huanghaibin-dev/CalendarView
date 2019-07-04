@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.View;
 
 import com.haibin.calendarview.Calendar;
@@ -68,6 +67,7 @@ public class FullMonthView extends MonthView {
      * @param x        日历Card x起点坐标
      * @param y        日历Card y起点坐标
      */
+    @SuppressWarnings("IntegerDivisionInFloatingPointContext")
     @Override
     protected void onDrawScheme(Canvas canvas, Calendar calendar, int x, int y) {
         mSchemeBasicPaint.setColor(calendar.getSchemeColor());
@@ -100,6 +100,7 @@ public class FullMonthView extends MonthView {
      * @param hasScheme  是否是标记的日期
      * @param isSelected 是否选中
      */
+    @SuppressWarnings("IntegerDivisionInFloatingPointContext")
     @Override
     protected void onDrawText(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme, boolean isSelected) {
         canvas.drawRect(x, y, x + mItemWidth, y + mItemHeight, mRectPaint);
