@@ -522,7 +522,8 @@ public class CalendarView extends FrameLayout {
         scrollToCalendar(mDelegate.mSelectedCalendar.getYear(),
                 mDelegate.mSelectedCalendar.getMonth(),
                 mDelegate.mSelectedCalendar.getDay(),
-                false);
+                false,
+                true);
     }
 
     /**
@@ -533,7 +534,7 @@ public class CalendarView extends FrameLayout {
      * @param day   day
      */
     public void scrollToCalendar(int year, int month, int day) {
-        scrollToCalendar(year, month, day, false);
+        scrollToCalendar(year, month, day, false, true);
     }
 
     /**
@@ -545,6 +546,19 @@ public class CalendarView extends FrameLayout {
      * @param smoothScroll smoothScroll
      */
     public void scrollToCalendar(int year, int month, int day, boolean smoothScroll) {
+        scrollToCalendar(year, month, day, smoothScroll, true);
+    }
+
+    /**
+     * 滚动到指定日期
+     *
+     * @param year           year
+     * @param month          month
+     * @param day            day
+     * @param smoothScroll   smoothScroll
+     * @param invokeListener 调用日期事件
+     */
+    public void scrollToCalendar(int year, int month, int day, boolean smoothScroll, boolean invokeListener) {
 
         Calendar calendar = new Calendar();
         calendar.setYear(year);
@@ -563,9 +577,9 @@ public class CalendarView extends FrameLayout {
         }
 
         if (mWeekPager.getVisibility() == VISIBLE) {
-            mWeekPager.scrollToCalendar(year, month, day, smoothScroll);
+            mWeekPager.scrollToCalendar(year, month, day, smoothScroll, invokeListener);
         } else {
-            mMonthPager.scrollToCalendar(year, month, day, smoothScroll);
+            mMonthPager.scrollToCalendar(year, month, day, smoothScroll, invokeListener);
         }
     }
 
@@ -620,15 +634,15 @@ public class CalendarView extends FrameLayout {
     }
 
 
-    public final void setDefaultMonthViewSelectDay(){
+    public final void setDefaultMonthViewSelectDay() {
         mDelegate.setDefaultCalendarSelectDay(CalendarViewDelegate.FIRST_DAY_OF_MONTH);
     }
 
-    public final void setLastMonthViewSelectDay(){
+    public final void setLastMonthViewSelectDay() {
         mDelegate.setDefaultCalendarSelectDay(CalendarViewDelegate.LAST_MONTH_VIEW_SELECT_DAY);
     }
 
-    public final void setLastMonthViewSelectDayIgnoreCurrent(){
+    public final void setLastMonthViewSelectDayIgnoreCurrent() {
         mDelegate.setDefaultCalendarSelectDay(CalendarViewDelegate.LAST_MONTH_VIEW_SELECT_DAY_IGNORE_CURRENT);
     }
 

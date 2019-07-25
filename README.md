@@ -12,19 +12,19 @@ You can't think of the calendar can be so elegant!
 
 ### gradle
 ```
-implementation 'com.haibin:calendarview:3.6.4'
+implementation 'com.haibin:calendarview:3.6.6'
 ```
 
 ### Androidx support since version 3.6.5
 ```
-implementation 'com.haibin:calendarview:3.6.5'
+implementation 'com.haibin:calendarview:3.6.7'
 ```
 
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.6.4</version>
+  <version>3.6.6</version>
   <type>pom</type>
 </dependency>
 ```

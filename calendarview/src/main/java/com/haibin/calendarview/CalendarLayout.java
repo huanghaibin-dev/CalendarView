@@ -291,6 +291,14 @@ public class CalendarLayout extends LinearLayout {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if (mGestureMode == GESTURE_MODE_DISABLED ||
+                mCalendarShowMode == CALENDAR_SHOW_MODE_ONLY_MONTH_VIEW ||
+                mCalendarShowMode == CALENDAR_SHOW_MODE_ONLY_WEEK_VIEW) {//禁用手势，或者只显示某种视图
+            return false;
+        }
+        if(mDelegate == null){
+            return false;
+        }
         if (mDelegate.isShowYearSelectedLayout) {
             return false;
         }
@@ -318,12 +326,6 @@ public class CalendarLayout extends LinearLayout {
                 break;
             }
             case MotionEvent.ACTION_MOVE:
-                if (mGestureMode == GESTURE_MODE_DISABLED ||
-                        mCalendarShowMode == CALENDAR_SHOW_MODE_ONLY_MONTH_VIEW ||
-                        mCalendarShowMode == CALENDAR_SHOW_MODE_ONLY_WEEK_VIEW) {//禁用手势，或者只显示某种视图
-                    return false;
-                }
-
 
                 getPointerIndex(event, mActivePointerId);
                 if (mActivePointerId == INVALID_POINTER) {

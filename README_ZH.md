@@ -12,19 +12,19 @@ Android上一个优雅、高度自定义、性能高效的日历控件，完美�
 
 ### Gradle
 ```
-implementation 'com.haibin:calendarview:3.6.4
+implementation 'com.haibin:calendarview:3.6.6
 ```
 
 ### 从3.6.5开始支持Androidx
 ```
-implementation 'com.haibin:calendarview:3.6.5'
+implementation 'com.haibin:calendarview:3.6.7'
 ```
 
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.6.4</version>
+  <version>3.6.6</version>
   <type>pom</type>
 </dependency>
 ```
