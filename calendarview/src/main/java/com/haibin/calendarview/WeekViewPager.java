@@ -176,8 +176,9 @@ public final class WeekViewPager extends ViewPager {
      * @param year  年
      * @param month 月
      * @param day   日
+     * @param invokeListener 调用日期事件
      */
-    void scrollToCalendar(int year, int month, int day, boolean smoothScroll) {
+    void scrollToCalendar(int year, int month, int day, boolean smoothScroll, boolean invokeListener) {
         isUsingScrollToCalendar = true;
         Calendar calendar = new Calendar();
         calendar.setYear(year);
@@ -192,7 +193,7 @@ public final class WeekViewPager extends ViewPager {
         if (mDelegate.mInnerListener != null) {
             mDelegate.mInnerListener.onWeekDateSelected(calendar, false);
         }
-        if (mDelegate.mCalendarSelectListener != null) {
+        if (mDelegate.mCalendarSelectListener != null && invokeListener) {
             mDelegate.mCalendarSelectListener.onCalendarSelect(calendar, false);
         }
         int i = CalendarUtil.getWeekFromDayInMonth(calendar, mDelegate.getWeekStart());
@@ -290,7 +291,7 @@ public final class WeekViewPager extends ViewPager {
     /**
      * 更新字体颜色大小
      */
-    final void updateStyle(){
+    final void updateStyle() {
         for (int i = 0; i < getChildCount(); i++) {
             BaseWeekView view = (BaseWeekView) getChildAt(i);
             view.updateStyle();
@@ -332,7 +333,7 @@ public final class WeekViewPager extends ViewPager {
      * 更新周起始
      */
     void updateWeekStart() {
-        if(getAdapter() == null){
+        if (getAdapter() == null) {
             return;
         }
         int count = getAdapter().getCount();
@@ -397,8 +398,8 @@ public final class WeekViewPager extends ViewPager {
         }
     }
 
-    private void notifyAdapterDataSetChanged(){
-        if(getAdapter() == null){
+    private void notifyAdapterDataSetChanged() {
+        if (getAdapter() == null) {
             return;
         }
         getAdapter().notifyDataSetChanged();

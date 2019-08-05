@@ -32,7 +32,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     //noinspection GradleDependency
     implementation 'com.github.bumptech.glide:glide:3.7.0'
-    //implementation 'com.haibin:calendarview:3.6.5'
+    //implementation 'com.haibin:calendarview:3.6.7'
     testImplementation 'junit:junit:4.12'
     implementation project(':calendarview')
   

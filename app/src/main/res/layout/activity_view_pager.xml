@@ -139,7 +139,7 @@
             android:layout_height="match_parent"
             tools:ignore="UnusedAttribute">
 
-            <android.support.design.widget.TabLayout
+            <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabLayout"
                 app:tabIndicatorColor="#00333333"
                 android:layout_width="match_parent"

@@ -294,11 +294,12 @@ public final class MonthViewPager extends ViewPager {
     /**
      * 滚动到指定日期
      *
-     * @param year  年
-     * @param month 月
-     * @param day   日
+     * @param year           年
+     * @param month          月
+     * @param day            日
+     * @param invokeListener 调用日期事件
      */
-    void scrollToCalendar(int year, int month, int day, boolean smoothScroll) {
+    void scrollToCalendar(int year, int month, int day, boolean smoothScroll, boolean invokeListener) {
         isUsingScrollToCalendar = true;
         Calendar calendar = new Calendar();
         calendar.setYear(year);
@@ -330,7 +331,7 @@ public final class MonthViewPager extends ViewPager {
             mParentLayout.updateSelectWeek(week);
         }
 
-        if (mDelegate.mCalendarSelectListener != null) {
+        if (mDelegate.mCalendarSelectListener != null && invokeListener) {
             mDelegate.mCalendarSelectListener.onCalendarSelect(calendar, false);
         }
         if (mDelegate.mInnerListener != null) {
@@ -411,7 +412,7 @@ public final class MonthViewPager extends ViewPager {
     /**
      * 更新字体颜色大小
      */
-    final void updateStyle(){
+    final void updateStyle() {
         for (int i = 0; i < getChildCount(); i++) {
             BaseMonthView view = (BaseMonthView) getChildAt(i);
             view.updateStyle();
@@ -558,8 +559,8 @@ public final class MonthViewPager extends ViewPager {
         }
     }
 
-    private void notifyAdapterDataSetChanged(){
-        if(getAdapter() == null){
+    private void notifyAdapterDataSetChanged() {
+        if (getAdapter() == null) {
             return;
         }
         getAdapter().notifyDataSetChanged();
@@ -606,7 +607,7 @@ public final class MonthViewPager extends ViewPager {
         }
 
         @Override
-        public boolean isViewFromObject(View view,@NonNull Object object) {
+        public boolean isViewFromObject(View view, @NonNull Object object) {
             return view.equals(object);
         }
 
