@@ -1,8 +1,6 @@
 *.iml
 .gradle
-/local.properties
-/.idea/workspace.xml
-/.idea/libraries
+/.idea
 .DS_Store
 /build
 /captures
@@ -23,7 +21,6 @@ gen/
 out/
 
 # Gradle files
-.gradle/
 build/
 
 # Local configuration file (sdk path, etc)
@@ -40,10 +37,6 @@ proguard/
 
 # Android Studio captures folder
 captures/
-
-# Intellij
-*.iml
-.idea/workspace.xml
 
 # Keystore files
 *.jks

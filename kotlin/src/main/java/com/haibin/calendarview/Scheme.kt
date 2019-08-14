@@ -9,4 +9,4 @@ package com.haibin.calendarview
 import com.haibin.calendarview.Calendar.Scheme
 
 @Suppress("EXTENSION_SHADOWED_BY_MEMBER")
-inline fun<reified T : Any> Scheme.getObj():T = obj as T
+inline fun<reified T> Scheme.getObj():T = obj as T
