@@ -1,0 +1,85 @@
+<resources>
+    <string name="app_name">CalendarViewProject</string>
+
+    <string-array name="english_week_string_array">
+        <item>日</item>
+        <item>一</item>
+        <item>二</item>
+        <item>三</item>
+        <item>四</item>
+        <item>五</item>
+        <item>六</item>
+    </string-array>
+
+    <string-array name="chinese_week_string_array">
+        <item>周日</item>
+        <item>周一</item>
+        <item>周二</item>
+        <item>周三</item>
+        <item>周四</item>
+        <item>周五</item>
+        <item>周六</item>
+    </string-array>
+
+    <string name="list_dialog_title">动态更新</string>
+
+    <string name="func_dialog_title">功能支持</string>
+
+    <string-array name="list_dialog_items">
+        <item>周日为周起始</item>
+        <item>周一为周起始</item>
+        <item>周六为周起始</item>
+        <item>更换选择模式：单选/默认</item>
+        <item>热插拔更换周月视图</item>
+        <item>月视图模式：全部显示</item>
+        <item>月视图模式：仅当前月份</item>
+        <item>月视图模式：自动填充</item>
+    </string-array>
+
+    <string-array name="func_dialog_items">
+        <item>展开日历布局</item>
+        <item>收缩日历布局</item>
+        <item>上一页</item>
+        <item>下一页</item>
+        <item>返回今天</item>
+        <item>限制日期范围</item>
+        <item>显示日期范围</item>
+    </string-array>
+
+
+    <string name="flyme">Flyme手机日历</string>
+    <string name="flyme_desc">国内手机日历风格，自动选择第一天</string>
+
+    <string name="custom_china">精美定制中国风</string>
+    <string name="custom_china_desc">周末变色、圆点事件+文本标记</string>
+
+    <string name="full">全屏风格</string>
+    <string name="full_desc">如果你需要的话，分分钟的事</string>
+
+    <string name="range">范围选择</string>
+    <string name="range_desc">如果你需要范围选择的日历</string>
+
+    <string name="multi">多选风格</string>
+    <string name="multi_desc">如果你需要多选风格的日历</string>
+
+    <string name="colorful">多彩风格</string>
+    <string name="colorful_desc">取决于你怎么绘制</string>
+
+    <string name="view_pager">ViewPager风格</string>
+    <string name="view_pager_desc">如果内容是ViewPager的话</string>
+
+    <string name="single">单选风格</string>
+    <string name="single_desc">单选风格是比较受欢迎</string>
+
+    <string name="progress">进度条风格</string>
+    <string name="progress_desc">如果你正在开发todo APP的话</string>
+
+    <string name="index">下标订阅风格</string>
+    <string name="index_desc">只要你想画，就能画</string>
+
+    <string name="galaxy">星系风格</string>
+    <string name="galaxy_desc">很简单就能定制</string>
+
+    <string name="simple">简单风格</string>
+    <string name="simple_desc">这是最简单的日历</string>
+</resources>

@@ -1,0 +1,85 @@
+<resources>
+    <string name="app_name">CalendarViewProject</string>
+
+    <string-array name="english_week_string_array">
+        <item>Sun</item>
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
+        <item>Sat</item>
+    </string-array>
+
+    <string-array name="chinese_week_string_array">
+        <item>周日</item>
+        <item>周一</item>
+        <item>周二</item>
+        <item>周三</item>
+        <item>周四</item>
+        <item>周五</item>
+        <item>周六</item>
+    </string-array>
+
+    <string name="list_dialog_title">Dynamic Update</string>
+
+    <string name="func_dialog_title">Function</string>
+
+    <string-array name="list_dialog_items">
+        <item>Change week start with sun</item>
+        <item>Change week start with mon</item>
+        <item>Change week start with sat</item>
+        <item>Change select mode：single/default</item>
+        <item>Change month and week view with CustomView</item>
+        <item>MonthViewShowMode：all</item>
+        <item>MonthViewShowMode：only_current</item>
+        <item>MonthViewShowMode：fix</item>
+    </string-array>
+
+    <string-array name="func_dialog_items">
+        <item>Expand CalendarLayout</item>
+        <item>Shrink CalendarLayout</item>
+        <item>scrollToPre</item>
+        <item>scrollToNext</item>
+        <item>scrollToCurrent</item>
+        <item>Limit calendar range</item>
+        <item>Show range</item>
+    </string-array>
+
+
+    <string name="flyme">Flyme</string>
+    <string name="flyme_desc">Meizu mobile phone calendar</string>
+
+    <string name="custom_china">Beautiful Chinese style</string>
+    <string name="custom_china_desc">Beautiful Chinese style custom</string>
+
+    <string name="full">Full screen style</string>
+    <string name="full_desc">If you need a full screen calendar</string>
+
+    <string name="range">Range selection</string>
+    <string name="range_desc">Range selection style if you need</string>
+
+    <string name="multi">Multiple selection</string>
+    <string name="multi_desc">Multiple selection style if you need</string>
+
+    <string name="colorful">Colorful style</string>
+    <string name="colorful_desc">Everything what you need</string>
+
+    <string name="view_pager">ViewPager style</string>
+    <string name="view_pager_desc">ViewPager content </string>
+
+    <string name="single">Radio style</string>
+    <string name="single_desc">Radio style may be very popular</string>
+
+    <string name="progress">Progress bar style</string>
+    <string name="progress_desc">If you are developing a todo application</string>
+
+    <string name="index">Subscript style</string>
+    <string name="index_desc">Everything depends on how you draw</string>
+
+    <string name="galaxy">Galaxy style</string>
+    <string name="galaxy_desc">So easy to customize</string>
+
+    <string name="simple">Simple style</string>
+    <string name="simple_desc">Simple calendar</string>
+</resources>
