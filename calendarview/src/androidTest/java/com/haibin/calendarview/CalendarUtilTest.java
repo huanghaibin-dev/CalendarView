@@ -170,41 +170,12 @@ public class CalendarUtilTest {
 
         assertEquals(3, week);
 
-
-        calendar = new Calendar();
-        calendar.setYear(2018);
-        calendar.setMonth(8);
-        calendar.setDay(7);
-
-        week = CalendarUtil.getWeekFromCalendarStartWithMinCalendar(calendar,
-                2018, 7, 29, 1);
-
-        assertEquals(2, week);
-
-        calendar = new Calendar();
-        calendar.setYear(2018);
-        calendar.setMonth(9);
-        calendar.setDay(12);
-
-        week = CalendarUtil.getWeekFromCalendarStartWithMinCalendar(calendar,
-                2018, 7, 29, 1);
-
-        assertEquals(7, week);
-
-        calendar = new Calendar();
-        calendar.setYear(2017);
-        calendar.setMonth(11);
-        calendar.setDay(12);
-
-        week = CalendarUtil.getWeekFromCalendarStartWithMinCalendar(calendar,
-                2017, 10, 1, 2);
-
-        assertEquals(7, week);
     }
 
     @Test
     public void getWeekCountDiff() throws Exception {
-
+        int diff = CalendarUtil.getWeekViewEndDiff(2020,4,2,1);
+        assertEquals(2,diff);
     }
 
 

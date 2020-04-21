@@ -1,12 +1,10 @@
 package com.haibin.calendarviewproject.custom;
 
 import android.content.Context;
-import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.text.TextUtils;
-import android.view.View;
 
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.WeekView;
@@ -96,13 +94,6 @@ public class CustomWeekView extends WeekView {
         Paint.FontMetrics metrics = mSchemeBasicPaint.getFontMetrics();
         mSchemeBaseLine = mCircleRadius - metrics.descent + (metrics.bottom - metrics.top) / 2 + dipToPx(getContext(), 1);
 
-        //兼容硬件加速无效的代码
-        setLayerType(View.LAYER_TYPE_SOFTWARE, mSelectedPaint);
-        //4.0以上硬件加速会导致无效
-        mSelectedPaint.setMaskFilter(new BlurMaskFilter(28, BlurMaskFilter.Blur.SOLID));
-
-        setLayerType(View.LAYER_TYPE_SOFTWARE, mSchemeBasicPaint);
-        mSchemeBasicPaint.setMaskFilter(new BlurMaskFilter(28, BlurMaskFilter.Blur.SOLID));
     }
 
 
@@ -121,7 +112,7 @@ public class CustomWeekView extends WeekView {
         return true;
     }
 
-    @SuppressWarnings("IntegerDivisionInFloatingPointContext")
+
     @Override
     protected void onDrawScheme(Canvas canvas, Calendar calendar, int x) {
 

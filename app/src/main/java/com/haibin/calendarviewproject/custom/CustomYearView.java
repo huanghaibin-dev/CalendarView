@@ -46,7 +46,6 @@ public class CustomYearView extends YearView {
 
     }
 
-    @SuppressWarnings("IntegerDivisionInFloatingPointContext")
     @Override
     protected void onDrawMonth(Canvas canvas, int year, int month, int x, int y, int width, int height) {
 
@@ -82,7 +81,7 @@ public class CustomYearView extends YearView {
     }
 
 
-    @SuppressWarnings("IntegerDivisionInFloatingPointContext")
+
     @Override
     protected void onDrawWeek(Canvas canvas, int week, int x, int y, int width, int height) {
         String text = getContext().getResources().getStringArray(com.haibin.calendarview.R.array.year_view_week_string_array)[week];

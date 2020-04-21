@@ -1,10 +1,8 @@
 package com.haibin.calendarviewproject.meizu;
 
 import android.content.Context;
-import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.view.View;
 
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.MonthView;
@@ -46,10 +44,10 @@ public class MeiZuMonthView extends MonthView {
         Paint.FontMetrics metrics = mSchemeBasicPaint.getFontMetrics();
         mSchemeBaseLine = mRadio - metrics.descent + (metrics.bottom - metrics.top) / 2 + dipToPx(getContext(), 1);
 
-        //兼容硬件加速无效的代码
-        setLayerType(View.LAYER_TYPE_SOFTWARE, mSchemeBasicPaint);
-        //4.0以上硬件加速会导致无效
-        mSchemeBasicPaint.setMaskFilter(new BlurMaskFilter(25, BlurMaskFilter.Blur.SOLID));
+//        //兼容硬件加速无效的代码
+//        setLayerType(View.LAYER_TYPE_SOFTWARE, mSchemeBasicPaint);
+//        //4.0以上硬件加速会导致无效
+//        mSchemeBasicPaint.setMaskFilter(new BlurMaskFilter(25, BlurMaskFilter.Blur.SOLID));
     }
 
     /**

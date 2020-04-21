@@ -1,1 +1,1 @@
-include ':app', ':calendarview', ':kotlin'
+include ':app', ':calendarview'

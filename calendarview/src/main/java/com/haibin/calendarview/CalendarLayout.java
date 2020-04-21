@@ -141,12 +141,12 @@ public class CalendarLayout extends LinearLayout {
 
     private int mCalendarShowMode;
 
-    private int mTouchSlop;
     private int mContentViewTranslateY; //ContentView  可滑动的最大距离距离 , 固定
     private int mViewPagerTranslateY = 0;// ViewPager可以平移的距离，不代表mMonthView的平移距离
 
     private float downY;
     private float mLastY;
+    private float mLastX;
     private boolean isAnimating = false;
 
     /**
@@ -175,7 +175,7 @@ public class CalendarLayout extends LinearLayout {
         array.recycle();
         mVelocityTracker = VelocityTracker.obtain();
         final ViewConfiguration configuration = ViewConfiguration.get(context);
-        mTouchSlop = configuration.getScaledTouchSlop();
+        int mTouchSlop = configuration.getScaledTouchSlop();
         mMaximumVelocity = configuration.getScaledMaximumFlingVelocity();
     }
 
@@ -296,7 +296,7 @@ public class CalendarLayout extends LinearLayout {
                 mCalendarShowMode == CALENDAR_SHOW_MODE_ONLY_WEEK_VIEW) {//禁用手势，或者只显示某种视图
             return false;
         }
-        if(mDelegate == null){
+        if (mDelegate == null) {
             return false;
         }
         if (mDelegate.isShowYearSelectedLayout) {
@@ -318,10 +318,10 @@ public class CalendarLayout extends LinearLayout {
                 return true;
             case MotionEvent.ACTION_POINTER_DOWN: {
                 final int indexx = event.getActionIndex();
-                mActivePointerId = event.getPointerId( indexx);
+                mActivePointerId = event.getPointerId(indexx);
                 if (mActivePointerId == 0) {
                     //核心代码：就是让下面的 dy = y- mLastY == 0，避免抖动
-                    mLastY = event.getY( mActivePointerId);
+                    mLastY = event.getY(mActivePointerId);
                 }
                 break;
             }
@@ -473,14 +473,17 @@ public class CalendarLayout extends LinearLayout {
         }
         final int action = ev.getAction();
         float y = ev.getY();
+        float x = ev.getX();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 int index = ev.getActionIndex();
                 mActivePointerId = ev.getPointerId(index);
                 mLastY = downY = y;
+                mLastX = x;
                 break;
             case MotionEvent.ACTION_MOVE:
                 float dy = y - mLastY;
+                float dx = x - mLastX;
                  /*
                    如果向上滚动，且ViewPager已经收缩，不拦截事件
                  */
@@ -503,7 +506,7 @@ public class CalendarLayout extends LinearLayout {
                     return false;
                 }
 
-                if (Math.abs(dy) > mTouchSlop) {//大于mTouchSlop开始拦截事件，ContentView和ViewPager得到CANCEL事件
+                if (Math.abs(dy) > Math.abs(dx) ) { //纵向滑动距离大于横向滑动距离,拦截滑动事件
                     if ((dy > 0 && mContentView.getTranslationY() <= 0)
                             || (dy < 0 && mContentView.getTranslationY() >= -mContentViewTranslateY)) {
                         mLastY = y;
@@ -593,9 +596,6 @@ public class CalendarLayout extends LinearLayout {
         }
         mContentView = findViewById(mContentViewId);
         mYearView = findViewById(R.id.selectLayout);
-        if (mContentView != null) {
-            mContentView.setOverScrollMode(View.OVER_SCROLL_NEVER);
-        }
     }
 
 
@@ -839,7 +839,7 @@ public class CalendarLayout extends LinearLayout {
      */
     private void showWeek() {
         onShowWeekView();
-        if(mWeekPager != null && mWeekPager.getAdapter()!= null){
+        if (mWeekPager != null && mWeekPager.getAdapter() != null) {
             mWeekPager.getAdapter().notifyDataSetChanged();
             mWeekPager.setVisibility(VISIBLE);
         }

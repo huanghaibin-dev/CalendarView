@@ -10,14 +10,16 @@ Android上一个优雅、高度自定义、性能高效的日历控件，完美�
 
 [**详细介绍**](https://github.com/huanghaibin-dev/CalendarView/blob/master/QUESTION_ZH.md)
 
-### Gradle
+### AndroidStudio v3.5+
+
+### support版本使用
 ```
-implementation 'com.haibin:calendarview:3.6.6
+implementation 'com.haibin:calendarview:3.6.8
 ```
 
-### 从3.6.5开始支持Androidx
+### Androidx版本使用
 ```
-implementation 'com.haibin:calendarview:3.6.7'
+implementation 'com.haibin:calendarview:3.6.9'
 ```
 
 ```

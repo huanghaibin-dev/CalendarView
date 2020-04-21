@@ -1,11 +1,9 @@
 package com.haibin.calendarviewproject.solay;
 
 import android.content.Context;
-import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.view.View;
 
 import com.haibin.calendarview.Calendar;
 import com.haibin.calendarview.WeekView;
@@ -36,13 +34,6 @@ public class SolarWeekView extends WeekView {
         mPointRadius = dipToPx(context, 3.6f);
         mPointPaint.setColor(Color.RED);
 
-        //兼容硬件加速无效的代码
-        setLayerType(View.LAYER_TYPE_SOFTWARE, mPointPaint);
-        //4.0以上硬件加速会导致无效
-        mPointPaint.setMaskFilter(new BlurMaskFilter(28, BlurMaskFilter.Blur.SOLID));
-
-        setLayerType(View.LAYER_TYPE_SOFTWARE, mSchemePaint);
-        mSchemePaint.setMaskFilter(new BlurMaskFilter(28, BlurMaskFilter.Blur.SOLID));
     }
 
     @Override

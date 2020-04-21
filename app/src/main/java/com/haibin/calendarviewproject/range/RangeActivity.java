@@ -70,8 +70,18 @@ public class RangeActivity extends BaseActivity implements
         findViewById(R.id.tv_commit).setOnClickListener(this);
 
         mCalendarHeight = dipToPx(this, 46);
-//        mCalendarView.setRange(mCalendarView.getCurYear(), mCalendarView.getCurMonth(), mCalendarView.getCurDay(),
-//                mCalendarView.getCurYear() + 2, 12, 31);
+
+        mCalendarView.setRange(2000, 1, 1,
+
+                mCalendarView.getCurYear(), mCalendarView.getCurMonth(), mCalendarView.getCurDay()
+
+                );
+        mCalendarView.post(new Runnable() {
+            @Override
+            public void run() {
+                mCalendarView.scrollToCurrent();
+            }
+        });
     }
 
     @Override
@@ -183,11 +193,17 @@ public class RangeActivity extends BaseActivity implements
      */
     @Override
     public boolean onCalendarIntercept(Calendar calendar) {
-        //Log.e("onCalendarIntercept", calendar.toString());
-//        int day = calendar.getDay();
-//        return day == 1 || day == 3 || day == 6 || day == 11 ||
-//                day == 12 || day == 15 || day == 20 || day == 26;
-        return calendar.hasScheme();
+        return false;
+        //return calendar.getTimeInMillis()<getCurrentDayMill() ;
+    }
+
+
+    private long getCurrentDayMill(){
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+        calendar.set(java.util.Calendar.HOUR,0);
+        calendar.set(java.util.Calendar.MINUTE,0);
+        calendar.set(java.util.Calendar.MILLISECOND,0);
+        return calendar.getTimeInMillis();
     }
 
     @Override

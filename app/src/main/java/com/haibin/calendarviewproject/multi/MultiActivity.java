@@ -218,7 +218,10 @@ public class MultiActivity extends BaseActivity implements
         int day = calendar.getDay();
 //        return day == 1 || day == 3 || day == 6 || day == 11 ||
 //                day == 12 || day == 15 || day == 20 || day == 26;
-        return calendar.hasScheme();
+//        return calendar.hasScheme();
+        return calendar.getYear()<= mCalendarView.getCurYear() &&
+                calendar.getMonth() <= mCalendarView.getCurMonth() &&
+                calendar.getDay() < mCalendarView.getCurDay();
     }
 
     @Override
