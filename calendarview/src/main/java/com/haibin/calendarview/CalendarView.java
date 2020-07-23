@@ -106,6 +106,17 @@ public class CalendarView extends FrameLayout {
             mMonthPager.setVisibility(GONE);
         }
     }
+    public void hideMonthRecycle(){
+        if(null != mMonthRecycleView){
+            mMonthRecycleView.setVisibility(GONE);
+        }
+    }
+
+    public void showMonthRecycle(){
+        if(null != mMonthRecycleView){
+            mMonthRecycleView.setVisibility(VISIBLE);
+        }
+    }
 
     public int getItemHeight(){
         if(mDelegate == null) return 0;
@@ -132,7 +143,7 @@ public class CalendarView extends FrameLayout {
         LayoutInflater.from(context).inflate(R.layout.cv_layout_calendar_view, this, true);
 
         mMonthRecycleView = findViewById(R.id.rv_month);
-
+        hideMonthRecycle();
         FrameLayout frameContent = findViewById(R.id.frameContent);
         this.mWeekPager = findViewById(R.id.vp_week);
         this.mWeekPager.setup(mDelegate);

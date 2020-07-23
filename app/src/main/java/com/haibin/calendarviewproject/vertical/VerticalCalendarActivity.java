@@ -23,7 +23,7 @@ public class VerticalCalendarActivity extends BaseActivity {
     private CalendarView mCalendarView;
 
     public static void show(Context context) {
-        context.startActivity(new Intent(context, MeiZuActivity.class));
+        context.startActivity(new Intent(context, VerticalCalendarActivity.class));
     }
 
     @Override
@@ -41,6 +41,8 @@ public class VerticalCalendarActivity extends BaseActivity {
 //        mCalendarView.setRange(cYear,cMonth,cDay,cYear+100,12,31);
         mCalendarView.hideWeekBar();
         mCalendarView.hideMonthPager();
+        mCalendarView.showMonthRecycle();
+
         mCalendarView.scrollToCalendar(cYear,cMonth,cDay);
     }
 

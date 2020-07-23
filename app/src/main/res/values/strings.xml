@@ -82,4 +82,7 @@
 
     <string name="simple">Simple style</string>
     <string name="simple_desc">Simple calendar</string>
+
+    <string name="vertical">Vertical style</string>
+    <string name="vertical_desc">Vertical calendar</string>
 </resources>
