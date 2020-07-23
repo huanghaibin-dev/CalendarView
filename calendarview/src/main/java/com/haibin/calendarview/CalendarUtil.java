@@ -26,12 +26,12 @@ import java.util.List;
 /**
  * 一些日期辅助计算工具
  */
-final class CalendarUtil {
+public final class CalendarUtil {
 
     private static final long ONE_DAY = 1000 * 3600 * 24;
 
     @SuppressLint("SimpleDateFormat")
-    static int getDate(String formatStr, Date date) {
+    public static int getDate(String formatStr, Date date) {
         SimpleDateFormat format = new SimpleDateFormat(formatStr);
         return Integer.parseInt(format.format(date));
     }
@@ -54,7 +54,7 @@ final class CalendarUtil {
      * @param month 月
      * @return 某月的天数
      */
-    static int getMonthDaysCount(int year, int month) {
+    public static int getMonthDaysCount(int year, int month) {
         int count = 0;
         //判断大月份
         if (month == 1 || month == 3 || month == 5 || month == 7
@@ -90,7 +90,7 @@ final class CalendarUtil {
     }
 
 
-    static int getMonthViewLineCount(int year, int month, int weekStartWith, int mode) {
+    public static int getMonthViewLineCount(int year, int month, int weekStartWith, int mode) {
         if (mode == CalendarViewDelegate.MODE_ALL_MONTH) {
             return 6;
         }
@@ -127,7 +127,7 @@ final class CalendarUtil {
      * @param itemHeight 每项的高度
      * @return 不需要多余行的高度
      */
-    static int getMonthViewHeight(int year, int month, int itemHeight, int weekStartWith, int mode) {
+    public static int getMonthViewHeight(int year, int month, int itemHeight, int weekStartWith, int mode) {
         if (mode == CalendarViewDelegate.MODE_ALL_MONTH) {
             return itemHeight * 6;
         }
@@ -481,7 +481,7 @@ final class CalendarUtil {
      * @param calendar2 calendar2
      * @return calendar1 - calendar2
      */
-    static int differ(Calendar calendar1, Calendar calendar2) {
+    public static int differ(Calendar calendar1, Calendar calendar2) {
         if (calendar1 == null) {
             return Integer.MIN_VALUE;
         }
@@ -512,7 +512,7 @@ final class CalendarUtil {
      * @param maxYearDay   maxYearDay
      * @return -1 0 1
      */
-    static int compareTo(int minYear, int minYearMonth, int minYearDay,
+    public static int compareTo(int minYear, int minYearMonth, int minYearDay,
                          int maxYear, int maxYearMonth, int maxYearDay) {
         Calendar first = new Calendar();
         first.setYear(minYear);
@@ -535,7 +535,7 @@ final class CalendarUtil {
      * @param weekStar    weekStar
      * @return 为月视图初始化日历项
      */
-    static List<Calendar> initCalendarForMonthView(int year, int month, Calendar currentDate, int weekStar) {
+    public static List<Calendar> initCalendarForMonthView(int year, int month, Calendar currentDate, int weekStar) {
         java.util.Calendar date = java.util.Calendar.getInstance();
 
         date.set(year, month - 1, 1);

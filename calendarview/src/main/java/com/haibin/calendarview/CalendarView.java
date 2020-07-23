@@ -55,6 +55,11 @@ public class CalendarView extends FrameLayout {
     private MonthViewPager mMonthPager;
 
     /**
+     * 自定义自适应高度的RecycleVIew
+     */
+    private MonthRecycleView mMonthRecycleView;
+
+    /**
      * 日历周视图
      */
     private WeekViewPager mWeekPager;
@@ -90,6 +95,34 @@ public class CalendarView extends FrameLayout {
         init(context);
     }
 
+    public void hideWeekBar(){
+        if(null != mWeekBar){
+            mWeekBar.setVisibility(GONE);
+        }
+    }
+
+    public void hideMonthPager(){
+        if(null != mMonthPager){
+            mMonthPager.setVisibility(GONE);
+        }
+    }
+
+    public int getItemHeight(){
+        if(mDelegate == null) return 0;
+        return mDelegate.getCalendarItemHeight();
+    }
+
+    public int getCurrentMode(){
+        if(mDelegate == null) return 0;
+        return mDelegate.getSelectMode();
+    }
+
+    public void showWeekBar(){
+        if(null != mWeekBar){
+            mWeekBar.setVisibility(VISIBLE);
+        }
+    }
+
     /**
      * 初始化
      *
@@ -97,6 +130,9 @@ public class CalendarView extends FrameLayout {
      */
     private void init(Context context) {
         LayoutInflater.from(context).inflate(R.layout.cv_layout_calendar_view, this, true);
+
+        mMonthRecycleView = findViewById(R.id.rv_month);
+
         FrameLayout frameContent = findViewById(R.id.frameContent);
         this.mWeekPager = findViewById(R.id.vp_week);
         this.mWeekPager.setup(mDelegate);
@@ -124,6 +160,8 @@ public class CalendarView extends FrameLayout {
         this.mMonthPager = findViewById(R.id.vp_month);
         this.mMonthPager.mWeekPager = mWeekPager;
         this.mMonthPager.mWeekBar = mWeekBar;
+
+        this.mMonthRecycleView.mWeekBar = mWeekBar;
         LayoutParams params = (LayoutParams) this.mMonthPager.getLayoutParams();
         params.setMargins(0, mDelegate.getWeekBarHeight() + CalendarUtil.dipToPx(context, 1), 0, 0);
         mWeekPager.setLayoutParams(params);
@@ -162,9 +200,15 @@ public class CalendarView extends FrameLayout {
             @Override
             public void onMonthDateSelected(Calendar calendar, boolean isClick) {
 
-                if (calendar.getYear() == mDelegate.getCurrentDay().getYear() &&
+                if (null != mMonthPager && mMonthPager.getVisibility()==VISIBLE && calendar.getYear() == mDelegate.getCurrentDay().getYear() &&
                         calendar.getMonth() == mDelegate.getCurrentDay().getMonth()
                         && mMonthPager.getCurrentItem() != mDelegate.mCurrentMonthViewItem) {
+                    return;
+                }
+
+                if (null != mMonthRecycleView && mMonthPager.getVisibility()==VISIBLE && calendar.getYear() == mDelegate.getCurrentDay().getYear() &&
+                        calendar.getMonth() == mDelegate.getCurrentDay().getMonth()
+                        && mMonthRecycleView.getCurrentItem() != mDelegate.mCurrentMonthViewItem) {
                     return;
                 }
                 mDelegate.mIndexCalendar = calendar;
@@ -173,6 +217,7 @@ public class CalendarView extends FrameLayout {
                 }
                 mWeekPager.updateSelected(mDelegate.mIndexCalendar, false);
                 mMonthPager.updateSelected();
+                mMonthRecycleView.updateSelected();
                 if (mWeekBar != null &&
                         (mDelegate.getSelectMode() == CalendarViewDelegate.SELECT_MODE_DEFAULT || isClick)) {
                     mWeekBar.onDateSelected(calendar, mDelegate.getWeekStart(), isClick);
@@ -222,6 +267,10 @@ public class CalendarView extends FrameLayout {
 
         mMonthPager.setup(mDelegate);
         mMonthPager.setCurrentItem(mDelegate.mCurrentMonthViewItem);
+
+
+        mMonthRecycleView.setup(mDelegate);
+        //TODO
         mYearViewPager.setOnMonthSelectedListener(new YearRecyclerView.OnMonthSelectedListener() {
             @Override
             public void onMonthSelected(int year, int month) {
@@ -255,6 +304,9 @@ public class CalendarView extends FrameLayout {
         mWeekPager.notifyDataSetChanged();
         mYearViewPager.notifyDataSetChanged();
         mMonthPager.notifyDataSetChanged();
+
+        mMonthRecycleView.notifyDataSetChanged();
+
         if (!isInRange(mDelegate.mSelectedCalendar)) {
             mDelegate.mSelectedCalendar = mDelegate.getMinRangeCalendar();
             mDelegate.updateSelectCalendarScheme();
@@ -262,6 +314,7 @@ public class CalendarView extends FrameLayout {
         }
         mWeekPager.updateRange();
         mMonthPager.updateRange();
+        mMonthRecycleView.updateRange();
         mYearViewPager.updateRange();
     }
 
@@ -460,6 +513,9 @@ public class CalendarView extends FrameLayout {
         if (mMonthPager.getVisibility() == VISIBLE) {
             mMonthPager.scrollToCurrent(smoothScroll);
             mWeekPager.updateSelected(mDelegate.mIndexCalendar, false);
+        }else if(mMonthRecycleView.getVisibility() == VISIBLE){
+
+            mMonthRecycleView.scrollToCurrent();
         } else {
             mWeekPager.scrollToCurrent(smoothScroll);
         }
@@ -578,6 +634,8 @@ public class CalendarView extends FrameLayout {
 
         if (mWeekPager.getVisibility() == VISIBLE) {
             mWeekPager.scrollToCalendar(year, month, day, smoothScroll, invokeListener);
+        } else if(mMonthRecycleView.getVisibility() == VISIBLE){
+            mMonthRecycleView.scrollToCalendar(year,month,day,true,invokeListener);
         } else {
             mMonthPager.scrollToCalendar(year, month, day, smoothScroll, invokeListener);
         }
@@ -652,6 +710,7 @@ public class CalendarView extends FrameLayout {
     public final void clearSelectRange() {
         mDelegate.clearSelectRange();
         mMonthPager.clearSelectRange();
+        mMonthRecycleView.clearSelectRange();
         mWeekPager.clearSelectRange();
     }
 
@@ -661,6 +720,7 @@ public class CalendarView extends FrameLayout {
     public final void clearSingleSelect() {
         mDelegate.mSelectedCalendar = new Calendar();
         mMonthPager.clearSingleSelect();
+        mMonthRecycleView.clearSingleSelect();
         mWeekPager.clearSingleSelect();
     }
 
@@ -670,6 +730,7 @@ public class CalendarView extends FrameLayout {
     public final void clearMultiSelect() {
         mDelegate.mSelectedCalendars.clear();
         mMonthPager.clearMultiSelect();
+        mMonthRecycleView.clearMultiSelect();
         mWeekPager.clearMultiSelect();
     }
 
@@ -765,6 +826,7 @@ public class CalendarView extends FrameLayout {
         }
         mDelegate.setMonthViewClass(cls);
         mMonthPager.updateMonthViewClass();
+        mMonthRecycleView.updateMonthViewClass();
     }
 
     /**
@@ -809,6 +871,7 @@ public class CalendarView extends FrameLayout {
         mWeekBar.setup(mDelegate);
         mWeekBar.onWeekStartChange(mDelegate.getWeekStart());
         this.mMonthPager.mWeekBar = mWeekBar;
+        this.mMonthRecycleView.mWeekBar = mWeekBar;
         mWeekBar.onDateSelected(mDelegate.mSelectedCalendar, mDelegate.getWeekStart(), false);
     }
 
@@ -1232,6 +1295,7 @@ public class CalendarView extends FrameLayout {
         this.mDelegate.updateSelectCalendarScheme();
         this.mYearViewPager.update();
         this.mMonthPager.updateScheme();
+        this.mMonthRecycleView.updateScheme();
         this.mWeekPager.updateScheme();
     }
 
@@ -1243,6 +1307,7 @@ public class CalendarView extends FrameLayout {
         this.mDelegate.clearSelectedScheme();
         mYearViewPager.update();
         mMonthPager.updateScheme();
+        mMonthRecycleView.updateScheme();
         mWeekPager.updateScheme();
     }
 
@@ -1263,6 +1328,7 @@ public class CalendarView extends FrameLayout {
         this.mDelegate.updateSelectCalendarScheme();
         this.mYearViewPager.update();
         this.mMonthPager.updateScheme();
+        this.mMonthRecycleView.updateScheme();
         this.mWeekPager.updateScheme();
     }
 
@@ -1282,6 +1348,7 @@ public class CalendarView extends FrameLayout {
         this.mDelegate.updateSelectCalendarScheme();
         this.mYearViewPager.update();
         this.mMonthPager.updateScheme();
+        this.mMonthRecycleView.updateScheme();
         this.mWeekPager.updateScheme();
     }
 
@@ -1305,6 +1372,7 @@ public class CalendarView extends FrameLayout {
 
         mYearViewPager.update();
         mMonthPager.updateScheme();
+        mMonthRecycleView.updateScheme();
         mWeekPager.updateScheme();
     }
 
@@ -1337,12 +1405,13 @@ public class CalendarView extends FrameLayout {
             int otherMonthColor,
             int curMonthLunarTextColor,
             int otherMonthLunarTextColor) {
-        if (mDelegate == null || mMonthPager == null || mWeekPager == null) {
+        if (mDelegate == null || mMonthPager == null || mWeekPager == null || mMonthRecycleView == null) {
             return;
         }
         mDelegate.setTextColor(currentDayTextColor, curMonthTextColor,
                 otherMonthColor, curMonthLunarTextColor, otherMonthLunarTextColor);
         mMonthPager.updateStyle();
+        mMonthRecycleView.updateStyle();
         mWeekPager.updateStyle();
     }
 
@@ -1354,11 +1423,12 @@ public class CalendarView extends FrameLayout {
      * @param selectedLunarTextColor 选中的农历字体颜色
      */
     public void setSelectedColor(int selectedThemeColor, int selectedTextColor, int selectedLunarTextColor) {
-        if (mDelegate == null || mMonthPager == null || mWeekPager == null) {
+        if (mDelegate == null || mMonthPager == null || mWeekPager == null || mMonthRecycleView == null) {
             return;
         }
         mDelegate.setSelectColor(selectedThemeColor, selectedTextColor, selectedLunarTextColor);
         mMonthPager.updateStyle();
+        mMonthRecycleView.updateStyle();
         mWeekPager.updateStyle();
     }
 
@@ -1369,11 +1439,12 @@ public class CalendarView extends FrameLayout {
      * @param schemeColor        标记背景色
      */
     public void setThemeColor(int selectedThemeColor, int schemeColor) {
-        if (mDelegate == null || mMonthPager == null || mWeekPager == null) {
+        if (mDelegate == null || mMonthPager == null || mWeekPager == null || mMonthRecycleView == null) {
             return;
         }
         mDelegate.setThemeColor(selectedThemeColor, schemeColor);
         mMonthPager.updateStyle();
+        mMonthRecycleView.updateStyle();
         mWeekPager.updateStyle();
     }
 
@@ -1385,11 +1456,12 @@ public class CalendarView extends FrameLayout {
      * @param schemeTextColor      标记字体颜色
      */
     public void setSchemeColor(int schemeColor, int schemeTextColor, int schemeLunarTextColor) {
-        if (mDelegate == null || mMonthPager == null || mWeekPager == null) {
+        if (mDelegate == null || mMonthPager == null || mWeekPager == null || mMonthRecycleView == null) {
             return;
         }
         mDelegate.setSchemeColor(schemeColor, schemeTextColor, schemeLunarTextColor);
         mMonthPager.updateStyle();
+        mMonthRecycleView.updateStyle();
         mWeekPager.updateStyle();
     }
 
@@ -1433,6 +1505,7 @@ public class CalendarView extends FrameLayout {
         mDelegate.setSelectMode(CalendarViewDelegate.SELECT_MODE_DEFAULT);
         mWeekBar.onDateSelected(mDelegate.mSelectedCalendar, mDelegate.getWeekStart(), false);
         mMonthPager.updateDefaultSelect();
+        mMonthRecycleView.updateDefaultSelect();
         mWeekPager.updateDefaultSelect();
 
     }
@@ -1469,6 +1542,7 @@ public class CalendarView extends FrameLayout {
         mDelegate.setSelectMode(CalendarViewDelegate.SELECT_MODE_SINGLE);
         mWeekPager.updateSelected();
         mMonthPager.updateSelected();
+        mMonthRecycleView.updateSelected();
     }
 
     /**
@@ -1512,6 +1586,7 @@ public class CalendarView extends FrameLayout {
         mWeekBar.onDateSelected(mDelegate.mSelectedCalendar, weekStart, false);
         mWeekPager.updateWeekStart();
         mMonthPager.updateWeekStart();
+        mMonthRecycleView.updateWeekStart();
         mYearViewPager.updateWeekStart();
     }
 
@@ -1563,6 +1638,7 @@ public class CalendarView extends FrameLayout {
         mDelegate.setMonthViewShowMode(mode);
         mWeekPager.updateShowMode();
         mMonthPager.updateShowMode();
+        mMonthRecycleView.updateShowMode();
         mWeekPager.notifyDataSetChanged();
     }
 
@@ -1574,6 +1650,7 @@ public class CalendarView extends FrameLayout {
         mWeekBar.onWeekStartChange(mDelegate.getWeekStart());
         mYearViewPager.update();
         mMonthPager.updateScheme();
+        mMonthRecycleView.updateScheme();
         mWeekPager.updateScheme();
     }
 
@@ -1589,7 +1666,7 @@ public class CalendarView extends FrameLayout {
      * 更新当前日期
      */
     public final void updateCurrentDate() {
-        if (mDelegate == null || mMonthPager == null || mWeekPager == null) {
+        if (mDelegate == null || mMonthPager == null || mWeekPager == null || mMonthRecycleView == null) {
             return;
         }
         java.util.Calendar calendar = java.util.Calendar.getInstance();
@@ -1599,6 +1676,7 @@ public class CalendarView extends FrameLayout {
         }
         mDelegate.updateCurrentDay();
         mMonthPager.updateCurrentDate();
+        mMonthRecycleView.updateCurrentDate();
         mWeekPager.updateCurrentDate();
     }
 
@@ -1618,6 +1696,9 @@ public class CalendarView extends FrameLayout {
      * @return return
      */
     public List<Calendar> getCurrentMonthCalendars() {
+        if(mMonthRecycleView.getVisibility() == VISIBLE){
+            return mMonthPager.getCurrentMonthCalendars();
+        }
         return mMonthPager.getCurrentMonthCalendars();
     }
 
@@ -1656,6 +1737,10 @@ public class CalendarView extends FrameLayout {
      */
     public MonthViewPager getMonthViewPager() {
         return mMonthPager;
+    }
+
+    public MonthRecycleView getMonthRecycleView(){
+        return mMonthRecycleView;
     }
 
     /**

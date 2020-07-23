@@ -25,6 +25,7 @@ import android.content.Context;
 public abstract class BaseMonthView extends BaseView {
 
     MonthViewPager mMonthViewPager;
+    MonthRecycleView mMonthRecycleView;
 
     /**
      * 当前日历卡年份

@@ -408,4 +408,8 @@ public abstract class BaseView extends View implements View.OnClickListener, Vie
     protected void initPaint() {
 
     }
+
+    public CalendarViewDelegate getDelegate() {
+        return mDelegate;
+    }
 }

@@ -33,7 +33,7 @@ import java.util.Map;
  * Google规范化的属性委托,
  * 代码量多，但是不影响阅读性
  */
-final class CalendarViewDelegate {
+public final class CalendarViewDelegate {
 
     /**
      * 周起始：周日
@@ -389,9 +389,17 @@ final class CalendarViewDelegate {
      */
     Calendar mSelectedStartRangeCalendar, mSelectedEndRangeCalendar;
 
+    public Calendar getSelectedStartRangeCalendar() {
+        return mSelectedStartRangeCalendar;
+    }
+
+    public Calendar getSelectedEndRangeCalendar() {
+        return mSelectedEndRangeCalendar;
+    }
+
     private int mMinSelectRange, mMaxSelectRange;
 
-    CalendarViewDelegate(Context context, @Nullable AttributeSet attrs) {
+    public CalendarViewDelegate(Context context, @Nullable AttributeSet attrs) {
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.CalendarView);
 
         LunarCalendar.init(context);

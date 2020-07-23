@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:ignore="HardcodedText">
@@ -12,22 +13,13 @@
         android:orientation="vertical"
         android:visibility="visible">
 
-        <com.haibin.calendarview.MonthViewPager
-            android:id="@+id/vp_month"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="41dp" />
-
-        <com.haibin.calendarview.WeekViewPager
-            android:id="@+id/vp_week"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="41dp"
-            android:visibility="gone" />
-        <com.haibin.calendarview.MonthRecycleView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_month"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="41dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
         <View
             android:id="@+id/line"
             android:layout_width="match_parent"
