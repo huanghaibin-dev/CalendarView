@@ -38,9 +38,10 @@ public class VerticalCalendarActivity extends BaseActivity {
         int cMonth = mCalendarView.getCurMonth();
         int cDay = mCalendarView.getCurDay();
 
-        mCalendarView.setRange(cYear,cMonth,cDay,cYear+100,12,31);
+//        mCalendarView.setRange(cYear,cMonth,cDay,cYear+100,12,31);
         mCalendarView.hideWeekBar();
         mCalendarView.hideMonthPager();
+        mCalendarView.scrollToCalendar(cYear,cMonth,cDay);
     }
 
     @Override

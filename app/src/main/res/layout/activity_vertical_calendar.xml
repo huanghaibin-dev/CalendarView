@@ -122,6 +122,6 @@
         app:year_view_month_text_color="@android:color/black"
         app:year_view_month_text_size="20sp"
         app:year_view_scheme_color="#f17706"
-        app:current_day_text_color="@android:color/black"/>
+        app:current_day_text_color="@android:color/holo_orange_dark"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>
