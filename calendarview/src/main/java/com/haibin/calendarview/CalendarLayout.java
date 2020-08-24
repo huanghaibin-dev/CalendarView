@@ -134,6 +134,11 @@ public class CalendarLayout extends LinearLayout {
     private static final int GESTURE_MODE_DISABLED = 2;
 
     /**
+     * 取消折叠模式
+     */
+    private static final int GESTURE_MODE_NO_FOLD = 3;
+
+    /**
      * 手势模式
      */
     private int mGestureMode;
@@ -573,6 +578,12 @@ public class CalendarLayout extends LinearLayout {
         } else if (mGestureMode == GESTURE_MODE_DISABLED && !isAnimating) {
             if (isExpand()) {
                 h = height - monthHeight;
+            } else {
+                h = height - weekBarHeight - mItemHeight;
+            }
+        }else if (mGestureMode==GESTURE_MODE_NO_FOLD && !isAnimating){
+            if (isExpand()) {
+                h = height - monthHeight-mContentView.getHeight();
             } else {
                 h = height - weekBarHeight - mItemHeight;
             }

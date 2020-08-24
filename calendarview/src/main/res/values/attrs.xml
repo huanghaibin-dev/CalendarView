@@ -121,6 +121,7 @@
             <enum name="default_mode" value="0" />
             <!--<enum name="only_calendar" value="1" />-->
             <enum name="disabled" value="2" />
+            <enum name="no_fold_mode" value="3" />
         </attr>
 
         <attr name="calendar_show_mode">
