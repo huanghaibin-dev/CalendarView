@@ -19,14 +19,14 @@ implementation 'com.haibin:calendarview:3.6.8'
 
 ### Androidx version if using Androidx
 ```
-implementation 'com.haibin:calendarview:3.6.9'
+implementation 'com.haibin:calendarview:3.7.0'
 ```
 
 ```
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.6.9</version>
+  <version>3.7.0</version>
   <type>pom</type>
 </dependency>
 ```

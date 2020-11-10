@@ -169,7 +169,7 @@ public final class YearViewPager extends ViewPager {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        heightMeasureSpec = MeasureSpec.makeMeasureSpec(getHeight(getContext(), this), MeasureSpec.EXACTLY);
+        //heightMeasureSpec = MeasureSpec.makeMeasureSpec(getHeight(getContext(), this), MeasureSpec.EXACTLY);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
@@ -178,7 +178,7 @@ public final class YearViewPager extends ViewPager {
      *
      * @param context context
      * @param view    view
-     * @return 月视图选择器最适合的高度
+     * @return 年月视图选择器最适合的高度
      */
     private static int getHeight(Context context, View view) {
         WindowManager manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);

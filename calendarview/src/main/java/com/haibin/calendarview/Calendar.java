@@ -325,7 +325,7 @@ public final class Calendar implements Serializable, Comparable<Calendar> {
      * 比较日期
      *
      * @param calendar 日期
-     * @return -1 0 1
+     * @return <0 0 >0
      */
     public int compareTo(Calendar calendar) {
         if (calendar == null) {

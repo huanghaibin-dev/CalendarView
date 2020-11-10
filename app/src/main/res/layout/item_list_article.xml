@@ -16,6 +16,7 @@
         android:id="@+id/imageView"
         android:layout_width="60dp"
         android:layout_height="60dp"
+        android:scaleType="centerCrop"
         android:layout_gravity="center_vertical"
         android:contentDescription="@string/app_name"
         android:src="@mipmap/ic_launcher" />

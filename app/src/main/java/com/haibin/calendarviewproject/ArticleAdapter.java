@@ -51,8 +51,6 @@ public class ArticleAdapter extends GroupRecyclerAdapter<String, Article> {
         h.mTextTitle.setText(item.getTitle());
         h.mTextContent.setText(item.getContent());
         mLoader.load(item.getImgUrl())
-                .asBitmap()
-                .centerCrop()
                 .into(h.mImageView);
     }
 

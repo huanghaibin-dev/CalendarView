@@ -3,6 +3,9 @@
     <declare-styleable name="CalendarView">
 
         <attr name="calendar_padding" format="dimension" /><!--日历内部左右padding-->
+        <attr name="calendar_padding_left" format="dimension" /><!--日历内部左padding-->
+        <attr name="calendar_padding_right" format="dimension" /><!--日历内部右padding-->
+
 
         <attr name="week_background" format="color" /><!--周背景-->
         <attr name="week_line_background" format="color" /><!--线条颜色-->
@@ -51,9 +54,15 @@
         <attr name="year_view_week_height" format="dimension" />
         <attr name="year_view_week_text_size" format="dimension" />
         <attr name="year_view_week_text_color" format="color" />
+
         <attr name="year_view_padding" format="dimension" />
-        <attr name="year_view_month_margin_top" format="dimension" />
-        <attr name="year_view_month_margin_bottom" format="dimension" />
+        <attr name="year_view_padding_left" format="dimension" />
+        <attr name="year_view_padding_right" format="dimension" />
+
+        <attr name="year_view_month_padding_top" format="dimension" />
+        <attr name="year_view_month_padding_left" format="dimension" />
+        <attr name="year_view_month_padding_right" format="dimension" />
+        <attr name="year_view_month_padding_bottom" format="dimension" />
 
         <!--日期范围-->
         <attr name="min_year" format="integer" />

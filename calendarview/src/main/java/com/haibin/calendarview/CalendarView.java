@@ -130,6 +130,7 @@ public class CalendarView extends FrameLayout {
 
 
         mYearViewPager = findViewById(R.id.selectLayout);
+        mYearViewPager.setPadding(mDelegate.getYearViewPaddingLeft(),0,mDelegate.getYearViewPaddingRight(),0);
         mYearViewPager.setBackgroundColor(mDelegate.getYearViewBackground());
         mYearViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -1421,6 +1422,34 @@ public class CalendarView extends FrameLayout {
         mWeekBar.setBackgroundColor(weekBackground);
         mWeekBar.setTextColor(weekTextColor);
     }
+
+
+
+    public void setCalendarPadding(int mCalendarPadding) {
+        if(mDelegate == null){
+            return;
+        }
+        mDelegate.setCalendarPadding(mCalendarPadding);
+        update();
+    }
+
+
+    public void setCalendarPaddingLeft(int mCalendarPaddingLeft) {
+        if(mDelegate == null){
+            return;
+        }
+        mDelegate.setCalendarPaddingLeft(mCalendarPaddingLeft);
+        update();
+    }
+
+    public void setCalendarPaddingRight(int mCalendarPaddingRight) {
+        if(mDelegate == null){
+            return;
+        }
+        mDelegate.setCalendarPaddingRight(mCalendarPaddingRight);
+        update();
+    }
+
 
     /**
      * 默认选择模式

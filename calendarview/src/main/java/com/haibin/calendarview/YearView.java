@@ -347,7 +347,9 @@ public abstract class YearView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        mItemWidth = (getWidth() - 2 * mDelegate.getYearViewPadding()) / 7;
+        mItemWidth = (getWidth() -
+                mDelegate.getYearViewMonthPaddingLeft() -
+                mDelegate.getYearViewMonthPaddingRight()) / 7;
         onPreviewHook();
         onDrawMonth(canvas);
         onDrawWeek(canvas);
@@ -362,17 +364,17 @@ public abstract class YearView extends View {
     private void onDrawMonth(Canvas canvas) {
         onDrawMonth(canvas,
                 mYear, mMonth,
-                mDelegate.getYearViewPadding(),
-                mDelegate.getYearViewMonthMarginTop(),
-                getWidth() - 2 * mDelegate.getYearViewPadding(),
+                mDelegate.getYearViewMonthPaddingLeft(),
+                mDelegate.getYearViewMonthPaddingTop(),
+                getWidth() - 2 * mDelegate.getYearViewMonthPaddingRight(),
                 mDelegate.getYearViewMonthHeight() +
-                        mDelegate.getYearViewMonthMarginTop());
+                        mDelegate.getYearViewMonthPaddingTop());
     }
 
     private int getMonthViewTop() {
-        return mDelegate.getYearViewMonthMarginTop() +
+        return mDelegate.getYearViewMonthPaddingTop() +
                 mDelegate.getYearViewMonthHeight() +
-                mDelegate.getYearViewMonthMarginBottom() +
+                mDelegate.getYearViewMonthPaddingBottom() +
                 mDelegate.getYearViewWeekHeight();
     }
 
@@ -389,14 +391,16 @@ public abstract class YearView extends View {
         if (week > 0) {
             week -= 1;
         }
-        int width = (getWidth() - 2 * mDelegate.getYearViewPadding()) / 7;
+        int width = (getWidth() -
+                mDelegate.getYearViewMonthPaddingLeft() -
+                mDelegate.getYearViewMonthPaddingRight()) / 7;
         for (int i = 0; i < 7; i++) {
             onDrawWeek(canvas,
                     week,
-                    mDelegate.getYearViewPadding() + i * width,
+                    mDelegate.getYearViewMonthPaddingLeft() + i * width,
                     mDelegate.getYearViewMonthHeight() +
-                            mDelegate.getYearViewMonthMarginTop() +
-                            mDelegate.getYearViewMonthMarginBottom(),
+                            mDelegate.getYearViewMonthPaddingTop() +
+                            mDelegate.getYearViewMonthPaddingBottom(),
                     width,
                     mDelegate.getYearViewWeekHeight());
             week += 1;
@@ -443,7 +447,7 @@ public abstract class YearView extends View {
      * @param d        d
      */
     private void draw(Canvas canvas, Calendar calendar, int i, int j, int d) {
-        int x = j * mItemWidth + mDelegate.getYearViewPadding();
+        int x = j * mItemWidth + mDelegate.getYearViewMonthPaddingLeft();
         int y = i * mItemHeight + getMonthViewTop();
 
         boolean isSelected = calendar.equals(mDelegate.mSelectedCalendar);

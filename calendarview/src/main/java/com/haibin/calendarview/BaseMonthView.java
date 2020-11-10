@@ -114,7 +114,10 @@ public abstract class BaseMonthView extends BaseView {
         if (mItemWidth == 0 || mItemHeight == 0) {
             return null;
         }
-        int indexX = (int) (mX - mDelegate.getCalendarPadding()) / mItemWidth;
+        if (mX <= mDelegate.getCalendarPaddingLeft() || mX >= getWidth() - mDelegate.getCalendarPaddingRight()) {
+            return null;
+        }
+        int indexX = (int) (mX - mDelegate.getCalendarPaddingLeft()) / mItemWidth;
         if (indexX >= 7) {
             indexX = 6;
         }
@@ -140,7 +143,7 @@ public abstract class BaseMonthView extends BaseView {
      */
     final void updateShowMode() {
         mLineCount = CalendarUtil.getMonthViewLineCount(mYear, mMonth,
-                mDelegate.getWeekStart(),mDelegate.getMonthViewShowMode());
+                mDelegate.getWeekStart(), mDelegate.getMonthViewShowMode());
         mHeight = CalendarUtil.getMonthViewHeight(mYear, mMonth, mItemHeight, mDelegate.getWeekStart(),
                 mDelegate.getMonthViewShowMode());
         invalidate();

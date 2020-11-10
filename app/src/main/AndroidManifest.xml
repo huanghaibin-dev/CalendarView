@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
+        android:usesCleartextTraffic="true"
+        tools:ignore="GoogleAppIndexingWarning,UnusedAttribute">
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,6 +31,7 @@
         <activity android:name=".single.SingleActivity" />
         <activity android:name=".progress.ProgressActivity" />
         <activity android:name=".custom.CustomActivity" />
+        <activity android:name=".mix.MixActivity" />
         <activity android:name=".pager.ViewPagerActivity" />
         <activity android:name=".full.FullActivity" />
         <activity android:name=".TestActivity" />

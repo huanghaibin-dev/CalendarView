@@ -53,6 +53,9 @@
     <string name="custom_china">Beautiful Chinese style</string>
     <string name="custom_china_desc">Beautiful Chinese style custom</string>
 
+    <string name="mix">Beautiful Mix style</string>
+    <string name="mix_desc">Beautiful Mix style</string>
+
     <string name="full">Full screen style</string>
     <string name="full_desc">If you need a full screen calendar</string>
 

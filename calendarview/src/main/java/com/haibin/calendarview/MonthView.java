@@ -33,7 +33,9 @@ public abstract class MonthView extends BaseMonthView {
     protected void onDraw(Canvas canvas) {
         if (mLineCount == 0)
             return;
-        mItemWidth = (getWidth() - 2 * mDelegate.getCalendarPadding()) / 7;
+        mItemWidth = (getWidth() -
+                mDelegate.getCalendarPaddingLeft() -
+                mDelegate.getCalendarPaddingRight()) / 7;
         onPreviewHook();
         int count = mLineCount * 7;
         int d = 0;
@@ -70,7 +72,7 @@ public abstract class MonthView extends BaseMonthView {
      * @param d        d
      */
     private void draw(Canvas canvas, Calendar calendar, int i, int j, int d) {
-        int x = j * mItemWidth + mDelegate.getCalendarPadding();
+        int x = j * mItemWidth + mDelegate.getCalendarPaddingLeft();
         int y = i * mItemHeight;
         onLoopStart(x, y);
         boolean isSelected = d == mCurrentItem;

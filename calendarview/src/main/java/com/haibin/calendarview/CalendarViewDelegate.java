@@ -145,9 +145,36 @@ final class CalendarViewDelegate {
     private boolean preventLongPressedSelected;
 
     /**
+     * 年视图一些padding
+     */
+    private int
+            mYearViewPadding,
+            mYearViewPaddingLeft,
+            mYearViewPaddingRight;
+
+    /**
+     * 年视图一些padding
+     */
+    private int
+            mYearViewMonthPaddingLeft,
+            mYearViewMonthPaddingRight,
+            mYearViewMonthPaddingTop,
+            mYearViewMonthPaddingBottom;
+
+    /**
      * 日历内部左右padding
      */
     private int mCalendarPadding;
+
+    /**
+     * 日历内部左padding
+     */
+    private int mCalendarPaddingLeft;
+
+    /**
+     * 日历内部右padding
+     */
+    private int mCalendarPaddingRight;
 
     /**
      * 年视图字体大小
@@ -162,12 +189,6 @@ final class CalendarViewDelegate {
     private int mYearViewMonthHeight,
             mYearViewWeekHeight;
 
-    /**
-     * 年视图一些margin和padding
-     */
-    private int mYearViewPadding,
-            mYearViewMonthMarginTop,
-            mYearViewMonthMarginBottom;
 
     /**
      * 年视图字体和标记颜色
@@ -397,6 +418,14 @@ final class CalendarViewDelegate {
         LunarCalendar.init(context);
 
         mCalendarPadding = (int) array.getDimension(R.styleable.CalendarView_calendar_padding, 0);
+        mCalendarPaddingLeft = (int) array.getDimension(R.styleable.CalendarView_calendar_padding_left, 0);
+        mCalendarPaddingRight = (int) array.getDimension(R.styleable.CalendarView_calendar_padding_right, 0);
+
+        if (mCalendarPadding != 0) {
+            mCalendarPaddingLeft = mCalendarPadding;
+            mCalendarPaddingRight = mCalendarPadding;
+        }
+
         mSchemeTextColor = array.getColor(R.styleable.CalendarView_scheme_text_color, 0xFFFFFFFF);
         mSchemeLunarTextColor = array.getColor(R.styleable.CalendarView_scheme_lunar_text_color, 0xFFe1e1e1);
         mSchemeThemeColor = array.getColor(R.styleable.CalendarView_scheme_theme_color, 0x50CFCFCF);
@@ -482,10 +511,25 @@ final class CalendarViewDelegate {
                 CalendarUtil.dipToPx(context, 0));
 
         mYearViewPadding = (int) array.getDimension(R.styleable.CalendarView_year_view_padding,
-                CalendarUtil.dipToPx(context, 6));
-        mYearViewMonthMarginTop = (int) array.getDimension(R.styleable.CalendarView_year_view_month_margin_top,
+                CalendarUtil.dipToPx(context, 12));
+        mYearViewPaddingLeft = (int) array.getDimension(R.styleable.CalendarView_year_view_padding_left,
+                CalendarUtil.dipToPx(context, 12));
+        mYearViewPaddingRight = (int) array.getDimension(R.styleable.CalendarView_year_view_padding_right,
+                CalendarUtil.dipToPx(context, 12));
+
+        if (mYearViewPadding != 0) {
+            mYearViewPaddingLeft = mYearViewPadding;
+            mYearViewPaddingRight = mYearViewPadding;
+        }
+
+        mYearViewMonthPaddingTop = (int) array.getDimension(R.styleable.CalendarView_year_view_month_padding_top,
                 CalendarUtil.dipToPx(context, 4));
-        mYearViewMonthMarginBottom = (int) array.getDimension(R.styleable.CalendarView_year_view_month_margin_bottom,
+        mYearViewMonthPaddingBottom = (int) array.getDimension(R.styleable.CalendarView_year_view_month_padding_bottom,
+                CalendarUtil.dipToPx(context, 4));
+
+        mYearViewMonthPaddingLeft = (int) array.getDimension(R.styleable.CalendarView_year_view_month_padding_left,
+                CalendarUtil.dipToPx(context, 4));
+        mYearViewMonthPaddingRight = (int) array.getDimension(R.styleable.CalendarView_year_view_month_padding_right,
                 CalendarUtil.dipToPx(context, 4));
 
         if (mMinYear <= MIN_YEAR) mMinYear = MIN_YEAR;
@@ -719,16 +763,34 @@ final class CalendarViewDelegate {
         return mYearViewCurDayTextColor;
     }
 
+    @SuppressWarnings("unused")
     int getYearViewPadding() {
         return mYearViewPadding;
     }
 
-    int getYearViewMonthMarginTop() {
-        return mYearViewMonthMarginTop;
+    int getYearViewPaddingLeft() {
+        return mYearViewPaddingLeft;
     }
 
-    int getYearViewMonthMarginBottom() {
-        return mYearViewMonthMarginBottom;
+    int getYearViewPaddingRight() {
+        return mYearViewPaddingRight;
+    }
+
+
+    int getYearViewMonthPaddingLeft() {
+        return mYearViewMonthPaddingLeft;
+    }
+
+    int getYearViewMonthPaddingRight() {
+        return mYearViewMonthPaddingRight;
+    }
+
+    int getYearViewMonthPaddingTop() {
+        return mYearViewMonthPaddingTop;
+    }
+
+    int getYearViewMonthPaddingBottom() {
+        return mYearViewMonthPaddingBottom;
     }
 
     int getYearViewWeekHeight() {
@@ -898,10 +960,32 @@ final class CalendarViewDelegate {
         LunarCalendar.setupLunarCalendar(mCurrentDate);
     }
 
+    @SuppressWarnings("unused")
     int getCalendarPadding() {
         return mCalendarPadding;
     }
 
+    void setCalendarPadding(int mCalendarPadding) {
+        this.mCalendarPadding = mCalendarPadding;
+        mCalendarPaddingLeft = mCalendarPadding;
+        mCalendarPaddingRight = mCalendarPadding;
+    }
+
+    int getCalendarPaddingLeft() {
+        return mCalendarPaddingLeft;
+    }
+
+    void setCalendarPaddingLeft(int mCalendarPaddingLeft) {
+        this.mCalendarPaddingLeft = mCalendarPaddingLeft;
+    }
+
+    int getCalendarPaddingRight() {
+        return mCalendarPaddingRight;
+    }
+
+    void setCalendarPaddingRight(int mCalendarPaddingRight) {
+        this.mCalendarPaddingRight = mCalendarPaddingRight;
+    }
 
     void setPreventLongPressedSelected(boolean preventLongPressedSelected) {
         this.preventLongPressedSelected = preventLongPressedSelected;
@@ -1007,7 +1091,7 @@ final class CalendarViewDelegate {
         for (Calendar a : mItems) {
             if (mSchemeDatesMap.containsKey(a.toString())) {
                 Calendar d = mSchemeDatesMap.get(a.toString());
-                if(d == null){
+                if (d == null) {
                     continue;
                 }
                 a.setScheme(TextUtils.isEmpty(d.getScheme()) ? getSchemeText() : d.getScheme());
@@ -1036,10 +1120,10 @@ final class CalendarViewDelegate {
         for (String key : mSchemeDates.keySet()) {
             this.mSchemeDatesMap.remove(key);
             Calendar calendar = mSchemeDates.get(key);
-            if(calendar == null){
+            if (calendar == null) {
                 continue;
             }
-            this.mSchemeDatesMap.put(key,calendar);
+            this.mSchemeDatesMap.put(key, calendar);
         }
     }
 

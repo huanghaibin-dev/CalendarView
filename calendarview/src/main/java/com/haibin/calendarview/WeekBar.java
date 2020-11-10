@@ -46,7 +46,7 @@ public class WeekBar extends LinearLayout {
             setTextSize(mDelegate.getWeekTextSize());
             setTextColor(delegate.getWeekTextColor());
             setBackgroundColor(delegate.getWeekBackground());
-            setPadding(delegate.getCalendarPadding(), 0, delegate.getCalendarPadding(), 0);
+            setPadding(delegate.getCalendarPaddingLeft(), 0, delegate.getCalendarPaddingRight(), 0);
         }
     }
 

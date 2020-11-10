@@ -1,4 +1,4 @@
-package com.haibin.calendarviewproject.custom;
+package com.haibin.calendarviewproject.mix;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.text.TextUtils;
 
 import com.haibin.calendarview.Calendar;
+import com.haibin.calendarview.CalendarUtil;
 import com.haibin.calendarview.MonthView;
 
 /**
@@ -14,7 +15,7 @@ import com.haibin.calendarview.MonthView;
  * Created by huanghaibin on 2018/2/9.
  */
 
-public class CustomMonthView extends MonthView {
+public class MixMonthView extends MonthView {
 
     private int mRadius;
 
@@ -54,7 +55,7 @@ public class CustomMonthView extends MonthView {
 
     private float mSchemeBaseLine;
 
-    public CustomMonthView(Context context) {
+    public MixMonthView(Context context) {
         super(context);
 
         mTextPaint.setTextSize(dipToPx(context, 8));
@@ -91,8 +92,6 @@ public class CustomMonthView extends MonthView {
 
         Paint.FontMetrics metrics = mSchemeBasicPaint.getFontMetrics();
         mSchemeBaseLine = mCircleRadius - metrics.descent + (metrics.bottom - metrics.top) / 2 + dipToPx(getContext(), 1);
-
-
     }
 
     @Override
@@ -103,6 +102,21 @@ public class CustomMonthView extends MonthView {
 
     @Override
     protected void onDraw(Canvas canvas) {
+
+        int weekStart = CalendarUtil.getWeekCountBetweenBothCalendar(mYear, 1, 1,
+                mYear, mMonth, 1, 1);
+        int weekEnd = CalendarUtil.getWeekCountBetweenBothCalendar(mYear, 1, 1,
+                mYear, mMonth, CalendarUtil.getMonthDaysCount(mYear, mMonth), 1);
+        int width = dipToPx(getContext(),52);//left-padding
+        int cx = width / 2;
+        int cy = 0;
+
+        for (int w = weekStart; w <= weekEnd; w++) {
+
+            canvas.drawText(String.valueOf(w), cx, mTextBaseLine + cy,
+                    mOtherMonthTextPaint);
+            cy += mItemHeight;
+        }
         super.onDraw(canvas);
     }
 
@@ -180,7 +194,7 @@ public class CustomMonthView extends MonthView {
 
             canvas.drawText(calendar.getLunar(), cx, mTextBaseLine + y + mItemHeight / 10,
                     calendar.isCurrentDay() ? mCurDayLunarTextPaint :
-                            calendar.isCurrentMonth() ? !TextUtils.isEmpty(calendar.getSolarTerm()) ? mSolarTermTextPaint  :
+                            calendar.isCurrentMonth() ? !TextUtils.isEmpty(calendar.getSolarTerm()) ? mSolarTermTextPaint :
                                     mCurMonthLunarTextPaint : mOtherMonthLunarTextPaint);
         }
     }

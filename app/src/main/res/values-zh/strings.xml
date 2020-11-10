@@ -53,6 +53,9 @@
     <string name="custom_china">精美定制中国风</string>
     <string name="custom_china_desc">周末变色、圆点事件+文本标记</string>
 
+    <string name="mix">Mix错位风格</string>
+    <string name="mix_desc">Mix错位风格</string>
+
     <string name="full">全屏风格</string>
     <string name="full_desc">如果你需要的话，分分钟的事</string>
 

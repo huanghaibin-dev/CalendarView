@@ -38,11 +38,13 @@ public abstract class WeekView extends BaseWeekView {
     protected void onDraw(Canvas canvas) {
         if (mItems.size() == 0)
             return;
-        mItemWidth = (getWidth() - 2 * mDelegate.getCalendarPadding()) / 7;
+        mItemWidth = (getWidth() -
+                 mDelegate.getCalendarPaddingLeft() -
+                 mDelegate.getCalendarPaddingRight()) / 7;
         onPreviewHook();
 
         for (int i = 0; i < mItems.size(); i++) {
-            int x = i * mItemWidth + mDelegate.getCalendarPadding();
+            int x = i * mItemWidth + mDelegate.getCalendarPaddingLeft();
             onLoopStart(x);
             Calendar calendar = mItems.get(i);
             boolean isSelected = i == mCurrentItem;

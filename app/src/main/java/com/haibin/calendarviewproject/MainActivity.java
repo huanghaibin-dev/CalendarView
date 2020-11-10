@@ -24,6 +24,7 @@ import com.haibin.calendarviewproject.index.IndexActivity;
 import com.haibin.calendarviewproject.meizu.MeiZuActivity;
 import com.haibin.calendarviewproject.meizu.MeiZuMonthView;
 import com.haibin.calendarviewproject.meizu.MeizuWeekView;
+import com.haibin.calendarviewproject.mix.MixActivity;
 import com.haibin.calendarviewproject.multi.MultiActivity;
 import com.haibin.calendarviewproject.pager.ViewPagerActivity;
 import com.haibin.calendarviewproject.progress.ProgressActivity;
@@ -195,8 +196,10 @@ public class MainActivity extends BaseActivity implements
         Map<String, Calendar> map = new HashMap<>();
         for (int y = 1997; y < 2082; y++) {
             for (int m = 1; m <= 12; m++) {
+
                 map.put(getSchemeCalendar(y, m, 1, 0xFF40db25, "假").toString(),
                         getSchemeCalendar(y, m, 1, 0xFF40db25, "假"));
+
                 map.put(getSchemeCalendar(y, m, 2, 0xFFe69138, "游").toString(),
                         getSchemeCalendar(y, m, 2, 0xFFe69138, "游"));
                 map.put(getSchemeCalendar(y, m, 3, 0xFFdf1356, "事").toString(),
@@ -263,6 +266,7 @@ public class MainActivity extends BaseActivity implements
         findViewById(R.id.ll_flyme).setOnClickListener(this);
         findViewById(R.id.ll_simple).setOnClickListener(this);
         findViewById(R.id.ll_range).setOnClickListener(this);
+        findViewById(R.id.ll_mix).setOnClickListener(this);
         findViewById(R.id.ll_colorful).setOnClickListener(this);
         findViewById(R.id.ll_index).setOnClickListener(this);
         findViewById(R.id.ll_tab).setOnClickListener(this);
@@ -320,6 +324,9 @@ public class MainActivity extends BaseActivity implements
                 break;
             case R.id.ll_custom:
                 CustomActivity.show(this);
+                break;
+            case R.id.ll_mix:
+                MixActivity.show(this);
                 break;
             case R.id.ll_full:
                 FullActivity.show(this);

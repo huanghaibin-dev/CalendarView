@@ -68,6 +68,7 @@ public class RangeActivity extends BaseActivity implements
         findViewById(R.id.iv_reduce).setOnClickListener(this);
         findViewById(R.id.iv_increase).setOnClickListener(this);
         findViewById(R.id.tv_commit).setOnClickListener(this);
+        findViewById(R.id.tv_title).setOnClickListener(this);
 
         mCalendarHeight = dipToPx(this, 46);
 
@@ -132,6 +133,9 @@ public class RangeActivity extends BaseActivity implements
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.tv_title:
+
+                break;
             case R.id.iv_clear:
                 mCalendarView.clearSelectRange();
                 mTextLeftWeek.setText("开始日期");

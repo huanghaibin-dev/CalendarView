@@ -105,7 +105,7 @@ public abstract class BaseView extends View implements View.OnClickListener, Vie
     /**
      * 日历项
      */
-    List<Calendar> mItems;
+    protected List<Calendar> mItems;
 
     /**
      * 每一项的高度

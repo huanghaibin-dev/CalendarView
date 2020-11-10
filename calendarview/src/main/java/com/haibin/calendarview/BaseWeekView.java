@@ -160,7 +160,11 @@ public abstract class BaseWeekView extends BaseView {
      */
     protected Calendar getIndex() {
 
-        int indexX = (int) (mX - mDelegate.getCalendarPadding()) / mItemWidth;
+        if (mX <= mDelegate.getCalendarPaddingLeft() || mX >= getWidth() - mDelegate.getCalendarPaddingRight()) {
+            return null;
+        }
+
+        int indexX = (int) (mX - mDelegate.getCalendarPaddingLeft()) / mItemWidth;
         if (indexX >= 7) {
             indexX = 6;
         }

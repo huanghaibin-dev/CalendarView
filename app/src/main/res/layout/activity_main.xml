@@ -133,7 +133,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#fff"
-            app:calendar_padding="10dp"
+            app:calendar_padding_left="22dp"
+            app:calendar_padding_right="10dp"
             app:current_day_lunar_text_color="#ff0000"
             app:current_day_text_color="#ff0000"
             app:current_month_lunar_text_color="#CFCFCF"
@@ -266,6 +267,49 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
                             android:text="@string/custom_china_desc"
+                            android:textColor="#666666"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/line_color" />
+
+                <LinearLayout
+                    android:id="@+id/ll_mix"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="39dp"
+                        android:layout_height="39dp"
+                        android:layout_margin="16dp"
+                        android:contentDescription="progress"
+                        android:src="@mipmap/ic_custom" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:layout_marginTop="16dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/mix"
+                            android:textColor="#333333"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/mix_desc"
                             android:textColor="#666666"
                             android:textSize="14sp" />
                     </LinearLayout>

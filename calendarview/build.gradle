@@ -7,8 +7,8 @@ android {
         minSdkVersion 14
         //noinspection OldTargetApi
         targetSdkVersion 28
-        versionCode 369
-        versionName "3.6.9"
+        versionCode 370
+        versionName "3.7.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }
@@ -38,10 +38,9 @@ dependencies {
     androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    //noinspection GradleDependency
-    implementation 'androidx.appcompat:appcompat:1.0.0'
-    //noinspection GradleDependency
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
     testImplementation 'junit:junit:4.12'
 }
 apply from: '../script/gradle-jcenter-push.gradle'
