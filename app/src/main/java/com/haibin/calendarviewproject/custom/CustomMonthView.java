@@ -91,9 +91,8 @@ public class CustomMonthView extends MonthView {
 
         Paint.FontMetrics metrics = mSchemeBasicPaint.getFontMetrics();
         mSchemeBaseLine = mCircleRadius - metrics.descent + (metrics.bottom - metrics.top) / 2 + dipToPx(getContext(), 1);
-
-
     }
+
 
     @Override
     protected void onPreviewHook() {
@@ -101,10 +100,6 @@ public class CustomMonthView extends MonthView {
         mRadius = Math.min(mItemWidth, mItemHeight) / 11 * 5;
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-    }
 
     @Override
     protected boolean onDrawSelected(Canvas canvas, Calendar calendar, int x, int y, boolean hasScheme) {

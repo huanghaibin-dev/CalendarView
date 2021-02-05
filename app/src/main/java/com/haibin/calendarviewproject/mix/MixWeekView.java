@@ -100,19 +100,25 @@ public class MixWeekView extends WeekView {
     @Override
     protected void onDraw(Canvas canvas) {
 
-        if(mItems == null || mItems.size() == 0){
+        if (mItems == null || mItems.size() == 0) {
             return;
         }
         Calendar calendar = mItems.get(0);
         int weekStart = CalendarUtil.getWeekCountBetweenBothCalendar(calendar.getYear(), 1, 1,
-                calendar.getYear(), calendar.getMonth(), calendar.getDay(), 1);
-        int width = dipToPx(getContext(),52);
+                calendar.getYear(), calendar.getMonth(), calendar.getDay(), getWeekStartWith());
+        int width = dipToPx(getContext(), 52);
         int cx = width / 2;
         int cy = 0;
 
         canvas.drawText(String.valueOf(weekStart), cx, mTextBaseLine + cy,
                 mOtherMonthTextPaint);
         super.onDraw(canvas);
+    }
+
+    @Override
+    protected Object getClickCalendarPaddingObject(float x, float y, Calendar adjacentCalendar) {
+        return  CalendarUtil.getWeekCountBetweenBothCalendar(adjacentCalendar.getYear(), 1, 1,
+                adjacentCalendar.getYear(), adjacentCalendar.getMonth(), adjacentCalendar.getDay(), getWeekStartWith());
     }
 
     @Override
@@ -155,7 +161,7 @@ public class MixWeekView extends WeekView {
             canvas.drawCircle(cx, cy, mRadius, mCurrentDayPaint);
         }
 
-        if(hasScheme){
+        if (hasScheme) {
             canvas.drawCircle(x + mItemWidth - mPadding - mCircleRadius / 2, mPadding + mCircleRadius, mCircleRadius, mSchemeBasicPaint);
 
             mTextPaint.setColor(calendar.getSchemeColor());

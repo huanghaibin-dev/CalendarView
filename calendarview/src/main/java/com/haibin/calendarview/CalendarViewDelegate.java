@@ -331,6 +331,11 @@ final class CalendarViewDelegate {
     Map<String, Calendar> mSchemeDatesMap;
 
     /**
+     * 点击Padding位置事件
+     */
+    CalendarView.OnClickCalendarPaddingListener mClickCalendarPaddingListener;
+
+    /**
      * 日期拦截事件
      */
     CalendarView.OnCalendarInterceptListener mCalendarInterceptListener;

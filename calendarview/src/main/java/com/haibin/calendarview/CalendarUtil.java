@@ -108,6 +108,7 @@ public final class CalendarUtil {
      * @param year       年
      * @param month      月
      * @param itemHeight 每项的高度
+     * @param weekStartWith 周起始
      * @return 不需要多余行的高度
      */
     public static int getMonthViewHeight(int year, int month, int itemHeight, int weekStartWith) {
@@ -414,6 +415,7 @@ public final class CalendarUtil {
      * @param minYearMonth maxYear 最小年份月份，like : 2017-07
      * @param minYearDay   最小年份天
      * @param week         从最小年份minYear月minYearMonth 日1 开始的第几周 week > 0
+     * @param weekStart 周起始
      * @return 该星期的第一天日期
      */
     public static Calendar getFirstCalendarStartWithMinCalendar(int minYear, int minYearMonth, int minYearDay, int week, int weekStart) {

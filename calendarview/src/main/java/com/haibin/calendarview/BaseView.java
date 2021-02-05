@@ -125,7 +125,7 @@ public abstract class BaseView extends View implements View.OnClickListener, Vie
     /**
      * 点击的x、y坐标
      */
-    float mX, mY;
+    protected float mX, mY;
 
     /**
      * 是否点击
@@ -141,6 +141,11 @@ public abstract class BaseView extends View implements View.OnClickListener, Vie
      * 当前点击项
      */
     int mCurrentItem = -1;
+
+    /**
+     * 周起始
+     */
+    int mWeekStartWidth;
 
     public BaseView(Context context) {
         this(context, null);
@@ -226,8 +231,9 @@ public abstract class BaseView extends View implements View.OnClickListener, Vie
      *
      * @param delegate delegate
      */
-   final void setup(CalendarViewDelegate delegate) {
+    final void setup(CalendarViewDelegate delegate) {
         this.mDelegate = delegate;
+        mWeekStartWidth = mDelegate.getWeekStart();
         updateStyle();
         updateItemHeight();
 
@@ -235,8 +241,8 @@ public abstract class BaseView extends View implements View.OnClickListener, Vie
     }
 
 
-    final void updateStyle(){
-        if(mDelegate == null){
+    final void updateStyle() {
+        if (mDelegate == null) {
             return;
         }
         this.mCurDayTextPaint.setColor(mDelegate.getCurDayTextColor());
@@ -295,7 +301,7 @@ public abstract class BaseView extends View implements View.OnClickListener, Vie
         for (Calendar a : mItems) {
             if (mDelegate.mSchemeDatesMap.containsKey(a.toString())) {
                 Calendar d = mDelegate.mSchemeDatesMap.get(a.toString());
-                if(d == null){
+                if (d == null) {
                     continue;
                 }
                 a.setScheme(TextUtils.isEmpty(d.getScheme()) ? mDelegate.getSchemeText() : d.getScheme());
@@ -401,6 +407,21 @@ public abstract class BaseView extends View implements View.OnClickListener, Vie
      * 销毁
      */
     protected abstract void onDestroy();
+
+    protected int getWeekStartWith() {
+        return mDelegate != null ? mDelegate.getWeekStart() : CalendarViewDelegate.WEEK_START_WITH_SUN;
+    }
+
+
+    protected int getCalendarPaddingLeft() {
+        return mDelegate != null ? mDelegate.getCalendarPaddingLeft() : 0;
+    }
+
+
+    protected int getCalendarPaddingRight() {
+        return mDelegate != null ? mDelegate.getCalendarPaddingRight() : 0;
+    }
+
 
     /**
      * 初始化画笔相关

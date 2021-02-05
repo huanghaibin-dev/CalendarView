@@ -101,13 +101,19 @@ public class MixMonthView extends MonthView {
     }
 
     @Override
+    protected Object getClickCalendarPaddingObject(float x, float y,Calendar adjacentCalendar) {
+        return CalendarUtil.getWeekCountBetweenBothCalendar(mYear, 1, 1,
+                mYear, adjacentCalendar.getMonth(), adjacentCalendar.getDay(), getWeekStartWith());
+    }
+
+    @Override
     protected void onDraw(Canvas canvas) {
 
         int weekStart = CalendarUtil.getWeekCountBetweenBothCalendar(mYear, 1, 1,
-                mYear, mMonth, 1, 1);
+                mYear, mMonth, 1, getWeekStartWith());
         int weekEnd = CalendarUtil.getWeekCountBetweenBothCalendar(mYear, 1, 1,
-                mYear, mMonth, CalendarUtil.getMonthDaysCount(mYear, mMonth), 1);
-        int width = dipToPx(getContext(),52);//left-padding
+                mYear, mMonth, CalendarUtil.getMonthDaysCount(mYear, mMonth), getWeekStartWith());
+        int width = dipToPx(getContext(), 52);//left-padding
         int cx = width / 2;
         int cy = 0;
 

@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -64,8 +65,8 @@ public class MixActivity extends BaseActivity implements
         mTextYear = findViewById(R.id.tv_year);
         mTextLunar = findViewById(R.id.tv_lunar);
         mRelativeTool = findViewById(R.id.rl_tool);
-        mCalendarView =  findViewById(R.id.calendarView);
-        mTextCurrentDay =  findViewById(R.id.tv_current_day);
+        mCalendarView = findViewById(R.id.calendarView);
+        mTextCurrentDay = findViewById(R.id.tv_current_day);
         mTextMonthDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,24 +84,21 @@ public class MixActivity extends BaseActivity implements
             @Override
             public void onClick(View v) {
                 mCalendarView.scrollToCurrent();
-                //mCalendarView.addSchemeDate(getSchemeCalendar(2019, 6, 1, 0xFF40db25, "假"));
-//                int year = 2019;
-//                int month = 6;
-//                Map<String, Calendar> map = new HashMap<>();
-//                map.put(getSchemeCalendar(year, month, 3, 0xFF40db25, "假").toString(),
-//                        getSchemeCalendar(year, month, 3, 0xFF40db25, "假"));
-//                map.put(getSchemeCalendar(year, month, 6, 0xFFe69138, "事").toString(),
-//                        getSchemeCalendar(year, month, 6, 0xFFe69138, "事"));
-//                map.put(getSchemeCalendar(year, month, 9, 0xFFdf1356, "议").toString(),
-//                        getSchemeCalendar(year, month, 9, 0xFFdf1356, "议"));
-//                map.put(getSchemeCalendar(year, month, 13, 0xFFedc56d, "记").toString(),
-//                        getSchemeCalendar(year, month, 13, 0xFFedc56d, "记"));
-//                mCalendarView.addSchemeDate(map);
             }
         });
         mCalendarLayout = findViewById(R.id.calendarLayout);
         mCalendarView.setOnCalendarSelectListener(this);
         mCalendarView.setOnYearChangeListener(this);
+        mCalendarView.setOnClickCalendarPaddingListener(new CalendarView.OnClickCalendarPaddingListener() {
+            @Override
+            public void onClickCalendarPadding(float x, float y, boolean isMonthView,
+                                               Calendar adjacentCalendar, Object obj) {
+                Log.e("onClickCalendarPadding", "  --  " + x + "  " + y + "  " + obj + "  " + adjacentCalendar);
+                Toast.makeText(MixActivity.this,
+                        adjacentCalendar.getYear() + "年，第" + obj + "周",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
         mTextYear.setText(String.valueOf(mCalendarView.getCurYear()));
         mYear = mCalendarView.getCurYear();
         mTextMonthDay.setText(mCalendarView.getCurMonth() + "月" + mCalendarView.getCurDay() + "日");

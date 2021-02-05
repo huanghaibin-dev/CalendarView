@@ -159,8 +159,8 @@ public abstract class BaseWeekView extends BaseView {
      * @return 获取点击的日历
      */
     protected Calendar getIndex() {
-
         if (mX <= mDelegate.getCalendarPaddingLeft() || mX >= getWidth() - mDelegate.getCalendarPaddingRight()) {
+            onClickCalendarPadding();
             return null;
         }
 
@@ -172,6 +172,42 @@ public abstract class BaseWeekView extends BaseView {
         int position = indexY * 7 + indexX;// 选择项
         if (position >= 0 && position < mItems.size())
             return mItems.get(position);
+        return null;
+    }
+
+
+    private void onClickCalendarPadding() {
+        if (mDelegate.mClickCalendarPaddingListener == null) {
+            return;
+        }
+        Calendar calendar = null;
+        int indexX = (int) (mX - mDelegate.getCalendarPaddingLeft()) / mItemWidth;
+        if (indexX >= 7) {
+            indexX = 6;
+        }
+        int indexY = (int) mY / mItemHeight;
+        int position = indexY * 7 + indexX;// 选择项
+        if (position >= 0 && position < mItems.size()) {
+            calendar = mItems.get(position);
+        }
+        if (calendar == null) {
+            return;
+        }
+        mDelegate.mClickCalendarPaddingListener.onClickCalendarPadding(mX, mY, false, calendar,
+                getClickCalendarPaddingObject(mX, mY, calendar));
+    }
+
+    /**
+     * /**
+     * 获取点击事件处的对象
+     *
+     * @param x                x
+     * @param y                y
+     * @param adjacentCalendar adjacent calendar
+     * @return obj can as null
+     */
+    @SuppressWarnings("unused")
+    protected Object getClickCalendarPaddingObject(float x, float y, Calendar adjacentCalendar) {
         return null;
     }
 

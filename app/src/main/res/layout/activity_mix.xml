@@ -120,7 +120,7 @@
             app:selected_text_color="#fff"
             app:selected_theme_color="#046cea"
             app:week_background="#fff"
-            app:week_start_with="sun"
+            app:week_start_with="mon"
             app:week_text_color="#e1e1e1"
             app:week_view="com.haibin.calendarviewproject.mix.MixWeekView"
             app:year_view_day_text_color="#333333"

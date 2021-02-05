@@ -57,7 +57,7 @@ public abstract class MultiMonthView extends BaseMonthView {
                         return;
                     }
                 }
-                draw(canvas, calendar, i, j);
+                draw(canvas, calendar, d, i, j);
                 ++d;
             }
         }
@@ -71,14 +71,14 @@ public abstract class MultiMonthView extends BaseMonthView {
      * @param i        i
      * @param j        j
      */
-    private void draw(Canvas canvas, Calendar calendar, int i, int j) {
+    private void draw(Canvas canvas, Calendar calendar, int calendarIndex, int i, int j) {
         int x = j * mItemWidth + mDelegate.getCalendarPaddingLeft();
         int y = i * mItemHeight;
         onLoopStart(x, y);
         boolean isSelected = isCalendarSelected(calendar);
         boolean hasScheme = calendar.hasScheme();
-        boolean isPreSelected = isSelectPreCalendar(calendar);
-        boolean isNextSelected = isSelectNextCalendar(calendar);
+        boolean isPreSelected = isSelectPreCalendar(calendar, calendarIndex);
+        boolean isNextSelected = isSelectNextCalendar(calendar, calendarIndex);
 
         if (hasScheme) {
             //标记的日子
@@ -188,11 +188,18 @@ public abstract class MultiMonthView extends BaseMonthView {
      * 上一个日期是否选中
      *
      * @param calendar 当前日期
+     * @param calendarIndex 当前位置
      * @return 上一个日期是否选中
      */
-    protected final boolean isSelectPreCalendar(Calendar calendar) {
-        Calendar preCalendar = CalendarUtil.getPreCalendar(calendar);
-        mDelegate.updateCalendarScheme(preCalendar);
+    protected final boolean isSelectPreCalendar(Calendar calendar, int calendarIndex) {
+        Calendar preCalendar;
+        if (calendarIndex == 0) {
+            preCalendar = CalendarUtil.getPreCalendar(calendar);
+            mDelegate.updateCalendarScheme(preCalendar);
+        } else {
+            preCalendar = mItems.get(calendarIndex - 1);
+        }
+
         return isCalendarSelected(preCalendar);
     }
 
@@ -200,11 +207,18 @@ public abstract class MultiMonthView extends BaseMonthView {
      * 下一个日期是否选中
      *
      * @param calendar 当前日期
+     * @param calendarIndex 当前位置
      * @return 下一个日期是否选中
      */
-    protected final boolean isSelectNextCalendar(Calendar calendar) {
-        Calendar nextCalendar = CalendarUtil.getNextCalendar(calendar);
-        mDelegate.updateCalendarScheme(nextCalendar);
+    protected final boolean isSelectNextCalendar(Calendar calendar, int calendarIndex) {
+        Calendar nextCalendar;
+        if (calendarIndex == mItems.size() - 1) {
+            nextCalendar = CalendarUtil.getNextCalendar(calendar);
+            mDelegate.updateCalendarScheme(nextCalendar);
+        } else {
+            nextCalendar = mItems.get(calendarIndex + 1);
+        }
+
         return isCalendarSelected(nextCalendar);
     }
 

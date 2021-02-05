@@ -130,7 +130,7 @@ public class CalendarView extends FrameLayout {
 
 
         mYearViewPager = findViewById(R.id.selectLayout);
-        mYearViewPager.setPadding(mDelegate.getYearViewPaddingLeft(),0,mDelegate.getYearViewPaddingRight(),0);
+        mYearViewPager.setPadding(mDelegate.getYearViewPaddingLeft(), 0, mDelegate.getYearViewPaddingRight(), 0);
         mYearViewPager.setBackgroundColor(mDelegate.getYearViewBackground());
         mYearViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -837,6 +837,21 @@ public class CalendarView extends FrameLayout {
     }
 
     /**
+     * 点击视图Padding位置的事件
+     *
+     * @param listener listener
+     */
+    public final void setOnClickCalendarPaddingListener(OnClickCalendarPaddingListener listener) {
+        if (listener == null) {
+            mDelegate.mClickCalendarPaddingListener = null;
+        }
+        if (listener == null) {
+            return;
+        }
+        mDelegate.mClickCalendarPaddingListener = listener;
+    }
+
+    /**
      * 年份改变事件
      *
      * @param listener listener
@@ -1424,9 +1439,8 @@ public class CalendarView extends FrameLayout {
     }
 
 
-
     public void setCalendarPadding(int mCalendarPadding) {
-        if(mDelegate == null){
+        if (mDelegate == null) {
             return;
         }
         mDelegate.setCalendarPadding(mCalendarPadding);
@@ -1435,7 +1449,7 @@ public class CalendarView extends FrameLayout {
 
 
     public void setCalendarPaddingLeft(int mCalendarPaddingLeft) {
-        if(mDelegate == null){
+        if (mDelegate == null) {
             return;
         }
         mDelegate.setCalendarPaddingLeft(mCalendarPaddingLeft);
@@ -1443,7 +1457,7 @@ public class CalendarView extends FrameLayout {
     }
 
     public void setCalendarPaddingRight(int mCalendarPaddingRight) {
-        if(mDelegate == null){
+        if (mDelegate == null) {
             return;
         }
         mDelegate.setCalendarPaddingRight(mCalendarPaddingRight);
@@ -1881,5 +1895,22 @@ public class CalendarView extends FrameLayout {
         boolean onCalendarIntercept(Calendar calendar);
 
         void onCalendarInterceptClick(Calendar calendar, boolean isClick);
+    }
+
+    /**
+     * 点击Padding位置事件
+     */
+    public interface OnClickCalendarPaddingListener {
+        /**
+         * 点击Padding位置的事件
+         *
+         * @param x                x坐标
+         * @param y                y坐标
+         * @param isMonthView      是否是月视图，不是则为周视图
+         * @param adjacentCalendar 相邻的日历日期
+         * @param obj              此处的对象，自行设置
+         */
+        void onClickCalendarPadding(float x, float y, boolean isMonthView,
+                                    Calendar adjacentCalendar, Object obj);
     }
 }
