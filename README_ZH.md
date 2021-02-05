@@ -19,7 +19,7 @@ implementation 'com.haibin:calendarview:3.6.8
 
 ### Androidx版本使用
 ```
-implementation 'com.haibin:calendarview:3.7.0'
+implementation 'com.haibin:calendarview:3.7.1'
 ```
 
 ```
