@@ -6,6 +6,15 @@ Support month view、 week view、year view、 custom week start、lunar calenda
 Hot plug UI customization!
 You can't think of the calendar can be so elegant!
 
+
+# 温馨提醒 Warm tips
+
+Github代码全部开源无限制使用，免费开源最终版本为3.7.1，垂直、水平切换日历、高仿iOS日历等源码不再开源，如果需要最新源码授权或需要定制日历，请微信联系，全部源码200元一份，永久授权，如需定制请私信联系。
+
+The final version of the free and open source part is 3.7.1, the vertical and horizontal switching calendar liked iOS calendar are no longer open source. If you need the source code to grant authorization or need to customize the calendar, please contact wechat.
+
+[**下载Demo.apk**](https://github.com/huanghaibin-dev/CalendarView/blob/master/CalendarViewDemo.apk)
+
 <img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/screen_recorder.gif" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/screen_recorder_main.gif" height="650"/>
 
 <img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/screen_recorder_range.gif" height="650"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/screen_recorder_multi.gif" height="650"/>
