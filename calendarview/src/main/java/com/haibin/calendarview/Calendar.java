@@ -209,31 +209,19 @@ public final class Calendar implements Serializable, Comparable<Calendar> {
     }
 
     public void addScheme(int schemeColor, String scheme) {
-        if (schemes == null) {
-            schemes = new ArrayList<>();
-        }
-        schemes.add(new Scheme(schemeColor, scheme));
+        addScheme(new Scheme(schemeColor, scheme));
     }
 
     public void addScheme(int type, int schemeColor, String scheme) {
-        if (schemes == null) {
-            schemes = new ArrayList<>();
-        }
-        schemes.add(new Scheme(type, schemeColor, scheme));
+        addScheme(new Scheme(type, schemeColor, scheme));
     }
 
     public void addScheme(int type, int schemeColor, String scheme, String other) {
-        if (schemes == null) {
-            schemes = new ArrayList<>();
-        }
-        schemes.add(new Scheme(type, schemeColor, scheme, other));
+        addScheme(new Scheme(type, schemeColor, scheme, other));
     }
 
     public void addScheme(int schemeColor, String scheme, String other) {
-        if (schemes == null) {
-            schemes = new ArrayList<>();
-        }
-        schemes.add(new Scheme(schemeColor, scheme, other));
+        addScheme(new Scheme(schemeColor, scheme, other));
     }
 
     public boolean isWeekend() {
