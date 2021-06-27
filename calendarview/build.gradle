@@ -1,28 +1,8 @@
 apply plugin: 'com.android.library'
 
+apply from: "${rootDir.path}/gradle/base.gradle"
+
 android {
-    compileSdkVersion 28
-
-    defaultConfig {
-        minSdkVersion 14
-        //noinspection OldTargetApi
-        targetSdkVersion 28
-        versionCode 371
-        versionName "3.7.1"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-    android {
-        lintOptions {
-            abortOnError false
-        }
-    }
     task intoJar(type: Copy) {
         delete 'build/libs/CalendarView.jar'
         from('build/intermediates/bundles/release/')
@@ -32,15 +12,3 @@ android {
     }
     intoJar.dependsOn(build)
 }
-
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    testImplementation 'junit:junit:4.12'
-}
-apply from: '../script/gradle-jcenter-push.gradle'
