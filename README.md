@@ -9,9 +9,12 @@ You can't think of the calendar can be so elegant!
 
 # 温馨提醒 Warm tips
 
-Github代码全部开源无限制使用，免费开源最终版本为3.7.1，垂直、水平切换日历、自定义动画高仿iOS日历等源码不再开源。
+Github代码全部开源无限制使用，免费开源最终版本为3.7.1，垂直、水平切换日历、自定义动画高仿iOS日历等源码不再开源。如需全部源码和使用支持，请微信联系，源码200元，无限制使用。
 
 The final version of the free and open source part is 3.7.1, the vertical and horizontal switching calendar liked iOS calendar are no longer open source.
+
+[**Download CalendarViewDemo.apk**](https://github.com/huanghaibin-dev/CalendarView/blob/master/CalendarViewDemo.apk)
+<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/WechatIMG65.jpeg" height="330"/>
 
 <img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/screen_recorder.gif" height="650"/>&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/new_ios.gif" height="650"/>&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/dark_list.jpg" height="650"/>&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/screen_recorder_flip.gif" height="650"/>
 
