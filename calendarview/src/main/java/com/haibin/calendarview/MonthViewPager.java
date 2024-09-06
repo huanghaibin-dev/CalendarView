@@ -318,6 +318,11 @@ public final class MonthViewPager extends ViewPager {
         }
         setCurrentItem(position, smoothScroll);
 
+        updateMonthViewHeight(calendar.getYear(), calendar.getMonth());
+        ViewGroup.LayoutParams params = getLayoutParams();
+        params.height = mCurrentViewHeight;
+        setLayoutParams(params);
+
         BaseMonthView view = findViewWithTag(position);
         if (view != null) {
             view.setSelectedCalendar(mDelegate.mIndexCalendar);
