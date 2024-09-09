@@ -1228,7 +1228,7 @@ public class CalendarView extends FrameLayout {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int height = MeasureSpec.getSize(heightMeasureSpec);
         if (mDelegate == null ||
-                !mDelegate.isFullScreenCalendar()) {
+                !mDelegate.isFullScreenCalendar() || height == 0) {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
             return;
         }
