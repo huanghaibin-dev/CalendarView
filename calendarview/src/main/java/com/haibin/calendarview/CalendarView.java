@@ -1537,16 +1537,12 @@ public class CalendarView extends FrameLayout {
 
     /**
      * 设置周起始
-     * CalendarViewDelegate.WEEK_START_WITH_SUN
-     * CalendarViewDelegate.WEEK_START_WITH_MON
-     * CalendarViewDelegate.WEEK_START_WITH_SAT
+     * 支持周一到周日任意周起始
      *
      * @param weekStart 周起始
      */
-    private void setWeekStart(int weekStart) {
-        if (weekStart != CalendarViewDelegate.WEEK_START_WITH_SUN &&
-                weekStart != CalendarViewDelegate.WEEK_START_WITH_MON &&
-                weekStart != CalendarViewDelegate.WEEK_START_WITH_SAT)
+    public void setWeekStart(int weekStart) {
+        if (!(java.util.Calendar.SUNDAY <= weekStart && weekStart <= java.util.Calendar.SATURDAY))
             return;
         if (weekStart == mDelegate.getWeekStart())
             return;
