@@ -293,6 +293,29 @@ public class CalendarView extends FrameLayout {
         return mDelegate.getCurrentDay().getYear();
     }
 
+    public int getMinYear() {
+        return mDelegate.getMinYear();
+    }
+
+    public int getMaxYear() {
+        return mDelegate.getMaxYear();
+    }
+
+    public int getMinYearMonth() {
+        return mDelegate.getMinYearMonth();
+    }
+
+    public int getMaxYearMonth() {
+        return mDelegate.getMaxYearMonth();
+    }
+
+    public int getMinYearDay() {
+        return mDelegate.getMinYearDay();
+    }
+
+    public int getMaxYearDay() {
+        return mDelegate.getMaxYearDay();
+    }
 
     /**
      * 打开日历年月份快速选择
