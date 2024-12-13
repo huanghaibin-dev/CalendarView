@@ -1,11 +1,8 @@
 # CalenderView
 
-An elegant CalendarView on Android platform.
-Freely draw UI with canvas, fast、efficient and low memory.
-Support month view、 week view、year view、 custom week start、lunar calendar and so on.
-Hot plug UI customization!
-You can't think of the calendar can be so elegant!
+## RecyclerView? ListView or ViewGroup? No, it's Canvas! Ultra performance and free customization interface! Fast rendering and extremely low memory.
 
+[**Download CalendarViewDemo.apk**](https://github.com/huanghaibin-dev/CalendarView/blob/master/CalendarViewDemo.apk)
 
 # 温馨提醒 Warm tips
 
@@ -13,7 +10,6 @@ Github代码全部开源无限制使用，免费开源最终版本为3.7.1，垂
 
 The final version of the free and open source part is 3.7.1, the vertical and horizontal switching calendar liked iOS calendar are no longer open source.
 
-[**Download CalendarViewDemo.apk**](https://github.com/huanghaibin-dev/CalendarView/blob/master/CalendarViewDemo.apk)
 <img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/WechatIMG65.jpeg" height="330"/>
 
 <img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/screen_recorder.gif" height="650"/>&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/new_ios.gif" height="650"/>&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/dark_list.jpg" height="650"/>&nbsp;<img src="https://github.com/huanghaibin-dev/CalendarView/blob/master/app/src/main/assets/screen_recorder_flip.gif" height="650"/>
@@ -36,7 +32,7 @@ implementation 'com.haibin:calendarview:3.7.1'
 <dependency>
   <groupId>com.haibin</groupId>
   <artifactId>calendarview</artifactId>
-  <version>3.7.0</version>
+  <version>3.7.1</version>
   <type>pom</type>
 </dependency>
 ```
