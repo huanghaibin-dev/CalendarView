@@ -1,6 +1,6 @@
 # CalenderView
 
-## RecyclerView? ListView or ViewGroup? No, it's Canvas! Ultra performance and free customization interface! Fast rendering and extremely low memory.
+### RecyclerView? ListView or ViewGroup? No, it's Canvas! Ultra performance and free customization interface! Fast rendering and extremely low memory.
 
 [**Download CalendarViewDemo.apk**](https://github.com/huanghaibin-dev/CalendarView/blob/master/CalendarViewDemo.apk)
 
