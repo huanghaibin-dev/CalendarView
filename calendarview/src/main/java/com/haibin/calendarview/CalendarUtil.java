@@ -206,14 +206,13 @@ public final class CalendarUtil {
     static int getMonthViewStartDiff(Calendar calendar, int weekStart) {
         java.util.Calendar date = java.util.Calendar.getInstance();
         date.set(calendar.getYear(), calendar.getMonth() - 1, 1, 12, 0, 0);
-        int week = date.get(java.util.Calendar.DAY_OF_WEEK);
-        if (weekStart == CalendarViewDelegate.WEEK_START_WITH_SUN) {
-            return week - 1;
+        int week = date.get(java.util.Calendar.DAY_OF_WEEK); // 获取该月第一天是星期几
+        int diff = week - weekStart; // 计算与周起始日的差值
+        if (diff < 0) {
+            // 如果差值小于0，说明周起始日在该月第一天之后，需要调整偏移量
+            diff += 7;
         }
-        if (weekStart == CalendarViewDelegate.WEEK_START_WITH_MON) {
-            return week == 1 ? 6 : week - weekStart;
-        }
-        return week == CalendarViewDelegate.WEEK_START_WITH_SAT ? 0 : week;
+        return diff;
     }
 
 
@@ -230,14 +229,13 @@ public final class CalendarUtil {
     static int getMonthViewStartDiff(int year, int month, int weekStart) {
         java.util.Calendar date = java.util.Calendar.getInstance();
         date.set(year, month - 1, 1, 12, 0, 0);
-        int week = date.get(java.util.Calendar.DAY_OF_WEEK);
-        if (weekStart == CalendarViewDelegate.WEEK_START_WITH_SUN) {
-            return week - 1;
+        int week = date.get(java.util.Calendar.DAY_OF_WEEK); // 获取该月第一天是星期几
+        int diff = week - weekStart; // 计算与周起始日的差值
+        if (diff < 0) {
+            // 如果差值小于0，说明周起始日在该月第一天之后，需要调整偏移量
+            diff += 7;
         }
-        if (weekStart == CalendarViewDelegate.WEEK_START_WITH_MON) {
-            return week == 1 ? 6 : week - weekStart;
-        }
-        return week == CalendarViewDelegate.WEEK_START_WITH_SAT ? 0 : week;
+        return diff;
     }
 
 
@@ -269,14 +267,12 @@ public final class CalendarUtil {
     private static int getMonthEndDiff(int year, int month, int day, int weekStart) {
         java.util.Calendar date = java.util.Calendar.getInstance();
         date.set(year, month - 1, day);
-        int week = date.get(java.util.Calendar.DAY_OF_WEEK);
-        if (weekStart == CalendarViewDelegate.WEEK_START_WITH_SUN) {
-            return 7 - week;
+        int week = date.get(java.util.Calendar.DAY_OF_WEEK); // 获取给定日期是星期几
+        int diff = week - weekStart; // 计算当前星期与周起始日的差异
+        if (diff < 0) {
+            diff += 7; // 如果差异为负数，说明跨越了周末，需要加7
         }
-        if (weekStart == CalendarViewDelegate.WEEK_START_WITH_MON) {
-            return week == 1 ? 0 : 7 - week + 1;
-        }
-        return week == 7 ? 6 : 7 - week - 1;
+        return 6 - diff; // 从当前星期到周末的天数差，总共7天，所以用6减去差异
     }
 
     /**
@@ -691,15 +687,13 @@ public final class CalendarUtil {
      */
     private static int getWeekViewStartDiff(int year, int month, int day, int weekStart) {
         java.util.Calendar date = java.util.Calendar.getInstance();
-        date.set(year, month - 1, day, 12, 0);//
-        int week = date.get(java.util.Calendar.DAY_OF_WEEK);
-        if (weekStart == 1) {
-            return week - 1;
+        date.set(year, month - 1, day, 12, 0); // 设置给定的日期
+        int week = date.get(java.util.Calendar.DAY_OF_WEEK); // 获取这一天是周几
+        int diff = week - weekStart; // 计算与周起始日的差值
+        if (diff < 0) {
+            diff += 7; // 如果差值为负，说明给定日期在周起始日之前，需要加7天
         }
-        if (weekStart == 2) {
-            return week == 1 ? 6 : week - weekStart;
-        }
-        return week == 7 ? 0 : week;
+        return diff;
     }
 
 
@@ -717,15 +711,13 @@ public final class CalendarUtil {
      */
     public static int getWeekViewEndDiff(int year, int month, int day, int weekStart) {
         java.util.Calendar date = java.util.Calendar.getInstance();
-        date.set(year, month - 1, day, 12, 0);
-        int week = date.get(java.util.Calendar.DAY_OF_WEEK);
-        if (weekStart == 1) {
-            return 7 - week;
+        date.set(year, month - 1, day, 12, 0); // 设置日期
+        int week = date.get(java.util.Calendar.DAY_OF_WEEK); // 获取周几
+        int diff = week - weekStart; // 计算与周起始日的差值
+        if (diff < 0) {
+            diff += 7; // 如果差值为负，说明给定日期在周起始日之前，需要加7天
         }
-        if (weekStart == 2) {
-            return week == 1 ? 0 : 7 - week + 1;
-        }
-        return week == 7 ? 6 : 7 - week - 1;
+        return 6 - diff; // 返回到周结束的天数差异
     }
 
 

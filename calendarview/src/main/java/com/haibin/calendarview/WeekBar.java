@@ -108,14 +108,13 @@ public class WeekBar extends LinearLayout {
      * @return 通过View的位置和周起始获取星期的对应坐标
      */
     protected int getViewIndexByCalendar(Calendar calendar, int weekStart) {
-        int week = calendar.getWeek() + 1;
-        if (weekStart == CalendarViewDelegate.WEEK_START_WITH_SUN) {
-            return week - 1;
+        int week = calendar.getWeek() + 1; // 获取传入日期是周几，周日为1，周六为7
+        int offset = weekStart - CalendarViewDelegate.WEEK_START_WITH_SUN; // 计算偏移量
+        int index = week - offset - 1; // 计算新的索引位置
+        if (index < 0) {
+            index += 7; // 如果索引为负数，加上7调整到正确位置
         }
-        if (weekStart == CalendarViewDelegate.WEEK_START_WITH_MON) {
-            return week == CalendarViewDelegate.WEEK_START_WITH_SUN ? 6 : week - 2;
-        }
-        return week == CalendarViewDelegate.WEEK_START_WITH_SAT ? 0 : week;
+        return index % 7; // 确保索引在0到6之间
     }
 
     /**
@@ -127,14 +126,12 @@ public class WeekBar extends LinearLayout {
      */
     private String getWeekString(int index, int weekStart) {
         String[] weeks = getContext().getResources().getStringArray(R.array.week_string_array);
-
-        if (weekStart == CalendarViewDelegate.WEEK_START_WITH_SUN) {
-            return weeks[index];
+        int offset = weekStart - CalendarViewDelegate.WEEK_START_WITH_SUN;
+        int adjustedIndex = (index + offset) % 7;
+        if (adjustedIndex < 0) {
+            adjustedIndex += 7;
         }
-        if (weekStart == CalendarViewDelegate.WEEK_START_WITH_MON) {
-            return weeks[index == 6 ? 0 : index + 1];
-        }
-        return weeks[index == 0 ? 6 : index - 1];
+        return weeks[adjustedIndex];
     }
 
     @Override
