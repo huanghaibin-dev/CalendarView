@@ -293,6 +293,29 @@ public class CalendarView extends FrameLayout {
         return mDelegate.getCurrentDay().getYear();
     }
 
+    public int getMinYear() {
+        return mDelegate.getMinYear();
+    }
+
+    public int getMaxYear() {
+        return mDelegate.getMaxYear();
+    }
+
+    public int getMinYearMonth() {
+        return mDelegate.getMinYearMonth();
+    }
+
+    public int getMaxYearMonth() {
+        return mDelegate.getMaxYearMonth();
+    }
+
+    public int getMinYearDay() {
+        return mDelegate.getMinYearDay();
+    }
+
+    public int getMaxYearDay() {
+        return mDelegate.getMaxYearDay();
+    }
 
     /**
      * 打开日历年月份快速选择
@@ -1537,16 +1560,12 @@ public class CalendarView extends FrameLayout {
 
     /**
      * 设置周起始
-     * CalendarViewDelegate.WEEK_START_WITH_SUN
-     * CalendarViewDelegate.WEEK_START_WITH_MON
-     * CalendarViewDelegate.WEEK_START_WITH_SAT
+     * 支持周一到周日任意周起始
      *
      * @param weekStart 周起始
      */
-    private void setWeekStart(int weekStart) {
-        if (weekStart != CalendarViewDelegate.WEEK_START_WITH_SUN &&
-                weekStart != CalendarViewDelegate.WEEK_START_WITH_MON &&
-                weekStart != CalendarViewDelegate.WEEK_START_WITH_SAT)
+    public void setWeekStart(int weekStart) {
+        if (!(java.util.Calendar.SUNDAY <= weekStart && weekStart <= java.util.Calendar.SATURDAY))
             return;
         if (weekStart == mDelegate.getWeekStart())
             return;
