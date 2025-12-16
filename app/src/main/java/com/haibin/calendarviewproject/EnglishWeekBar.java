@@ -54,14 +54,12 @@ public class EnglishWeekBar extends WeekBar {
      */
     private String getWeekString(int index, int weekStart) {
         String[] weeks = getContext().getResources().getStringArray(R.array.english_week_string_array);
-
-        if (weekStart == 1) {
-            return weeks[index];
+        int offset = weekStart - java.util.Calendar.SUNDAY;
+        int adjustedIndex = (index + offset) % 7;
+        if (adjustedIndex < 0) {
+            adjustedIndex += 7;
         }
-        if (weekStart == 2) {
-            return weeks[index == 6 ? 0 : index + 1];
-        }
-        return weeks[index == 0 ? 6 : index - 1];
+        return weeks[adjustedIndex];
     }
 
     /**

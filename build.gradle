@@ -4,6 +4,7 @@ buildscript {
     repositories {
         jcenter()
         google()
+        maven { url "https://repo.grails.org/grails/core/" }
     }
     dependencies {
         //noinspection GradleDependency
@@ -17,6 +18,7 @@ allprojects {
     repositories {
         jcenter()
         google()
+        maven { url "https://repo.grails.org/grails/core/" }
     }
 }
 
