@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
+    android:background="@color/content_background"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context="com.haibin.calendarviewproject.MainActivity"
@@ -123,7 +123,6 @@
         android:id="@+id/calendarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#fff"
         android:orientation="vertical"
         app:calendar_content_view_id="@+id/nestedScrollView"
         app:calendar_show_mode="both_month_week_view">

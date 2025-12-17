@@ -17,7 +17,10 @@ package com.haibin.calendarview;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.AttributeSet;
@@ -338,6 +341,43 @@ public class CalendarView extends FrameLayout {
                     }
                 });
 
+        //颜色值过度
+        if(getBackground()!=null&& getBackground()  instanceof ColorDrawable){
+            final int intBgColor=((ColorDrawable) getBackground()).getColor();
+            final String bgColor="#"+Integer.toHexString(intBgColor);
+            final ValueAnimator animator = ValueAnimator.ofFloat(0.2f, 1f);
+            animator.setDuration(260);
+            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    setBackgroundColor(Color.parseColor(caculateColor(bgColor,"#"+Integer.toHexString(mDelegate.getYearViewBackground()),(Float) animation.getAnimatedValue())));
+                }
+            });
+            animator.addListener(new Animator.AnimatorListener(){
+
+                @Override
+                public void onAnimationStart(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    setBackgroundColor(intBgColor);
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
+            animator.start();
+        }
+
         mMonthPager.animate()
                 .scaleX(0)
                 .scaleY(0)
@@ -352,6 +392,46 @@ public class CalendarView extends FrameLayout {
                         }
                     }
                 });
+    }
+
+    /**
+     * 计算从startColor过度到endColor过程中百分比为franch时的颜色值
+     * @param startColor 起始颜色 （格式#FFFFFFFF）
+     * @param endColor 结束颜色 （格式#FFFFFFFF）
+     * @param franch 百分比0.5
+     * @return 返回String格式的color（格式#FFFFFFFF）
+     */
+    public static String caculateColor(String startColor, String endColor, float franch){
+
+        int startAlpha = Integer.parseInt(startColor.substring(1, 3), 16);
+        int startRed = Integer.parseInt(startColor.substring(3, 5), 16);
+        int startGreen = Integer.parseInt(startColor.substring(5, 7), 16);
+        int startBlue = Integer.parseInt(startColor.substring(7), 16);
+
+        int endAlpha = Integer.parseInt(endColor.substring(1, 3), 16);
+        int endRed = Integer.parseInt(endColor.substring(3, 5), 16);
+        int endGreen = Integer.parseInt(endColor.substring(5, 7), 16);
+        int endBlue = Integer.parseInt(endColor.substring(7), 16);
+
+        int currentAlpha = (int) ((endAlpha - startAlpha) * franch + startAlpha);
+        int currentRed = (int) ((endRed - startRed) * franch + startRed);
+        int currentGreen = (int) ((endGreen - startGreen) * franch + startGreen);
+        int currentBlue = (int) ((endBlue - startBlue) * franch + startBlue);
+
+        return "#" + getHexString(currentAlpha) + getHexString(currentRed)
+                + getHexString(currentGreen) + getHexString(currentBlue);
+
+    }
+
+    /**
+     * 将10进制颜色值转换成16进制。
+     */
+    public static String getHexString(int value) {
+        String hexString = Integer.toHexString(value);
+        if (hexString.length() == 1) {
+            hexString = "0" + hexString;
+        }
+        return hexString;
     }
 
 
